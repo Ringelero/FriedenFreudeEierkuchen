@@ -1,164 +1,353 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Julius | Smart Home & intelligente Möbel</title>
-<style>
-:root {{
-  --text:#24131a; --muted:#6f5260; --ruby:#c90046; --ruby2:#ff4f87;
-  --rose:#fff1f5; --cream:#fff8ee; --gold:#ffb85c;
-  --card:rgba(255,255,255,.72); --border:rgba(201,0,70,.18);
-}}
-* {{ box-sizing:border-box; }}
-html {{ scroll-behavior:smooth; }}
-body {{
-  margin:0; min-height:100vh; font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(circle at 12% 18%,rgba(255,79,135,.22),transparent 30%),
-    radial-gradient(circle at 88% 10%,rgba(255,184,92,.24),transparent 32%),
-    linear-gradient(135deg,var(--cream),var(--rose));
-  background-attachment:fixed; overflow-x:hidden;
-}}
-.ruby-bg {{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }}
-.ruby {{
-  position:absolute; font-size:clamp(4rem,10vw,9rem); opacity:.16;
-  filter:drop-shadow(0 0 18px rgba(201,0,70,.22));
-  animation:float 16s ease-in-out infinite;
-}}
-.ruby:nth-child(1) {{ left:4%; top:8%; animation-duration:19s; }}
-.ruby:nth-child(2) {{ right:6%; top:16%; animation-duration:23s; animation-delay:-4s; }}
-.ruby:nth-child(3) {{ left:10%; bottom:8%; animation-duration:27s; animation-delay:-9s; }}
-.ruby:nth-child(4) {{ right:12%; bottom:18%; animation-duration:21s; animation-delay:-6s; }}
-@keyframes float {{
-  0%,100% {{ transform:translateY(0) rotate(-8deg); }}
-  50% {{ transform:translateY(-36px) rotate(8deg); }}
-}}
-.page {{ position:relative; z-index:1; width:min(1050px,100%); margin:auto; padding:28px 18px 70px; display:grid; gap:24px; }}
-.hero {{ min-height:86vh; display:grid; place-items:center; text-align:center; }}
-.hero-inner {{ display:grid; gap:18px; width:min(920px,100%); }}
-.eyebrow {{
-  justify-self:center; color:var(--ruby); font-weight:950; letter-spacing:.12em; text-transform:uppercase;
-  font-size:.8rem; border:1px solid var(--border); background:rgba(255,255,255,.55);
-  padding:9px 13px; border-radius:999px;
-}}
-h1 {{
-  margin:0; font-size:clamp(3.2rem,13vw,8rem); line-height:.86; letter-spacing:-.08em;
-  background:linear-gradient(115deg,#7a002a,var(--ruby),var(--ruby2),var(--gold),#7a002a);
-  background-size:240% 100%; -webkit-background-clip:text; background-clip:text; color:transparent;
-  animation:shine 4.6s ease-in-out infinite;
-}}
-@keyframes shine {{ 0%,100% {{ background-position:0% 50%; }} 50% {{ background-position:100% 50%; }} }}
-.lead-card,.panel {{
-  border:1px solid var(--border); background:var(--card); border-radius:30px;
-  padding:clamp(22px,5vw,44px); box-shadow:0 24px 80px rgba(117,38,67,.16);
-  backdrop-filter:blur(18px);
-}}
-.lead-card {{ text-align:left; display:grid; gap:16px; }}
-.lead-card h2,.panel h2 {{ margin:0; font-size:clamp(1.8rem,5vw,3.2rem); line-height:1; letter-spacing:-.04em; }}
-.lead-card p,.panel p {{ margin:0; color:var(--muted); line-height:1.7; font-size:1.08rem; }}
-.highlight {{ color:var(--ruby); font-weight:850; }}
-.actions {{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }}
-.btn {{
-  border:0; border-radius:999px; padding:14px 18px; color:white; font-weight:900;
-  text-decoration:none; cursor:pointer; background:linear-gradient(135deg,var(--ruby),var(--ruby2),#ff8a00);
-  box-shadow:0 10px 30px rgba(201,0,70,.24); transition:.25s ease;
-}}
-.btn:hover {{ transform:translateY(-2px); }}
-.secondary {{ background:rgba(255,255,255,.66); color:var(--ruby); border:1px solid var(--border); box-shadow:none; }}
-.grid {{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }}
-.skill-list,.home-demo {{ display:grid; gap:10px; }}
-details {{
-  border:1px solid var(--border); background:rgba(255,255,255,.62); border-radius:20px;
-  padding:16px;
-}}
-details[open] {{ box-shadow:0 0 28px rgba(201,0,70,.10); }}
-summary {{ cursor:pointer; list-style:none; font-weight:950; }}
-summary::-webkit-details-marker {{ display:none; }}
-.room {{
-  border:1px solid var(--border); background:rgba(255,255,255,.62); border-radius:20px;
-  padding:16px; display:flex; justify-content:space-between; align-items:center; gap:12px;
-}}
-.switch {{ width:58px; height:34px; background:rgba(201,0,70,.18); border-radius:999px; position:relative; cursor:pointer; }}
-.switch:before {{
-  content:""; position:absolute; top:4px; left:4px; width:26px; height:26px; border-radius:50%;
-  background:white; transition:.25s ease; box-shadow:0 3px 12px rgba(0,0,0,.16);
-}}
-.room.active .switch {{ background:linear-gradient(135deg,var(--ruby),var(--gold)); }}
-.room.active .switch:before {{ left:28px; }}
-.status {{ color:var(--muted); font-size:.9rem; }}
-.footer {{ text-align:center; color:var(--muted); font-size:.9rem; }}
-@media(max-width:760px) {{
-  .page {{ padding:18px 14px 54px; }}
-  .grid {{ grid-template-columns:1fr; }}
-  .actions {{ flex-direction:column; }}
-  .btn {{ text-align:center; }}
-  .hero {{ min-height:82vh; }}
-}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Julius | Smart Home & kreative Technik</title>
+  <style>
+    :root {
+      --ink: #261018;
+      --muted: #72515f;
+      --ruby: #c90046;
+      --ruby-soft: #ff4f87;
+      --cream: #fff8ef;
+      --rose: #fff0f5;
+      --card: rgba(255,255,255,.78);
+      --border: rgba(201,0,70,.18);
+      --shadow: 0 24px 80px rgba(143, 38, 74, .18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255,79,135,.28), transparent 34%),
+        radial-gradient(circle at 90% 18%, rgba(255,184,92,.22), transparent 34%),
+        linear-gradient(135deg, var(--cream), var(--rose));
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    .gems {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .gem {
+      position: absolute;
+      font-size: clamp(4rem, 12vw, 9rem);
+      opacity: .13;
+      filter: drop-shadow(0 0 18px rgba(201,0,70,.2));
+      animation: float 18s ease-in-out infinite;
+    }
+
+    .gem:nth-child(1) { left: -1rem; top: 8%; }
+    .gem:nth-child(2) { right: -1.5rem; top: 24%; animation-delay: -5s; }
+    .gem:nth-child(3) { left: 5%; bottom: 7%; animation-delay: -10s; }
+    .gem:nth-child(4) { right: 10%; bottom: 10%; animation-delay: -14s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-8deg); }
+      50% { transform: translateY(-32px) rotate(7deg); }
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(980px, 100%);
+      margin: 0 auto;
+      padding: 24px 16px 56px;
+    }
+
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .topline {
+      width: fit-content;
+      margin: 0 auto;
+      padding: 9px 13px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255,255,255,.62);
+      color: var(--ruby);
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(201,0,70,.08);
+    }
+
+    .name {
+      margin: 0;
+      text-align: center;
+      font-size: clamp(4rem, 18vw, 9rem);
+      line-height: .82;
+      letter-spacing: -.08em;
+      background: linear-gradient(110deg, #6d001f, var(--ruby), var(--ruby-soft), #ff9a3d, #6d001f);
+      background-size: 230% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shine 5s ease-in-out infinite;
+    }
+
+    @keyframes shine {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      padding: clamp(24px, 5vw, 52px);
+      display: grid;
+      gap: 18px;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: clamp(2rem, 6vw, 4rem);
+      line-height: .95;
+      letter-spacing: -.05em;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1.04rem, 2.4vw, 1.22rem);
+      line-height: 1.68;
+    }
+
+    .strong {
+      color: var(--ruby);
+      font-weight: 850;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 18px;
+      font-weight: 900;
+      text-decoration: none;
+      color: white;
+      background: linear-gradient(135deg, var(--ruby), var(--ruby-soft), #ff8a00);
+      box-shadow: 0 12px 34px rgba(201,0,70,.24);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 38px rgba(201,0,70,.30);
+    }
+
+    .btn.secondary {
+      color: var(--ruby);
+      background: rgba(255,255,255,.68);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .playground {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.62);
+      border-radius: 28px;
+      padding: clamp(22px, 4vw, 38px);
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 18px;
+    }
+
+    .playground h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      letter-spacing: -.04em;
+      line-height: 1;
+    }
+
+    .mini-home {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .room {
+      min-height: 116px;
+      border: 1px solid rgba(201,0,70,.16);
+      background: rgba(255,255,255,.62);
+      border-radius: 22px;
+      padding: 16px;
+      display: grid;
+      align-content: space-between;
+      cursor: pointer;
+      transition: .22s ease;
+    }
+
+    .room.active {
+      background: linear-gradient(135deg, rgba(201,0,70,.16), rgba(255,184,92,.20));
+      box-shadow: 0 0 30px rgba(201,0,70,.12);
+    }
+
+    .room strong {
+      font-size: 1rem;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .footer {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 18px 14px 46px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 34px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .mini-home {
+        grid-template-columns: 1fr;
+      }
+
+      .room {
+        min-height: 92px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="ruby-bg" aria-hidden="true">
-  <div class="ruby">💎</div><div class="ruby">♦️</div><div class="ruby">💎</div><div class="ruby">🔻</div>
-</div>
+  <div class="gems" aria-hidden="true">
+    <div class="gem">♦️</div>
+    <div class="gem">💎</div>
+    <div class="gem">🔻</div>
+    <div class="gem">💎</div>
+  </div>
 
-<main class="page">
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="eyebrow">Berlin · Smart Home · intelligente Möbel</div>
-      <h1>Julius</h1>
-      <article class="lead-card">
+  <main class="page">
+    <section class="hero">
+      <div class="topline">Berlin · Smart Home · kreative Technik</div>
+
+      <h1 class="name">Julius</h1>
+
+      <article class="card">
         <h2>Ein Berliner mit Herz.</h2>
-        <p>Meine Leidenschaft ist es, <span class="highlight">Menschen mit Technik zu verbinden</span> und Kreativität zu unterstützen.</p>
-        <p>Ich bin ein 28-jähriger Elektrotechnik-Student, der schon im Smart-Home-Start-up <span class="highlight">BetterAtHome GmbH</span> gearbeitet hat. Außerdem war ich Haustechniker im <span class="highlight">Hotel Adlon</span>.</p>
-        <p>Mit diesen Erfahrungen mache ich mich nun selbstständig. Auf Wunsch baue ich dir intelligente Möbel für dein Zuhause, Restaurant, Hotel oder was auch immer. <span class="highlight">Schau dich um:</span></p>
+
+        <p>
+          Meine Leidenschaft ist es, <span class="strong">Menschen mit Technik zu verbinden</span>
+          und Kreativität zu unterstützen.
+        </p>
+
+        <p>
+          Ich bin ein 28-jähriger Elektrotechnik-Student, der schon im Smart-Home-Start-up
+          <span class="strong">BetterAtHome GmbH</span> gearbeitet hat. Außerdem war ich
+          Haustechniker im <span class="strong">Hotel Adlon</span>.
+        </p>
+
+        <p>
+          Mit diesen Erfahrungen mache ich mich nun selbstständig. Auf Wunsch baue ich dir
+          intelligente Möbel für dein Zuhause, Restaurant, Hotel oder was auch immer.
+          <span class="strong">Schau dich um:</span>
+        </p>
+
+        <div class="actions">
+          <a class="btn" href="#smart-home">Smart Home ausprobieren</a>
+          <a class="btn secondary" href="mailto:Julius@friedenfreudeeierkuchen.homes">Julius kontaktieren</a>
+        </div>
       </article>
-      <div class="actions">
-        <a class="btn" href="#smart-home">Smart Home testen</a>
-        <a class="btn secondary" href="mailto:Julius@friedenfreudeeierkuchen.homes">Julius kontaktieren</a>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="grid">
-    <article class="panel">
-      <h2>Was ich anbieten kann</h2>
-      <div class="skill-list">
-        <details open><summary>🪟 Automatische Gardinen</summary><p>Motorisierte Systeme, versteckte Kabel, ESP32-Steuerung, Endstops und Home-Assistant-Anbindung.</p></details>
-        <details><summary>💡 Licht & Atmosphäre</summary><p>Szenen, Nachtlicht, Bewegungsmelder, Filmabend-Modus und smarte Routinen.</p></details>
-        <details><summary>🪑 Intelligente Möbel</summary><p>Möbel mit Sensorik, Licht, versteckter Stromversorgung, Steuerung oder kleinen Automationen.</p></details>
-        <details><summary>🛠️ Reparatur & Speziallösungen</summary><p>Halterungen, Kabel verstecken, Upcycling, kleine Umbauten und individuelle Problemlösungen.</p></details>
-      </div>
-    </article>
-
-    <article class="panel" id="smart-home">
+    <section class="playground" id="smart-home">
       <h2>Kleines Smart Home</h2>
-      <p>Spielbereich: Hier entsteht Schritt für Schritt eine kleine interaktive Wohnung.</p>
-      <div class="home-demo">
-        <div class="room active"><div><strong>Wohnzimmerlicht</strong><div class="status">aktiv</div></div><div class="switch"></div></div>
-        <div class="room"><div><strong>Gardinen</strong><div class="status">aus</div></div><div class="switch"></div></div>
-        <div class="room active"><div><strong>Sensorik</strong><div class="status">aktiv</div></div><div class="switch"></div></div>
+      <p>
+        Hier entsteht als nächstes ein kleiner spielbarer Bereich:
+        Licht schalten, Gardinen bewegen, Räume entdecken und Ideen ausprobieren.
+      </p>
+
+      <div class="mini-home">
+        <div class="room active">
+          <strong>Wohnzimmerlicht</strong>
+          <span class="status">aktiv</span>
+        </div>
+        <div class="room">
+          <strong>Gardinen</strong>
+          <span class="status">geschlossen</span>
+        </div>
+        <div class="room active">
+          <strong>Sensorik</strong>
+          <span class="status">online</span>
+        </div>
       </div>
-    </article>
-  </section>
+    </section>
 
-  <section class="panel">
-    <h2>Was hier noch kommt</h2>
-    <p>Als nächstes bauen wir diesen Bereich zu einem kleinen spielbaren Smart-Home-Dashboard aus: Räume anklicken, Lichter toggeln, Gardinen fahren lassen und Projektideen öffnen.</p>
-  </section>
+    <div class="footer">
+      © Julius · Teil von Frieden Freude Eierkuchen · Julius@friedenfreudeeierkuchen.homes
+    </div>
+  </main>
 
-  <div class="footer">© Julius · Teil von Frieden Freude Eierkuchen · Julius@friedenfreudeeierkuchen.homes</div>
-</main>
+  <script>
+    document.querySelectorAll(".room").forEach(room => {
+      room.addEventListener("click", () => {
+        room.classList.toggle("active");
+        const status = room.querySelector(".status");
+        const label = room.querySelector("strong").textContent;
 
-<script>
-document.querySelectorAll(".room").forEach(room => {{
-  room.addEventListener("click", () => {{
-    room.classList.toggle("active");
-    const status = room.querySelector(".status");
-    status.textContent = room.classList.contains("active") ? "aktiv" : "aus";
-  }});
-}});
-</script>
+        if (label.includes("Gardinen")) {
+          status.textContent = room.classList.contains("active") ? "offen" : "geschlossen";
+        } else if (label.includes("Sensorik")) {
+          status.textContent = room.classList.contains("active") ? "online" : "offline";
+        } else {
+          status.textContent = room.classList.contains("active") ? "aktiv" : "aus";
+        }
+      });
+    });
+  </script>
 </body>
 </html>
