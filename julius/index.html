@@ -1,43 +1,164 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Julius Animation Lab</title>
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Julius | Smart Home & intelligente Möbel</title>
 <style>
-:root{--text:#f7f7fb;--muted:#b9bbc9;--ruby:#e0115f;--ruby2:#ff3b7f;--diamond:#b7f7ff;--gold:#ffbf5f;--card:rgba(255,255,255,.075);--border:rgba(255,255,255,.17)}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(circle at 18% 20%,rgba(224,17,95,.32),transparent 30%),radial-gradient(circle at 88% 8%,rgba(183,247,255,.22),transparent 30%),linear-gradient(135deg,#05060b,#10111b 50%,#080910);overflow-x:hidden}body.spin{animation:bodySpin 1.1s ease}@keyframes bodySpin{to{transform:rotateY(360deg)}}
-.ruby-field{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}.gem{position:absolute;width:38px;height:38px;opacity:.55;filter:drop-shadow(0 0 14px rgba(224,17,95,.55));animation:floatGem linear infinite}.gem:nth-child(1){left:8%;top:14%;animation-duration:18s}.gem:nth-child(2){left:78%;top:16%;animation-duration:24s;animation-delay:-5s}.gem:nth-child(3){left:22%;top:76%;animation-duration:28s;animation-delay:-9s}.gem:nth-child(4){left:88%;top:68%;animation-duration:21s;animation-delay:-3s}@keyframes floatGem{50%{transform:translateY(-42px) rotate(180deg)}100%{transform:translateY(0) rotate(360deg)}}
-.page{position:relative;z-index:1;width:min(1100px,100%);margin:auto;padding:28px 18px 60px;display:grid;gap:24px;animation:fadeIn .8s ease both}@keyframes fadeIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.hero{min-height:88vh;display:grid;place-items:center;text-align:center}.hero-inner{width:min(900px,100%);display:grid;gap:18px}.eyebrow{justify-self:center;color:var(--diamond);font-weight:900;letter-spacing:.12em;text-transform:uppercase;font-size:.78rem;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);padding:9px 13px;border-radius:999px}h1{margin:0;font-size:clamp(3.4rem,14vw,9rem);line-height:.82;letter-spacing:-.08em;background:linear-gradient(115deg,#fff 5%,var(--diamond) 22%,var(--ruby2) 48%,var(--gold) 65%,#fff 80%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gemShine 4s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(224,17,95,.22))}@keyframes gemShine{50%{background-position:100% 50%}}p{color:var(--muted);line-height:1.65}.subtitle{font-size:clamp(1.05rem,3vw,1.35rem);max-width:760px;margin:auto}.actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px}
-.btn{border:0;border-radius:999px;padding:14px 18px;color:#090910;font-weight:900;text-decoration:none;cursor:pointer;background:linear-gradient(135deg,var(--ruby),#ff6a00,#a020f0);box-shadow:0 0 20px rgba(224,17,95,.42),0 0 48px rgba(160,32,240,.22);transition:.25s ease;position:relative;overflow:hidden}.btn:hover{transform:translateY(-2px) scale(1.02)}.btn:after{content:"";position:absolute;top:-40%;left:-70%;width:60%;height:180%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);transform:rotate(18deg);animation:glint 3.6s infinite}@keyframes glint{55%{left:-80%}75%,100%{left:120%}}.secondary{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.17);color:var(--text);box-shadow:none}.peach{justify-self:center;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:white;border-radius:999px;padding:10px 14px;cursor:pointer;font-weight:900}.peach span{font-size:1.4rem;display:block}.peach small{color:var(--muted);font-size:.72rem}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.panel{border:1px solid var(--border);background:var(--card);border-radius:28px;padding:clamp(20px,4vw,38px);box-shadow:0 24px 80px rgba(0,0,0,.38),0 0 40px rgba(224,17,95,.10);backdrop-filter:blur(18px);overflow:hidden}.panel h2{margin:0 0 12px;font-size:clamp(1.8rem,5vw,3.2rem);line-height:1;letter-spacing:-.04em}
-.toggle{display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.07);padding:14px;border-radius:18px;margin:10px 0}.switch{width:56px;height:32px;border-radius:999px;background:rgba(255,255,255,.16);position:relative}.switch:before{content:"";position:absolute;width:26px;height:26px;border-radius:50%;background:white;top:3px;left:3px;transition:.35s}.toggle.active .switch{background:linear-gradient(135deg,var(--ruby),var(--gold))}.toggle.active .switch:before{left:27px}
-details{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);border-radius:20px;padding:16px;margin:10px 0;transition:.28s}details[open]{background:rgba(255,255,255,.11);box-shadow:0 0 28px rgba(224,17,95,.16);animation:openPop .32s ease both}@keyframes openPop{from{transform:scale(.985)}to{transform:scale(1)}}summary{cursor:pointer;list-style:none;font-weight:950;font-size:1.05rem}summary::-webkit-details-marker{display:none}
-.gemcards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.gemcard{min-height:130px;border:1px solid rgba(255,255,255,.14);background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.03));border-radius:22px;padding:16px;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;transition:.3s}.gemcard:hover{transform:translateY(-5px) rotate(-1deg);box-shadow:0 0 30px rgba(224,17,95,.18)}.gemcard:before{content:"💎";position:absolute;font-size:5rem;opacity:.08;transform:rotate(-20deg)}.gemcard strong{position:relative;z-index:1}
-.marquee{overflow:hidden;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.18);border-radius:999px;padding:10px 0}.track{display:flex;gap:24px;width:max-content;animation:marquee 18s linear infinite}.track span{white-space:nowrap;color:var(--muted)}@keyframes marquee{to{transform:translateX(-50%)}}.particle{position:fixed;pointer-events:none;z-index:10;font-size:20px;animation:fly .9s ease forwards}@keyframes fly{to{transform:translate(var(--x),var(--y)) rotate(260deg) scale(.2);opacity:0}}.footer{text-align:center;color:var(--muted);font-size:.9rem}@media(max-width:780px){.page{padding:18px 14px 44px}.grid,.gemcards{grid-template-columns:1fr}.actions{flex-direction:column}.btn{text-align:center}}
-</style></head>
+:root {{
+  --text:#24131a; --muted:#6f5260; --ruby:#c90046; --ruby2:#ff4f87;
+  --rose:#fff1f5; --cream:#fff8ee; --gold:#ffb85c;
+  --card:rgba(255,255,255,.72); --border:rgba(201,0,70,.18);
+}}
+* {{ box-sizing:border-box; }}
+html {{ scroll-behavior:smooth; }}
+body {{
+  margin:0; min-height:100vh; font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 12% 18%,rgba(255,79,135,.22),transparent 30%),
+    radial-gradient(circle at 88% 10%,rgba(255,184,92,.24),transparent 32%),
+    linear-gradient(135deg,var(--cream),var(--rose));
+  background-attachment:fixed; overflow-x:hidden;
+}}
+.ruby-bg {{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }}
+.ruby {{
+  position:absolute; font-size:clamp(4rem,10vw,9rem); opacity:.16;
+  filter:drop-shadow(0 0 18px rgba(201,0,70,.22));
+  animation:float 16s ease-in-out infinite;
+}}
+.ruby:nth-child(1) {{ left:4%; top:8%; animation-duration:19s; }}
+.ruby:nth-child(2) {{ right:6%; top:16%; animation-duration:23s; animation-delay:-4s; }}
+.ruby:nth-child(3) {{ left:10%; bottom:8%; animation-duration:27s; animation-delay:-9s; }}
+.ruby:nth-child(4) {{ right:12%; bottom:18%; animation-duration:21s; animation-delay:-6s; }}
+@keyframes float {{
+  0%,100% {{ transform:translateY(0) rotate(-8deg); }}
+  50% {{ transform:translateY(-36px) rotate(8deg); }}
+}}
+.page {{ position:relative; z-index:1; width:min(1050px,100%); margin:auto; padding:28px 18px 70px; display:grid; gap:24px; }}
+.hero {{ min-height:86vh; display:grid; place-items:center; text-align:center; }}
+.hero-inner {{ display:grid; gap:18px; width:min(920px,100%); }}
+.eyebrow {{
+  justify-self:center; color:var(--ruby); font-weight:950; letter-spacing:.12em; text-transform:uppercase;
+  font-size:.8rem; border:1px solid var(--border); background:rgba(255,255,255,.55);
+  padding:9px 13px; border-radius:999px;
+}}
+h1 {{
+  margin:0; font-size:clamp(3.2rem,13vw,8rem); line-height:.86; letter-spacing:-.08em;
+  background:linear-gradient(115deg,#7a002a,var(--ruby),var(--ruby2),var(--gold),#7a002a);
+  background-size:240% 100%; -webkit-background-clip:text; background-clip:text; color:transparent;
+  animation:shine 4.6s ease-in-out infinite;
+}}
+@keyframes shine {{ 0%,100% {{ background-position:0% 50%; }} 50% {{ background-position:100% 50%; }} }}
+.lead-card,.panel {{
+  border:1px solid var(--border); background:var(--card); border-radius:30px;
+  padding:clamp(22px,5vw,44px); box-shadow:0 24px 80px rgba(117,38,67,.16);
+  backdrop-filter:blur(18px);
+}}
+.lead-card {{ text-align:left; display:grid; gap:16px; }}
+.lead-card h2,.panel h2 {{ margin:0; font-size:clamp(1.8rem,5vw,3.2rem); line-height:1; letter-spacing:-.04em; }}
+.lead-card p,.panel p {{ margin:0; color:var(--muted); line-height:1.7; font-size:1.08rem; }}
+.highlight {{ color:var(--ruby); font-weight:850; }}
+.actions {{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }}
+.btn {{
+  border:0; border-radius:999px; padding:14px 18px; color:white; font-weight:900;
+  text-decoration:none; cursor:pointer; background:linear-gradient(135deg,var(--ruby),var(--ruby2),#ff8a00);
+  box-shadow:0 10px 30px rgba(201,0,70,.24); transition:.25s ease;
+}}
+.btn:hover {{ transform:translateY(-2px); }}
+.secondary {{ background:rgba(255,255,255,.66); color:var(--ruby); border:1px solid var(--border); box-shadow:none; }}
+.grid {{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }}
+.skill-list,.home-demo {{ display:grid; gap:10px; }}
+details {{
+  border:1px solid var(--border); background:rgba(255,255,255,.62); border-radius:20px;
+  padding:16px;
+}}
+details[open] {{ box-shadow:0 0 28px rgba(201,0,70,.10); }}
+summary {{ cursor:pointer; list-style:none; font-weight:950; }}
+summary::-webkit-details-marker {{ display:none; }}
+.room {{
+  border:1px solid var(--border); background:rgba(255,255,255,.62); border-radius:20px;
+  padding:16px; display:flex; justify-content:space-between; align-items:center; gap:12px;
+}}
+.switch {{ width:58px; height:34px; background:rgba(201,0,70,.18); border-radius:999px; position:relative; cursor:pointer; }}
+.switch:before {{
+  content:""; position:absolute; top:4px; left:4px; width:26px; height:26px; border-radius:50%;
+  background:white; transition:.25s ease; box-shadow:0 3px 12px rgba(0,0,0,.16);
+}}
+.room.active .switch {{ background:linear-gradient(135deg,var(--ruby),var(--gold)); }}
+.room.active .switch:before {{ left:28px; }}
+.status {{ color:var(--muted); font-size:.9rem; }}
+.footer {{ text-align:center; color:var(--muted); font-size:.9rem; }}
+@media(max-width:760px) {{
+  .page {{ padding:18px 14px 54px; }}
+  .grid {{ grid-template-columns:1fr; }}
+  .actions {{ flex-direction:column; }}
+  .btn {{ text-align:center; }}
+  .hero {{ min-height:82vh; }}
+}}
+</style>
+</head>
 <body>
-<div class="ruby-field" aria-hidden="true">
-  <div class="gem">💎</div><div class="gem">♦️</div><div class="gem">💠</div><div class="gem">🔻</div>
+<div class="ruby-bg" aria-hidden="true">
+  <div class="ruby">💎</div><div class="ruby">♦️</div><div class="ruby">💎</div><div class="ruby">🔻</div>
 </div>
+
 <main class="page">
-<section class="hero"><div class="hero-inner"><div class="eyebrow">Smart Home · DIY Automation · Berlin</div><h1>Julius</h1><p class="subtitle">Techniklösungen mit Rubin-Glanz: smarte Räume, versteckte Kabel, kreative Umbauten und kleine Automationen, die im Alltag wirklich helfen.</p><button class="peach" id="spinBtn"><span>🍑</span><small>nicht drücken</small></button><div class="actions"><a class="btn" href="mailto:Julius@friedenfreudeeierkuchen.homes">Projekt anfragen</a><a class="btn secondary" href="#projekte">Leistungen entdecken</a></div></div></section>
-<div class="marquee"><div class="track"><span>💎 Home Assistant</span><span>🔌 ESP32</span><span>🧠 Raspberry Pi</span><span>🛠️ Reparatur</span><span>🪟 Automatische Gardinen</span><span>💡 Lichtsteuerung</span><span>💎 Home Assistant</span><span>🔌 ESP32</span><span>🧠 Raspberry Pi</span><span>🛠️ Reparatur</span><span>🪟 Automatische Gardinen</span><span>💡 Lichtsteuerung</span></div></div>
-<section class="grid">
-<article class="panel"><h2>Was ich mache</h2><p>Ich verbinde Elektrotechnik, Handwerk, Smart Home und kreative Problemlösung. Sauber, praktisch und mit Charakter.</p><div class="gemcards"><div class="gemcard"><strong>Unsichtbare Technik</strong></div><div class="gemcard"><strong>Lokale Steuerung</strong></div><div class="gemcard"><strong>Kreative Montage</strong></div></div></article>
-<article class="panel"><h2>Mini-Dashboard</h2><p>Spielerei als Vorschau für Smart-Home-Oberflächen.</p><div class="toggle active"><strong>Gardinen</strong><div class="switch"></div></div><div class="toggle"><strong>Nachtlicht</strong><div class="switch"></div></div><div class="toggle active"><strong>Sensorik</strong><div class="switch"></div></div></article>
-</section>
-<section class="panel" id="projekte"><h2>Leistungen & Projektideen</h2><p>Klick die Bereiche auf. Beim Öffnen gibt’s Rubin-Partikel.</p>
-<details><summary>💎 Automatische Gardinen</summary><p>Motorisierte Systeme, versteckte Kabel, ESP32-Steuerung, Endstops, Home-Assistant-Anbindung und Integration in vorhandene Gardinen.</p></details>
-<details><summary>💡 Licht & Szenen</summary><p>Bewegungsmelder, Nachtlicht, Zeitsteuerung, Filmabend-Modus, Besuchsmodus und smarte Routinen.</p></details>
-<details><summary>🌡️ Sensorik</summary><p>Temperatur, Luftfeuchtigkeit, Bewegung, Tür-/Fensterkontakte und kleine Automationen.</p></details>
-<details><summary>🖥️ Touchscreen-Steuerung</summary><p>Kleine Bedienoberflächen für Zuhause: Gardinen, Licht, Geräte und spätere Erweiterungen in einem Dashboard.</p></details>
-<details><summary>🔌 Smarte Steckdosen & Energie</summary><p>Geräte automatisch schalten, Stromverbrauch strukturieren, Zeitpläne bauen.</p></details>
-<details><summary>🛠️ DIY-Speziallösungen</summary><p>Halterungen, Reparaturen, Kabel verstecken, Upcycling und Lösungen, die es nicht fertig im Laden gibt.</p></details>
-</section>
-<section class="panel"><h2>Arbeitsweise</h2><p>Ich arbeite projektbezogen: anschauen, Problem verstehen, Lösung planen, sauber umsetzen. Preise hängen von Aufwand und Material ab.</p><div class="actions"><a class="btn" href="mailto:Julius@friedenfreudeeierkuchen.homes">Julius kontaktieren</a><a class="btn secondary" href="/">Zur Kollektiv-Seite</a></div></section>
-<div class="footer">© Julius · Teil von Frieden Freude Eierkuchen · Berlin</div>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Berlin · Smart Home · intelligente Möbel</div>
+      <h1>Julius</h1>
+      <article class="lead-card">
+        <h2>Ein Berliner mit Herz.</h2>
+        <p>Meine Leidenschaft ist es, <span class="highlight">Menschen mit Technik zu verbinden</span> und Kreativität zu unterstützen.</p>
+        <p>Ich bin ein 28-jähriger Elektrotechnik-Student, der schon im Smart-Home-Start-up <span class="highlight">BetterAtHome GmbH</span> gearbeitet hat. Außerdem war ich Haustechniker im <span class="highlight">Hotel Adlon</span>.</p>
+        <p>Mit diesen Erfahrungen mache ich mich nun selbstständig. Auf Wunsch baue ich dir intelligente Möbel für dein Zuhause, Restaurant, Hotel oder was auch immer. <span class="highlight">Schau dich um:</span></p>
+      </article>
+      <div class="actions">
+        <a class="btn" href="#smart-home">Smart Home testen</a>
+        <a class="btn secondary" href="mailto:Julius@friedenfreudeeierkuchen.homes">Julius kontaktieren</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <article class="panel">
+      <h2>Was ich anbieten kann</h2>
+      <div class="skill-list">
+        <details open><summary>🪟 Automatische Gardinen</summary><p>Motorisierte Systeme, versteckte Kabel, ESP32-Steuerung, Endstops und Home-Assistant-Anbindung.</p></details>
+        <details><summary>💡 Licht & Atmosphäre</summary><p>Szenen, Nachtlicht, Bewegungsmelder, Filmabend-Modus und smarte Routinen.</p></details>
+        <details><summary>🪑 Intelligente Möbel</summary><p>Möbel mit Sensorik, Licht, versteckter Stromversorgung, Steuerung oder kleinen Automationen.</p></details>
+        <details><summary>🛠️ Reparatur & Speziallösungen</summary><p>Halterungen, Kabel verstecken, Upcycling, kleine Umbauten und individuelle Problemlösungen.</p></details>
+      </div>
+    </article>
+
+    <article class="panel" id="smart-home">
+      <h2>Kleines Smart Home</h2>
+      <p>Spielbereich: Hier entsteht Schritt für Schritt eine kleine interaktive Wohnung.</p>
+      <div class="home-demo">
+        <div class="room active"><div><strong>Wohnzimmerlicht</strong><div class="status">aktiv</div></div><div class="switch"></div></div>
+        <div class="room"><div><strong>Gardinen</strong><div class="status">aus</div></div><div class="switch"></div></div>
+        <div class="room active"><div><strong>Sensorik</strong><div class="status">aktiv</div></div><div class="switch"></div></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="panel">
+    <h2>Was hier noch kommt</h2>
+    <p>Als nächstes bauen wir diesen Bereich zu einem kleinen spielbaren Smart-Home-Dashboard aus: Räume anklicken, Lichter toggeln, Gardinen fahren lassen und Projektideen öffnen.</p>
+  </section>
+
+  <div class="footer">© Julius · Teil von Frieden Freude Eierkuchen · Julius@friedenfreudeeierkuchen.homes</div>
 </main>
+
 <script>
-document.getElementById("spinBtn").addEventListener("click",()=>{document.body.classList.add("spin");setTimeout(()=>document.body.classList.remove("spin"),1150)});
-document.querySelectorAll(".toggle").forEach(r=>r.addEventListener("click",()=>r.classList.toggle("active")));
-function burst(x,y){const e=["💎","♦️","✨","🔻","💠"];for(let i=0;i<12;i++){const p=document.createElement("div");p.className="particle";p.textContent=e[Math.floor(Math.random()*e.length)];p.style.left=x+"px";p.style.top=y+"px";p.style.setProperty("--x",(Math.random()*180-90)+"px");p.style.setProperty("--y",(Math.random()*-160-30)+"px");document.body.appendChild(p);setTimeout(()=>p.remove(),950)}}
-document.querySelectorAll("details").forEach(d=>d.addEventListener("toggle",()=>{if(d.open){const r=d.getBoundingClientRect();burst(r.left+r.width/2,r.top+20)}}));
+document.querySelectorAll(".room").forEach(room => {{
+  room.addEventListener("click", () => {{
+    room.classList.toggle("active");
+    const status = room.querySelector(".status");
+    status.textContent = room.classList.contains("active") ? "aktiv" : "aus";
+  }});
+}});
 </script>
-</body></html>
+</body>
+</html>
