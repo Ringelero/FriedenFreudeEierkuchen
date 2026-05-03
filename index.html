@@ -1,3 +1,40 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Frieden Freude Eierkuchen</title>
-<style>body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#f7f3e8;background:radial-gradient(circle at 12% 18%,rgba(255,95,126,.28),transparent 35%),radial-gradient(circle at 90% 12%,rgba(255,191,63,.25),transparent 32%),linear-gradient(135deg,#111014,#191612);display:grid;place-items:center;padding:24px}main{width:min(980px,100%);display:grid;gap:20px;text-align:center}h1{font-size:clamp(2.8rem,9vw,6rem);line-height:.9;margin:0;letter-spacing:-.06em}p{color:#cfc6b4;font-size:1.15rem;line-height:1.6;max-width:740px;margin:0 auto}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;text-align:left}.card{border:1px solid rgba(255,255,255,.17);background:rgba(255,255,255,.08);border-radius:28px;padding:28px;box-shadow:0 24px 80px rgba(0,0,0,.42);backdrop-filter:blur(18px)}.btn{display:inline-block;border-radius:999px;padding:14px 18px;text-decoration:none;font-weight:900;color:#15120c;background:linear-gradient(135deg,#ffbf3f,#ff7a3d);margin-top:8px}.secondary{color:#f7f3e8;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16)}@media(max-width:760px){.grid{grid-template-columns:1fr}}</style></head>
-<body><main><h1>Frieden Freude Eierkuchen</h1><p>Ein wachsendes Kollektiv für kreative Ideen, praktische Hilfe, kleine Projekte und gemeinschaftliches Ausprobieren.</p><div class="grid"><section class="card"><h2>Kollektiv im Aufbau</h2><p>Wir bauen eine kleine Welt, in der Menschen Dinge möglich machen.</p><a class="btn" href="./julius/">Julius ansehen</a></section><section class="card"><h2>Bereiche</h2><p>Smart Home, DIY Automation, Community, Events, Reparatur und kreative Speziallösungen.</p><a class="btn secondary" href="mailto:Julius@friedenfreudeeierkuchen.homes">Kontakt aufnehmen</a></section></div></main></body></html>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Frieden Freude Eierkuchen</title>
+  <link rel="stylesheet" href="./assets/blob.css">
+  <style>
+    body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#f7f3e8;background:radial-gradient(circle at 12% 18%,rgba(255,95,126,.28),transparent 35%),radial-gradient(circle at 90% 12%,rgba(255,191,63,.25),transparent 32%),linear-gradient(135deg,#111014,#191612);display:grid;place-items:center;padding:24px}
+    main{width:min(980px,100%);display:grid;gap:20px;text-align:center}
+    h1{font-size:clamp(2.8rem,9vw,6rem);line-height:.9;margin:0;letter-spacing:-.06em}
+    p{color:#cfc6b4;font-size:1.15rem;line-height:1.6;max-width:740px;margin:0 auto}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;text-align:left}
+    .card{border:1px solid rgba(255,255,255,.17);background:rgba(255,255,255,.08);border-radius:28px;padding:28px;box-shadow:0 24px 80px rgba(0,0,0,.42);backdrop-filter:blur(18px)}
+    .btn{display:inline-block;border-radius:999px;padding:14px 18px;text-decoration:none;font-weight:900;color:#15120c;background:linear-gradient(135deg,#ffbf3f,#ff7a3d);margin-top:8px}
+    .secondary{color:#f7f3e8;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16)}
+    @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Frieden Freude Eierkuchen</h1>
+    <p>Ein wachsendes Kollektiv für kreative Ideen, praktische Hilfe, kleine Projekte und gemeinschaftliches Ausprobieren.</p>
+    <div class="grid">
+      <section class="card" id="kollektiv" data-blob="Das ist die Kollektiv-Seite. Hier beginnt die kleine Welt. Noch im Aufbau. Wie alles, was gefährlich interessant ist.">
+        <h2>Kollektiv im Aufbau</h2>
+        <p>Wir bauen eine kleine Welt, in der Menschen Dinge möglich machen.</p>
+        <a class="btn" href="./julius/">Julius ansehen</a>
+      </section>
+      <section class="card" id="bereiche" data-blob="Hier stehen die Bereiche. Smart Home, Reparatur, Events. Ein Buffet aus Möglichkeiten und zukünftigen Haftungsfragen.">
+        <h2>Bereiche</h2>
+        <p>Smart Home, DIY Automation, Community, Events, Reparatur und kreative Speziallösungen.</p>
+        <a class="btn secondary" href="mailto:Julius@friedenfreudeeierkuchen.homes">Kontakt aufnehmen</a>
+      </section>
+    </div>
+  </main>
+  <div id="blob-root"></div>
+  <script src="./assets/blob.js" defer></script>
+</body>
+</html>
