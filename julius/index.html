@@ -2,352 +2,44 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>Julius | Smart Home & kreative Technik</title>
+  <link rel="stylesheet" href="../assets/blob.css">
   <style>
-    :root {
-      --ink: #261018;
-      --muted: #72515f;
-      --ruby: #c90046;
-      --ruby-soft: #ff4f87;
-      --cream: #fff8ef;
-      --rose: #fff0f5;
-      --card: rgba(255,255,255,.78);
-      --border: rgba(201,0,70,.18);
-      --shadow: 0 24px 80px rgba(143, 38, 74, .18);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 15% 10%, rgba(255,79,135,.28), transparent 34%),
-        radial-gradient(circle at 90% 18%, rgba(255,184,92,.22), transparent 34%),
-        linear-gradient(135deg, var(--cream), var(--rose));
-      background-attachment: fixed;
-      overflow-x: hidden;
-    }
-
-    .gems {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .gem {
-      position: absolute;
-      font-size: clamp(4rem, 12vw, 9rem);
-      opacity: .13;
-      filter: drop-shadow(0 0 18px rgba(201,0,70,.2));
-      animation: float 18s ease-in-out infinite;
-    }
-
-    .gem:nth-child(1) { left: -1rem; top: 8%; }
-    .gem:nth-child(2) { right: -1.5rem; top: 24%; animation-delay: -5s; }
-    .gem:nth-child(3) { left: 5%; bottom: 7%; animation-delay: -10s; }
-    .gem:nth-child(4) { right: 10%; bottom: 10%; animation-delay: -14s; }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(-8deg); }
-      50% { transform: translateY(-32px) rotate(7deg); }
-    }
-
-    .page {
-      position: relative;
-      z-index: 1;
-      width: min(980px, 100%);
-      margin: 0 auto;
-      padding: 24px 16px 56px;
-    }
-
-    .hero {
-      min-height: 100svh;
-      display: grid;
-      align-items: center;
-      gap: 22px;
-    }
-
-    .topline {
-      width: fit-content;
-      margin: 0 auto;
-      padding: 9px 13px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: rgba(255,255,255,.62);
-      color: var(--ruby);
-      font-size: .78rem;
-      font-weight: 900;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(201,0,70,.08);
-    }
-
-    .name {
-      margin: 0;
-      text-align: center;
-      font-size: clamp(4rem, 18vw, 9rem);
-      line-height: .82;
-      letter-spacing: -.08em;
-      background: linear-gradient(110deg, #6d001f, var(--ruby), var(--ruby-soft), #ff9a3d, #6d001f);
-      background-size: 230% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: shine 5s ease-in-out infinite;
-    }
-
-    @keyframes shine {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    .card {
-      border: 1px solid var(--border);
-      background: var(--card);
-      border-radius: 32px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-      padding: clamp(24px, 5vw, 52px);
-      display: grid;
-      gap: 18px;
-    }
-
-    .card h2 {
-      margin: 0;
-      font-size: clamp(2rem, 6vw, 4rem);
-      line-height: .95;
-      letter-spacing: -.05em;
-    }
-
-    .card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: clamp(1.04rem, 2.4vw, 1.22rem);
-      line-height: 1.68;
-    }
-
-    .strong {
-      color: var(--ruby);
-      font-weight: 850;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 4px;
-    }
-
-    .btn {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      border: 0;
-      border-radius: 999px;
-      padding: 14px 18px;
-      font-weight: 900;
-      text-decoration: none;
-      color: white;
-      background: linear-gradient(135deg, var(--ruby), var(--ruby-soft), #ff8a00);
-      box-shadow: 0 12px 34px rgba(201,0,70,.24);
-      transition: transform .2s ease, box-shadow .2s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 38px rgba(201,0,70,.30);
-    }
-
-    .btn.secondary {
-      color: var(--ruby);
-      background: rgba(255,255,255,.68);
-      border: 1px solid var(--border);
-      box-shadow: none;
-    }
-
-    .playground {
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.62);
-      border-radius: 28px;
-      padding: clamp(22px, 4vw, 38px);
-      box-shadow: var(--shadow);
-      display: grid;
-      gap: 18px;
-    }
-
-    .playground h2 {
-      margin: 0;
-      font-size: clamp(1.8rem, 5vw, 3rem);
-      letter-spacing: -.04em;
-      line-height: 1;
-    }
-
-    .mini-home {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .room {
-      min-height: 116px;
-      border: 1px solid rgba(201,0,70,.16);
-      background: rgba(255,255,255,.62);
-      border-radius: 22px;
-      padding: 16px;
-      display: grid;
-      align-content: space-between;
-      cursor: pointer;
-      transition: .22s ease;
-    }
-
-    .room.active {
-      background: linear-gradient(135deg, rgba(201,0,70,.16), rgba(255,184,92,.20));
-      box-shadow: 0 0 30px rgba(201,0,70,.12);
-    }
-
-    .room strong {
-      font-size: 1rem;
-    }
-
-    .status {
-      color: var(--muted);
-      font-size: .9rem;
-    }
-
-    .footer {
-      margin-top: 18px;
-      text-align: center;
-      color: var(--muted);
-      font-size: .9rem;
-    }
-
-    @media (max-width: 720px) {
-      .page {
-        padding: 18px 14px 46px;
-      }
-
-      .hero {
-        min-height: auto;
-        padding-top: 34px;
-      }
-
-      .actions {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
-      .mini-home {
-        grid-template-columns: 1fr;
-      }
-
-      .room {
-        min-height: 92px;
-      }
-    }
+    :root{--ink:#261018;--muted:#72515f;--ruby:#c90046;--ruby2:#ff4f87;--cream:#fff8ef;--rose:#fff0f5;--card:rgba(255,255,255,.82);--border:rgba(201,0,70,.18);--shadow:0 22px 70px rgba(119,35,67,.18)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(circle at 15% 10%,rgba(255,79,135,.26),transparent 34%),radial-gradient(circle at 90% 18%,rgba(255,184,92,.22),transparent 34%),linear-gradient(135deg,var(--cream),var(--rose));background-attachment:fixed;overflow-x:hidden}
+    .gems{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}.gem{position:absolute;font-size:clamp(4rem,12vw,9rem);opacity:.13;filter:drop-shadow(0 0 18px rgba(201,0,70,.2));animation:float 18s ease-in-out infinite}.gem:nth-child(1){left:-1rem;top:8%}.gem:nth-child(2){right:-1.5rem;top:24%;animation-delay:-5s}.gem:nth-child(3){left:5%;bottom:7%;animation-delay:-10s}.gem:nth-child(4){right:10%;bottom:10%;animation-delay:-14s}@keyframes float{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-32px) rotate(7deg)}}
+    .page{position:relative;z-index:1;width:min(980px,100%);margin:0 auto;padding:24px 16px 64px}.hero{min-height:100svh;display:grid;align-items:center;gap:22px}.topline{width:fit-content;margin:0 auto;padding:9px 13px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.62);color:var(--ruby);font-size:.78rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;text-align:center;box-shadow:0 10px 30px rgba(201,0,70,.08)}
+    .name{margin:0;text-align:center;font-size:clamp(4rem,18vw,9rem);line-height:.82;letter-spacing:-.08em;background:linear-gradient(110deg,#6d001f,var(--ruby),var(--ruby2),#ff9a3d,#6d001f);background-size:230% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s ease-in-out infinite}@keyframes shine{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+    .card,.playground{border:1px solid var(--border);background:var(--card);border-radius:32px;box-shadow:var(--shadow);backdrop-filter:blur(18px);padding:clamp(24px,5vw,52px);display:grid;gap:18px}.card h2,.playground h2{margin:0;font-size:clamp(2rem,6vw,4rem);line-height:.95;letter-spacing:-.05em}.card p,.playground p{margin:0;color:var(--muted);font-size:clamp(1.04rem,2.4vw,1.22rem);line-height:1.68}.strong{color:var(--ruby);font-weight:850}
+    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}.btn{display:inline-flex;justify-content:center;align-items:center;border:0;border-radius:999px;padding:14px 18px;font-weight:900;text-decoration:none;color:white;background:linear-gradient(135deg,var(--ruby),var(--ruby2),#ff8a00);box-shadow:0 12px 34px rgba(201,0,70,.24);transition:transform .2s ease,box-shadow .2s ease;cursor:pointer}.btn:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(201,0,70,.30)}.btn.secondary{color:var(--ruby);background:rgba(255,255,255,.68);border:1px solid var(--border);box-shadow:none}
+    .mini-home{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.room{min-height:116px;border:1px solid rgba(201,0,70,.16);background:rgba(255,255,255,.62);border-radius:22px;padding:16px;display:grid;align-content:space-between;cursor:pointer;transition:.22s ease}.room.active{background:linear-gradient(135deg,rgba(201,0,70,.16),rgba(255,184,92,.20));box-shadow:0 0 30px rgba(201,0,70,.12)}.status{color:var(--muted);font-size:.9rem}.footer{margin-top:18px;text-align:center;color:var(--muted);font-size:.9rem}
+    @media(max-width:720px){.page{padding:18px 14px 52px}.hero{min-height:auto;padding-top:34px}.actions{flex-direction:column}.btn{width:100%}.mini-home{grid-template-columns:1fr}.room{min-height:92px}}
   </style>
 </head>
-
 <body>
-  <div class="gems" aria-hidden="true">
-    <div class="gem">♦️</div>
-    <div class="gem">💎</div>
-    <div class="gem">🔻</div>
-    <div class="gem">💎</div>
-  </div>
-
+  <div class="gems" aria-hidden="true"><div class="gem">♦️</div><div class="gem">💎</div><div class="gem">🔻</div><div class="gem">💎</div></div>
   <main class="page">
-    <section class="hero">
+    <section class="hero" id="intro" data-blob="Das ist Julius. Elektrotechnik, Smart Home, Handwerk. Ein Mensch mit Werkzeug und gefährlich vielen Ideen.">
       <div class="topline">Berlin · Smart Home · kreative Technik</div>
-
       <h1 class="name">Julius</h1>
-
       <article class="card">
         <h2>Ein Berliner mit Herz.</h2>
-
-        <p>
-          Meine Leidenschaft ist es, <span class="strong">Menschen mit Technik zu verbinden</span>
-          und Kreativität zu unterstützen.
-        </p>
-
-        <p>
-          Ich bin ein 28-jähriger Elektrotechnik-Student, der schon im Smart-Home-Start-up
-          <span class="strong">BetterAtHome GmbH</span> gearbeitet hat. Außerdem war ich
-          Haustechniker im <span class="strong">Hotel Adlon</span>.
-        </p>
-
-        <p>
-          Mit diesen Erfahrungen mache ich mich nun selbstständig. Auf Wunsch baue ich dir
-          intelligente Möbel für dein Zuhause, Restaurant, Hotel oder was auch immer.
-          <span class="strong">Schau dich um:</span>
-        </p>
-
-        <div class="actions">
-          <a class="btn" href="#smart-home">Smart Home ausprobieren</a>
-          <a class="btn secondary" href="mailto:Julius@friedenfreudeeierkuchen.homes">Julius kontaktieren</a>
-        </div>
+        <p>Meine Leidenschaft ist es, <span class="strong">Menschen mit Technik zu verbinden</span> und Kreativität zu unterstützen.</p>
+        <p>Ich bin ein 28-jähriger Elektrotechnik-Student, der schon im Smart-Home-Start-up <span class="strong">BetterAtHome GmbH</span> gearbeitet hat. Außerdem war ich Haustechniker im <span class="strong">Hotel Adlon</span>.</p>
+        <p>Mit diesen Erfahrungen mache ich mich nun selbstständig. Auf Wunsch baue ich dir intelligente Möbel für dein Zuhause, Restaurant, Hotel oder was auch immer. <span class="strong">Schau dich um:</span></p>
+        <div class="actions"><a class="btn" href="#smart-home">Smart Home ausprobieren</a><a class="btn secondary" href="mailto:Julius@friedenfreudeeierkuchen.homes">Julius kontaktieren</a></div>
       </article>
     </section>
-
-    <section class="playground" id="smart-home">
+    <section class="playground" id="smart-home" data-blob="Das kleine Smart Home. Klick auf die Karten. Sie reagieren besser als manche Hausverwaltungen.">
       <h2>Kleines Smart Home</h2>
-      <p>
-        Hier entsteht als nächstes ein kleiner spielbarer Bereich:
-        Licht schalten, Gardinen bewegen, Räume entdecken und Ideen ausprobieren.
-      </p>
-
-      <div class="mini-home">
-        <div class="room active">
-          <strong>Wohnzimmerlicht</strong>
-          <span class="status">aktiv</span>
-        </div>
-        <div class="room">
-          <strong>Gardinen</strong>
-          <span class="status">geschlossen</span>
-        </div>
-        <div class="room active">
-          <strong>Sensorik</strong>
-          <span class="status">online</span>
-        </div>
-      </div>
+      <p>Hier entsteht als nächstes ein kleiner spielbarer Bereich: Licht schalten, Gardinen bewegen, Räume entdecken und Ideen ausprobieren.</p>
+      <div class="mini-home"><div class="room active"><strong>Wohnzimmerlicht</strong><span class="status">aktiv</span></div><div class="room"><strong>Gardinen</strong><span class="status">geschlossen</span></div><div class="room active"><strong>Sensorik</strong><span class="status">online</span></div></div>
     </section>
-
-    <div class="footer">
-      © Julius · Teil von Frieden Freude Eierkuchen · Julius@friedenfreudeeierkuchen.homes
-    </div>
+    <div class="footer">© Julius · Teil von Frieden Freude Eierkuchen · Julius@friedenfreudeeierkuchen.homes</div>
   </main>
-
-  <script>
-    document.querySelectorAll(".room").forEach(room => {
-      room.addEventListener("click", () => {
-        room.classList.toggle("active");
-        const status = room.querySelector(".status");
-        const label = room.querySelector("strong").textContent;
-
-        if (label.includes("Gardinen")) {
-          status.textContent = room.classList.contains("active") ? "offen" : "geschlossen";
-        } else if (label.includes("Sensorik")) {
-          status.textContent = room.classList.contains("active") ? "online" : "offline";
-        } else {
-          status.textContent = room.classList.contains("active") ? "aktiv" : "aus";
-        }
-      });
-    });
-  </script>
+  <div id="blob-root"></div>
+  <script src="../assets/blob.js" defer></script>
 </body>
 </html>
