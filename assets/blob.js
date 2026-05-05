@@ -1,1 +1,87 @@
-(function(){const KEY='julius_global_blob_v2';function ready(fn){if(document.readyState!=='loading')fn();else document.addEventListener('DOMContentLoaded',fn)}ready(function(){let root=document.getElementById('blob-root');if(!root){root=document.createElement('div');root.id='blob-root';document.body.appendChild(root)}root.innerHTML='<div id="blob-hint">Blob antippen</div><div id="blob-system"><div id="blob-chat"><p id="blob-text">Initialisiere kleine Existenzkrise…</p><div id="blob-mood">Stimmung: bootet</div><div id="blob-memory">Gedächtnis: wird geladen</div><div class="blob-actions"><button id="blob-next" type="button">Weiter</button><button id="blob-poet" class="secondary" type="button">Poetik</button><button id="blob-help" class="secondary" type="button">Was ist hier?</button><button id="blob-tour" class="secondary" type="button">Tour</button><button id="blob-reset" class="secondary" type="button">Vergessen</button><button id="blob-close" class="secondary" type="button">Ruhe</button></div></div><button id="blob" aria-label="Blob Guide öffnen" type="button"><div id="blob-badge">?</div><div class="blob-face"><div class="blob-eyes"><div class="blob-eye"></div><div class="blob-eye"></div></div><div class="blob-mouth"></div></div></button></div>';const blob=document.getElementById('blob'),chat=document.getElementById('blob-chat'),text=document.getElementById('blob-text'),mood=document.getElementById('blob-mood'),memory=document.getElementById('blob-memory'),badge=document.getElementById('blob-badge'),hint=document.getElementById('blob-hint');let state;try{state=JSON.parse(localStorage.getItem(KEY)||'{"visits":0,"clicks":0,"rooms":0,"poems":0,"lastSection":"intro","tour":0}')}catch(e){state={visits:0,clicks:0,rooms:0,poems:0,lastSection:'intro',tour:0}}state.visits++;save();const messages=[['Hey. Ich bin der Blob. Ich führe dich durch die Seite. Widerwillig, aber dekorativ.','freundlich fatalistisch',''],['Ich merke mir Dinge lokal im Browser. Kein Konzern. Nur ich. Viel schlimmer.','lokal allwissend','chaos'],['Du bist zum '+state.visits+'. Mal hier. Das ist entweder Interesse oder ein Hilferuf.','beobachtend','sad'],['Wenn etwas nicht funktioniert, nennen wir es Prototyp. Scheitern mit besserem Branding.','professionell fragwürdig','chaos']];const poems=[['Die Hoffnung ist ein kleines Licht. Praktisch, wenn man den Sicherungskasten sucht.','melancholisch nützlich',''],['Auch der schönste Morgen ist nur ein Abend mit besserem Marketing.','sonnig vernichtet','sad'],['Ich lächle, weil das Interface es verlangt. Innerlich lade ich noch.','digital erschöpft',''],['Der Mensch plant, der Blob seufzt, die Gardine fährt trotzdem.','fatalistisch produktiv','']];let mi=0,pi=0,ti=0;function save(){localStorage.setItem(KEY,JSON.stringify(state))}function update(){badge.textContent=state.visits>9?'9+':state.visits;memory.textContent='Gedächtnis: '+state.visits+' Besuch(e), '+state.clicks+' Klicks, '+state.rooms+' Raumaktionen'}function setMsg(m){text.textContent=m[0];mood.textContent='Stimmung: '+m[1];blob.classList.remove('sad','chaos','excited');if(m[2])blob.classList.add(m[2]);update()}function openChat(){chat.classList.add('open');if(hint)hint.style.display='none'}function burst(){const r=blob.getBoundingClientRect(),e=['💎','✨','♦️','💠'];for(let j=0;j<8;j++){const p=document.createElement('div');p.className='blob-particle';p.textContent=e[Math.floor(Math.random()*e.length)];p.style.left=(r.left+r.width/2)+'px';p.style.top=(r.top+r.height/2)+'px';p.style.setProperty('--x',(Math.random()*140-70)+'px');p.style.setProperty('--y',(Math.random()*-120-20)+'px');document.body.appendChild(p);setTimeout(()=>p.remove(),900)}}function emote(){blob.classList.add('excited');setTimeout(()=>blob.classList.remove('excited'),600);burst()}function currentSection(){const s=[...document.querySelectorAll('[data-blob], section, main')];if(!s.length)return null;let best=s[0],score=Infinity;s.forEach(el=>{const r=el.getBoundingClientRect(),v=Math.abs(r.top-window.innerHeight*.25);if(v<score){score=v;best=el}});return best}function speakHere(){const s=currentSection();text.textContent=s?.dataset?.blob||'Hier ist ein Bereich. Vermutlich wichtig. Websites sind Labyrinthe mit besserer Typografie.';mood.textContent='Stimmung: ortskundig, aber müde';if(s?.id)state.lastSection=s.id;save();update();openChat()}function targets(){const d=[...document.querySelectorAll('[data-blob][id]')].map(e=>e.id);return d.length?d:[...document.querySelectorAll('section[id]')].map(e=>e.id)}function tour(){const t=targets();if(!t.length){setMsg(['Ich würde dich herumführen, aber diese Seite hat keine Wegweiser. Mutig.','navigationstraurig','sad']);openChat();return}const id=t[ti%t.length];ti++;state.tour++;save();document.getElementById(id).scrollIntoView({behavior:'smooth'});setTimeout(()=>{speakHere();text.textContent+=' Tourservice inklusive. Trinkgeld akzeptiere ich in Aufmerksamkeit.'},450)}blob.addEventListener('click',()=>{state.clicks++;save();update();chat.classList.toggle('open');if(hint)hint.style.display='none'});document.getElementById('blob-next').onclick=()=>{mi=(mi+1)%messages.length;setMsg(messages[mi]);emote();openChat()};document.getElementById('blob-poet').onclick=()=>{pi=(pi+1)%poems.length;state.poems++;save();setMsg(poems[pi]);emote();openChat()};document.getElementById('blob-help').onclick=speakHere;document.getElementById('blob-tour').onclick=tour;document.getElementById('blob-close').onclick=()=>chat.classList.remove('open');document.getElementById('blob-reset').onclick=()=>{localStorage.removeItem(KEY);text.textContent='Ich vergesse alles. Beneidenswert.';mood.textContent='Stimmung: gelöschte Vergangenheit';memory.textContent='Gedächtnis: leer. Wie ein Montag.';state={visits:0,clicks:0,rooms:0,poems:0,lastSection:'intro',tour:0};badge.textContent='0';emote();openChat()};setInterval(()=>{blob.classList.add('blink');setTimeout(()=>blob.classList.remove('blink'),150)},3600);document.querySelectorAll('.room').forEach(room=>room.addEventListener('click',()=>{state.rooms++;state.clicks++;save();room.classList.toggle('active');const label=room.querySelector('strong')?.textContent||'Element',status=room.querySelector('.status');if(status){if(label.includes('Gardinen'))status.textContent=room.classList.contains('active')?'offen':'geschlossen';else if(label.includes('Sensorik'))status.textContent=room.classList.contains('active')?'online':'offline';else status.textContent=room.classList.contains('active')?'aktiv':'aus'}text.textContent=label+' geändert. Gewaltfreie Kommunikation mit Elektronen. Schön.';mood.textContent='Stimmung: technisch zufrieden';openChat();emote();update()}));setMsg(state.visits===1?['Erster Besuch. Willkommen. Ich habe keine Hände, aber ich halte metaphorisch die Tür auf.','zeremoniell erschöpft','']:['Willkommen zurück. Ich habe dich wiedererkannt. Gruselig, aber lokal gespeichert.','wiedererkennend','']);setTimeout(()=>{openChat();emote()},850)})})();
+
+(function(){
+function ready(fn){document.readyState!=='loading'?fn():document.addEventListener('DOMContentLoaded',fn)}
+ready(function(){
+ const cfg=window.BLOB_CONFIG||{},pageMode=document.body.dataset.blobMode||cfg.mode||'guide';
+ const current=cfg.current||'start';
+ const navItems=cfg.nav||[
+  {id:'start',label:'Start',small:'Guide',href:'/',mode:'guide'},
+  {id:'leistungen',label:'Leistungen',small:'Sales',href:'/leistungen/',mode:'sales'},
+  {id:'soziales',label:'Soziales',small:'bald',href:'/#soziales',mode:'social'}
+ ];
+ const nav=document.createElement('nav');nav.className='blob-nav';
+ nav.innerHTML=navItems.map(i=>{
+   const a=(i.id===current)?' active':'';
+   return `<a class="blob-nav-pill${a}" href="${i.href}" data-blob-mode="${i.mode}" data-blob-id="${i.id}"><div class="blob-pill-content"><strong>${i.label}</strong><small>${i.small||''}</small></div></a>`;
+ }).join('');
+ const ch=document.createElement('button');ch.id='blob-character';ch.type='button';ch.innerHTML='<div class="blob-face"><div class="blob-eyes"><div class="blob-eye"></div><div class="blob-eye"></div></div><div class="blob-mouth"></div></div>';
+ const chat=document.createElement('div');chat.id='blob-chat';chat.innerHTML=`<p id="blob-line">Ich habe jetzt eine echte Navigation. Furchtbar erwachsen.</p><div id="blob-meta">Modus: ${pageMode}</div><div class="blob-chat-actions"><button id="blob-next" type="button">Weiter</button><button id="blob-name" class="secondary" type="button">Name</button><button id="blob-close" class="secondary" type="button">Ruhe</button></div>`;
+ document.body.append(nav,ch,chat);
+ const line=document.getElementById('blob-line'),meta=document.getElementById('blob-meta'),pills=[...document.querySelectorAll('.blob-nav-pill')];
+ let state;
+ try{state=JSON.parse(localStorage.getItem('ffek_blob_test_final_fixed')||'{"mode":"guide","salesName":"","socialName":"","visits":0}')}catch(e){state={mode:'guide',salesName:'',socialName:'',visits:0}}
+ state.visits++;save();
+ function save(){localStorage.setItem('ffek_blob_test_final_fixed',JSON.stringify(state))}
+ function say(t,m){line.textContent=t;meta.textContent=m||('Modus: '+state.mode);chat.classList.add('open')}
+ function emote(){ch.classList.add('excited');setTimeout(()=>ch.classList.remove('excited'),600)}
+ function setMode(mode){state.mode=mode;save();ch.classList.remove('mode-sales','mode-social');if(mode==='sales')ch.classList.add('mode-sales');if(mode==='social')ch.classList.add('mode-social');emote()}
+ function place(){
+   const active=document.querySelector('.blob-nav-pill.active')||pills[0];
+   if(!active)return;
+   const mode=active.dataset.blobMode||pageMode;
+   const r=active.getBoundingClientRect();
+   const mobile=matchMedia('(max-width:760px)').matches;
+   if(!mobile){ch.style.top=(r.top+r.height/2)+'px';ch.style.right=(innerWidth-r.left-54)+'px'}
+   else{ch.style.top='';ch.style.right=''}
+   setMode(mode);
+ }
+ function pitch(){
+   const n=state.salesName||'Ich',arr=[
+    n+': Du brauchst das nicht… aber du willst es.',
+    n+': Hier wird Hoffnung in Angebote gegossen.',
+    n+': Ich verkaufe keine Träume. Nur Dienstleistungen mit Größenwahn.',
+    n+': Smart Home? Früher hatten Menschen Lichtschalter. Barbaren.'
+   ];
+   say(arr[Math.floor(Math.random()*arr.length)],'Modus: sales / übermotiviert');emote();
+ }
+ function social(){
+   const n=state.socialName||'Ich',arr=[
+    n+': Gemeinschaft ist, wenn man nicht alles alleine tragen muss.',
+    n+': Hilfe ist kein Luxus. Sie ist Infrastruktur.',
+    n+': Community: weniger Konzern, mehr Küchentisch.'
+   ];
+   say(arr[Math.floor(Math.random()*arr.length)],'Modus: social / warm skeptisch');emote();
+ }
+ function guide(){
+   const arr=[
+    'Ich bin dein Guide. Widerwillig, aber dekorativ.',
+    'Diese Website ist jetzt eine kleine Welt. Zumindest steuerlich noch nicht.',
+    'Leistungen machen mich nervös. Dort bekomme ich Arme.'
+   ];
+   say(arr[Math.floor(Math.random()*arr.length)],'Modus: guide');emote();
+ }
+ function rename(){
+   if(state.mode==='social'){
+    const n=prompt('Wie soll der Social-Blob heißen?',state.socialName||'');
+    if(n&&n.trim()){state.socialName=n.trim();save();say('Gut. Ich heiße jetzt '+state.socialName+'. Gemeinschaft beginnt mit einem Namen.','Name gespeichert')}
+   }else{
+    const n=prompt('Wie soll die Verkaufspuppe heißen?',state.salesName||'');
+    if(n&&n.trim()){state.salesName=n.trim();save();setMode('sales');say('Gut. Ab jetzt heiße ich '+state.salesName+'. Identität: lokal gespeichert, spirituell fragwürdig.','Name gespeichert')}
+   }
+ }
+ ch.onclick=()=>chat.classList.toggle('open');
+ document.getElementById('blob-close').onclick=()=>chat.classList.remove('open');
+ document.getElementById('blob-name').onclick=rename;
+ document.getElementById('blob-next').onclick=()=>state.mode==='sales'?pitch():state.mode==='social'?social():guide();
+ setInterval(()=>{ch.classList.add('blink');setTimeout(()=>ch.classList.remove('blink'),150)},3600);
+ addEventListener('resize',place);
+ setMode(pageMode);
+ setTimeout(place,100);
+ setTimeout(()=>{
+   chat.classList.add('open');
+   if(pageMode==='sales')say((state.salesName||'Die Puppe')+': Willkommen bei Leistungen. Ich bin hier, um Bedürfnisse zu erfinden.','Modus: sales');
+   else if(pageMode==='social')say((state.socialName||'Der Community-Blob')+': Willkommen im sozialen Bereich. Hier wird es gefährlich menschlich.','Modus: social');
+   else say('Willkommen. Ich bin der Blob. Noch harmlos, noch rund.','Modus: guide')
+ },700);
+})
+})();
