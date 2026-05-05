@@ -10,12 +10,11 @@
 <main><section class="hero"><h1>Smart Home</h1><p class="slogan">Ich installiere es für dich und bringe es dir bei. Wenn ich arbeitslos bin, dann habe ich mein Ziel erreicht.</p><p>Ein Vorhang öffnet sich und dahinter beginnt dein interaktives Smart-Home-Gemälde.</p></section><section class="stage" id="stage"><div class="scene"><div class="art-placeholder"><div><strong>Dein Gemälde</strong><span>Platzhalter — später kommt hier dein Acrylbild rein.</span></div></div></div><div class="curtain left"></div><div class="curtain right"></div><div class="stage-title"><h2>Der intelligente Vorhang</h2><p>„Mutig. Hinter Vorhängen verstecken sich selten gute Entscheidungen.“</p></div><div class="stage-ui"><button class="btn" id="openCurtain">Vorhang öffnen</button><button class="btn secondary" id="resetCurtain">Nochmal schließen</button></div></section><section class="panel"><h2>Nächster Ausbau</h2><p>Später ersetzen wir den Platzhalter durch dein eingescanntes Acrylbild. Die Hotspots bleiben digital.</p></section></main><script>document.addEventListener('DOMContentLoaded',()=>{const stage=document.getElementById('stage');document.getElementById('openCurtain').onclick=()=>stage.classList.add('open');document.getElementById('resetCurtain').onclick=()=>stage.classList.remove('open')});</script>
 <script>
 window.BLOB_CONFIG={
-  mode:"sales",current:"leistungen",
-  nav:[
-    {id:"start",label:"Start",small:"Guide",href:"../../",mode:"guide"},
-    {id:"leistungen",label:"Leistungen",small:"Sales",href:"../../leistungen/",mode:"sales"},
-    {id:"soziales",label:"Soziales",small:"bald",href:"../../#soziales",mode:"social"}
-  ]
+  mode:"sales",
+  links:{
+    home:"../../",
+    services:"../"
+  }
 };
 </script>
 <script src="../../assets/blob.js" defer></script>
