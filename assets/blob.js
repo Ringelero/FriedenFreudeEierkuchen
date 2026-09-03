@@ -18,6 +18,7 @@ ready(function(){
    <button id="blob-name" class="secondary" type="button">Name</button>
    <a id="blob-home" class="secondary" href="${links.home||'./'}">Start</a>
    <a id="blob-services" class="secondary" href="${links.services||'./leistungen/'}">Leistungen</a>
+   <a id="blob-kiez" class="secondary" href="${links.kiez||'./community/richard-sorge-kiez/'}">Kiez</a>
    <button id="blob-close" class="secondary" type="button">Ruhe</button>
  </div>`;
  document.body.append(ch,chat);
