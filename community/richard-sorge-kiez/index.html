@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Der Richard-Sorge-Kiez: Termine, Hilfe, Hauswissen und gemeinsame Ideen rund um Straßmannstraße und Richard-Sorge-Straße.">
+<title>Richard-Sorge-Kiez</title>
+<link rel="stylesheet" href="../../assets/blob.css">
+<link rel="stylesheet" href="./kiez.css">
+</head>
+<body data-blob-mode="social">
+<main class="kiez-shell">
+  <header class="kiez-hero">
+    <a class="back-link" href="../../">← Gemden</a>
+    <p class="eyebrow">Community · Friedrichshain</p>
+    <h1>Richard-Sorge-Kiez</h1>
+    <p class="intro">Ein digitaler Treffpunkt für unser Haus, unsere Nachbarschaft und alles, was wir gemeinsam leichter, schöner oder lustiger machen können.</p>
+    <div class="hero-note">Rund um Straßmannstraße &amp; Richard-Sorge-Straße</div>
+  </header>
+
+  <nav class="kiez-tabs" aria-label="Bereiche im Richard-Sorge-Kiez">
+    <button class="kiez-tab active" data-section="overview">Übersicht</button>
+    <button class="kiez-tab" data-section="events">Termine</button>
+    <button class="kiez-tab" data-section="repairs">Mängel &amp; Reparaturen</button>
+    <button class="kiez-tab" data-section="knowledge">Hauswissen</button>
+    <button class="kiez-tab" data-section="sharing">Hilfe &amp; Teilen</button>
+    <button class="kiez-tab" data-section="board">Kiezbrett</button>
+  </nav>
+
+  <section class="kiez-section active" id="overview" data-panel>
+    <div class="section-heading">
+      <p class="eyebrow">Der Kiez ist noch jung</p>
+      <h2>Was möchtest du gerade machen?</h2>
+    </div>
+    <div class="tile-grid">
+      <button class="tile tile-events" data-jump="events"><span class="tile-icon">📅</span><strong>Termine entdecken</strong><span>Was passiert in der Nähe? Wer kommt mit?</span></button>
+      <button class="tile tile-repairs" data-jump="repairs"><span class="tile-icon">🔧</span><strong>Mangel melden</strong><span>Etwas ist kaputt, und niemand weiß davon?</span></button>
+      <button class="tile tile-knowledge" data-jump="knowledge"><span class="tile-icon">💡</span><strong>Hauswissen</strong><span>Wartungen, Ventile und kleine Tricks.</span></button>
+      <button class="tile tile-sharing" data-jump="sharing"><span class="tile-icon">🤝</span><strong>Hilfe &amp; Teilen</strong><span>Etwas anbieten, suchen, leihen oder verschenken.</span></button>
+      <button class="tile tile-board" data-jump="board"><span class="tile-icon">📌</span><strong>Kiezbrett</strong><span>Für alles, was sonst noch an die Wand gehört.</span></button>
+    </div>
+    <aside class="build-note"><strong>Im Aufbau:</strong> Dieser Kiez wird gemeinsam entwickelt. Weitere Bereiche wie „Wir im Kiez“ oder „Ideen &amp; Projekte“ können später ergänzt werden.</aside>
+  </section>
+
+  <section class="kiez-section" id="events" data-panel>
+    <div class="section-heading"><p class="eyebrow">Zusammen ist weniger allein</p><h2>Termine</h2><p>Veranstaltungen im Kiez und kleine Unternehmungen, bei denen man nicht alleine auftauchen muss.</p></div>
+    <div id="event-list" class="content-list"></div>
+  </section>
+
+  <section class="kiez-section" id="repairs" data-panel>
+    <div class="section-heading"><p class="eyebrow">Etwas stimmt nicht?</p><h2>Mängel &amp; Reparaturen</h2><p>Hier sammeln wir Probleme, bevor sie zu ausgewachsenen Dramen werden.</p></div>
+    <form class="simple-form" id="repair-form">
+      <label>Was ist los?<textarea name="description" required placeholder="Zum Beispiel: Licht im Eingangsbereich flackert …"></textarea></label>
+      <label>Wo?<input name="location" required placeholder="Zum Beispiel: 2. OG, Vorderhaus"></label>
+      <label>Wie dringend?<select name="urgency"><option>Normal</option><option>Dringend</option><option>Wasser läuft / sofort prüfen</option></select></label>
+      <button class="primary-button" type="submit">Meldung vorbereiten</button>
+      <p class="form-status" id="repair-status" role="status"></p>
+    </form>
+  </section>
+
+  <section class="kiez-section" id="knowledge" data-panel>
+    <div class="section-heading"><p class="eyebrow">Kleine Dinge, große Wirkung</p><h2>Hauswissen</h2><p>Alles, was man über dieses Haus wissen sollte — inklusive der Dinge, die man regelmäßig tun muss.</p></div>
+    <div id="knowledge-list" class="content-list"></div>
+  </section>
+
+  <section class="kiez-section" id="sharing" data-panel>
+    <div class="section-heading"><p class="eyebrow">Geben, nehmen, gemeinsam nutzen</p><h2>Hilfe &amp; Teilen</h2><p>Wer Hilfe braucht oder etwas anbieten möchte, kann hier den ersten Faden auswerfen.</p></div>
+    <div id="sharing-list" class="content-list"></div>
+  </section>
+
+  <section class="kiez-section" id="board" data-panel>
+    <div class="section-heading"><p class="eyebrow">Der digitale Aushang</p><h2>Kiezbrett</h2><p>Für Hinweise, Empfehlungen, Fundstücke, Gesuche und kleine Nachrichten, die nicht in eine andere Schublade passen.</p></div>
+    <div id="board-list" class="content-list"></div>
+  </section>
+
+  <footer class="kiez-footer"><a href="../../">← zurück zu Gemden</a><span>Richard-Sorge-Kiez · gemeinsam im Aufbau</span></footer>
+</main>
+<script>
+window.BLOB_CONFIG={mode:"social",links:{home:"../../",services:"../../leistungen/",kiez:"./"}};
+</script>
+<script src="../../assets/blob.js" defer></script>
+<script src="./kiez-content.js"></script>
+<script src="./kiez.js"></script>
+</body>
+</html>
