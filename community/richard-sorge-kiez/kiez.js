@@ -2,14 +2,27 @@
   const content=window.KIEZ_CONTENT||{};
   const tabs=[...document.querySelectorAll('.kiez-tab')];
   const panels=[...document.querySelectorAll('[data-panel]')];
+  tabs.forEach(tab=>{
+    tab.setAttribute('role','tab');
+    tab.setAttribute('aria-selected',tab.classList.contains('active')?'true':'false');
+  });
 
   function showSection(id){
-    tabs.forEach(tab=>tab.classList.toggle('active',tab.dataset.section===id));
+    tabs.forEach(tab=>{
+      const active=tab.dataset.section===id;
+      tab.classList.toggle('active',active);
+      tab.setAttribute('aria-selected',active?'true':'false');
+    });
     panels.forEach(panel=>panel.classList.toggle('active',panel.id===id));
     document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});
   }
 
-  tabs.forEach(tab=>tab.addEventListener('click',()=>showSection(tab.dataset.section)));
+  tabs.forEach(tab=>tab.addEventListener('click',()=>{
+    showSection(tab.dataset.section);
+    history.replaceState(null,'','#'+tab.dataset.section);
+  }));
+  const initialSection=location.hash.slice(1);
+  if(initialSection && panels.some(panel=>panel.id===initialSection)) showSection(initialSection);
   document.querySelectorAll('[data-jump]').forEach(button=>button.addEventListener('click',()=>showSection(button.dataset.jump)));
 
   function renderList(targetId,items,kind){
