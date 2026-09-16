@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="P-Hain: Termine, Hilfe, Hauswissen und gemeinsame Möglichkeiten rund um Straßmannstraße zwischen Prenzlauer Berg und Friedrichshain.">
+  <title>P-Hain · Kiez · GemDen</title>
+  <link rel="stylesheet" href="../../../assets/site.css">
+  <link rel="stylesheet" href="../../../assets/blob.css">
+  <link rel="stylesheet" href="./kiez.css">
+</head>
+<body data-area="community" data-blob-mode="social">
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="site-shell kiez-shell">
+    <nav data-site-nav data-root="../../../"></nav>
+    <main id="inhalt">
+      <header class="hero compact kiez-hero">
+        <nav class="breadcrumb" aria-label="Brotkrumen"><a href="../../">Community</a><span>Kieze</span><span>P-Hain</span></nav>
+        <p class="eyebrow">Zwischen Prenzlauer Berg &amp; Friedrichshain</p>
+        <h1 class="display">P-Hain</h1>
+        <p class="lead">Ein digitaler Treffpunkt für unser Haus, unsere Nachbarschaft und alles, was wir gemeinsam leichter, schöner oder lustiger machen können.</p>
+        <div class="status-row"><span class="status-chip experiment">Pilot im Aufbau</span><span class="id-chip">KIEZ-P-HAIN</span><span class="id-chip">R01 · W01</span></div>
+      </header>
+
+      <nav class="kiez-tabs" aria-label="Bereiche in P-Hain" role="tablist">
+        <button class="kiez-tab active" type="button" data-section="overview">Übersicht</button>
+        <button class="kiez-tab" type="button" data-section="events">Termine</button>
+        <button class="kiez-tab" type="button" data-section="repairs">Reparatur</button>
+        <button class="kiez-tab" type="button" data-section="possibilities">Möglichkeiten</button>
+        <button class="kiez-tab" type="button" data-section="knowledge">Hauswissen</button>
+        <button class="kiez-tab" type="button" data-section="board">Kiezbrett</button>
+      </nav>
+      <p class="tab-hint" aria-hidden="true">Seitlich wischen für weitere Bereiche →</p>
+
+      <section class="kiez-section active" id="overview" data-panel role="tabpanel">
+        <div class="section-head"><p class="eyebrow">Was möchtest du tun?</p><h2>Der Kiez ist noch jung.</h2><p>Die Oberfläche ist bereits benutzbar, speichert aber noch nichts öffentlich. Konten und echte Einträge kommen im nächsten Backend-Schritt.</p></div>
+        <div class="tile-grid">
+          <button class="tile" type="button" data-jump="events"><span class="icon">📅</span><strong>Termine entdecken</strong><span>Was passiert in der Nähe? Wer möchte mit?</span></button>
+          <button class="tile" type="button" data-jump="repairs"><span class="icon">🔧</span><strong>Etwas reparieren</strong><span>Blob hilft, das Problem einzugrenzen und einen passenden Weg zu finden.</span></button>
+          <button class="tile" type="button" data-jump="possibilities"><span class="icon">✨</span><strong>Hilfe &amp; Möglichkeiten</strong><span>Haben, können, brauchen, Zeit anbieten oder eine Chance teilen.</span></button>
+          <button class="tile" type="button" data-jump="knowledge"><span class="icon">💡</span><strong>Hauswissen</strong><span>Wartung, Ventile und Wissen, das nicht verloren gehen soll.</span></button>
+          <button class="tile" type="button" data-jump="board"><span class="icon">📌</span><strong>Kiezbrett</strong><span>Lose Hinweise, Fundstücke und kleine Nachrichten.</span></button>
+        </div>
+        <div class="notice"><strong>Öffentlich und geschützt:</strong> Allgemeine Termine und Hinweise dürfen später öffentlich sein. Wohnungsdetails, Kontaktdaten und interne Reparaturinformationen gehören hinter ein Konto mit passenden Rechten.</div>
+      </section>
+
+      <section class="kiez-section" id="events" data-panel role="tabpanel" hidden>
+        <div class="section-head"><p class="eyebrow">Zusammen ist weniger allein</p><h2>Termine</h2><p>Veranstaltungen im Kiez und kleine Unternehmungen, bei denen man nicht alleine auftauchen muss.</p></div>
+        <div id="event-list" class="content-list"></div>
+        <div class="future-action"><span class="status-chip open">Mit Konto geplant</span><p>Kiez-Verwaltende können Termine erstellen und Mitglieder ihr Interesse sichtbar machen. Bis Supabase angebunden ist, wird hier nichts gesendet.</p></div>
+      </section>
+
+      <section class="kiez-section" id="repairs" data-panel role="tabpanel" hidden>
+        <div class="section-head"><p class="eyebrow">Situation → Fähigkeiten → möglicher Weg</p><h2>Was ist kaputt?</h2><p>Blob fragt nach den nötigsten Details. Bei Gefahr oder einem Notfall ersetzt diese Seite niemals Notruf, Hausverwaltung oder Fachbetrieb.</p></div>
+        <form class="form-grid repair-form" id="repair-form">
+          <div class="field"><label for="repair-description">Was beobachtest du?</label><textarea id="repair-description" name="description" required placeholder="Zum Beispiel: Das Licht im Eingangsbereich flackert."></textarea></div>
+          <div class="grid two">
+            <div class="field"><label for="repair-area">Welcher Bereich?</label><input id="repair-area" name="area" placeholder="Zum Beispiel: Eingangsbereich"><small>Keine privaten Wohnungsdetails in dieser öffentlichen Demo.</small></div>
+            <div class="field"><label for="repair-urgency">Wie dringend wirkt es?</label><select id="repair-urgency" name="urgency"><option>unklar / normal</option><option>zeitnah prüfen</option><option>mögliche Gefahr</option></select></div>
+          </div>
+          <button class="button kiez-button" type="submit">Mit Blob einordnen</button>
+          <p class="form-status" id="repair-status" role="status"></p>
+        </form>
+        <div class="result-box" id="repair-result" hidden></div>
+      </section>
+
+      <section class="kiez-section" id="possibilities" data-panel role="tabpanel" hidden>
+        <div class="section-head"><p class="eyebrow">W01 · Möglichkeiten-Marktplatz</p><h2>Fünf einfache Signale.</h2><p>Hier entsteht kein Jobzwang und keine Menschenrangliste. Ein Signal macht nur sichtbar, was gerade da ist.</p></div>
+        <div class="signal-grid" id="signal-grid">
+          <button type="button" class="signal" data-signal="Ich habe"><span>📦</span><strong>Ich habe</strong><small>Material, Werkzeug oder etwas zum Teilen</small></button>
+          <button type="button" class="signal" data-signal="Ich kann"><span>🧠</span><strong>Ich kann</strong><small>eine Fähigkeit oder Erfahrung anbieten</small></button>
+          <button type="button" class="signal" data-signal="Ich brauche"><span>🙋</span><strong>Ich brauche</strong><small>Hilfe, Wissen oder eine Sache</small></button>
+          <button type="button" class="signal" data-signal="Ich habe Zeit"><span>⏳</span><strong>Ich habe Zeit</strong><small>und möchte irgendwo mitmachen</small></button>
+          <button type="button" class="signal" data-signal="Es gibt eine Chance"><span>✨</span><strong>Es gibt eine Chance</strong><small>Aufgabe, Projekt, Lernen oder bezahlte Arbeit</small></button>
+        </div>
+        <form class="form-grid signal-form" id="signal-form" hidden>
+          <div class="field"><label id="signal-label" for="signal-text">Dein Signal</label><textarea id="signal-text" placeholder="Beschreibe es in deinen Worten."></textarea></div>
+          <div class="button-row"><button class="button kiez-button" type="submit">Vorschau erzeugen</button><button class="button secondary" type="button" id="signal-cancel">Abbrechen</button></div>
+          <p class="form-status" id="signal-status" role="status"></p>
+        </form>
+        <a class="card gold matching-link" href="../../../leistungen/"><span class="icon">🧩</span><h3>Du hast schon einen konkreten Wunsch?</h3><p>Das Fähigkeiten-Matching erklärt, welche Fähigkeiten helfen könnten und ob bereits ein öffentliches Profil passt.</p><span class="arrow">Wunsch mit Blob zerlegen →</span></a>
+      </section>
+
+      <section class="kiez-section" id="knowledge" data-panel role="tabpanel" hidden>
+        <div class="section-head"><p class="eyebrow">Kleine Dinge, große Wirkung</p><h2>Hauswissen</h2><p>Regelmäßige Aufgaben und hilfreiche Hinweise — mit Quelle, Zuständigkeit und Prüfdatum statt anonymer Wahrheit.</p></div>
+        <div id="knowledge-list" class="content-list"></div>
+      </section>
+
+      <section class="kiez-section" id="board" data-panel role="tabpanel" hidden>
+        <div class="section-head"><p class="eyebrow">Der digitale Aushang</p><h2>Kiezbrett</h2><p>Für Hinweise, Empfehlungen, Fundstücke und kleine Nachrichten, die in keine andere Schublade passen.</p></div>
+        <div id="board-list" class="content-list"></div>
+      </section>
+
+      <section class="section" aria-labelledby="p-chain-title">
+        <div class="panel">
+          <p class="eyebrow">Wie dieser Kiez ins FFE-System passt</p><h2 id="p-chain-title">Nicht nur ein hübsches Formular.</h2>
+          <div class="chain">
+            <div class="chain-item"><b>Institution</b><span>W01 Möglichkeiten-Marktplatz</span></div>
+            <div class="chain-item"><b>Situation</b><span>SIT-PHAIN-BEDARF</span></div>
+            <div class="chain-item"><b>Operatives Profil</b><span>OP-W01</span></div>
+            <div class="chain-item"><b>Werkzeug</b><span>fünf Signale + Blob-Dialog</span></div>
+            <div class="chain-item"><b>Evidenz</b><span>Eintrag, Ergebnis, spätere Prüfung</span></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><span>KIEZ-P-HAIN · öffentlicher Pilot</span><a href="../../">Alle Community-Räume</a></footer>
+  </div>
+
+  <script>window.BLOB_CONFIG={mode:"social",root:"../../../",context:"p-hain",actionLabel:"Kiez helfen",actionTarget:"#repairs"};</script>
+  <script src="../../../assets/site.js" defer></script><script src="../../../assets/blob.js" defer></script>
+  <script src="./kiez-content.js"></script><script src="./kiez.js"></script>
+</body>
+</html>

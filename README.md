@@ -1,5 +1,37 @@
-# Rubin Portfolio Upgrade
+# gemden.red
 
-Ersetze deine aktuelle index.html durch diese Version.
+Öffentliche Website von GemDen und digitale Oberfläche für die entstehende FFE-Architektur.
 
-Wichtig: `DEINE-MAIL-HIER` später durch deine echte Mailadresse ersetzen.
+## Aktueller Aufbau
+
+- `/` – Start und Trennung GemDen / FriedenFreudeEierkuchen
+- `/community/` – Kieze, Dynastien und Mitglieder
+- `/community/kieze/p-hain/` – öffentlicher P-Hain-Prototyp
+- `/community/dynastien/rubybubys/` – erste Dynastie
+- `/community/mitglieder/julius/` – Julius’ Mitglieds- und Fähigkeitsprofil
+- `/leistungen/` – regelbasiertes, erklärbares Fähigkeiten-Matching
+- `/leistungen/smart-home/` – experimentelles Smart-Home-Erlebnis
+- `/system/` – Browser für Institutionen, operative Profile, Methoden und Entwicklungsnetz
+
+## Quellen
+
+Die Website folgt dieser Reihenfolge:
+
+1. `FFE_Website_Handoff_v0.2.md`
+2. `FFE_Buch_Systemindex_v0.6.json`
+3. `Das_Buch_v2.30_Vorsatzungsfassung_II.md` bei Detailfragen
+
+Der veröffentlichte maschinenlesbare Index liegt unverändert unter `assets/data/ffe-systemindex-v0.6.json`. Teil IV des Buches ist historisches Archiv und wird nicht als heutiger Regelstand geroutet.
+
+## Technischer Stand
+
+Die öffentliche Website ist statisches HTML, CSS und JavaScript auf GitHub Pages. Supabase ist als nächster Backend-Schritt geplant, aber noch nicht produktiv angebunden. Formulare kennzeichnen deshalb ausdrücklich, dass sie noch nichts senden oder speichern.
+
+## Arbeitsweise
+
+- GitHub `main` ist die Quelle für den veröffentlichten Website-Code.
+- Stabile IDs verbinden Seiten, Profile und spätere Datenbankeinträge.
+- Politische, rechtliche und kulturelle offene Punkte bleiben sichtbar offen.
+- Technische Administration durch GemDen ist keine politische FFE-Autorität.
+- Die gemeinsame Planung steht in `WEBSITE-ARBEITSDATEI.md`.
+- Das geplante Backend steht in `BACKEND-PLAN.md`.

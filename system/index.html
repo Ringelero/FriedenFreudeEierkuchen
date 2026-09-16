@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Der aktuelle maschinenlesbare FFE-Systemindex: Institutionen, operative Profile, Entscheidungsmethoden und Entwicklungsnetz.">
+  <title>FFE-System · GemDen</title>
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/blob.css">
+  <link rel="stylesheet" href="./system.css">
+</head>
+<body data-area="system" data-blob-mode="guide">
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="site-shell system-shell">
+    <nav data-site-nav data-root="../"></nav>
+    <main id="inhalt">
+      <header class="hero compact system-hero">
+        <p class="eyebrow">Aktueller Regel- und Methodenindex</p>
+        <h1 class="display small">FFE-System</h1>
+        <p class="lead">Die Website liest Institutionen, operative Profile, Methoden und Entwicklungswege direkt aus dem Systemindex. Sie fasst zusammen, entscheidet aber keine offenen politischen oder kulturellen Fragen.</p>
+        <div class="stats" id="system-stats" aria-live="polite"><span>Lade aktuelle Quelle …</span></div>
+      </header>
+
+      <section class="section" aria-labelledby="router-title">
+        <div class="panel router-panel">
+          <div class="section-head"><p class="eyebrow">Situation zuerst</p><h2 id="router-title">Was ist gerade los?</h2><p>Der Wegweiser nennt passende aktuelle Institutionen und operative Profile. Wenn die Situation unklar bleibt, fragt er nach — er erfindet keine Regel.</p></div>
+          <form class="form-grid" id="router-form">
+            <div class="field"><label for="router-input">Situation beschreiben</label><textarea id="router-input" required placeholder="Zum Beispiel: Wir wollen einen Kiez organisieren und wissen nicht, wer welche Daten sehen darf."></textarea></div>
+            <button class="button" type="submit">Im System einordnen</button>
+          </form>
+          <div class="result-box" id="router-result" hidden aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="institutions-title">
+        <div class="section-head"><p class="eyebrow">Aktueller Kern · Teil II</p><h2 id="institutions-title">Institutionen &amp; operative Profile</h2><p>Jede Karte folgt demselben Muster: Auslöser, Ziel, Prüffragen, harte Grenzen, empfohlener Weg, Werkzeuge, Eskalation und Ergebnis.</p></div>
+        <div class="system-tools">
+          <label class="sr-only" for="institution-search">Institutionen durchsuchen</label><input class="search-input" id="institution-search" type="search" placeholder="ID, Titel, Auslöser oder Werkzeug suchen …">
+          <label class="sr-only" for="house-filter">Haus filtern</label><select id="house-filter"><option value="">Alle Häuser</option></select>
+        </div>
+        <p class="result-count" id="institution-count"></p>
+        <div class="system-list" id="institution-list"><div class="loading">Systemindex wird geladen …</div></div>
+      </section>
+
+      <section class="section" aria-labelledby="methods-title">
+        <div class="section-head"><p class="eyebrow">D02 · Methodenbibliothek</p><h2 id="methods-title">22 Entscheidungsmethoden</h2><p>Eine Methode ist kein automatisches Gesetz. Die passende Auswahl hängt von Situation, Rechten, Betroffenheit, Reversibilität und geltender Satzung ab.</p></div>
+        <div class="system-tools"><label class="sr-only" for="method-search">Methoden durchsuchen</label><input class="search-input" id="method-search" type="search" placeholder="Methode, Einsatz oder Risiko suchen …"></div>
+        <p class="result-count" id="method-count"></p><div class="method-grid" id="method-list"></div>
+      </section>
+
+      <section class="section" aria-labelledby="network-title">
+        <div class="section-head"><p class="eyebrow">M05 · Entwicklungsnetz</p><h2 id="network-title">Entwicklung ist ein Netz, keine Menschenrangliste.</h2><p>Neun Zweige und fünf Verantwortungsringe beschreiben mögliche Lern- und Wirkungspfade. Ein höherer Ring bedeutet mehr Verantwortung im Kontext, nicht mehr menschlichen Wert.</p></div>
+        <div class="ring-row" id="ring-list"></div>
+        <div class="system-tools network-tools"><label class="sr-only" for="node-search">Entwicklungsknoten durchsuchen</label><input class="search-input" id="node-search" type="search" placeholder="Entwicklungsknoten suchen …"><label class="sr-only" for="branch-filter">Zweig filtern</label><select id="branch-filter"><option value="">Alle Zweige</option></select></div>
+        <p class="result-count" id="node-count"></p><div class="node-grid" id="node-list"></div>
+      </section>
+
+      <section class="section" aria-labelledby="source-title">
+        <div class="panel source-panel">
+          <p class="eyebrow">Quellenstatus</p><h2 id="source-title">Was hier als aktuell gilt.</h2>
+          <dl class="detail-list" id="source-details"></dl>
+          <div class="notice archive"><strong>Archivgrenze:</strong> Teil IV ist <code>historical_only</code>. Er wird von diesem Wegweiser niemals als aktueller Regelstand geroutet. Bei Konflikten gilt zuerst Teil II, danach der aktuelle Teil III.</div>
+          <div class="notice" style="margin-top:12px"><strong>Vor-Satzungsstand:</strong> Die Architektur ist arbeitsfähig, aber politisch und rechtlich noch nicht vollständig final. Offene Punkte bleiben offen.</div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><span id="source-footer">FFE-Systemindex wird geladen</span><a href="../">Zur Startseite</a></footer>
+  </div>
+  <script>window.BLOB_CONFIG={mode:"guide",root:"../",context:"system",actionLabel:"Situation prüfen",actionTarget:"#router-input"};</script>
+  <script src="../assets/site.js" defer></script><script src="../assets/blob.js" defer></script><script src="./system.js" defer></script>
+</body>
+</html>

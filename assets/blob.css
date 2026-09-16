@@ -149,6 +149,29 @@
   animation:none !important;
   cursor:grabbing;
 }
+#blob-character.blob-positioned{
+  transform:none;
+}
+#blob-character.blob-positioned:not(.mode-sales):not(.mode-social){
+  animation:blobIdlePositioned 4s ease-in-out infinite;
+}
+#blob-character.blob-positioned.mode-social{
+  animation:socialBreathPositioned 3.3s ease-in-out infinite;
+}
+#blob-character.blob-positioned.mode-sales.wiggle-sales{
+  animation:wiggleBodyPositioned 1.15s ease-in-out infinite !important;
+}
+@keyframes blobIdlePositioned{
+  0%,100%{border-radius:48% 52% 46% 54%/58% 45% 55% 42%;transform:rotate(-2deg)}
+  50%{border-radius:56% 44% 57% 43%/46% 58% 42% 55%;transform:rotate(2deg) scale(1.03)}
+}
+@keyframes socialBreathPositioned{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes wiggleBodyPositioned{
+  0%,100%{transform:rotate(-7deg) scaleY(1)}
+  25%{transform:rotate(5deg) scaleY(1.05)}
+  50%{transform:rotate(9deg) scaleY(.98)}
+  75%{transform:rotate(-4deg) scaleY(1.06)}
+}
 #blob-character.mode-sales.wiggle-sales{
   width:52px;
   height:172px;
@@ -214,4 +237,8 @@
   #blob-character.mode-sales.wiggle-sales .blob-face{
     transform:translateY(-46px);
   }
+}
+
+@media(prefers-reduced-motion:reduce){
+  #blob-character,#blob-character::before,#blob-character::after{animation:none!important}
 }

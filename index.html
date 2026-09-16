@@ -1,23 +1,108 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Gemden · Frieden Freude Eierkuchen</title>
-<link rel="stylesheet" href="./assets/blob.css">
-<style>*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}.btn{display:inline-flex;justify-content:center;align-items:center;border:0;border-radius:999px;padding:14px 18px;font-weight:900;text-decoration:none;cursor:pointer}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}.footer{text-align:center;font-size:.9rem;margin-top:18px}@media(max-width:760px){.actions{flex-direction:column}.btn{width:100%}}body{color:#f7f3e8;background:radial-gradient(circle at 12% 18%,rgba(255,95,126,.28),transparent 35%),radial-gradient(circle at 90% 12%,rgba(255,191,63,.25),transparent 32%),linear-gradient(135deg,#111014,#191612);display:grid;place-items:center;padding:24px}main{width:min(980px,100%);display:grid;gap:20px;text-align:center}.brand-kicker{font-size:.78rem;font-weight:900;letter-spacing:.16em;color:#ffbf3f;text-transform:uppercase}h1{font-size:clamp(2.8rem,9vw,6rem);line-height:.9;margin:0;letter-spacing:-.06em}p{color:#cfc6b4;font-size:1.15rem;line-height:1.6;max-width:760px;margin:0 auto}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;text-align:left}.card{border:1px solid rgba(255,255,255,.17);background:rgba(255,255,255,.08);border-radius:28px;padding:28px;box-shadow:0 24px 80px rgba(0,0,0,.42);backdrop-filter:blur(18px)}.btn{color:#15120c;background:linear-gradient(135deg,#ffbf3f,#ff7a3d)}.secondary{color:#f7f3e8;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16)}@media(max-width:760px){.grid{grid-template-columns:1fr}}</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="GemDen baut die digitale Welt von FriedenFreudeEierkuchen: Communitys, Fähigkeiten, Möglichkeiten und nachvollziehbare Werkzeuge.">
+  <title>GemDen · FriedenFreudeEierkuchen</title>
+  <link rel="stylesheet" href="./assets/site.css">
+  <link rel="stylesheet" href="./assets/blob.css">
 </head>
-<body data-blob-mode="guide">
-<main><div class="brand-kicker">GEMDEN · FRIEDEN FREUDE EIERKUCHEN</div><h1>Gemden</h1><p>Hast du es nicht satt, dass die Konzerne uns alle abziehen?<br>Lass uns eine Community gründen. Lass uns füreinander da sein.<br>Nicht von den Reichen abhängig. Sondern unabhängig!</p><div class="grid"><section class="card"><h2>Kollektiv im Aufbau</h2><p>Eine kleine Welt für praktische Hilfe, kreative Projekte und gemeinsames Machen.</p><div class="actions"><a class="btn" href="./julius/">Julius ansehen</a></div></section><section class="card"><h2>Richard-Sorge-Kiez</h2><p>Termine, Hauswissen, Reparaturen, Hilfe und gemeinsame Ideen rund um Straßmannstraße und Richard-Sorge-Straße.</p><div class="actions"><a class="btn" href="./community/richard-sorge-kiez/">Kiez öffnen</a></div></section><section class="card"><h2>Leistungen</h2><p>Hier entsteht die Übersicht der buchbaren Kollektiv-Angebote.</p><div class="actions"><a class="btn" href="./leistungen/">Leistungen öffnen</a></div></section></div></main>
-<script>
-window.BLOB_CONFIG={
-  mode:"guide",
-  links:{
-    home:"./",
-    services:"./leistungen/",
-    kiez:"./community/richard-sorge-kiez/"
-  }
-};
-</script>
-<script src="./assets/blob.js" defer></script>
+<body data-area="start" data-blob-mode="guide">
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="site-shell">
+    <nav data-site-nav data-root="./"></nav>
+
+    <main id="inhalt">
+      <header class="hero">
+        <p class="eyebrow">GemDen baut · FriedenFreudeEierkuchen verbindet</p>
+        <h1 class="display">Eine Welt, die wir gemeinsam bauen.</h1>
+        <p class="lead">Hast du es nicht satt, dass die Konzerne uns alle abziehen? Lass uns eine Community gründen. Lass uns füreinander da sein. Nicht von den Reichen abhängig. Sondern unabhängig!</p>
+        <div class="status-row">
+          <span class="status-chip experiment">Website im Experiment</span>
+          <span class="id-chip">FFE v2.30</span>
+          <span class="id-chip">Systemindex v0.6</span>
+        </div>
+        <div class="button-row">
+          <a class="button" href="./community/">Community entdecken</a>
+          <a class="button secondary" href="./leistungen/">Was brauchst du?</a>
+        </div>
+      </header>
+
+      <section class="section" aria-labelledby="einstieg-title">
+        <div class="section-head">
+          <p class="eyebrow">Drei Einstiege</p>
+          <h2 id="einstieg-title">Nicht alles muss in einen Reiter passen.</h2>
+          <p>Menschen, Orte und Dynastien leben in der Community. Wünsche werden über Fähigkeiten gematcht. Das FFE-System erklärt die Institutionen, Methoden und Grenzen dahinter.</p>
+        </div>
+        <div class="grid three">
+          <a class="card ruby" href="./community/">
+            <span class="icon" aria-hidden="true">❤️</span>
+            <h3>Community</h3>
+            <p>Kieze, Dynastien und Mitglieder — mit mehreren Zugehörigkeiten statt starrer Schubladen.</p>
+            <span class="arrow">Zu P‑Hain, Rubybubys und Julius →</span>
+          </a>
+          <a class="card gold" href="./leistungen/">
+            <span class="icon" aria-hidden="true">✨</span>
+            <h3>Wunsch &amp; Möglichkeit</h3>
+            <p>Beschreibe, was du brauchst. Blob übersetzt den Wunsch in Fähigkeiten und erklärt passende Wege.</p>
+            <span class="arrow">Matching ausprobieren →</span>
+          </a>
+          <a class="card mint" href="./system/">
+            <span class="icon" aria-hidden="true">🧭</span>
+            <h3>FFE-System</h3>
+            <p>69 Institutionen, 69 operative Profile und 22 Entscheidungsmethoden aus der aktuellen Quelle.</p>
+            <span class="arrow">System durchsuchen →</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="rollen-title">
+        <div class="panel">
+          <p class="eyebrow">Zwei Rollen, sauber getrennt</p>
+          <h2 id="rollen-title">Technik ist keine Krone.</h2>
+          <div class="grid two">
+            <article class="card">
+              <span class="id-chip">TECHNISCHER BETRIEB</span>
+              <h3>GemDen</h3>
+              <p>Julius’ private Firma entwickelt und betreibt die digitale Plattform, Gestaltung, Produkte und technische Leistungen. Diese Rolle erzeugt keine automatische politische Macht in FFE.</p>
+            </article>
+            <article class="card">
+              <span class="id-chip">DACH-COMMUNITY</span>
+              <h3>FriedenFreudeEierkuchen</h3>
+              <p>FFE verbindet Communitys, Kieze, Dynastien, Mitglieder, Commons und Verfahren. Die mögliche Genossenschaft ist noch nicht politisch oder rechtlich final beschlossen.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="kette-title">
+        <div class="section-head">
+          <p class="eyebrow">Gemeinsames Datenmuster</p>
+          <h2 id="kette-title">Vom System bis zur überprüfbaren Erfahrung.</h2>
+        </div>
+        <div class="chain" aria-label="FFE-Strukturkette">
+          <div class="chain-item"><b>Institution</b><span>stabile Kern-ID</span></div>
+          <div class="chain-item"><b>Situation</b><span>konkreter Auslöser</span></div>
+          <div class="chain-item"><b>Operatives Profil</b><span>Fragen, Grenzen, Weg</span></div>
+          <div class="chain-item"><b>Methode · Werkzeug · Ritual</b><span>passende Umsetzung</span></div>
+          <div class="chain-item"><b>Evidenz</b><span>Beleg, Ergebnis, Review</span></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="notice archive"><strong>Quellenregel:</strong> Teil II und die aktuellen Module aus Teil III sind der heutige Regelstand. Teil IV des Buches ist ausschließlich historisches Archiv und wird hier nicht als aktuelle Regel ausgespielt.</div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>gemden.red · gebaut als lebendes Experiment</span>
+      <a href="./system/">Quelle und Systemstatus ansehen</a>
+    </footer>
+  </div>
+
+  <script>window.BLOB_CONFIG={mode:"guide",root:"./"};</script>
+  <script src="./assets/site.js" defer></script>
+  <script src="./assets/blob.js" defer></script>
 </body>
 </html>

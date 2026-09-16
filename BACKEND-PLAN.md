@@ -1,122 +1,216 @@
-# Backend-Plan für Gemden
+# GemDen / FFE – Backend-Plan
 
-Dieser Plan beschreibt, wie aus der statischen Website später eine echte gemeinschaftliche Plattform wird.
+Stand: 16. September 2026  
+Status: technischer Vorschlag, noch nicht produktiv umgesetzt
 
-## Jetzt: statische Startphase
+## 1. Ziel
 
-GitHub Pages bleibt zunächst die Website.
+Das Backend soll Konten, geschützte Kiezdaten, bearbeitbare Profile, Fähigkeiten, Termine, Anfragen und nachvollziehbare Änderungen ermöglichen. Es darf die politische FFE-Quelle nicht stillschweigend überschreiben.
 
-- Inhalte liegen in den HTML-, CSS- und JavaScript-Dateien.
-- Leni kann den Richard-Sorge-Kiez direkt weiterentwickeln.
-- Termine und Texte werden manuell gepflegt.
-- Formulare sind zunächst nur vorbereitet und speichern noch nichts dauerhaft.
+Für den jetzigen Umfang ist kein eigener Server nötig. Supabase liefert:
 
-## Später: erste echte Daten
+- Authentifizierung
+- PostgreSQL-Datenbank
+- Row Level Security (RLS)
+- Dateispeicher
+- serverseitige Funktionen für spätere geheime oder KI-gestützte Abläufe
 
-Als nächster technischer Schritt brauchen wir einen Dienst mit:
+GitHub Pages bleibt zunächst die öffentliche Oberfläche.
 
-- Benutzerkonten
-- Anmeldung und Abmeldung
-- Datenbank
-- Formularspeicherung
-- Rollen und Berechtigungen
-- optionalen E-Mail- oder Push-Benachrichtigungen
+## 2. Zwei getrennte Datenschichten
 
-Die Website bleibt dabei die sichtbare Oberfläche. Das Backend speichert die Daten und entscheidet, wer sie sehen oder verändern darf.
+### A. Versionierte FFE-Systemquelle
 
-## Geplante Kontotypen
+Enthält Institutionen, operative Profile, Methoden und Entwicklungsnetz aus Buch/Systemindex.
 
-- Bewohner: Termine ansehen, Interesse bekunden, Hilfe anbieten, Meldungen erstellen
-- Kiez-Redaktion: Termine, Hauswissen und Kiezbrett pflegen
-- Hausverwaltung: Reparaturmeldungen bearbeiten und Status ändern
-- Gemden-Admin: technische und gemeinschaftliche Gesamtverwaltung
+- Quelle: GitHub-Datei `assets/data/ffe-systemindex-v0.6.json`
+- Änderungen nur durch den vorgesehenen FFE-Redaktions- und Entscheidungsprozess
+- Version und Quellenstand immer sichtbar
+- Teil IV bleibt Archiv und wird nicht als aktuelle Regel geroutet
+- keine Bearbeitung über ein gewöhnliches Kiez-Dashboard
 
-## Erste Datenmodelle
+### B. Operative Live-Daten
 
-### profiles
+Enthält veränderliche Daten aus dem Alltag.
 
-- id
-- display_name
-- email
-- avatar
-- kiez
-- created_at
+- Konten und Profile
+- Kieze, Dynastien und Zugehörigkeiten
+- Fähigkeiten und Nachweise
+- Termine, Beiträge und Wissenseinträge
+- Reparaturanfragen und Möglichkeiten
+- bereichsbezogene Rechte
+- Änderungswünsche und Änderungsverlauf
 
-### events
+Diese Daten liegen in Supabase und werden durch RLS geschützt.
 
-- id
-- title
-- description
-- start_time
-- location
-- created_by
-- created_at
+## 3. Identitäten und Berechtigungen
 
-### event_interests
+Supabase Auth verwaltet die Anmeldung. Fachliche Berechtigungen liegen in eigenen Tabellen und nicht nur in einem globalen Feld wie `admin=true`.
 
-- event_id
-- profile_id
-- status
+Beispiele:
 
-### repair_reports
+- `edit_profile:self`
+- `manage_kiez:KIEZ-P-HAIN`
+- `moderate_posts:KIEZ-P-HAIN`
+- `manage_dynasty:DYN-RUBYBUBYS`
+- `platform_operator:GemDen`
 
-- id
-- description
-- location
-- urgency
-- status
-- created_by
-- created_at
-- resolved_at
+Kulturelle Titel, politische Mandate und technische Zugriffsrechte bleiben getrennte Datenarten.
 
-### knowledge_entries
+## 4. Vorgeschlagenes Datenmodell
 
-- id
-- title
-- text
-- category
-- updated_by
-- updated_at
+### Identität
 
-### help_posts
+| Tabelle | Aufgabe |
+|---|---|
+| `profiles` | öffentliches und geschütztes Mitgliedsprofil, verknüpft mit `auth.users` |
+| `profile_visibility` | optionale Sichtbarkeit einzelner Profilfelder |
+| `permission_grants` | Recht, Geltungsobjekt, Beginn, Ende, erteilende Stelle |
 
-- id
-- title
-- text
-- kind
-- created_by
-- expires_at
+### Community
 
-## Account-Idee
+| Tabelle | Aufgabe |
+|---|---|
+| `kieze` | Kiezräume wie `KIEZ-P-HAIN` |
+| `kiez_memberships` | viele-zu-viele-Zugehörigkeit von Profilen und Kiezen |
+| `dynasties` | Dynastien wie `DYN-RUBYBUBYS` |
+| `dynasty_memberships` | viele-zu-viele-Zugehörigkeit mit getrennten kulturellen Angaben |
+| `roles` | sachlich und zeitlich begrenzte Verantwortungsrollen |
+| `role_assignments` | Zuordnung von Rollen, Personen und Geltungsbereichen |
 
-Für Bewohner sollte der Einstieg möglichst leicht sein:
+### Fähigkeiten und Evidenz
 
-1. QR-Code scannen.
-2. Kiez ansehen, ohne Konto.
-3. Für „Ich komme mit“, Meldungen oder Beiträge freiwillig anmelden.
-4. Möglichst Anmeldung per E-Mail-Link oder Passkey statt kompliziertem Passwort.
+| Tabelle | Aufgabe |
+|---|---|
+| `skills` | generische Fähigkeiten mit stabiler ID |
+| `skill_relations` | Ober-, Unter- und verwandte Fähigkeiten |
+| `profile_skills` | Fähigkeit eines Profils, Sichtbarkeit, Grenzen und gewünschte Einsätze |
+| `skill_evidence` | Projekte, externe Qualifikationen, Arbeitsbeispiele und Prüfstatus |
+| `projects` | Portfolio-Projekte |
+| `project_skills` | in einem Projekt gezeigte oder benötigte Fähigkeiten |
 
-Öffentliche Informationen bleiben ohne Anmeldung sichtbar. Persönliche Beteiligung braucht ein Konto.
+Ein Erfahrungsnachweis bewertet eine Fähigkeit in einem Kontext, nicht den Wert eines Menschen.
 
-## Technische Grundentscheidung
+### Inhalte und Kiezbetrieb
 
-Die Website ist derzeit eine statische GitHub-Pages-Seite. Für Accounts und gespeicherte Daten brauchen wir später einen kleinen Backend-Dienst, zum Beispiel eine verwaltete Datenbank mit Authentifizierung und API.
+| Tabelle | Aufgabe |
+|---|---|
+| `content_blocks` | bearbeitbare Seitenabschnitte mit stabiler Bauteil-ID |
+| `events` | Termine, Ort, Zeit, Sichtbarkeit und Status |
+| `event_responses` | Interesse oder Teilnahme mit eigener Sichtbarkeit |
+| `posts` | Kiezbrett und Mitteilungen |
+| `knowledge_entries` | Hauswissen, Quelle, Zuständigkeit und Prüfdatum |
+| `requests` | Wunsch, Problem, Auftrag oder Hilfebedarf |
+| `request_requirements` | notwendige und hilfreiche Fähigkeiten einer Anfrage |
+| `matches` | erklärbare, situationsbezogene Vorschläge |
+| `change_requests` | Änderungswunsch an eine stabile Seiten- oder Bauteil-ID |
+| `audit_events` | sicherheitsrelevanter Änderungsverlauf ohne unnötige Inhaltsüberwachung |
 
-Die Entscheidung für den konkreten Anbieter treffen wir erst, wenn klar ist:
+## 5. Sichtbarkeit
 
-- wie viele Bewohner teilnehmen,
-- ob Daten nur im Richard-Sorge-Kiez oder in mehreren Kiezen genutzt werden,
-- ob Leni selbst Daten verwalten möchte,
-- ob Nachrichten und Benachrichtigungen nötig sind,
-- welche personenbezogenen Daten wir überhaupt speichern wollen.
+Vorgeschlagene technische Werte:
 
-## Entwicklungsreihenfolge
+- `public` – ohne Konto sichtbar
+- `members` – für angemeldete FFE-Mitglieder
+- `scope_members` – nur Mitglieder des betroffenen Kiezes/der Dynastie
+- `managers` – nur zuständige Verwaltung
+- `private` – nur Erstellerin beziehungsweise ausdrücklich Berechtigte
 
-1. Statische Kiez-Seite ausprobieren.
-2. Feststellen, welche Funktionen Bewohner wirklich nutzen.
-3. Konto-Anmeldung ergänzen.
-4. Reparaturmeldungen dauerhaft speichern.
-5. Termine und „Wer geht mit?“ dynamisch machen.
-6. Hilfe & Teilen und Kiezbrett ergänzen.
-7. Rollen, Moderation und Benachrichtigungen ausbauen.
-8. Später weitere Kieze unter Gemden ergänzen.
+Welche Inhalte standardmäßig welchen Wert erhalten, ist teilweise noch politisch und praktisch offen. Das Schema ermöglicht die Entscheidung, nimmt sie aber nicht vorweg.
+
+## 6. RLS-Grundsätze
+
+1. Standardmäßig kein Schreibzugriff.
+2. Öffentliche Zeilen sind nur lesbar, wenn `visibility='public'` und der Status veröffentlicht ist.
+3. Mitglieder dürfen nur ihr eigenes Profil und eigene Entwürfe ändern.
+4. Bereichsverwaltende dürfen nur Zeilen ihres freigegebenen Objekts ändern.
+5. Private Reparaturdetails werden niemals über eine anonyme öffentliche Abfrage ausgeliefert.
+6. Rechte können ein Ende haben und müssen bei Austritt oder Rollenwechsel entzogen werden.
+7. Der Supabase-`service_role`-Schlüssel kommt niemals in Browsercode oder GitHub.
+8. Kritische Aktionen erhalten Protokoll, Rücknahmeweg und bei Bedarf zweite Prüfung.
+
+## 7. Blob und KI
+
+### Erste Stufe
+
+- Regeln und Filter laufen nachvollziehbar im Browser oder in SQL.
+- Freitext wird in bekannte Fähigkeiten übersetzt.
+- Jede Empfehlung nennt die passenden Fähigkeiten und Grenzen.
+- Kein globaler Menschen-Score.
+- Kein automatisches Zuteilen oder Annehmen eines Auftrags.
+
+### Spätere KI-Stufe
+
+- Geheimnisse und Modellschlüssel nur in einer Supabase Edge Function oder einem anderen geschützten Serverdienst.
+- Nur die für die konkrete Anfrage nötigen Daten werden übergeben.
+- Persönliche und gemeinschaftliche Assistenz bleiben unterscheidbar.
+- Unklare Regeln werden als unklar bezeichnet.
+- Rechte, Sicherheit, Recht und Konflikte führen zu menschlicher Prüfung.
+- Ein manueller Weg bleibt für wichtige Funktionen erhalten (`T10`).
+
+## 8. Umsetzung in kleinen Schritten
+
+### Schritt 1 – Fundament
+
+- Tabellen `profiles`, `kieze`, `permission_grants`
+- Supabase Auth aktivieren
+- RLS für jede Tabelle testen
+- Julius und Leni als Testkonten
+- `KIEZ-P-HAIN` anlegen
+- Leni gezielt `manage_kiez:KIEZ-P-HAIN` geben
+
+### Schritt 2 – P-Hain-Dashboard
+
+- `events`, `posts`, `knowledge_entries`, `content_blocks`
+- Erstellen, Entwurf, Veröffentlichen, Ändern, Ausblenden
+- öffentlich/geschützt klar anzeigen
+- Änderungswünsche mit Bauteil-ID
+
+### Schritt 3 – Reparaturen und Möglichkeiten
+
+- `requests`, `request_requirements`, Statusverlauf
+- private Details getrennt von öffentlicher Zusammenfassung
+- sicherheitskritische Hinweise und Eskalationswege
+
+### Schritt 4 – Mitglieder, Dynastien, Skills
+
+- viele-zu-viele-Mitgliedschaften
+- eigenes Profil bearbeiten
+- Fähigkeiten und Evidenz
+- Rubybubys und Julius aus den statischen Testdaten migrieren
+
+### Schritt 5 – Erklärbares Matching
+
+- generischer Fähigkeiten-Graph
+- konkrete Situation statt Berufstitel
+- Filter nach Sicherheit, Ort, Zeit, Interesse und Verfügbarkeit
+- nachvollziehbare Vorschläge und freiwillige Annahme
+
+### Schritt 6 – Geschützte KI-Funktionen
+
+- erst nach Datenschutz-, Kosten- und Berechtigungskonzept
+- Edge Function, Limits und Protokollierung
+- keine Regelsetzung durch das Modell
+
+## 9. Noch offen
+
+- genaue Standard-Sichtbarkeit der einzelnen P-Hain-Module
+- Einladungs- oder offener Registrierungsweg
+- wer Mitgliedschaften und erweiterte Rechte legitim vergibt
+- Lösch-, Export- und Aufbewahrungsfristen
+- Moderations- und Beschwerdeweg
+- ob Chats in Version 1 nötig sind
+- rechtliche Prüfung für GemDen, FFE, Aufträge und Bezahlung
+- wann der Systemindex zusätzlich in eine read-only Datenbankansicht importiert wird
+
+## 10. Definition für den ersten sicheren Pilot
+
+Der erste Pilot ist erst fertig, wenn:
+
+- Leni sich anmelden kann,
+- sie ausschließlich P-Hain verwalten kann,
+- anonyme Besucher nur veröffentlichte Inhalte sehen,
+- private Reparaturdaten anonym nicht abrufbar sind,
+- jeder Schreibweg durch RLS und nicht nur durch versteckte Buttons geschützt ist,
+- Änderungen nachvollziehbar und rücknehmbar sind,
+- alle Formulare ihren echten Speicherstatus klar anzeigen.

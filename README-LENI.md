@@ -1,23 +1,47 @@
-# Leni baut am Richard-Sorge-Kiez
+# P-Hain-Verwaltung für Leni
 
-Willkommen im Kiez-Code. Du musst nicht alles auf einmal verstehen. Du darfst direkt auf `main` arbeiten. GitHub speichert jede Version, und wir können jederzeit zurückrollen.
+## Kurz gesagt
 
-## Die wichtigsten Dateien
+Du sollst P-Hain später direkt auf `gemden.red` verwalten können. Dafür brauchst du dann nur ein Konto — keinen GitHub-Zugang und keinen Programmcode.
 
-- `community/richard-sorge-kiez/index.html` – Aufbau der Seite und sichtbare Reiter
-- `community/richard-sorge-kiez/kiez.css` – Farben, Layout und Aussehen
-- `community/richard-sorge-kiez/kiez.js` – Klicks, Formulare und Interaktionen
-- `community/richard-sorge-kiez/kiez-content.js` – Texte, Termine und Einträge
-- `BACKEND-PLAN.md` – die Zukunft mit Accounts und gespeicherten Daten
+## Was schon da ist
 
-## Erste Übung
+Der öffentliche P-Hain-Prototyp zeigt bereits die geplanten Bereiche:
 
-Öffne `kiez-content.js`, ändere einen Text und committe direkt auf `main`. Warte kurz, bis GitHub Pages die Website neu veröffentlicht.
+- Übersicht
+- Termine
+- Reparaturen
+- Möglichkeiten und Nachbarschaftshilfe
+- Hauswissen
+- Kiezbrett
 
-## Neue einfache Rubrik
+Die Oberfläche ist aktuell noch statisch. Eingaben erzeugen nur eine Vorschau und werden ausdrücklich **nicht** gespeichert oder versendet.
 
-Eine neue Rubrik besteht zunächst aus einem Tab, einem Abschnitt in `index.html` und passenden Einträgen in `kiez-content.js`. Bei jeder Erweiterung erklären wir gemeinsam, warum jede Zeile nötig ist.
+## Was dein Konto später können soll
 
-## Arbeitsregel
+Mit dem Bereichsrecht `manage_kiez:KIEZ-P-HAIN` kannst du voraussichtlich:
 
-Direktes Arbeiten auf `main` ist für dieses Experiment ausdrücklich erlaubt. Die gemeinsame Website liegt unter `https://gemden.red`. Vor größeren Änderungen kann die KI den aktuellen GitHub-Stand einlesen.
+- Termine anlegen, ändern und absagen
+- öffentliche Kieztexte bearbeiten
+- Wissenseinträge und Wartungshinweise pflegen
+- Beiträge freigeben, ändern oder ausblenden
+- geschützte Reparaturanfragen sehen und ihren Status aktualisieren
+- Sichtbarkeit pro Inhalt wählen
+- freigegebene Module sortieren
+
+Diese Berechtigung gilt nur für P-Hain. Sie macht dich nicht automatisch zur globalen Administratorin oder politischen Entscheiderin von FFE.
+
+## Änderungswünsche an die Gestaltung
+
+Für Dinge, die das Dashboard nicht direkt ändern darf, ist eine Schaltfläche „Änderungswunsch“ geplant. Sie übermittelt:
+
+- die stabile ID des betroffenen Seitenteils
+- die aktuelle Seite
+- deinen Wunsch
+- optional einen Screenshot
+
+Julius kann den Wunsch dann mit Codex bearbeiten, ohne erst raten zu müssen, welchen Teil du meinst.
+
+## Nächster technischer Schritt
+
+Supabase Auth, Datenbanktabellen und die Zugriffsregeln müssen noch eingerichtet und mit der Website verbunden werden. Erst danach wird dein echtes Konto angelegt. Bis dahin ist diese Datei eine Bedienvorschau, keine Zugangsanleitung.

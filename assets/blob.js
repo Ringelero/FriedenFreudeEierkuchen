@@ -1,124 +1,180 @@
+(function () {
+  function ready(fn) { document.readyState !== 'loading' ? fn() : document.addEventListener('DOMContentLoaded', fn); }
+  ready(function () {
+    const cfg = window.BLOB_CONFIG || {};
+    const pageMode = document.body.dataset.blobMode || cfg.mode || 'guide';
+    const root = cfg.root || './';
+    const links = Object.assign({
+      home: root,
+      community: root + 'community/',
+      services: root + 'leistungen/',
+      system: root + 'system/'
+    }, cfg.links || {});
 
-(function(){
-function ready(fn){document.readyState!=='loading'?fn():document.addEventListener('DOMContentLoaded',fn)}
-ready(function(){
- const cfg=window.BLOB_CONFIG||{};
- const pageMode=document.body.dataset.blobMode||cfg.mode||'guide';
- const links=cfg.links||{};
- const ch=document.createElement('button');
- ch.id='blob-character';
- ch.type='button';
- ch.innerHTML='<div class="blob-face"><div class="blob-eyes"><div class="blob-eye"></div><div class="blob-eye"></div></div><div class="blob-mouth"></div></div>';
- const chat=document.createElement('div');
- chat.id='blob-chat';
- chat.innerHTML=`<p id="blob-line">Ich bin jetzt kein Navigationsleisten-Bewohner mehr. Endlich Privatsphäre.</p>
- <div id="blob-meta">Modus: ${pageMode}</div>
- <div class="blob-chat-actions" id="blob-actions">
-   <button id="blob-next" type="button">Weiter</button>
-   <button id="blob-name" class="secondary" type="button">Name</button>
-   <a id="blob-home" class="secondary" href="${links.home||'./'}">Start</a>
-   <a id="blob-services" class="secondary" href="${links.services||'./leistungen/'}">Leistungen</a>
-   <a id="blob-kiez" class="secondary" href="${links.kiez||'./community/richard-sorge-kiez/'}">Kiez</a>
-   <button id="blob-close" class="secondary" type="button">Ruhe</button>
- </div>`;
- document.body.append(ch,chat);
- const line=document.getElementById('blob-line'),meta=document.getElementById('blob-meta');
- let state;
- try{state=JSON.parse(localStorage.getItem('ffek_blob_wiggle')||'{"mode":"guide","salesName":"","socialName":"","visits":0,"x":null,"y":null}')}catch(e){state={mode:'guide',salesName:'',socialName:'',visits:0,x:null,y:null}}
- state.visits++;save();
- function save(){localStorage.setItem('ffek_blob_wiggle',JSON.stringify(state))}
- function say(t,m){line.textContent=t;meta.textContent=m||('Modus: '+state.mode);chat.classList.add('open')}
- function emote(){ch.classList.add('excited');setTimeout(()=>ch.classList.remove('excited'),600)}
- function setMode(mode){
-   state.mode=mode;save();
-   ch.classList.remove('mode-sales','mode-social','wiggle-sales');
-   if(mode==='sales'){ch.classList.add('mode-sales','wiggle-sales')}
-   if(mode==='social')ch.classList.add('mode-social');
-   emote();
- }
- function pitch(){
-   const n=state.salesName||'Ich';
-   const arr=[
-    n+': Zieh mich ruhig herum. Ich bin flexibel. Moralisch und körperlich.',
-    n+': Du brauchst das nicht… aber du willst es.',
-    n+': Ich verkaufe keine Träume. Nur Dienstleistungen mit Größenwahn.',
-    n+': Smart Home? Früher hatten Menschen Lichtschalter. Barbaren.'
-   ];
-   say(arr[Math.floor(Math.random()*arr.length)],'Modus: sales / elastisch übermotiviert');emote();
- }
- function social(){
-   const n=state.socialName||'Ich';
-   const arr=[
-    n+': Gemeinschaft ist, wenn man nicht alles alleine tragen muss.',
-    n+': Hilfe ist kein Luxus. Sie ist Infrastruktur.',
-    n+': Community: weniger Konzern, mehr Küchentisch.'
-   ];
-   say(arr[Math.floor(Math.random()*arr.length)],'Modus: social / warm skeptisch');emote();
- }
- function guide(){
-   const arr=[
-    'Ich bin dein Guide. Widerwillig, aber dekorativ.',
-    'Die Navigation wohnt jetzt im Chat. Weniger Schilderwald, mehr Gespräch.',
-    'Wenn du mich auf der Leistungsseite ziehst, werde ich unangenehm elastisch.',
-    'Leistungen machen mich nervös. Dort bekomme ich Arme.'
-   ];
-   say(arr[Math.floor(Math.random()*arr.length)],'Modus: guide');emote();
- }
- function rename(){
-   if(state.mode==='sales'){
-    const n=prompt('Wie soll die Verkaufspuppe heißen?',state.salesName||'');
-    if(n&&n.trim()){state.salesName=n.trim();save();say('Gut. Ab jetzt heiße ich '+state.salesName+'. Identität: lokal gespeichert, spirituell fragwürdig.','Name gespeichert')}
-   }else{
-    const n=prompt('Wie soll der Blob heißen?',state.socialName||'');
-    if(n&&n.trim()){state.socialName=n.trim();save();say('Gut. Ich heiße jetzt '+state.socialName+'. Namen sind auch nur kleine Verträge.','Name gespeichert')}
-   }
- }
+    const character = document.createElement('button');
+    character.id = 'blob-character';
+    character.type = 'button';
+    character.setAttribute('aria-label', 'Blob öffnen');
+    character.setAttribute('aria-expanded', 'false');
+    character.innerHTML = '<div class="blob-face"><div class="blob-eyes"><div class="blob-eye"></div><div class="blob-eye"></div></div><div class="blob-mouth"></div></div>';
 
- // draggable character
- let dragging=false, moved=false, offsetX=0, offsetY=0;
- function setPosition(x,y){
-   ch.style.left=x+'px';
-   ch.style.top=y+'px';
-   ch.style.right='auto';
-   ch.style.bottom='auto';
-   ch.style.transform='translate(0,0)';
-   state.x=x;state.y=y;save();
- }
- if(state.x!==null && state.y!==null){
-   setTimeout(()=>setPosition(state.x,state.y),80);
- }
- ch.addEventListener('pointerdown',e=>{
-   dragging=true;moved=false;
-   ch.setPointerCapture(e.pointerId);
-   ch.classList.add('dragging');
-   const r=ch.getBoundingClientRect();
-   offsetX=e.clientX-r.left;
-   offsetY=e.clientY-r.top;
- });
- ch.addEventListener('pointermove',e=>{
-   if(!dragging)return;
-   moved=true;
-   const x=Math.max(4,Math.min(window.innerWidth-ch.offsetWidth-4,e.clientX-offsetX));
-   const y=Math.max(4,Math.min(window.innerHeight-ch.offsetHeight-4,e.clientY-offsetY));
-   setPosition(x,y);
- });
- ch.addEventListener('pointerup',e=>{
-   dragging=false;
-   ch.classList.remove('dragging');
-   try{ch.releasePointerCapture(e.pointerId)}catch(err){}
-   if(moved && state.mode==='sales')say((state.salesName||'Ich')+': Danke fürs Herumziehen. Würdelos, aber dynamisch.','Modus: sales / gezogen');
- });
- ch.onclick=(e)=>{if(moved){moved=false;return}chat.classList.toggle('open')};
- document.getElementById('blob-close').onclick=()=>chat.classList.remove('open');
- document.getElementById('blob-name').onclick=rename;
- document.getElementById('blob-next').onclick=()=>state.mode==='sales'?pitch():state.mode==='social'?social():guide();
- setInterval(()=>{ch.classList.add('blink');setTimeout(()=>ch.classList.remove('blink'),150)},3600);
- setMode(pageMode);
- setTimeout(()=>{
-   chat.classList.add('open');
-   if(pageMode==='sales') pitch();
-   else if(pageMode==='social') social();
-   else guide();
- },700);
-})
+    const chat = document.createElement('aside');
+    chat.id = 'blob-chat';
+    chat.setAttribute('aria-label', 'Blob-Navigation');
+    chat.innerHTML = `<p id="blob-line">Ich sortiere Möglichkeiten. Menschen sortiere ich nicht.</p>
+      <div id="blob-meta">Modus: ${pageMode}</div>
+      <div class="blob-chat-actions" id="blob-actions">
+        ${cfg.actionTarget ? `<button id="blob-action" type="button">${cfg.actionLabel || 'Hier helfen'}</button>` : ''}
+        <button id="blob-next" type="button">Weiter</button>
+        <a class="secondary" href="${links.home}">Start</a>
+        <a class="secondary" href="${links.community}">Community</a>
+        <a class="secondary" href="${links.services}">Leistungen</a>
+        <a class="secondary" href="${links.system}">FFE-System</a>
+        <button id="blob-name" class="secondary" type="button">Name</button>
+        <button id="blob-close" class="secondary" type="button">Ruhe</button>
+      </div>`;
+    document.body.append(character, chat);
+
+    const line = document.getElementById('blob-line');
+    const meta = document.getElementById('blob-meta');
+    let state;
+    try {
+      state = JSON.parse(localStorage.getItem('gemden_blob_v3') || '{"name":"","visits":0,"x":null,"y":null}');
+    } catch (error) {
+      state = { name: '', visits: 0, x: null, y: null };
+    }
+    state.visits += 1;
+    save();
+
+    function save() { localStorage.setItem('gemden_blob_v3', JSON.stringify(state)); }
+    function say(text, label) {
+      line.textContent = text;
+      meta.textContent = label || `Modus: ${pageMode}`;
+      chat.classList.add('open');
+      character.setAttribute('aria-expanded', 'true');
+    }
+    function close() {
+      chat.classList.remove('open');
+      character.setAttribute('aria-expanded', 'false');
+      character.focus({ preventScroll: true });
+    }
+    function emote() {
+      character.classList.add('excited');
+      setTimeout(() => character.classList.remove('excited'), 620);
+    }
+    function setMode(mode) {
+      character.classList.remove('mode-sales', 'mode-social', 'wiggle-sales');
+      if (mode === 'sales') character.classList.add('mode-sales', 'wiggle-sales');
+      if (mode === 'social') character.classList.add('mode-social');
+    }
+    function named(prefix) { return state.name ? `${state.name}: ${prefix}` : prefix; }
+
+    const lines = {
+      guide: [
+        'Ich bin Blob: Wegweiser, Spielzeug und professionell unqualifiziert für Alleinherrschaft.',
+        'Institution, Situation, Profil, Werkzeug, Evidenz. Fünf Schritte. Kein Orakelnebel.',
+        'Wenn etwas politisch offen ist, bleibt es offen. Ich kann mit der Unsicherheit leben. Meistens.',
+        'Teil IV ist Archiv. Ich krame darin nur, wenn du ausdrücklich Geschichte suchst.'
+      ],
+      social: [
+        'Gemeinschaft ist, wenn man nicht alles alleine tragen muss — und trotzdem Nein sagen darf.',
+        'Kieze sind Orte. Dynastien sind Verbindungen. Menschen dürfen mehreren davon angehören.',
+        'Öffentliche Termine: gern. Private Wohnungsdetails: lieber hinter ein vernünftiges Konto.',
+        'Ich helfe beim Verbinden. Über Menschen verfügen darf ich nicht. Ehrlich gesagt weniger Arbeit für mich.'
+      ],
+      sales: [
+        'Sag mir nicht nur deinen Wunsch. Sag mir auch Ort, Grenze und gewünschtes Ergebnis. Romantik!',
+        'Ich verkaufe keine Rangliste. Ich zerlege Aufgaben in Fähigkeiten und erkläre die Passung.',
+        'Smart Home? Früher hatten Menschen Lichtschalter. Die waren erstaunlich ausfallsicher.',
+        'Kein Match? Dann erfinde ich keine Person. Wir machen lieber eine Chance oder einen Lernweg sichtbar.'
+      ]
+    };
+    function nextLine() {
+      const pool = lines[pageMode] || lines.guide;
+      say(named(pool[Math.floor(Math.random() * pool.length)]), `Blob · ${pageMode}`);
+      emote();
+    }
+
+    function rename() {
+      const name = prompt('Wie soll Blob auf diesem Gerät heißen?', state.name || '');
+      if (name === null) return;
+      state.name = name.trim().slice(0, 40);
+      save();
+      say(state.name ? `Gut. Auf diesem Gerät heiße ich jetzt ${state.name}. Lokal gespeichert, politisch bedeutungslos.` : 'Wieder namenlos. Minimalistisch.', 'Name nur auf diesem Gerät');
+    }
+
+    function activateContext() {
+      const target = document.querySelector(cfg.actionTarget);
+      if (!target) return;
+      if (target.matches('[data-panel]') && target.hidden) {
+        document.querySelector(`[data-section="${target.id}"]`)?.click();
+      }
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => {
+        const field = target.matches('input, textarea, select, button') ? target : target.querySelector('input, textarea, select, button');
+        field?.focus({ preventScroll: true });
+      }, 450);
+      say(named('Hier geht es weiter. Ich zeige den Weg; du entscheidest und sendest.'), 'Blob · Seitenhilfe');
+    }
+
+    let dragging = false;
+    let moved = false;
+    let offsetX = 0;
+    let offsetY = 0;
+    function setPosition(x, y, persist = true) {
+      const safeX = Math.max(4, Math.min(window.innerWidth - character.offsetWidth - 4, x));
+      const safeY = Math.max(4, Math.min(window.innerHeight - character.offsetHeight - 4, y));
+      character.style.left = safeX + 'px';
+      character.style.top = safeY + 'px';
+      character.style.right = 'auto';
+      character.style.bottom = 'auto';
+      character.classList.add('blob-positioned');
+      if (persist) { state.x = safeX; state.y = safeY; save(); }
+    }
+    if (Number.isFinite(state.x) && Number.isFinite(state.y)) setTimeout(() => setPosition(state.x, state.y, false), 80);
+    character.addEventListener('pointerdown', event => {
+      dragging = true; moved = false;
+      character.setPointerCapture(event.pointerId);
+      character.classList.add('dragging');
+      const rect = character.getBoundingClientRect();
+      offsetX = event.clientX - rect.left;
+      offsetY = event.clientY - rect.top;
+    });
+    character.addEventListener('pointermove', event => {
+      if (!dragging) return;
+      if (Math.abs(event.movementX) + Math.abs(event.movementY) > 2) moved = true;
+      setPosition(event.clientX - offsetX, event.clientY - offsetY);
+    });
+    character.addEventListener('pointerup', event => {
+      dragging = false;
+      character.classList.remove('dragging');
+      try { character.releasePointerCapture(event.pointerId); } catch (error) {}
+      if (moved && pageMode === 'sales') say(named('Danke fürs Herumziehen. Würdelos, aber dynamisch.'), 'Blob · elastisch');
+    });
+    character.addEventListener('click', () => {
+      if (moved) { moved = false; return; }
+      const open = chat.classList.toggle('open');
+      character.setAttribute('aria-expanded', String(open));
+    });
+    window.addEventListener('resize', () => {
+      if (Number.isFinite(state.x) && Number.isFinite(state.y)) setPosition(state.x, state.y);
+    });
+
+    document.getElementById('blob-close').addEventListener('click', close);
+    document.getElementById('blob-name').addEventListener('click', rename);
+    document.getElementById('blob-next').addEventListener('click', nextLine);
+    document.getElementById('blob-action')?.addEventListener('click', activateContext);
+    window.addEventListener('blob:say', event => {
+      if (!event.detail?.text) return;
+      say(named(event.detail.text), event.detail.meta);
+      emote();
+    });
+    setInterval(() => {
+      character.classList.add('blink');
+      setTimeout(() => character.classList.remove('blink'), 150);
+    }, 3900);
+
+    setMode(pageMode);
+    setTimeout(nextLine, 750);
+  });
 })();

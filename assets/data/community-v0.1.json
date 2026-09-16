@@ -1,0 +1,151 @@
+{
+  "meta": {
+    "schema_version": "0.1",
+    "updated": "2026-09-16",
+    "status": "public-static-prototype",
+    "note": "Öffentliche Testdaten. Konten, geschützte Inhalte und Live-Bearbeitung folgen über Supabase."
+  },
+  "kieze": [
+    {
+      "id": "KIEZ-P-HAIN",
+      "slug": "p-hain",
+      "name": "P-Hain",
+      "status": "experiment",
+      "description": "Ein Kiezraum an der Verbindung von Prenzlauer Berg und Friedrichshain, rund um Straßmannstraße und Richard-Sorge-Straße.",
+      "public_path": "/community/kieze/p-hain/",
+      "ffe_refs": ["R01", "W01", "OP-R01", "OP-W01"]
+    }
+  ],
+  "dynasties": [
+    {
+      "id": "DYN-RUBYBUBYS",
+      "slug": "rubybubys",
+      "name": "Rubybubys",
+      "status": "active-first-dynasty",
+      "description": "Die erste Dynastie innerhalb von FriedenFreudeEierkuchen.",
+      "public_path": "/community/dynastien/rubybubys/",
+      "open_fields": ["history", "rituals", "ranks", "mastery_language"],
+      "ffe_refs": ["R01", "OP-R01"]
+    }
+  ],
+  "skills": [
+    {
+      "id": "SKILL-SMART-HOME",
+      "name": "Smart-Home-Systeme verbinden",
+      "description": "Sensoren, Aktoren und digitale Steuerung als verständliches System zusammendenken.",
+      "branch": "CRAFT",
+      "safety": "Installation und Netzspannung nur im Rahmen der jeweils nötigen Qualifikation und Rechtslage."
+    },
+    {
+      "id": "SKILL-ELECTRICAL-UNDERSTANDING",
+      "name": "elektrische Zusammenhänge verstehen",
+      "description": "Elektrische Funktionen analysieren und für ein Vorhaben sicher einordnen.",
+      "branch": "CRAFT",
+      "safety": "Diese Fähigkeit ist kein pauschaler Nachweis für zulassungspflichtige Elektroarbeiten."
+    },
+    {
+      "id": "SKILL-TINKERING",
+      "name": "tüfteln und Prototypen bauen",
+      "description": "Ideen in testbare technische oder materielle Lösungen übersetzen.",
+      "branch": "CRAFT"
+    },
+    {
+      "id": "SKILL-TROUBLESHOOTING",
+      "name": "Fehler systematisch finden",
+      "description": "Beobachten, Ursachen eingrenzen, testen und die nächsten Schritte dokumentieren.",
+      "branch": "CRAFT"
+    },
+    {
+      "id": "SKILL-TECH-COMMUNICATION",
+      "name": "Technik verständlich erklären",
+      "description": "Menschen befähigen, ein System selbst zu verstehen und zu bedienen.",
+      "branch": "KNOW"
+    },
+    {
+      "id": "SKILL-ORGANIZATION",
+      "name": "organisieren und priorisieren",
+      "description": "Aufgaben, Zeit und Abhängigkeiten übersichtlich ordnen.",
+      "branch": "SOCIAL"
+    },
+    {
+      "id": "SKILL-FOCUSED-WORK",
+      "name": "konzentriert und sorgfältig arbeiten",
+      "description": "Auch bei wiederholten oder detailreichen Aufgaben aufmerksam bleiben.",
+      "branch": "SELF"
+    },
+    {
+      "id": "SKILL-ORDER",
+      "name": "Ordnung schaffen und erhalten",
+      "description": "Material, Räume oder Informationen in eine nutzbare Struktur bringen.",
+      "branch": "CRAFT"
+    },
+    {
+      "id": "SKILL-CLEANING",
+      "name": "Räume sorgfältig reinigen",
+      "description": "Reinigungsaufgaben planvoll, materialgerecht und zuverlässig ausführen.",
+      "branch": "CRAFT"
+    },
+    {
+      "id": "SKILL-LOGISTICS",
+      "name": "Dinge zuverlässig zuordnen und bewegen",
+      "description": "Sendungen, Material oder Aufgaben nachvollziehbar sortieren und an den richtigen Ort bringen.",
+      "branch": "CRAFT"
+    },
+    {
+      "id": "SKILL-TEXTILE-CRAFT",
+      "name": "mit Textilien gestalten",
+      "description": "Nähen, formen und textile Objekte umsetzen.",
+      "branch": "CRAFT"
+    },
+    {
+      "id": "SKILL-NUMBER-CARE",
+      "name": "sorgfältig mit Zahlen und Belegen umgehen",
+      "description": "Zahlen, Belege und Zuordnungen nachvollziehbar prüfen.",
+      "branch": "KNOW",
+      "safety": "Allgemeine Sorgfalt ersetzt keine steuerliche oder rechtliche Berufsqualifikation."
+    }
+  ],
+  "members": [
+    {
+      "id": "MEM-JULIUS",
+      "slug": "julius",
+      "name": "Julius",
+      "status": "public-profile-prototype",
+      "bio": "Ein Berliner mit Herz. Meine Leidenschaft ist es, Menschen mit Technik zu verbinden und Kreativität zu unterstützen.",
+      "dynasty_ids": ["DYN-RUBYBUBYS"],
+      "kiez_ids": [],
+      "skill_ids": [
+        "SKILL-SMART-HOME",
+        "SKILL-ELECTRICAL-UNDERSTANDING",
+        "SKILL-TINKERING",
+        "SKILL-TROUBLESHOOTING",
+        "SKILL-TECH-COMMUNICATION"
+      ],
+      "public_path": "/community/mitglieder/julius/",
+      "boundaries": [
+        "Eine Empfehlung ist noch keine Auftragsannahme.",
+        "Sicherheits- und zulassungspflichtige Arbeiten werden vorab fachlich und rechtlich geprüft.",
+        "Verfügbarkeit und Rahmen werden für jede Anfrage neu geklärt."
+      ],
+      "evidence_ids": ["EVID-JULIUS-BETTERATHOME", "EVID-JULIUS-ADLON"]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "EVID-JULIUS-BETTERATHOME",
+      "member_id": "MEM-JULIUS",
+      "type": "self_reported_work_experience",
+      "title": "Berufserfahrung bei BetterAtHome GmbH",
+      "description": "Von Julius angegebene Arbeitserfahrung in einem Smart-Home-Start-up.",
+      "verification": "self-reported"
+    },
+    {
+      "id": "EVID-JULIUS-ADLON",
+      "member_id": "MEM-JULIUS",
+      "type": "self_reported_work_experience",
+      "title": "Erfahrung als Haustechniker im Hotel Adlon",
+      "description": "Von Julius angegebene praktische Erfahrung in der Haustechnik.",
+      "verification": "self-reported"
+    }
+  ]
+}
