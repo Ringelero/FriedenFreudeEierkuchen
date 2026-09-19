@@ -12,9 +12,9 @@
 <body data-area="community" data-blob-mode="social">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <div class="site-shell kiez-shell">
-    <nav data-site-nav data-root="../../../"></nav>
+    <nav class="site-nav" data-site-nav data-root="../../../" aria-label="Hauptnavigation"><a class="site-mark" href="../../../">GemDen</a><div class="nav-links"><a href="../../../">Start</a><a href="../../../community/" aria-current="page">Community</a><a href="../../../leistungen/">Leistungen</a><a href="../../../system/">FFE-System</a></div></nav>
     <main id="inhalt">
-      <header class="hero compact kiez-hero">
+      <header class="hero compact kiez-hero" data-content-id="p-hain.hero">
         <nav class="breadcrumb" aria-label="Brotkrumen"><a href="../../">Community</a><span>Kieze</span><span>P-Hain</span></nav>
         <p class="eyebrow">Zwischen Prenzlauer Berg &amp; Friedrichshain</p>
         <h1 class="display">P-Hain</h1>
@@ -31,8 +31,9 @@
         <button class="kiez-tab" type="button" data-section="board">Kiezbrett</button>
       </nav>
       <p class="tab-hint" aria-hidden="true">Seitlich wischen für weitere Bereiche →</p>
+      <noscript><div class="notice"><strong>Manueller Rückfallweg:</strong> Die Reiter brauchen JavaScript. Deshalb stehen alle P-Hain-Bereiche weiter unten vollständig untereinander.</div></noscript>
 
-      <section class="kiez-section active" id="overview" data-panel role="tabpanel">
+      <section class="kiez-section active" id="overview" data-panel data-content-id="p-hain.overview" role="tabpanel">
         <div class="section-head"><p class="eyebrow">Was möchtest du tun?</p><h2>Der Kiez ist noch jung.</h2><p>Die Oberfläche ist bereits benutzbar, speichert aber noch nichts öffentlich. Konten und echte Einträge kommen im nächsten Backend-Schritt.</p></div>
         <div class="tile-grid">
           <button class="tile" type="button" data-jump="events"><span class="icon">📅</span><strong>Termine entdecken</strong><span>Was passiert in der Nähe? Wer möchte mit?</span></button>
@@ -44,27 +45,28 @@
         <div class="notice"><strong>Öffentlich und geschützt:</strong> Allgemeine Termine und Hinweise dürfen später öffentlich sein. Wohnungsdetails, Kontaktdaten und interne Reparaturinformationen gehören hinter ein Konto mit passenden Rechten.</div>
       </section>
 
-      <section class="kiez-section" id="events" data-panel role="tabpanel" hidden>
+      <section class="kiez-section" id="events" data-panel data-content-id="p-hain.events" role="tabpanel">
         <div class="section-head"><p class="eyebrow">Zusammen ist weniger allein</p><h2>Termine</h2><p>Veranstaltungen im Kiez und kleine Unternehmungen, bei denen man nicht alleine auftauchen muss.</p></div>
         <div id="event-list" class="content-list"></div>
         <div class="future-action"><span class="status-chip open">Mit Konto geplant</span><p>Kiez-Verwaltende können Termine erstellen und Mitglieder ihr Interesse sichtbar machen. Bis Supabase angebunden ist, wird hier nichts gesendet.</p></div>
       </section>
 
-      <section class="kiez-section" id="repairs" data-panel role="tabpanel" hidden>
+      <section class="kiez-section" id="repairs" data-panel data-content-id="p-hain.repairs" role="tabpanel">
         <div class="section-head"><p class="eyebrow">Situation → Fähigkeiten → möglicher Weg</p><h2>Was ist kaputt?</h2><p>Blob fragt nach den nötigsten Details. Bei Gefahr oder einem Notfall ersetzt diese Seite niemals Notruf, Hausverwaltung oder Fachbetrieb.</p></div>
-        <form class="form-grid repair-form" id="repair-form">
-          <div class="field"><label for="repair-description">Was beobachtest du?</label><textarea id="repair-description" name="description" required placeholder="Zum Beispiel: Das Licht im Eingangsbereich flackert."></textarea></div>
+        <form class="form-grid repair-form" id="repair-form" action="./#repairs" method="get" autocomplete="off">
+          <div class="field"><label for="repair-description">Was beobachtest du?</label><textarea id="repair-description" required placeholder="Zum Beispiel: Das Licht im Eingangsbereich flackert."></textarea></div>
           <div class="grid two">
-            <div class="field"><label for="repair-area">Welcher Bereich?</label><input id="repair-area" name="area" placeholder="Zum Beispiel: Eingangsbereich"><small>Keine privaten Wohnungsdetails in dieser öffentlichen Demo.</small></div>
-            <div class="field"><label for="repair-urgency">Wie dringend wirkt es?</label><select id="repair-urgency" name="urgency"><option>unklar / normal</option><option>zeitnah prüfen</option><option>mögliche Gefahr</option></select></div>
+            <div class="field"><label for="repair-area">Welcher Bereich?</label><input id="repair-area" placeholder="Zum Beispiel: Eingangsbereich"><small>Keine privaten Wohnungsdetails in dieser öffentlichen Demo.</small></div>
+            <div class="field"><label for="repair-urgency">Wie dringend wirkt es?</label><select id="repair-urgency"><option>unklar / normal</option><option>zeitnah prüfen</option><option>mögliche Gefahr</option></select></div>
           </div>
           <button class="button kiez-button" type="submit">Mit Blob einordnen</button>
           <p class="form-status" id="repair-status" role="status"></p>
+          <noscript><p class="notice">Diese lokale Vorschau braucht JavaScript. Auch ohne JavaScript haben die Felder absichtlich keine Übertragungsnamen; ihre Inhalte werden nicht an die Website gesendet.</p></noscript>
         </form>
         <div class="result-box" id="repair-result" hidden></div>
       </section>
 
-      <section class="kiez-section" id="possibilities" data-panel role="tabpanel" hidden>
+      <section class="kiez-section" id="possibilities" data-panel data-content-id="p-hain.possibilities" role="tabpanel">
         <div class="section-head"><p class="eyebrow">W01 · Möglichkeiten-Marktplatz</p><h2>Fünf einfache Signale.</h2><p>Hier entsteht kein Jobzwang und keine Menschenrangliste. Ein Signal macht nur sichtbar, was gerade da ist.</p></div>
         <div class="signal-grid" id="signal-grid">
           <button type="button" class="signal" data-signal="Ich habe"><span>📦</span><strong>Ich habe</strong><small>Material, Werkzeug oder etwas zum Teilen</small></button>
@@ -81,17 +83,17 @@
         <a class="card gold matching-link" href="../../../leistungen/"><span class="icon">🧩</span><h3>Du hast schon einen konkreten Wunsch?</h3><p>Das Fähigkeiten-Matching erklärt, welche Fähigkeiten helfen könnten und ob bereits ein öffentliches Profil passt.</p><span class="arrow">Wunsch mit Blob zerlegen →</span></a>
       </section>
 
-      <section class="kiez-section" id="knowledge" data-panel role="tabpanel" hidden>
+      <section class="kiez-section" id="knowledge" data-panel data-content-id="p-hain.knowledge" role="tabpanel">
         <div class="section-head"><p class="eyebrow">Kleine Dinge, große Wirkung</p><h2>Hauswissen</h2><p>Regelmäßige Aufgaben und hilfreiche Hinweise — mit Quelle, Zuständigkeit und Prüfdatum statt anonymer Wahrheit.</p></div>
         <div id="knowledge-list" class="content-list"></div>
       </section>
 
-      <section class="kiez-section" id="board" data-panel role="tabpanel" hidden>
+      <section class="kiez-section" id="board" data-panel data-content-id="p-hain.board" role="tabpanel">
         <div class="section-head"><p class="eyebrow">Der digitale Aushang</p><h2>Kiezbrett</h2><p>Für Hinweise, Empfehlungen, Fundstücke und kleine Nachrichten, die in keine andere Schublade passen.</p></div>
         <div id="board-list" class="content-list"></div>
       </section>
 
-      <section class="section" aria-labelledby="p-chain-title">
+      <section class="section" aria-labelledby="p-chain-title" data-content-id="p-hain.system-context">
         <div class="panel">
           <p class="eyebrow">Wie dieser Kiez ins FFE-System passt</p><h2 id="p-chain-title">Nicht nur ein hübsches Formular.</h2>
           <div class="chain">

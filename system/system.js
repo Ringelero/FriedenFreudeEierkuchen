@@ -4,13 +4,25 @@
   const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]);
   const clean = value => String(value ?? '').replace(/\*\*/g, '');
   const normalize = value => String(value ?? '').toLocaleLowerCase('de-DE').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const escapeRegExp = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const containsTerm = (text, term) => {
+    const phrase = escapeRegExp(normalize(term).trim()).replace(/\s+/g, '\\s+');
+    return new RegExp(`(^|[^\\p{L}\\p{N}])${phrase}(?=$|[^\\p{L}\\p{N}])`, 'u').test(text);
+  };
   const list = items => `<ul>${(items || []).map(item => `<li>${escapeHtml(clean(item))}</li>`).join('')}</ul>`;
+  const statusTone = value => {
+    const text = String(value || '');
+    if (text.includes('🧪') || /experiment|entwurf|pilot/i.test(text)) return 'experiment';
+    if (text.includes('🟡') || /offen/i.test(text)) return 'open';
+    if (text.includes('⚖️') || text.includes('🔍') || /rechts?-gate|qualifikation|forschung/i.test(text)) return 'gate';
+    return '';
+  };
 
   const routes = [
-    { id: 'SIT-ROUTE-PRIVACY', terms: ['datenschutz','privat','daten','sichtbar','personlich','personlich','konto'], cores: ['F04','T06'] },
-    { id: 'SIT-ROUTE-ACCESS', terms: ['zugriff','admin','berechtigung','passwort','account','rechte'], cores: ['T05','T06'] },
-    { id: 'SIT-ROUTE-SAFETY', terms: ['gefahr','unfall','sicherheit','akut','stoppen','notfall'], cores: ['T01','T02','F08'] },
-    { id: 'SIT-ROUTE-RIGHTS', terms: ['grundrecht','diskriminierung','minderheit','gleichbehandlung','ausgeschlossen'], cores: ['F01','F05','F08'] },
+    { id: 'SIT-ROUTE-PRIVACY', priority: 100, terms: ['datenschutz','privat','daten','sichtbar','personlich','konto'], cores: ['F04','T06'] },
+    { id: 'SIT-ROUTE-ACCESS', priority: 50, terms: ['zugriff','admin','berechtigung','passwort','account','rechte'], cores: ['T05','T06'] },
+    { id: 'SIT-ROUTE-SAFETY', priority: 300, terms: ['gefahr','unfall','sicherheit','akut','stoppen','notfall'], cores: ['T01','T02','F08'] },
+    { id: 'SIT-ROUTE-RIGHTS', priority: 200, terms: ['grundrecht','diskriminierung','minderheit','gleichbehandlung','ausgeschlossen'], cores: ['F01','F05','F08'] },
     { id: 'SIT-ROUTE-EXIT', terms: ['austritt','verlassen','exit','daten mitnehmen','portabilitat'], cores: ['F03','F02'] },
     { id: 'SIT-ROUTE-DECISION', terms: ['abstimmen','abstimmung','entscheidung','voting','mehrheit','konsens'], cores: ['D02','D04','D01'] },
     { id: 'SIT-ROUTE-CONFLICT', terms: ['konflikt','streit','beschwerde','wiedergutmachung'], cores: ['D06','B02','B03'] },
@@ -35,7 +47,7 @@
       <summary><span class="id-chip">${escapeHtml(core.id)}</span><div><h3>${escapeHtml(core.title)}</h3><div class="house">${escapeHtml(core.home)}</div></div></summary>
       <div class="system-body">
         <p class="profile-goal">${escapeHtml(op?.goal || 'Für dieses Profil wurde kein Ziel geladen.')}</p>
-        <div class="status-row"><span class="id-chip">${escapeHtml(op?.id || core.operational_profile_id)}</span><span class="status-chip">${escapeHtml(core.status)}</span></div>
+        <div class="status-row"><span class="id-chip">${escapeHtml(op?.id || core.operational_profile_id)}</span><span class="status-chip ${statusTone(core.status)}">${escapeHtml(core.status)}</span></div>
         <div class="profile-grid">
           ${block('Aktivieren, wenn', op?.activate_when, true)}
           ${block('Muss geprüft werden', op?.must_check)}
@@ -71,9 +83,11 @@
   function nodeMarkup(node, branchMap) {
     const branch = branchMap.get(node.branch);
     const search = normalize(Object.values(node).flat().join(' ') + ' ' + branch?.name);
-    return `<article class="node-card" id="node-${escapeHtml(node.id)}" data-branch="${escapeHtml(node.branch)}" data-search="${escapeHtml(search)}">
-      <div class="node-meta"><span class="id-chip">${escapeHtml(node.id)}</span><span class="tag">Ring ${escapeHtml(node.ring)}</span><span class="tag">${escapeHtml(node.gate)}</span></div>
+    const tone = statusTone(node.evidence_status);
+    return `<article class="node-card status-${tone || 'current'}" id="node-${escapeHtml(node.id)}" data-branch="${escapeHtml(node.branch)}" data-evidence="${escapeHtml(node.evidence_status)}" data-search="${escapeHtml(search)}">
+      <div class="node-meta"><span class="id-chip">${escapeHtml(node.id)}</span><span class="tag">Ring ${escapeHtml(node.ring)}</span><span class="tag">Gate: ${escapeHtml(node.gate)}</span></div>
       <h3>${escapeHtml(node.title)}</h3><p>${escapeHtml(node.summary)}</p><p><strong>${escapeHtml(branch?.icon || '')} ${escapeHtml(branch?.name || node.branch)}</strong></p>
+      <span class="status-chip ${tone}">${escapeHtml(node.evidence_status || 'Quellenstatus fehlt')}</span>
     </article>`;
   }
 
@@ -97,17 +111,35 @@
     institutionFilter();
     const methodFilter = () => applyFilter('.method-card', $('#method-search').value, 'none', '', '#method-count', 'Methoden');
     $('#method-search').addEventListener('input', methodFilter); methodFilter();
-    const nodeFilter = () => applyFilter('.node-card', $('#node-search').value, 'branch', $('#branch-filter').value, '#node-count', 'Entwicklungsknoten');
-    $('#node-search').addEventListener('input', nodeFilter); $('#branch-filter').addEventListener('change', nodeFilter); nodeFilter();
+    const nodeFilter = () => {
+      const query = normalize($('#node-search').value);
+      const branch = $('#branch-filter').value;
+      const evidence = $('#evidence-filter').value;
+      const cards = [...document.querySelectorAll('.node-card')];
+      let visible = 0;
+      cards.forEach(card => {
+        const matches = (!query || card.dataset.search.includes(query)) && (!branch || card.dataset.branch === branch) && (!evidence || card.dataset.evidence === evidence);
+        card.hidden = !matches;
+        if (matches) visible++;
+      });
+      $('#node-count').textContent = `${visible} Entwicklungsknoten sichtbar`;
+    };
+    $('#node-search').addEventListener('input', nodeFilter);
+    $('#branch-filter').addEventListener('change', nodeFilter);
+    $('#evidence-filter').addEventListener('change', nodeFilter);
+    nodeFilter();
   }
 
   function routeSituation(text) {
     const normalized = normalize(text);
-    const matches = routes.map(route => ({ route, hits: route.terms.filter(term => normalized.includes(normalize(term))).length })).filter(item => item.hits).sort((a,b) => b.hits - a.hits);
-    const chosen = matches.slice(0, 2);
+    const matches = routes.map(route => {
+      const terms = [...new Set(route.terms.map(normalize))];
+      return { route, hits: terms.filter(term => containsTerm(normalized, term)).length };
+    }).filter(item => item.hits).sort((a,b) => (b.route.priority || 0) - (a.route.priority || 0) || b.hits - a.hits);
+    const chosen = matches.slice(0, 3);
     if (!chosen.length) return `<article class="result-block"><span class="status-chip open">unklar</span><h3>Ich kann die Situation noch nicht sicher zuordnen.</h3><p>Ergänze: Wer ist betroffen? Was soll entschieden oder getan werden? Gibt es Gefahr, Rechte, sensible Daten, Geld oder eine Frist?</p></article>`;
     const ids = [...new Set(chosen.flatMap(item => item.route.cores))];
-    return `<article class="result-block"><span class="id-chip">${escapeHtml(chosen[0].route.id)}</span><h3>Passende aktuelle Einstiege</h3><div class="router-links">${ids.map(id => {
+    return `<article class="result-block"><div class="status-row">${chosen.map(item => `<span class="id-chip">${escapeHtml(item.route.id)}</span>`).join('')}</div><h3>Passende aktuelle Einstiege</h3><div class="router-links">${ids.map(id => {
       const core = state.institutions.find(item => item.id === id);
       return core ? `<a href="#institution-${escapeHtml(id)}" data-open-institution="${escapeHtml(id)}">${escapeHtml(id)} · ${escapeHtml(core.title)}</a>` : '';
     }).join('')}</div><p>Das ist eine technische Routinghilfe, keine neue FFE-Entscheidung. Lies vor einer Handlung das operative Profil und seine Grenzen.</p></article>`;
@@ -124,13 +156,21 @@
       const link = event.target.closest('[data-open-institution]');
       if (!link) return;
       const target = document.getElementById('institution-' + link.dataset.openInstitution);
-      if (target) { target.hidden = false; target.open = true; }
+      if (target) {
+        $('#institution-search').value = '';
+        $('#house-filter').value = '';
+        $('#institution-search').dispatchEvent(new Event('input', { bubbles: true }));
+        target.open = true;
+      }
     });
   }
 
   function openHashTarget() {
     if (!location.hash) return;
-    const target = document.querySelector(location.hash);
+    let id;
+    try { id = decodeURIComponent(location.hash.slice(1)); }
+    catch (error) { return; }
+    const target = document.getElementById(id);
     if (!target) return;
     if (target.matches('details')) target.open = true;
     setTimeout(() => target.scrollIntoView({ block: 'start' }), 80);
@@ -155,6 +195,10 @@
       const branches = state.data.development_network?.branches || [];
       const branchMap = new Map(branches.map(branch => [branch.id, branch]));
       $('#branch-filter').innerHTML += branches.map(branch => `<option value="${escapeHtml(branch.id)}">${escapeHtml(branch.icon)} ${escapeHtml(branch.name)}</option>`).join('');
+      const evidenceCounts = state.nodes.reduce((counts, node) => counts.set(node.evidence_status || 'Quellenstatus fehlt', (counts.get(node.evidence_status || 'Quellenstatus fehlt') || 0) + 1), new Map());
+      $('#evidence-filter').innerHTML += [...evidenceCounts.keys()].map(status => `<option value="${escapeHtml(status)}">${escapeHtml(status)}</option>`).join('');
+      const networkStatus = state.data.development_network?.status || 'Quellenstatus fehlt';
+      $('#node-status-summary').innerHTML = `<strong>Netzstatus:</strong> ${escapeHtml(networkStatus)}. <strong>Knotenstatus:</strong> ${[...evidenceCounts].map(([status, count]) => `${count} × ${escapeHtml(status)}`).join(' · ')}. Entwürfe und externe Gates sind keine beschlossenen Qualifikationsstufen.`;
       $('#node-list').innerHTML = state.nodes.map(node => nodeMarkup(node, branchMap)).join('');
       $('#ring-list').innerHTML = (state.data.development_network?.rings || []).map(ring => `<article class="ring"><b>Ring ${escapeHtml(ring.ring)}</b><strong>${escapeHtml(ring.name)}</strong><p>${escapeHtml(ring.meaning)}</p></article>`).join('');
 

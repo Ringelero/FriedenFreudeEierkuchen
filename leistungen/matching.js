@@ -8,7 +8,7 @@
   const situations = [
     {
       id: 'SIT-W01-LIGHT-CREATION',
-      keywords: ['lichterkette', 'lichtinstallation', 'led', 'beleuchtung', 'musik reagiert', 'leuchten'],
+      keywords: ['lichterkette', 'lichterketten', 'lichtinstallation', 'led', 'beleuchtung', 'musik reagiert', 'leuchten'],
       required: ['SKILL-ELECTRICAL-UNDERSTANDING', 'SKILL-TINKERING'],
       helpful: ['SKILL-SMART-HOME', 'SKILL-TROUBLESHOOTING', 'SKILL-TECH-COMMUNICATION'],
       questions: ['Soll das Licht nur leuchten oder auf Sensoren, Musik oder eine App reagieren?', 'Geht es um ungefährliche Kleinspannung oder um einen Anschluss an Netzspannung?', 'Wo soll es eingesetzt werden und welches Material ist schon vorhanden?'],
@@ -63,6 +63,11 @@
 
   const normalize = value => value.toLocaleLowerCase('de-DE').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const escapeHtml = value => String(value || '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]);
+  const escapeRegExp = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const containsTerm = (text, term) => {
+    const phrase = escapeRegExp(normalize(term).trim()).replace(/\s+/g, '\\s+');
+    return new RegExp(`(^|[^\\p{L}\\p{N}])${phrase}(?=$|[^\\p{L}\\p{N}])`, 'u').test(text);
+  };
   let communityData;
 
   async function getData() {
@@ -77,7 +82,7 @@
     const normalized = normalize(text);
     const matched = situations.map(situation => ({
       situation,
-      hits: situation.keywords.filter(keyword => normalized.includes(normalize(keyword))).length
+      hits: situation.keywords.filter(keyword => containsTerm(normalized, keyword)).length
     })).filter(item => item.hits > 0).sort((a, b) => b.hits - a.hits);
     const selected = matched.length ? matched.slice(0, 2).map(item => item.situation) : [];
     const required = [...new Set(selected.flatMap(item => item.required))];
@@ -93,11 +98,14 @@
     status.textContent = 'Blob sortiert die Situation …';
     const data = await getData();
     const skillMap = new Map(data.skills.map(skill => [skill.id, skill]));
+    const evidenceMap = new Map((data.evidence || []).map(item => [item.id, item]));
     const memberMap = data.members.map(member => {
       const requiredHits = member.skill_ids.filter(id => analysis.required.includes(id));
       const helpfulHits = member.skill_ids.filter(id => analysis.helpful.includes(id));
-      return { member, requiredHits, helpfulHits, fit: requiredHits.length * 2 + helpfulHits.length };
-    }).filter(item => item.fit > 0 && (analysis.required.length === 0 || item.requiredHits.length > 0)).sort((a, b) => b.fit - a.fit);
+      const evidence = (member.evidence_ids || []).map(id => evidenceMap.get(id)).filter(Boolean);
+      const coversRequired = analysis.required.length > 0 && requiredHits.length === analysis.required.length;
+      return { member, requiredHits, helpfulHits, evidence, coversRequired };
+    }).filter(item => item.coversRequired);
 
     const situationCards = analysis.selected.length ? analysis.selected.map(situation => `<article class="result-block">
       <span class="id-chip">${escapeHtml(situation.id)}</span>
@@ -106,22 +114,24 @@
       ${situation.caution ? `<p class="notice"><strong>Grenze:</strong> ${escapeHtml(situation.caution)}</p>` : ''}
     </article>`).join('') : `<article class="result-block"><span class="status-chip open">unklar</span><h3>Das Regelwerk kennt diese Formulierung noch nicht.</h3><p>Blob erfindet keine sichere Deutung. Beschreibe das gewünschte Ergebnis, den Ort, den Zeitrahmen und wichtige Grenzen etwas genauer.</p></article>`;
 
-    const matches = memberMap.length ? memberMap.map(({ member, requiredHits, helpfulHits }) => `<article class="result-block match-person">
+    const matches = memberMap.length ? memberMap.map(({ member, requiredHits, helpfulHits, evidence }) => `<article class="result-block match-person">
       <span class="id-chip">${escapeHtml(member.id)}</span>
       <h3>${escapeHtml(member.name)} könnte passen</h3>
-      <p class="match-score">Situationsbezogene Passung — keine Rangliste.</p>
+      <p class="match-score">Alle hier als notwendig markierten Fähigkeiten stehen im öffentlichen Profil — keine Rangliste und noch keine Qualifikationsprüfung.</p>
       <ul class="match-reasons">
         ${requiredHits.map(id => `<li>notwendige Fähigkeit: ${escapeHtml(skillMap.get(id)?.name || id)}</li>`).join('')}
         ${helpfulHits.map(id => `<li>hilfreiche Fähigkeit: ${escapeHtml(skillMap.get(id)?.name || id)}</li>`).join('')}
       </ul>
+      ${evidence.length ? `<h4>Vorhandene Profilangaben</h4><ul class="match-reasons">${evidence.map(item => `<li>${escapeHtml(item.title)} · ${escapeHtml(item.verification)}</li>`).join('')}</ul>` : ''}
+      <p class="notice"><strong>Evidenzgrenze:</strong> Die bisherigen Nachweise sind dem Profil zugeordnet, noch nicht einzelnen Fähigkeiten, Niveaus, Zeiträumen oder Einsatzgrenzen. Der Treffer ist deshalb eine Einladung zur Prüfung, kein Belastbarkeits- oder Sicherheitsnachweis.</p>
       <p>Eine Empfehlung ist noch keine Zusage. Verfügbarkeit, Grenzen und Sicherheitsfragen müssen konkret geklärt werden.</p>
       <a class="button secondary" href="../community/mitglieder/${escapeHtml(member.slug)}/">Profil und Evidenz ansehen</a>
-    </article>`).join('') : `<article class="result-block"><span class="status-chip open">noch kein öffentliches Profil</span><h3>Für diese Kombination gibt es aktuell keinen belastbaren Match.</h3><p>Das ist kein Fehler und wird nicht mit einer erfundenen Person gefüllt. Später kann daraus eine sichtbare Chance, ein Lernweg oder eine Anfrage an die Community werden.</p></article>`;
+    </article>`).join('') : `<article class="result-block"><span class="status-chip open">kein vollständiger Profil-Match</span><h3>Niemand im öffentlichen Bestand deckt aktuell alle notwendigen Fähigkeiten ab.</h3><p>Ein Teiltreffer wird nicht als fertige Empfehlung ausgegeben. Später kann daraus ein Team, eine sichtbare Chance, ein Lernweg oder eine Anfrage an die Community werden.</p></article>`;
 
     result.innerHTML = `${situationCards}
       <article class="result-block"><h3>Notwendige Fähigkeiten</h3>${renderSkills(analysis.required, skillMap)}<h3>Hilfreiche Fähigkeiten</h3>${renderSkills(analysis.helpful, skillMap)}</article>
-      <section><p class="eyebrow">Erklärbare Profile</p>${matches}</section>
-      <p class="notice"><strong>Quelle:</strong> W01 → Situation → OP-W01; Fähigkeitsnachweise nach K05; Blob-Verhalten nach K10. Diese Demo speichert nichts und vergibt keinen Auftrag.</p>`;
+      <section><p class="eyebrow">Erklärbare Profile</p><p>Profile werden nicht bewertet oder gerankt. Die Reihenfolge folgt dem öffentlichen Datenbestand.</p>${matches}</section>
+      <p class="notice"><strong>Quelle:</strong> W01 → Situation → OP-W01; Fähigkeitsdarstellung nach K05; Evidenzgrenze wie oben ausgewiesen; Blob-Verhalten nach K10. Diese Demo speichert nichts und vergibt keinen Auftrag.</p>`;
     result.hidden = false;
     status.textContent = 'Analyse fertig. Alle Treffer und Grenzen stehen sichtbar im Ergebnis.';
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });

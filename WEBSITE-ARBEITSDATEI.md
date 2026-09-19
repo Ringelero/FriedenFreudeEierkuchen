@@ -1,7 +1,7 @@
 # GemDen / FriedenFreudeEierkuchen – Website-Arbeitsdatei
 
-Version: 0.3  
-Stand: 16. September 2026  
+Version: 0.4
+Stand: 18. September 2026
 Status: gemeinsame technische und inhaltliche Planungsgrundlage  
 Kein Ersatz für Satzung, Buch oder legitimierte FFE-Entscheidungen
 
@@ -38,6 +38,8 @@ Aktueller Quellenstand:
 | Website-Handoff | 0.2 | 16.09.2026 | Umsetzungs- und Routingregeln |
 | FFE Buch-Systemindex | 0.6 | 16.09.2026 | maschinenlesbare aktuelle Struktur |
 | Das Buch | v2.30 | 16.09.2026 | redigierte inhaltliche Hauptquelle |
+
+Website-Handoff und Buch sind bereitgestellte Arbeitsquellen und derzeit nicht als öffentliche Dateien im GitHub-Repository veröffentlicht. Der Systemindex ist die bewusst veröffentlichte maschinenlesbare Website-Quelle.
 
 Der Systemindex nennt 69 Kerninstitutionen, 69 operative Profile und 22 Entscheidungsmethoden. Die Profilabdeckung ist `69/69`.
 
@@ -351,6 +353,9 @@ Die Übertragbarkeit allgemeiner Fähigkeiten darf notwendige Fachqualifikation 
 
 - keine globale Bestenliste
 - kein geheimer Menschen-Score
+- ein Profil wird nur als vollständige Passung gezeigt, wenn es alle als notwendig markierten Fähigkeiten abdeckt; Teiltreffer werden nicht als fertige Empfehlung ausgegeben
+- Profilreihenfolgen sind keine Rangfolge und erhalten keine versteckte Gewichtung
+- profilbezogene Selbstauskünfte werden nicht als fähigkeitsspezifischer Qualifikations- oder Sicherheitsnachweis ausgegeben
 - kein automatisches Zuteilen von Arbeit
 - kein erfundener Match bei leerem Bestand
 - Geld, Mojo, Rubine, Titel und Beliebtheit kaufen keine Grundrechte oder politische Stimme
@@ -400,7 +405,11 @@ Der Bereich `/system/` liest `assets/data/ffe-systemindex-v0.6.json` direkt und 
 - 69 Entwicklungsknoten
 - Quelle, Version, Profilabdeckung und Normpriorität
 
+Die unveränderte JSON-Quelle bleibt direkt verlinkt. Die Hauptnavigation ist bereits im HTML vorhanden, und der Systembereich nennt ohne JavaScript den direkten Quellenweg. Damit hängt der manuelle Rückfallweg nicht von Blob oder dynamischer Navigation ab.
+
 Der Situationswegweiser verwendet technische `SIT-ROUTE-*`-IDs. Er verlinkt auf aktuelle Kerninstitutionen und Profile; er erzeugt keine neue FFE-Regel.
+
+Jeder Entwicklungsknoten zeigt seinen `evidence_status` und sein Gate direkt auf der Karte. Entwürfe werden visuell und durch Filter von Buchbasis, Forschung und externen Rechts- oder Qualifikations-Gates getrennt. Damit sehen die 63 Entwurfs-Knoten nicht wie beschlossene Qualifikationsstufen aus.
 
 Das Entwicklungsnetz folgt:
 
@@ -498,12 +507,12 @@ Details stehen in `BACKEND-PLAN.md`.
 |---|---|---|
 | Startseite | an v2.30 angepasst | Texte und visuelle Welt gemeinsam weiterentwickeln |
 | Community-Hub | umgesetzt | dynamisch aus Backend laden |
-| P-Hain | öffentlicher statischer Pilot | Konten, Daten und Dashboard |
+| P-Hain | öffentlicher statischer Pilot; stabile Bauteil-IDs und übertragungssichere Vorschau | Konten, Daten und Dashboard |
 | Rubybubys | Grundseite umgesetzt | kulturelle Inhalte nur nach echter Entscheidung |
 | Julius | unter Mitglieder verschoben | Projekte/Evidenz ergänzen |
-| Leistungen | regelbasiertes Matching umgesetzt | Fähigkeitenbestand und echte Anfragen |
-| Blob | Navigation und Kontextaktionen umgesetzt | geführte Dialogzustände, später geschützte KI |
-| FFE-System | Indexbrowser umgesetzt | UX testen, spätere Quellupdates automatisieren |
+| Leistungen | regelbasiertes Matching; alle Pflichtfähigkeiten nötig; Evidenzgrenze sichtbar | Fähigkeitenbestand und echte Anfragen |
+| Blob | Navigation und Kontextaktionen; lokaler Speicher fällt sicher aus | geführte Dialogzustände, später geschützte KI |
+| FFE-System | Indexbrowser mit sichtbaren Quellenstatus/Gates und Statusfilter | UX testen, spätere Quellupdates automatisieren |
 | Smart-Home-Erlebnis | Gardinenprototyp erhalten | echtes Gemälde und Interaktionen |
 | Supabase | Projekt vorhanden, nicht angebunden | Schema, RLS und Auth gemeinsam planen/umsetzen |
 | Lenis Dashboard | beschrieben, nicht gebaut | nach Backend-Fundament |
@@ -514,6 +523,7 @@ Details stehen in `BACKEND-PLAN.md`.
 
 - aktuelle Website gemeinsam testen
 - Begriffe und sichtbare Status prüfen
+- nächsten Systemindex technisch bereinigen: veraltete Übergangsmetadaten wie `active-v0.5` und `core-page-awaiting-dedicated-profile` mit der tatsächlichen `69/69`-Profilabdeckung abgleichen, ohne politische Inhalte umzudeuten
 - keine offenen Kulturentscheidungen schließen
 - P-Hain-Module für Version 1 auswählen
 

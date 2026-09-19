@@ -3,7 +3,7 @@
   const tabs = [...document.querySelectorAll('.kiez-tab')];
   const panels = [...document.querySelectorAll('[data-panel]')];
 
-  function showSection(id, moveFocus) {
+  function showSection(id, focusPanel) {
     const panel = panels.find(item => item.id === id);
     if (!panel) return;
     tabs.forEach(tab => {
@@ -17,18 +17,42 @@
       item.classList.toggle('active', active);
       item.hidden = !active;
     });
-    if (moveFocus) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (focusPanel) {
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      panel.focus({ preventScroll: true });
+    }
   }
 
-  tabs.forEach(tab => {
+  panels.forEach(panel => { panel.tabIndex = -1; });
+  tabs.forEach((tab, index) => {
+    tab.id = tab.id || `p-hain-tab-${tab.dataset.section}`;
     tab.setAttribute('role', 'tab');
+    tab.setAttribute('aria-controls', tab.dataset.section);
+    document.getElementById(tab.dataset.section)?.setAttribute('aria-labelledby', tab.id);
     tab.addEventListener('click', () => {
-      showSection(tab.dataset.section, true);
+      showSection(tab.dataset.section, false);
       history.replaceState(null, '', '#' + tab.dataset.section);
     });
+    tab.addEventListener('keydown', event => {
+      let nextIndex = null;
+      if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+      if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+      if (event.key === 'Home') nextIndex = 0;
+      if (event.key === 'End') nextIndex = tabs.length - 1;
+      if (nextIndex === null) return;
+      event.preventDefault();
+      const next = tabs[nextIndex];
+      showSection(next.dataset.section, false);
+      history.replaceState(null, '', '#' + next.dataset.section);
+      next.focus();
+    });
   });
-  document.querySelectorAll('[data-jump]').forEach(button => button.addEventListener('click', () => showSection(button.dataset.jump, true)));
+  document.querySelectorAll('[data-jump]').forEach(button => button.addEventListener('click', () => {
+    showSection(button.dataset.jump, true);
+    history.replaceState(null, '', '#' + button.dataset.jump);
+  }));
   const initial = location.hash.slice(1);
+  document.documentElement.classList.add('kiez-js');
   showSection(panels.some(panel => panel.id === initial) ? initial : 'overview', false);
 
   const escapeHtml = value => String(value || '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]);
@@ -39,7 +63,7 @@
       target.innerHTML = '<div class="empty-state">Noch ist hier nichts eingetragen. Das ist ein echter leerer Zustand — kein erfundener Beispieltermin.</div>';
       return;
     }
-    target.innerHTML = items.map(item => `<article class="entry">
+    target.innerHTML = items.map(item => `<article class="entry" data-content-id="${escapeHtml(item.id)}">
       <div class="entry-meta"><span>${escapeHtml(item.id)}</span><span>${escapeHtml(item.status)}</span></div>
       <h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p>
       ${item.review ? `<p class="entry-review">Prüfung: ${escapeHtml(item.review)}</p>` : ''}
@@ -52,8 +76,7 @@
   const repairForm = document.getElementById('repair-form');
   repairForm?.addEventListener('submit', event => {
     event.preventDefault();
-    const data = new FormData(repairForm);
-    const urgency = data.get('urgency');
+    const urgency = document.getElementById('repair-urgency').value;
     const danger = urgency === 'mögliche Gefahr';
     const result = document.getElementById('repair-result');
     result.hidden = false;

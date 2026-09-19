@@ -37,16 +37,28 @@
 
     const line = document.getElementById('blob-line');
     const meta = document.getElementById('blob-meta');
+    const emptyState = { name: '', visits: 0, x: null, y: null };
     let state;
     try {
-      state = JSON.parse(localStorage.getItem('gemden_blob_v3') || '{"name":"","visits":0,"x":null,"y":null}');
+      const stored = JSON.parse(localStorage.getItem('gemden_blob_v3') || 'null');
+      state = stored && typeof stored === 'object' && !Array.isArray(stored) ? stored : emptyState;
     } catch (error) {
-      state = { name: '', visits: 0, x: null, y: null };
+      state = emptyState;
     }
+    state = {
+      name: typeof state.name === 'string' ? state.name.slice(0, 40) : '',
+      visits: Number.isFinite(state.visits) ? state.visits : 0,
+      x: Number.isFinite(state.x) ? state.x : null,
+      y: Number.isFinite(state.y) ? state.y : null
+    };
     state.visits += 1;
     save();
 
-    function save() { localStorage.setItem('gemden_blob_v3', JSON.stringify(state)); }
+    function save() {
+      try { localStorage.setItem('gemden_blob_v3', JSON.stringify(state)); }
+      catch (error) { return false; }
+      return true;
+    }
     function say(text, label) {
       line.textContent = text;
       meta.textContent = label || `Modus: ${pageMode}`;

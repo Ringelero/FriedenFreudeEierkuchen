@@ -16,7 +16,7 @@
 <body data-area="matching" data-blob-mode="sales">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <div class="site-shell">
-    <nav data-site-nav data-root="../"></nav>
+    <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation"><a class="site-mark" href="../">GemDen</a><div class="nav-links"><a href="../">Start</a><a href="../community/">Community</a><a href="../leistungen/" aria-current="page">Leistungen</a><a href="../system/">FFE-System</a></div></nav>
     <main id="inhalt">
       <header class="hero compact matching-hero">
         <p class="eyebrow">W01 Möglichkeiten-Marktplatz · K05 Fähigkeiten</p>
@@ -40,6 +40,7 @@
             <div class="button-row"><button class="button" type="submit">Fähigkeiten finden</button><button class="button secondary" id="reset-matching" type="button">Neu anfangen</button></div>
             <p id="matching-status" class="form-status" role="status"></p>
           </form>
+          <noscript><style>#matching-form{display:none!important}</style><div class="notice"><strong>Manueller Rückfallweg:</strong> Das automatische Zerlegen in Fähigkeiten braucht JavaScript. Ohne Automatik kannst du die Beispiele und Grenzen auf dieser Seite lesen und die <a href="../community/">öffentlichen Profile und Community-Bereiche</a> selbst vergleichen. Es wird nichts gesendet.</div></noscript>
           <div class="result-box" id="matching-result" hidden aria-live="polite"></div>
         </div>
       </section>

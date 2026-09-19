@@ -12,7 +12,7 @@
 <body data-area="system" data-blob-mode="guide">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <div class="site-shell system-shell">
-    <nav data-site-nav data-root="../"></nav>
+    <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation"><a class="site-mark" href="../">GemDen</a><div class="nav-links"><a href="../">Start</a><a href="../community/">Community</a><a href="../leistungen/">Leistungen</a><a href="../system/" aria-current="page">FFE-System</a></div></nav>
     <main id="inhalt">
       <header class="hero compact system-hero">
         <p class="eyebrow">Aktueller Regel- und Methodenindex</p>
@@ -20,6 +20,7 @@
         <p class="lead">Die Website liest Institutionen, operative Profile, Methoden und Entwicklungswege direkt aus dem Systemindex. Sie fasst zusammen, entscheidet aber keine offenen politischen oder kulturellen Fragen.</p>
         <div class="stats" id="system-stats" aria-live="polite"><span>Lade aktuelle Quelle …</span></div>
       </header>
+      <noscript><style>#system-stats,section[aria-labelledby="router-title"],section[aria-labelledby="institutions-title"],section[aria-labelledby="methods-title"],section[aria-labelledby="network-title"]{display:none!important}</style><div class="notice archive"><strong>Manueller Rückfallweg:</strong> Der interaktive Systembrowser braucht JavaScript. Die unveränderte maschinenlesbare Quelle bleibt direkt als <a href="../assets/data/ffe-systemindex-v0.6.json">FFE-Systemindex v0.6</a> erreichbar. Teil IV ist weiterhin nur historisches Archiv.</div></noscript>
 
       <section class="section" aria-labelledby="router-title">
         <div class="panel router-panel">
@@ -51,7 +52,8 @@
       <section class="section" aria-labelledby="network-title">
         <div class="section-head"><p class="eyebrow">M05 · Entwicklungsnetz</p><h2 id="network-title">Entwicklung ist ein Netz, keine Menschenrangliste.</h2><p>Neun Zweige und fünf Verantwortungsringe beschreiben mögliche Lern- und Wirkungspfade. Ein höherer Ring bedeutet mehr Verantwortung im Kontext, nicht mehr menschlichen Wert.</p></div>
         <div class="ring-row" id="ring-list"></div>
-        <div class="system-tools network-tools"><label class="sr-only" for="node-search">Entwicklungsknoten durchsuchen</label><input class="search-input" id="node-search" type="search" placeholder="Entwicklungsknoten suchen …"><label class="sr-only" for="branch-filter">Zweig filtern</label><select id="branch-filter"><option value="">Alle Zweige</option></select></div>
+        <div class="notice" id="node-status-summary">Quellenstatus der Entwicklungsknoten wird geladen …</div>
+        <div class="system-tools network-tools"><label class="sr-only" for="node-search">Entwicklungsknoten durchsuchen</label><input class="search-input" id="node-search" type="search" placeholder="Entwicklungsknoten suchen …"><label class="sr-only" for="branch-filter">Zweig filtern</label><select id="branch-filter"><option value="">Alle Zweige</option></select><label class="sr-only" for="evidence-filter">Quellenstatus filtern</label><select id="evidence-filter"><option value="">Alle Quellenstatus</option></select></div>
         <p class="result-count" id="node-count"></p><div class="node-grid" id="node-list"></div>
       </section>
 
@@ -59,6 +61,7 @@
         <div class="panel source-panel">
           <p class="eyebrow">Quellenstatus</p><h2 id="source-title">Was hier als aktuell gilt.</h2>
           <dl class="detail-list" id="source-details"></dl>
+          <p><a class="button secondary" href="../assets/data/ffe-systemindex-v0.6.json">Unveränderten Systemindex v0.6 öffnen</a></p>
           <div class="notice archive"><strong>Archivgrenze:</strong> Teil IV ist <code>historical_only</code>. Er wird von diesem Wegweiser niemals als aktueller Regelstand geroutet. Bei Konflikten gilt zuerst Teil II, danach der aktuelle Teil III.</div>
           <div class="notice" style="margin-top:12px"><strong>Vor-Satzungsstand:</strong> Die Architektur ist arbeitsfähig, aber politisch und rechtlich noch nicht vollständig final. Offene Punkte bleiben offen.</div>
         </div>

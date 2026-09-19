@@ -21,7 +21,7 @@ Die Website folgt dieser Reihenfolge:
 2. `FFE_Buch_Systemindex_v0.6.json`
 3. `Das_Buch_v2.30_Vorsatzungsfassung_II.md` bei Detailfragen
 
-Der veröffentlichte maschinenlesbare Index liegt unverändert unter `assets/data/ffe-systemindex-v0.6.json`. Teil IV des Buches ist historisches Archiv und wird nicht als heutiger Regelstand geroutet.
+Handoff und Buch wurden als bereitgestellte Arbeitsquellen ausgewertet, sind aber nicht als öffentliche Dateien in diesem Repository veröffentlicht. Der veröffentlichte maschinenlesbare Index liegt unverändert unter `assets/data/ffe-systemindex-v0.6.json`. Teil IV des Buches ist historisches Archiv und wird nicht als heutiger Regelstand geroutet.
 
 ## Technischer Stand
 
