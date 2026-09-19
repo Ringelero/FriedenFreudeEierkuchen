@@ -1,6 +1,6 @@
 # Supabase-Fundament für GemDen / FFE
 
-Status: als reproduzierbare Migration vorbereitet, noch nicht auf das produktive Projekt angewendet.
+Status: am 19. September 2026 auf das produktive Projekt angewendet und mit 37/37 bestandenen RLS-Gegenproben verifiziert.
 
 ## Enthalten
 
@@ -48,19 +48,35 @@ supabase test db
 
 Die RLS-Suite prüft ausdrücklich erlaubte und verbotene Wege für anonyme Besucher, Leni mit aktivem P-Hain-Recht und eine Person mit abgelaufenem Recht.
 
-## Kontrollierte Produktivübernahme
+## Produktivstand
 
-Das bekannte Projekt hat die Referenz `svigcbgdcuidokjjqhfy`. Vor einer produktiven Änderung:
+Das Projekt hat die Referenz `svigcbgdcuidokjjqhfy`. Die Fundament-Migration wurde am 19. September 2026 nach einem konfliktfreien Vorabcheck als eine Transaktion angewendet. Anschließend wurden im produktiven Projekt unabhängig bestätigt:
 
-1. lokale Migration und Tests vollständig ausführen,
-2. bestehenden Remote-Migrationsstand mit `supabase migration list` prüfen,
-3. das Projekt mit `supabase link --project-ref svigcbgdcuidokjjqhfy` verbinden,
-4. erst danach die Migration mit `supabase db push` anwenden,
-5. Julius und Leni über Supabase Auth anlegen oder einladen,
-6. die echten Auth-UUIDs und die legitim vergebende Stelle in einer Kopie von `bootstrap/assign_pilot_identities.sql.example` einsetzen,
-7. Login, anonyme Abfragen und jeden RLS-Gegenfall im Produktivprojekt erneut testen.
+- 4 Zieltabellen mit aktivierter Row Level Security,
+- 4 private Hilfsfunktionen,
+- 6 Trigger,
+- 8 RLS-Policies,
+- der veröffentlichte Datensatz `KIEZ-P-HAIN`,
+- ein automatisch erzeugtes Audit-Ereignis für dessen Anlage,
+- 37/37 bestandene pgTAP-Gegenproben.
 
-Die Migrationsdatei und die Datenbank-Historie bleiben die Quelle für Schemaänderungen. Änderungen im Remote-Tabelleneditor sollen nicht an der Migration vorbei erfolgen.
+Die Sicherheitstests liefen in einer eigenen Transaktion. Testnutzer, Testrechte, Test-Kieze und die nur dafür aktivierte pgTAP-Erweiterung wurden vollständig zurückgerollt; danach waren weiterhin 0 Auth-Nutzer, 0 Profile und 0 Berechtigungsvergabe vorhanden.
+
+Die SQL-Ausführung erfolgte kontrolliert im Supabase SQL Editor. Deshalb muss die bereits angewendete Version `20260919000100` vor dem nächsten `db push` noch mit der offiziellen CLI als angewendet in der Remote-Historie markiert werden:
+
+```bash
+supabase link --project-ref svigcbgdcuidokjjqhfy
+supabase migration repair --status applied 20260919000100
+supabase migration list
+```
+
+`migration repair` darf hier nur den Verlauf berichtigen und die SQL-Datei nicht erneut ausführen. Die Migrationsdatei und die Datenbank-Historie bleiben danach gemeinsam die Quelle für Schemaänderungen.
+
+Für die kontrollierte Pilotfreigabe bleiben:
+
+1. Julius und Leni über Supabase Auth mit eindeutig bestätigten E-Mail-Adressen einladen,
+2. die echten Auth-UUIDs und die legitim vergebende Stelle in einer Kopie von `bootstrap/assign_pilot_identities.sql.example` einsetzen,
+3. Login, anonyme Abfragen und jeden RLS-Gegenfall mit den realen Konten erneut testen.
 
 ## Noch bewusst offen
 
@@ -71,4 +87,4 @@ Die Migrationsdatei und die Datenbank-Historie bleiben die Quelle für Schemaän
 - produktive Auth-Domain und Redirect-Konfiguration
 - Client-Anbindung mit dem veröffentlichbaren Schlüssel
 
-Darum erstellt dieses Paket noch keine echten Konten und verbindet die öffentliche Website noch nicht mit der Datenbank.
+Darum erstellt die Migration selbst keine echten Konten und verbindet die öffentliche Website noch nicht mit der Datenbank.
