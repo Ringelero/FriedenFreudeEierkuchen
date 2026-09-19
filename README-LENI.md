@@ -17,6 +17,8 @@ Der öffentliche P-Hain-Prototyp zeigt bereits die geplanten Bereiche:
 
 Die Oberfläche ist aktuell noch statisch. Eingaben erzeugen nur eine Vorschau und werden ausdrücklich **nicht** gespeichert oder versendet.
 
+Zusätzlich ist die technische Datenbankgrundlage jetzt im Repository vorbereitet: private Profilentwürfe, Kieze, eng begrenzte Rechte, Zugriffsschutz und Änderungsverlauf. Sie ist noch nicht auf das produktive Supabase-Projekt angewendet. Deshalb gibt es weiterhin keinen echten Login und keine versteckte Speicherung.
+
 ## Was dein Konto später können soll
 
 Mit dem Bereichsrecht `manage_kiez:KIEZ-P-HAIN` kannst du voraussichtlich:
@@ -44,4 +46,4 @@ Julius kann den Wunsch dann mit Codex bearbeiten, ohne erst raten zu müssen, we
 
 ## Nächster technischer Schritt
 
-Supabase Auth, Datenbanktabellen und die Zugriffsregeln müssen noch eingerichtet und mit der Website verbunden werden. Erst danach wird dein echtes Konto angelegt. Bis dahin ist diese Datei eine Bedienvorschau, keine Zugangsanleitung.
+Die vorbereitete Supabase-Migration und ihre Zugriffstests müssen zuerst lokal ausgeführt, gegen den bestehenden Projektstand geprüft und anschließend kontrolliert angewendet werden. Danach werden die echten Auth-Konten angelegt und dein reales Benutzerkonto erhält ausschließlich das Recht `manage_kiez:KIEZ-P-HAIN`. Erst dann wird das Dashboard verbunden. Bis dahin ist diese Datei eine Bedienvorschau, keine Zugangsanleitung.

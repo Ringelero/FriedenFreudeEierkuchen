@@ -1,7 +1,7 @@
 # GemDen / FriedenFreudeEierkuchen – Website-Arbeitsdatei
 
-Version: 0.4
-Stand: 18. September 2026
+Version: 0.5
+Stand: 19. September 2026
 Status: gemeinsame technische und inhaltliche Planungsgrundlage  
 Kein Ersatz für Satzung, Buch oder legitimierte FFE-Entscheidungen
 
@@ -212,6 +212,7 @@ Neue Bereiche müssen nicht in jede HTML-Datei kopiert werden. Die kompakte barr
 | `KIEZ-P-HAIN` | Kiez | Pilot rund um Straßmannstraße im Übergang Prenzlauer Berg/Friedrichshain | Experiment |
 | `DYN-RUBYBUBYS` | Dynastie | erste Dynastie in FFE | aktiv, kulturelle Details offen |
 | `MEM-JULIUS` | Mitglied | öffentliches Mitglieds- und Fähigkeitsprofil | Prototyp |
+| `MEM-LENI` | Mitglied | reservierte stabile ID für Lenis künftiges Konto | vorbereitet, noch keinem Auth-Konto zugeordnet |
 | `SKILL-SMART-HOME` | Fähigkeit | Smart-Home-Systeme verbinden | öffentlicher Testbestand |
 | `SKILL-ELECTRICAL-UNDERSTANDING` | Fähigkeit | elektrische Zusammenhänge verstehen | mit Sicherheitsgrenze |
 | `SKILL-TINKERING` | Fähigkeit | tüfteln und Prototypen bauen | öffentlicher Testbestand |
@@ -514,8 +515,8 @@ Details stehen in `BACKEND-PLAN.md`.
 | Blob | Navigation und Kontextaktionen; lokaler Speicher fällt sicher aus | geführte Dialogzustände, später geschützte KI |
 | FFE-System | Indexbrowser mit sichtbaren Quellenstatus/Gates und Statusfilter | UX testen, spätere Quellupdates automatisieren |
 | Smart-Home-Erlebnis | Gardinenprototyp erhalten | echtes Gemälde und Interaktionen |
-| Supabase | Projekt vorhanden, nicht angebunden | Schema, RLS und Auth gemeinsam planen/umsetzen |
-| Lenis Dashboard | beschrieben, nicht gebaut | nach Backend-Fundament |
+| Supabase | Projekt vorhanden; Fundament-Migration, Audit und 37 RLS-Gegenproben im Repository vorbereitet; noch nicht produktiv angewendet | lokal gegen echtes PostgreSQL/Supabase ausführen, Remote-Migrationsstand prüfen, kontrolliert anwenden |
+| Lenis Dashboard | beschrieben, nicht gebaut | nach produktiv geprüftem Backend-Fundament und realer Rechtevergabe |
 
 ## 18. Bauabschnitte
 
@@ -529,13 +530,15 @@ Details stehen in `BACKEND-PLAN.md`.
 
 ### Phase B – Supabase-Fundament
 
-- Schema und Migrationen
-- Auth
-- Profile
-- Kieze
-- bereichsbezogene Rechte
-- RLS-Tests
-- Änderungsverlauf
+- Schema und erste Migration: **vorbereitet, noch nicht produktiv angewendet**
+- Auth-Trigger für minimale private Profilentwürfe: **vorbereitet; Auth-Konfiguration und echte Konten offen**
+- Profile: **Fundament vorbereitet**
+- Kieze und `KIEZ-P-HAIN`: **Fundament vorbereitet**
+- bereichsbezogene, ablauf- und widerrufbare Rechte: **vorbereitet; legitime Erstvergabe offen**
+- RLS-Tests für erlaubte und verbotene Wege: **37 Gegenproben vorbereitet; Ausführung gegen lokale Supabase noch offen**
+- durch Browser nicht veränderbarer Änderungsverlauf: **Trigger und Leserechte vorbereitet**
+
+Die produktive Anwendung bleibt ein eigener kontrollierter Schritt. Das Repository enthält weder `service_role` noch echte Konto-UUIDs. Das Bootstrap-Beispiel bricht absichtlich ab, solange Platzhalter oder die legitim vergebende Stelle nicht ersetzt wurden.
 
 ### Phase C – P-Hain und Lenis Dashboard
 

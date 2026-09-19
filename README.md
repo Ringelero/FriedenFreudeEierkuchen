@@ -25,7 +25,7 @@ Handoff und Buch wurden als bereitgestellte Arbeitsquellen ausgewertet, sind abe
 
 ## Technischer Stand
 
-Die öffentliche Website ist statisches HTML, CSS und JavaScript auf GitHub Pages. Supabase ist als nächster Backend-Schritt geplant, aber noch nicht produktiv angebunden. Formulare kennzeichnen deshalb ausdrücklich, dass sie noch nichts senden oder speichern.
+Die öffentliche Website ist statisches HTML, CSS und JavaScript auf GitHub Pages. Das erste Supabase-Fundament liegt unter `supabase/` als reproduzierbare Migration mit RLS- und Audit-Regeln sowie 37 Datenbank-Gegenproben vor. Es ist noch nicht produktiv angewendet oder mit der Website verbunden. Formulare kennzeichnen deshalb weiterhin ausdrücklich, dass sie noch nichts senden oder speichern.
 
 ## Arbeitsweise
 
@@ -35,3 +35,4 @@ Die öffentliche Website ist statisches HTML, CSS und JavaScript auf GitHub Page
 - Technische Administration durch GemDen ist keine politische FFE-Autorität.
 - Die gemeinsame Planung steht in `WEBSITE-ARBEITSDATEI.md`.
 - Das geplante Backend steht in `BACKEND-PLAN.md`.
+- Migration, Sicherheitsregeln, Tests und kontrollierter Übernahmeweg stehen in `supabase/`.
