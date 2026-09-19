@@ -25,7 +25,7 @@ Handoff und Buch wurden als bereitgestellte Arbeitsquellen ausgewertet, sind abe
 
 ## Technischer Stand
 
-Die öffentliche Website ist statisches HTML, CSS und JavaScript auf GitHub Pages. Das erste Supabase-Fundament liegt unter `supabase/` als reproduzierbare Migration mit RLS- und Audit-Regeln sowie 37 Datenbank-Gegenproben vor. Es ist noch nicht produktiv angewendet oder mit der Website verbunden. Formulare kennzeichnen deshalb weiterhin ausdrücklich, dass sie noch nichts senden oder speichern.
+Die öffentliche Website ist statisches HTML, CSS und JavaScript auf GitHub Pages. Das erste Supabase-Fundament liegt unter `supabase/` als reproduzierbare Migration mit RLS- und Audit-Regeln sowie 37 Datenbank-Gegenproben vor. Es wurde am 19. September 2026 auf das produktive Projekt angewendet und dort mit 37/37 bestandenen, vollständig zurückgerollten Gegenproben verifiziert. Echte Auth-Konten und die Client-Anbindung der Website sind noch offen; Formulare kennzeichnen deshalb weiterhin ausdrücklich, dass sie noch nichts senden oder speichern.
 
 ## Arbeitsweise
 

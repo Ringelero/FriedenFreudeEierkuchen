@@ -515,7 +515,7 @@ Details stehen in `BACKEND-PLAN.md`.
 | Blob | Navigation und Kontextaktionen; lokaler Speicher fällt sicher aus | geführte Dialogzustände, später geschützte KI |
 | FFE-System | Indexbrowser mit sichtbaren Quellenstatus/Gates und Statusfilter | UX testen, spätere Quellupdates automatisieren |
 | Smart-Home-Erlebnis | Gardinenprototyp erhalten | echtes Gemälde und Interaktionen |
-| Supabase | Projekt vorhanden; Fundament-Migration, Audit und 37 RLS-Gegenproben im Repository vorbereitet; noch nicht produktiv angewendet | lokal gegen echtes PostgreSQL/Supabase ausführen, Remote-Migrationsstand prüfen, kontrolliert anwenden |
+| Supabase | Fundament produktiv angewendet; 4 RLS-Tabellen, 4 private Funktionen, 6 Trigger, 8 Policies, P-Hain-Audit und 37/37 zurückgerollte Gegenproben verifiziert | Version `20260919000100` in der Remote-Historie markieren, reale Konten einladen und Client anbinden |
 | Lenis Dashboard | beschrieben, nicht gebaut | nach produktiv geprüftem Backend-Fundament und realer Rechtevergabe |
 
 ## 18. Bauabschnitte
@@ -530,15 +530,15 @@ Details stehen in `BACKEND-PLAN.md`.
 
 ### Phase B – Supabase-Fundament
 
-- Schema und erste Migration: **vorbereitet, noch nicht produktiv angewendet**
-- Auth-Trigger für minimale private Profilentwürfe: **vorbereitet; Auth-Konfiguration und echte Konten offen**
-- Profile: **Fundament vorbereitet**
-- Kieze und `KIEZ-P-HAIN`: **Fundament vorbereitet**
-- bereichsbezogene, ablauf- und widerrufbare Rechte: **vorbereitet; legitime Erstvergabe offen**
-- RLS-Tests für erlaubte und verbotene Wege: **37 Gegenproben vorbereitet; Ausführung gegen lokale Supabase noch offen**
-- durch Browser nicht veränderbarer Änderungsverlauf: **Trigger und Leserechte vorbereitet**
+- Schema und erste Migration: **produktiv angewendet; offizieller Historienabgleich der Version noch offen**
+- Auth-Trigger für minimale private Profilentwürfe: **produktiv vorhanden; echte Konten offen**
+- Profile: **produktives Fundament vorhanden**
+- Kieze und `KIEZ-P-HAIN`: **produktiv vorhanden und geprüft**
+- bereichsbezogene, ablauf- und widerrufbare Rechte: **produktiv vorhanden; legitime Erstvergabe offen**
+- RLS-Tests für erlaubte und verbotene Wege: **37/37 im produktiven Schema bestanden; Testdaten vollständig zurückgerollt**
+- durch Browser nicht veränderbarer Änderungsverlauf: **produktiv vorhanden; P-Hain-Anlage protokolliert**
 
-Die produktive Anwendung bleibt ein eigener kontrollierter Schritt. Das Repository enthält weder `service_role` noch echte Konto-UUIDs. Das Bootstrap-Beispiel bricht absichtlich ab, solange Platzhalter oder die legitim vergebende Stelle nicht ersetzt wurden.
+Das Repository enthält weder `service_role` noch echte Konto-UUIDs. Das Bootstrap-Beispiel bricht absichtlich ab, solange Platzhalter oder die legitim vergebende Stelle nicht ersetzt wurden. Vor dem nächsten `db push` wird die bereits angewendete Version `20260919000100` mit der offiziellen Supabase CLI als angewendet in der Remote-Historie markiert.
 
 ### Phase C – P-Hain und Lenis Dashboard
 

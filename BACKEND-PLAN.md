@@ -2,7 +2,7 @@
 
 Stand: 19. September 2026
 
-Status: Phase-B-Fundament als Migration und RLS-Tests vorbereitet, noch nicht produktiv angewendet
+Status: Phase-B-Fundament produktiv angewendet und mit 37/37 RLS-Gegenproben verifiziert; echte Konten und Client-Anbindung offen
 
 ## 1. Ziel
 
@@ -160,7 +160,7 @@ Welche Inhalte standardmäßig welchen Wert erhalten, ist teilweise noch politis
 - `KIEZ-P-HAIN` anlegen
 - Leni gezielt `manage_kiez:KIEZ-P-HAIN` geben
 
-**Technischer Stand vom 19. September 2026:** Das Repository enthält unter `supabase/` eine reproduzierbare Fundament-Migration für `profiles`, `kieze`, `permission_grants` und `audit_events`, minimale Tabellenrechte, RLS-Regeln, Trigger für private Profilentwürfe und Änderungsverlauf sowie 37 pgTAP-Gegenproben. `KIEZ-P-HAIN` wird als veröffentlichter Pilotbereich angelegt. Die Migration ist noch nicht in das produktive Projekt eingespielt; echte Auth-Konten und Lenis Recht werden erst danach mit den realen Benutzer-UUIDs eingerichtet.
+**Technischer Stand vom 19. September 2026:** Das Repository enthält unter `supabase/` eine reproduzierbare Fundament-Migration für `profiles`, `kieze`, `permission_grants` und `audit_events`, minimale Tabellenrechte, RLS-Regeln, Trigger für private Profilentwürfe und Änderungsverlauf sowie 37 pgTAP-Gegenproben. Die Migration ist im produktiven Projekt angewendet. Dort wurden 4 Tabellen mit RLS, 4 private Funktionen, 6 Trigger, 8 Policies, `KIEZ-P-HAIN` und dessen Audit-Ereignis verifiziert; 37/37 Gegenproben bestanden in einer vollständig zurückgerollten Testtransaktion. Echte Auth-Konten und Lenis Recht werden erst mit eindeutig bestätigten realen Benutzer-UUIDs eingerichtet. Weil die Anwendung über den SQL Editor erfolgte, ist außerdem noch der reine Historienabgleich für Version `20260919000100` mit `supabase migration repair --status applied` offen.
 
 Die aktuellen Regeln verweigern noch nicht umgesetzte Sichtbarkeiten wie `members` und `scope_members` sicher. Ein Signup kann weder eine stabile `MEM-*`-ID noch ein Recht aus Metadaten übernehmen. Browserrollen dürfen Rechte und Audit-Ereignisse nicht schreiben.
 
@@ -220,4 +220,4 @@ Der erste Pilot ist erst fertig, wenn:
 - Änderungen nachvollziehbar und rücknehmbar sind,
 - alle Formulare ihren echten Speicherstatus klar anzeigen.
 
-Diese Definition ist noch nicht erfüllt. Fertig sind der statische, ehrlich gekennzeichnete P-Hain-Prototyp und das versionierte Datenbankfundament. Noch fehlen die produktive Migration, echte Anmeldung, reale Konten, die kontrollierte Erstvergabe des P-Hain-Rechts und das Dashboard.
+Diese Definition ist noch nicht erfüllt. Fertig sind der statische, ehrlich gekennzeichnete P-Hain-Prototyp und das produktiv verifizierte Datenbankfundament. Noch fehlen echte Anmeldung, reale Konten, die kontrollierte Erstvergabe des P-Hain-Rechts, die Client-Anbindung und das Dashboard.
