@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Sicherer Zugang zum persönlichen GemDen- und FFE-Pilotkonto.">
+  <title>Konto · GemDen</title>
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/blob.css">
+  <link rel="stylesheet" href="./konto.css">
+</head>
+<body data-area="account" data-blob-mode="guide">
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="site-shell account-shell">
+    <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation">
+      <a class="site-mark" href="../">GemDen</a>
+    </nav>
+
+    <main id="inhalt">
+      <header class="hero compact account-hero">
+        <p class="eyebrow">Persönlicher Zugang</p>
+        <h1 class="display small">Dein Konto.</h1>
+        <p class="lead">Hier kommt nur zusammen, was zu deiner Anmeldung gehört: Sitzung, eigenes Profil und ausdrücklich vergebene Rechte.</p>
+        <div class="status-row">
+          <span class="status-chip open" id="connection-chip">Verbindung wird geprüft</span>
+          <span class="id-chip">SUPABASE · RLS</span>
+        </div>
+      </header>
+
+      <section class="section account-grid" aria-labelledby="account-title">
+        <div class="section-head">
+          <p class="eyebrow">Pilotzugang</p>
+          <h2 id="account-title">Einladung annehmen oder anmelden.</h2>
+          <p>Der Link aus deiner Einladungs-E-Mail führt hierher. Später kannst du dich mit derselben Adresse erneut über einen einmaligen E-Mail-Link anmelden.</p>
+        </div>
+
+        <article class="panel account-panel" id="signed-out-panel">
+          <div class="account-panel-head">
+            <span class="account-icon" aria-hidden="true">✉️</span>
+            <div>
+              <p class="eyebrow">Noch nicht angemeldet</p>
+              <h3>Anmeldelink anfordern</h3>
+            </div>
+          </div>
+          <p class="account-copy">Das funktioniert ausschließlich für eine bereits eingeladene Adresse. Dadurch kann niemand über dieses Formular selbst ein neues Konto eröffnen.</p>
+          <form class="form-grid" id="login-form">
+            <div class="field">
+              <label for="login-email">E-Mail-Adresse</label>
+              <input id="login-email" name="email" type="email" autocomplete="email" inputmode="email" required placeholder="name@beispiel.de">
+            </div>
+            <button class="button" id="login-submit" type="submit">Einmaligen Link senden</button>
+            <p class="form-status" id="login-status" role="status" aria-live="polite"></p>
+          </form>
+        </article>
+
+        <article class="panel account-panel" id="signed-in-panel" hidden>
+          <div class="account-panel-head">
+            <span class="account-icon" aria-hidden="true">✓</span>
+            <div>
+              <p class="eyebrow">Sicher angemeldet</p>
+              <h3 id="profile-heading">Dein Profil</h3>
+            </div>
+          </div>
+
+          <dl class="detail-list account-details">
+            <div><dt>E-Mail</dt><dd id="account-email">–</dd></div>
+            <div><dt>Mitglieds-ID</dt><dd id="account-stable-id">Noch nicht vergeben</dd></div>
+            <div><dt>Profilstatus</dt><dd id="account-profile-status">Wird geladen …</dd></div>
+            <div><dt>Erweiterte Rechte</dt><dd id="account-permissions">Wird geladen …</dd></div>
+          </dl>
+          <p class="form-status" id="account-data-status" role="status" aria-live="polite"></p>
+
+          <form class="form-grid profile-form" id="profile-form" hidden>
+            <div class="field">
+              <label for="profile-display-name">Anzeigename</label>
+              <input id="profile-display-name" maxlength="120" required autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="profile-bio">Kurzbeschreibung</label>
+              <textarea id="profile-bio" maxlength="4000" placeholder="Was möchtest du über dich zeigen?"></textarea>
+            </div>
+            <div class="field">
+              <label for="profile-visibility">Sichtbarkeit</label>
+              <select id="profile-visibility">
+                <option value="private">Privat – nur für mich</option>
+                <option value="members">Mitglieder – technisch noch gesperrt</option>
+                <option value="public">Öffentlich – erst nach Veröffentlichung sichtbar</option>
+              </select>
+              <small>Eine öffentliche Sichtbarkeit allein veröffentlicht das Profil noch nicht.</small>
+            </div>
+            <button class="button" id="profile-submit" type="submit">Eigenes Profil speichern</button>
+            <p class="form-status" id="profile-status" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="button-row account-actions">
+            <a class="button secondary" href="../community/kieze/p-hain/">Zu P-Hain</a>
+            <button class="button dark" id="logout-button" type="button">Auf diesem Gerät abmelden</button>
+          </div>
+        </article>
+
+        <article class="notice account-notice">
+          <strong>Sicherheitsgrenze:</strong> Diese Seite kennt keinen geheimen Administrationsschlüssel. Supabase prüft jede Profilabfrage und jede Änderung zusätzlich über Row Level Security. Ein versteckter Button allein gilt nie als Berechtigung.
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>GemDen · persönlicher Pilotzugang</span>
+      <a href="../system/">System und Grenzen ansehen</a>
+    </footer>
+  </div>
+
+  <script>window.BLOB_CONFIG={mode:"guide",root:"../"};</script>
+  <script src="../assets/site.js" defer></script>
+  <script src="../assets/blob.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="../assets/supabase-config.js" defer></script>
+  <script src="../assets/supabase-client.js" defer></script>
+  <script src="./konto.js" defer></script>
+</body>
+</html>

@@ -515,7 +515,8 @@ Details stehen in `BACKEND-PLAN.md`.
 | Blob | Navigation und Kontextaktionen; lokaler Speicher fällt sicher aus | geführte Dialogzustände, später geschützte KI |
 | FFE-System | Indexbrowser mit sichtbaren Quellenstatus/Gates und Statusfilter | UX testen, spätere Quellupdates automatisieren |
 | Smart-Home-Erlebnis | Gardinenprototyp erhalten | echtes Gemälde und Interaktionen |
-| Supabase | Fundament produktiv angewendet; 4 RLS-Tabellen, 4 private Funktionen, 6 Trigger, 8 Policies, P-Hain-Audit und 37/37 zurückgerollte Gegenproben verifiziert | Version `20260919000100` in der Remote-Historie markieren, reale Konten einladen und Client anbinden |
+| Supabase | Fundament produktiv angewendet; 4 RLS-Tabellen, 4 private Funktionen, 6 Trigger, 8 Policies, P-Hain-Audit und 37/37 zurückgerollte Gegenproben verifiziert; erstes Pilotkonto eingeladen; Kontoseite angebunden | Version `20260919000100` in der Remote-Historie markieren, Einladung annehmen und echte Sitzung prüfen |
+| Konto | Anmeldung nur für eingeladene Adressen; eigenes Profil und eigene Rechte RLS-geschützt lesbar; freigegebene eigene Profilfelder bearbeitbar | Einladungslink und Rücksprung auf `gemden.red/konto/` produktiv prüfen |
 | Lenis Dashboard | beschrieben, nicht gebaut | nach produktiv geprüftem Backend-Fundament und realer Rechtevergabe |
 
 ## 18. Bauabschnitte
@@ -531,7 +532,7 @@ Details stehen in `BACKEND-PLAN.md`.
 ### Phase B – Supabase-Fundament
 
 - Schema und erste Migration: **produktiv angewendet; offizieller Historienabgleich der Version noch offen**
-- Auth-Trigger für minimale private Profilentwürfe: **produktiv vorhanden; echte Konten offen**
+- Auth-Trigger für minimale private Profilentwürfe: **produktiv vorhanden; erstes Pilotkonto eingeladen, Annahme offen**
 - Profile: **produktives Fundament vorhanden**
 - Kieze und `KIEZ-P-HAIN`: **produktiv vorhanden und geprüft**
 - bereichsbezogene, ablauf- und widerrufbare Rechte: **produktiv vorhanden; legitime Erstvergabe offen**

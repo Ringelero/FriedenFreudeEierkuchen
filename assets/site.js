@@ -8,7 +8,8 @@
     ['start', 'Start', root],
     ['community', 'Community', root + 'community/'],
     ['matching', 'Leistungen', root + 'leistungen/'],
-    ['system', 'FFE-System', root + 'system/']
+    ['system', 'FFE-System', root + 'system/'],
+    ['account', 'Konto', root + 'konto/']
   ];
 
   slot.className = 'site-nav';

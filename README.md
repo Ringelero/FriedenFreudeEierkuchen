@@ -12,6 +12,7 @@
 - `/leistungen/` – regelbasiertes, erklärbares Fähigkeiten-Matching
 - `/leistungen/smart-home/` – experimentelles Smart-Home-Erlebnis
 - `/system/` – Browser für Institutionen, operative Profile, Methoden und Entwicklungsnetz
+- `/konto/` – eingeladener Zugang mit Supabase-Sitzung, eigenem Profil und eigenen Rechten
 
 ## Quellen
 
@@ -25,7 +26,9 @@ Handoff und Buch wurden als bereitgestellte Arbeitsquellen ausgewertet, sind abe
 
 ## Technischer Stand
 
-Die öffentliche Website ist statisches HTML, CSS und JavaScript auf GitHub Pages. Das erste Supabase-Fundament liegt unter `supabase/` als reproduzierbare Migration mit RLS- und Audit-Regeln sowie 37 Datenbank-Gegenproben vor. Es wurde am 19. September 2026 auf das produktive Projekt angewendet und dort mit 37/37 bestandenen, vollständig zurückgerollten Gegenproben verifiziert. Echte Auth-Konten und die Client-Anbindung der Website sind noch offen; Formulare kennzeichnen deshalb weiterhin ausdrücklich, dass sie noch nichts senden oder speichern.
+Die öffentliche Website ist statisches HTML, CSS und JavaScript auf GitHub Pages. Das erste Supabase-Fundament liegt unter `supabase/` als reproduzierbare Migration mit RLS- und Audit-Regeln sowie 37 Datenbank-Gegenproben vor. Es wurde am 19. September 2026 auf das produktive Projekt angewendet und dort mit 37/37 bestandenen, vollständig zurückgerollten Gegenproben verifiziert.
+
+Die Kontoseite ist als erster echter Client-Schritt mit Supabase Auth verbunden. Sie erlaubt nur bereits eingeladenen Adressen einen Einmal-Link, lädt über die eigene Sitzung ausschließlich das eigene private Profil und die eigenen Rechte und kann nur die per Tabellengrant freigegebenen Profilfelder ändern. Sie enthält ausschließlich den öffentlichen Publishable Key; Schutz entsteht durch RLS, und ein `service_role`-Schlüssel gehört niemals in Browsercode. Die P-Hain-Inhaltsmodule bleiben vorerst statisch und speichern weiterhin keine Formulareingaben.
 
 ## Arbeitsweise
 

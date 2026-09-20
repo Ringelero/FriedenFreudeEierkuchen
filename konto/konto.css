@@ -1,0 +1,39 @@
+.account-shell { --content: 980px; }
+.account-hero { min-height: 430px; }
+.account-grid { display: grid; gap: 22px; }
+.account-grid > .section-head { margin-bottom: 2px; }
+.account-panel { display: grid; gap: 22px; }
+.account-panel[hidden] { display: none; }
+.account-panel h3 { margin: 2px 0 0; font-size: clamp(1.65rem, 4vw, 2.5rem); }
+.account-panel-head { display: flex; align-items: center; gap: 14px; }
+.account-icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  color: var(--ruby);
+  background: rgba(201, 0, 70, .08);
+  font-size: 1.45rem;
+  font-weight: 950;
+}
+.account-copy { max-width: 700px; margin: 0; color: var(--muted); line-height: 1.6; }
+.account-panel .form-grid { max-width: 720px; }
+.account-details { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.account-details div { min-width: 0; }
+.account-details dd { overflow-wrap: anywhere; }
+.profile-form { padding-top: 22px; border-top: 1px solid var(--line); }
+.account-actions { padding-top: 4px; }
+.form-status { min-height: 1.5em; margin: 0; color: var(--muted); font-weight: 750; line-height: 1.5; }
+.form-status[data-state="success"] { color: var(--green); }
+.form-status[data-state="error"] { color: var(--ruby-deep); }
+.button[disabled] { cursor: wait; opacity: .65; }
+.account-notice { margin-top: 2px; }
+
+@media (max-width: 650px) {
+  .account-hero { min-height: 380px; }
+  .account-details { grid-template-columns: 1fr; }
+  .account-actions .button { width: 100%; }
+}

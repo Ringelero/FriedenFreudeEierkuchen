@@ -2,7 +2,7 @@
 
 Stand: 19. September 2026
 
-Status: Phase-B-Fundament produktiv angewendet und mit 37/37 RLS-Gegenproben verifiziert; echte Konten und Client-Anbindung offen
+Status: Phase-B-Fundament produktiv angewendet und mit 37/37 RLS-Gegenproben verifiziert; erstes Pilotkonto eingeladen und sichere Client-Anbindung vorbereitet
 
 ## 1. Ziel
 
@@ -160,7 +160,7 @@ Welche Inhalte standardmäßig welchen Wert erhalten, ist teilweise noch politis
 - `KIEZ-P-HAIN` anlegen
 - Leni gezielt `manage_kiez:KIEZ-P-HAIN` geben
 
-**Technischer Stand vom 19. September 2026:** Das Repository enthält unter `supabase/` eine reproduzierbare Fundament-Migration für `profiles`, `kieze`, `permission_grants` und `audit_events`, minimale Tabellenrechte, RLS-Regeln, Trigger für private Profilentwürfe und Änderungsverlauf sowie 37 pgTAP-Gegenproben. Die Migration ist im produktiven Projekt angewendet. Dort wurden 4 Tabellen mit RLS, 4 private Funktionen, 6 Trigger, 8 Policies, `KIEZ-P-HAIN` und dessen Audit-Ereignis verifiziert; 37/37 Gegenproben bestanden in einer vollständig zurückgerollten Testtransaktion. Echte Auth-Konten und Lenis Recht werden erst mit eindeutig bestätigten realen Benutzer-UUIDs eingerichtet. Weil die Anwendung über den SQL Editor erfolgte, ist außerdem noch der reine Historienabgleich für Version `20260919000100` mit `supabase migration repair --status applied` offen.
+**Technischer Stand vom 20. September 2026:** Das Repository enthält unter `supabase/` eine reproduzierbare Fundament-Migration für `profiles`, `kieze`, `permission_grants` und `audit_events`, minimale Tabellenrechte, RLS-Regeln, Trigger für private Profilentwürfe und Änderungsverlauf sowie 37 pgTAP-Gegenproben. Die Migration ist im produktiven Projekt angewendet. Dort wurden 4 Tabellen mit RLS, 4 private Funktionen, 6 Trigger, 8 Policies, `KIEZ-P-HAIN` und dessen Audit-Ereignis verifiziert; 37/37 Gegenproben bestanden in einer vollständig zurückgerollten Testtransaktion. Das erste eindeutig bestätigte Pilotkonto ist eingeladen und besitzt ein privates Entwurfsprofil, aber noch keine stabile Mitglieds-ID oder erweiterten Rechte. Die neue Kontoseite verwendet ausschließlich den öffentlichen Publishable Key, verhindert offene Kontoerstellung und liest Profil und Rechte über die reale Sitzung. Weil die Migration über den SQL Editor angewendet wurde, ist außerdem noch der reine Historienabgleich für Version `20260919000100` mit `supabase migration repair --status applied` offen.
 
 Die aktuellen Regeln verweigern noch nicht umgesetzte Sichtbarkeiten wie `members` und `scope_members` sicher. Ein Signup kann weder eine stabile `MEM-*`-ID noch ein Recht aus Metadaten übernehmen. Browserrollen dürfen Rechte und Audit-Ereignisse nicht schreiben.
 

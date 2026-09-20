@@ -17,7 +17,7 @@ Der öffentliche P-Hain-Prototyp zeigt bereits die geplanten Bereiche:
 
 Die Oberfläche ist aktuell noch statisch. Eingaben erzeugen nur eine Vorschau und werden ausdrücklich **nicht** gespeichert oder versendet.
 
-Zusätzlich ist die technische Datenbankgrundlage jetzt im Repository vorbereitet: private Profilentwürfe, Kieze, eng begrenzte Rechte, Zugriffsschutz und Änderungsverlauf. Sie ist noch nicht auf das produktive Supabase-Projekt angewendet. Deshalb gibt es weiterhin keinen echten Login und keine versteckte Speicherung.
+Zusätzlich ist die technische Datenbankgrundlage produktiv vorhanden: private Profilentwürfe, Kieze, eng begrenzte Rechte, Zugriffsschutz und Änderungsverlauf. Die erste allgemeine Kontoseite ist mit Supabase verbunden. Lenis reales Konto und das P-Hain-Dashboard sind trotzdem noch nicht freigeschaltet; die sichtbaren P-Hain-Formulare speichern weiterhin nichts.
 
 ## Was dein Konto später können soll
 
@@ -46,4 +46,4 @@ Julius kann den Wunsch dann mit Codex bearbeiten, ohne erst raten zu müssen, we
 
 ## Nächster technischer Schritt
 
-Die vorbereitete Supabase-Migration und ihre Zugriffstests müssen zuerst lokal ausgeführt, gegen den bestehenden Projektstand geprüft und anschließend kontrolliert angewendet werden. Danach werden die echten Auth-Konten angelegt und dein reales Benutzerkonto erhält ausschließlich das Recht `manage_kiez:KIEZ-P-HAIN`. Erst dann wird das Dashboard verbunden. Bis dahin ist diese Datei eine Bedienvorschau, keine Zugangsanleitung.
+Das Supabase-Fundament ist seit dem 19. September 2026 produktiv vorhanden und hat 37/37 Zugriffstests bestanden. Als Nächstes werden die echten Auth-Konten mit eindeutig bestätigten E-Mail-Adressen eingeladen; anschließend erhält dein reales Benutzerkonto ausschließlich das Recht `manage_kiez:KIEZ-P-HAIN`. Erst danach wird das Dashboard verbunden und mit deinem echten Login erneut geprüft. Bis dahin ist diese Datei eine Bedienvorschau, keine Zugangsanleitung.
