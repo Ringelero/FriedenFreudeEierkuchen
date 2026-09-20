@@ -1,0 +1,98 @@
+[data-gemden-page-root],
+.gdm-page {
+  --gdm-accent: var(--ruby);
+  --gdm-accent-deep: var(--ruby-deep);
+  --gdm-surface: var(--paper-solid);
+  --gdm-radius: var(--radius);
+}
+
+.gdm-page .hero,
+.gdm-page .panel {
+  border-radius: var(--gdm-radius);
+}
+
+.gdm-page .display,
+.gdm-page .eyebrow,
+.gdm-page .id-chip,
+.gdm-page .arrow,
+.gdm-page .breadcrumb a {
+  color: var(--gdm-accent);
+}
+
+.gdm-profile-grid { align-items: center; }
+.gdm-status-row { margin-top: 18px; }
+.gdm-profile-visual {
+  position: relative;
+  min-height: 250px;
+  display: grid;
+  place-items: center;
+  perspective: 700px;
+}
+.gdm-gem {
+  width: min(46vw, 230px);
+  aspect-ratio: 1;
+  clip-path: polygon(50% 0, 88% 20%, 100% 62%, 70% 100%, 30% 100%, 0 62%, 12% 20%);
+  background: conic-gradient(from 20deg, #ff9dbb, var(--gdm-accent-deep), #ff3f7c, #ffd2df, var(--gdm-accent), #ff799f, #ff9dbb);
+  box-shadow: 0 30px 70px rgba(201, 0, 70, .35);
+  box-shadow: 0 30px 70px color-mix(in srgb, var(--gdm-accent) 35%, transparent);
+  animation: gdm-gem-float 6s ease-in-out infinite;
+}
+
+.gdm-page[data-motion="none"] .gdm-gem { animation: none; }
+.gdm-skill-card,
+.gdm-evidence-card { min-height: auto; }
+.gdm-skill-card h3,
+.gdm-evidence-card h3 { font-size: 1.25rem; }
+.gdm-skill-card .id-chip,
+.gdm-evidence-card .tag { margin-top: auto; }
+.gdm-card-boundary {
+  padding-top: 11px;
+  border-top: 1px solid var(--line);
+  font-size: .82rem;
+}
+.gdm-boundary { margin-top: 18px; }
+
+.gdm-tone-ruby { --gdm-module-tone: var(--gdm-accent); }
+.gdm-tone-gold { --gdm-module-tone: var(--gold); }
+.gdm-tone-mint { --gdm-module-tone: var(--mint); }
+.gdm-tone-neutral { --gdm-module-tone: var(--ink); }
+
+.gdm-page[data-motion="gentle"] .gdm-motion-rise,
+.gdm-page[data-motion="expressive"] .gdm-motion-rise {
+  animation: gdm-rise .62s both;
+  animation-delay: calc(var(--gdm-module-index, 0) * 70ms);
+}
+.gdm-page[data-motion="gentle"] .gdm-motion-fade,
+.gdm-page[data-motion="expressive"] .gdm-motion-fade {
+  animation: gdm-fade .5s both;
+  animation-delay: calc(var(--gdm-module-index, 0) * 60ms);
+}
+.gdm-page[data-motion="expressive"] .gdm-motion-float { animation: gdm-module-float 5.5s ease-in-out infinite; }
+.gdm-page[data-motion="expressive"] .gdm-motion-pulse { animation: gdm-pulse 3.8s ease-in-out infinite; }
+
+@keyframes gdm-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes gdm-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes gdm-module-float {
+  50% { transform: translateY(-8px); }
+}
+@keyframes gdm-pulse {
+  50% { transform: scale(1.01); }
+}
+@keyframes gdm-gem-float {
+  50% { transform: translateY(-16px) rotateY(18deg) rotateZ(3deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gdm-page *,
+  .gdm-page *::before,
+  .gdm-page *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

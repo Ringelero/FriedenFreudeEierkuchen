@@ -97,6 +97,9 @@ Ein Erfahrungsnachweis bewertet eine Fähigkeit in einem Kontext, nicht den Wert
 | Tabelle | Aufgabe |
 |---|---|
 | `content_blocks` | bearbeitbare Seitenabschnitte mit stabiler Bauteil-ID |
+| `page_documents` | Seite, Subjekt, Sichtbarkeit und Zeiger auf die veröffentlichte Revision |
+| `page_revisions` | unveränderliche, versionierte Modulkomposition als geprüftes JSON-Dokument |
+| `module_assets` | kontrollierte Medien und Anhänge für eine Seite oder Modulinstanz |
 | `events` | Termine, Ort, Zeit, Sichtbarkeit und Status |
 | `event_responses` | Interesse oder Teilnahme mit eigener Sichtbarkeit |
 | `posts` | Kiezbrett und Mitteilungen |
@@ -167,6 +170,7 @@ Die aktuellen Regeln verweigern noch nicht umgesetzte Sichtbarkeiten wie `member
 ### Schritt 2 – P-Hain-Dashboard
 
 - `events`, `posts`, `knowledge_entries`, `content_blocks`
+- `page_documents`, immutable `page_revisions` und kontrollierte Modul-Assets
 - Erstellen, Entwurf, Veröffentlichen, Ändern, Ausblenden
 - öffentlich/geschützt klar anzeigen
 - Änderungswünsche mit Bauteil-ID

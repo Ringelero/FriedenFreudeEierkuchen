@@ -1,0 +1,157 @@
+{
+  "$schema": "../../../schemas/gemden-page-document.v1.schema.json",
+  "schema_version": "1.0.0",
+  "id": "PAGE-MEM-JULIUS",
+  "subject": {
+    "kind": "member",
+    "id": "MEM-JULIUS"
+  },
+  "status": "pilot",
+  "visibility": "public",
+  "ffe_refs": ["K05", "W01", "R01", "F04", "K10", "T05", "T06", "T10"],
+  "capability_context": {
+    "human_skill_refs": [
+      "SKILL-SMART-HOME",
+      "SKILL-ELECTRICAL-UNDERSTANDING",
+      "SKILL-TINKERING",
+      "SKILL-TROUBLESHOOTING",
+      "SKILL-TECH-COMMUNICATION"
+    ],
+    "ai_operation_refs": ["OP-K05", "OP-K10", "OP-F04", "OP-T05", "OP-T06", "OP-T10"],
+    "module_permission_grants": [
+      "module:data.public.community.read",
+      "module:navigation.internal",
+      "module:ui.motion.decorative"
+    ]
+  },
+  "data_sources": [
+    {
+      "id": "community",
+      "type": "json",
+      "url": "../community-v0.1.json",
+      "classification": "public",
+      "collections": ["members", "dynasties", "skills", "evidence"]
+    }
+  ],
+  "bindings": {
+    "member": {
+      "kind": "entity",
+      "source": "community",
+      "collection": "members",
+      "id": "MEM-JULIUS"
+    },
+    "dynasty": {
+      "kind": "entity",
+      "source": "community",
+      "collection": "dynasties",
+      "id": "DYN-RUBYBUBYS"
+    },
+    "skills": {
+      "kind": "related",
+      "source": "community",
+      "collection": "skills",
+      "ids_from": { "binding": "member", "field": "skill_ids" }
+    },
+    "evidence": {
+      "kind": "related",
+      "source": "community",
+      "collection": "evidence",
+      "ids_from": { "binding": "member", "field": "evidence_ids" }
+    }
+  },
+  "theme": {
+    "preset": "ruby",
+    "tokens": {
+      "accent": "#c90046",
+      "accent_deep": "#8d0033",
+      "surface": "#fffaf6",
+      "radius": "30px"
+    },
+    "motion": "expressive"
+  },
+  "regions": [
+    {
+      "id": "main",
+      "layout": "flow",
+      "modules": [
+        {
+          "id": "julius-hero",
+          "type": "gemden.profile-hero",
+          "version": 1,
+          "bindings": { "member": "member", "dynasty": "dynasty" },
+          "props": {
+            "eyebrow": "Mitglied · Rubybubys",
+            "visual": "ruby-gem",
+            "visual_label": "Animierter Rubin",
+            "breadcrumb": [
+              { "label": "Community", "href": "/community/" },
+              { "label": "Mitglieder" },
+              { "label": "Julius" }
+            ]
+          },
+          "appearance": { "tone": "ruby", "motion": "rise" }
+        },
+        {
+          "id": "julius-skills",
+          "type": "gemden.skill-grid",
+          "version": 1,
+          "bindings": { "skills": "skills" },
+          "props": {
+            "eyebrow": "Fähigkeitsportfolio",
+            "title": "Was Julius einbringen kann.",
+            "intro": "Fähigkeiten sind generisch und auf konkrete Situationen anwendbar. Sie sind keine globale Rangliste und keine automatische Zusage für jeden Auftrag.",
+            "icons": {
+              "SKILL-SMART-HOME": "🏠",
+              "SKILL-ELECTRICAL-UNDERSTANDING": "⚡",
+              "SKILL-TINKERING": "🛠️",
+              "SKILL-TROUBLESHOOTING": "🔎",
+              "SKILL-TECH-COMMUNICATION": "🧠"
+            }
+          },
+          "appearance": { "tone": "neutral", "motion": "rise" }
+        },
+        {
+          "id": "julius-evidence",
+          "type": "gemden.evidence-grid",
+          "version": 1,
+          "bindings": { "evidence": "evidence" },
+          "props": {
+            "eyebrow": "Evidenz statt Behauptungsnebel",
+            "title": "Woher die Erfahrung kommt.",
+            "boundary": "Allgemeines elektrotechnisches Verständnis ist kein pauschaler Nachweis für jede zulassungspflichtige Arbeit. Sicherheit, Rechtslage, Qualifikation und Auftrag werden immer konkret geprüft."
+          },
+          "appearance": { "tone": "gold", "motion": "fade" }
+        },
+        {
+          "id": "julius-paths",
+          "type": "gemden.link-cards",
+          "version": 1,
+          "bindings": {},
+          "props": {
+            "eyebrow": "Projekte & Wege",
+            "title": "Technik darf ein Erlebnis sein.",
+            "items": [
+              {
+                "icon": "🎭",
+                "title": "Smart-Home-Gemälde",
+                "description": "Ein Vorhang, eine gemalte Welt und später interaktive Technik im Browser.",
+                "label": "Experiment öffnen →",
+                "href": "/leistungen/smart-home/",
+                "tone": "ruby"
+              },
+              {
+                "icon": "✨",
+                "title": "Wunsch: coole Lichterkette",
+                "description": "Sieh, wie ein Wunsch in Fähigkeiten übersetzt und begründet gematcht wird.",
+                "label": "Matching starten →",
+                "href": "/leistungen/?beispiel=lichterkette",
+                "tone": "gold"
+              }
+            ]
+          },
+          "appearance": { "tone": "neutral", "motion": "rise" }
+        }
+      ]
+    }
+  ]
+}

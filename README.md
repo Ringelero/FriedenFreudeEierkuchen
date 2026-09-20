@@ -14,6 +14,8 @@
 - `/system/` – Browser für Institutionen, operative Profile, Methoden und Entwicklungsnetz
 - `/konto/` – eingeladener Zugang mit Supabase-Sitzung, eigenem Profil und eigenen Rechten
 
+Die Julius-Seite ist zugleich der erste Pilot der editorunabhängigen Modulplattform. Ihr versioniertes Seitendokument, der Modulkatalog, Capability-Grenzen, JSON-Schemas und der generische Renderer liegen unter `assets/data/pages/`, `assets/data/modules.v1.json`, `assets/data/capabilities.v1.json`, `schemas/` und `assets/gemden-modules.js`.
+
 ## Quellen
 
 Die Website folgt dieser Reihenfolge:
@@ -29,6 +31,8 @@ Handoff und Buch wurden als bereitgestellte Arbeitsquellen ausgewertet, sind abe
 Die öffentliche Website ist statisches HTML, CSS und JavaScript auf GitHub Pages. Das erste Supabase-Fundament liegt unter `supabase/` als reproduzierbare Migration mit RLS- und Audit-Regeln sowie 37 Datenbank-Gegenproben vor. Es wurde am 19. September 2026 auf das produktive Projekt angewendet und dort mit 37/37 bestandenen, vollständig zurückgerollten Gegenproben verifiziert.
 
 Die Kontoseite ist als erster echter Client-Schritt mit Supabase Auth verbunden. Sie erlaubt nur bereits eingeladenen Adressen einen Einmal-Link, lädt über die eigene Sitzung ausschließlich das eigene private Profil und die eigenen Rechte und kann nur die per Tabellengrant freigegebenen Profilfelder ändern. Sie enthält ausschließlich den öffentlichen Publishable Key; Schutz entsteht durch RLS, und ein `service_role`-Schlüssel gehört niemals in Browsercode. Die P-Hain-Inhaltsmodule bleiben vorerst statisch und speichern weiterhin keine Formulareingaben.
+
+Der neue Modulrenderer ist Progressive Enhancement: Er ersetzt die statische Julius-Seite nur nach erfolgreicher Prüfung aller Verträge und öffentlichen Datenbindungen. Bei deaktiviertem JavaScript, Ladefehlern oder einer verweigerten Capability bleibt die vollständige HTML-Seite nutzbar. Menschliche Skills, KI-Operationsprofile und technische Modulberechtigungen sind getrennte Typen und verleihen einander keine Rechte.
 
 ## Arbeitsweise
 

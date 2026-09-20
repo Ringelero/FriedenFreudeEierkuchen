@@ -4,19 +4,13 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="description" content="Julius — Mitglied der Rubybubys mit Fähigkeiten rund um Smart Home, Technik und Tüfteln.">
   <title>Julius · Mitglied · GemDen</title>
-  <link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/blob.css">
-  <style>
-    .gem-stage{position:relative;min-height:250px;display:grid;place-items:center;perspective:700px}
-    .gem{width:min(46vw,230px);aspect-ratio:1;clip-path:polygon(50% 0,88% 20%,100% 62%,70% 100%,30% 100%,0 62%,12% 20%);background:conic-gradient(from 20deg,#ff9dbb,#8d0033,#ff3f7c,#ffd2df,#a5003c,#ff799f,#ff9dbb);box-shadow:0 30px 70px rgba(201,0,70,.35);animation:gem-float 6s ease-in-out infinite}
-    @keyframes gem-float{50%{transform:translateY(-16px) rotateY(18deg) rotateZ(3deg)}}
-    .skill-card{min-height:auto}.skill-card h3{font-size:1.25rem}.skill-card .tag{margin-top:auto}
-  </style>
+  <link rel="stylesheet" href="../../../assets/site.css"><link rel="stylesheet" href="../../../assets/gemden-modules.css"><link rel="stylesheet" href="../../../assets/blob.css">
 </head>
 <body data-area="community" data-blob-mode="guide">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <div class="site-shell">
     <nav class="site-nav" data-site-nav data-root="../../../" aria-label="Hauptnavigation"><a class="site-mark" href="../../../">GemDen</a><div class="nav-links"><a href="../../../">Start</a><a href="../../../community/" aria-current="page">Community</a><a href="../../../leistungen/">Leistungen</a><a href="../../../system/">FFE-System</a></div></nav>
-    <main id="inhalt">
+    <main id="inhalt" data-gemden-page-root data-page-document="../../../assets/data/pages/julius.v1.json" data-module-catalog="../../../assets/data/modules.v1.json" data-capability-catalog="../../../assets/data/capabilities.v1.json">
       <header class="hero compact">
         <nav class="breadcrumb" aria-label="Brotkrumen"><a href="../../">Community</a><span>Mitglieder</span><span>Julius</span></nav>
         <div class="grid two" style="align-items:center">
@@ -26,18 +20,18 @@
             <p class="lead">Ein Berliner mit Herz. Meine Leidenschaft ist es, Menschen mit Technik zu verbinden und Kreativität zu unterstützen.</p>
             <div class="status-row" style="margin-top:18px"><span class="id-chip">MEM-JULIUS</span><a class="status-chip" href="../../dynastien/rubybubys/">DYN-RUBYBUBYS</a></div>
           </div>
-          <div class="gem-stage" aria-label="Animierter Rubin"><div class="gem"></div></div>
+          <div class="gdm-profile-visual" aria-label="Animierter Rubin"><div class="gdm-gem"></div></div>
         </div>
       </header>
 
       <section class="section" aria-labelledby="skills-title">
         <div class="section-head"><p class="eyebrow">Fähigkeitsportfolio</p><h2 id="skills-title">Was Julius einbringen kann.</h2><p>Fähigkeiten sind generisch und auf konkrete Situationen anwendbar. Sie sind keine globale Rangliste und keine automatische Zusage für jeden Auftrag.</p></div>
         <div class="grid three">
-          <article class="card skill-card"><span class="icon">🏠</span><h3>Smart-Home-Systeme verbinden</h3><p>Sensoren, Aktoren und Steuerung als verständliches Ganzes zusammendenken.</p><span class="id-chip">SKILL-SMART-HOME</span></article>
-          <article class="card skill-card"><span class="icon">⚡</span><h3>Elektrische Zusammenhänge verstehen</h3><p>Funktionen analysieren und technische Anforderungen sicher einordnen.</p><span class="id-chip">SKILL-ELECTRICAL-UNDERSTANDING</span></article>
-          <article class="card skill-card"><span class="icon">🛠️</span><h3>Tüfteln &amp; Prototypen bauen</h3><p>Aus Ideen testbare technische oder materielle Lösungen entwickeln.</p><span class="id-chip">SKILL-TINKERING</span></article>
-          <article class="card skill-card"><span class="icon">🔎</span><h3>Fehler systematisch finden</h3><p>Beobachten, Ursachen eingrenzen, testen und nächste Schritte erklären.</p><span class="id-chip">SKILL-TROUBLESHOOTING</span></article>
-          <article class="card skill-card"><span class="icon">🧠</span><h3>Technik verständlich erklären</h3><p>Menschen nicht abhängig machen, sondern zum eigenen Umgang mit Technik befähigen.</p><span class="id-chip">SKILL-TECH-COMMUNICATION</span></article>
+          <article class="card gdm-skill-card"><span class="icon">🏠</span><h3>Smart-Home-Systeme verbinden</h3><p>Sensoren, Aktoren und Steuerung als verständliches Ganzes zusammendenken.</p><span class="id-chip">SKILL-SMART-HOME</span></article>
+          <article class="card gdm-skill-card"><span class="icon">⚡</span><h3>Elektrische Zusammenhänge verstehen</h3><p>Funktionen analysieren und technische Anforderungen sicher einordnen.</p><span class="id-chip">SKILL-ELECTRICAL-UNDERSTANDING</span></article>
+          <article class="card gdm-skill-card"><span class="icon">🛠️</span><h3>Tüfteln &amp; Prototypen bauen</h3><p>Aus Ideen testbare technische oder materielle Lösungen entwickeln.</p><span class="id-chip">SKILL-TINKERING</span></article>
+          <article class="card gdm-skill-card"><span class="icon">🔎</span><h3>Fehler systematisch finden</h3><p>Beobachten, Ursachen eingrenzen, testen und nächste Schritte erklären.</p><span class="id-chip">SKILL-TROUBLESHOOTING</span></article>
+          <article class="card gdm-skill-card"><span class="icon">🧠</span><h3>Technik verständlich erklären</h3><p>Menschen nicht abhängig machen, sondern zum eigenen Umgang mit Technik befähigen.</p><span class="id-chip">SKILL-TECH-COMMUNICATION</span></article>
         </div>
       </section>
 
@@ -63,6 +57,6 @@
     <footer class="footer"><span>MEM-JULIUS · öffentliches Profil</span><a href="../../">Zur Mitgliederstruktur</a></footer>
   </div>
   <script>window.BLOB_CONFIG={mode:"guide",root:"../../../"};</script>
-  <script src="../../../assets/site.js" defer></script><script src="../../../assets/blob.js" defer></script>
+  <script src="../../../assets/site.js" defer></script><script src="../../../assets/gemden-modules.js" defer></script><script src="../../../assets/blob.js" defer></script>
 </body>
 </html>

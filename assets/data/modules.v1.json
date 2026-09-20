@@ -1,0 +1,74 @@
+{
+  "$schema": "../../schemas/gemden-module-manifest.v1.schema.json",
+  "schema_version": "1.0.0",
+  "catalog_version": "1.0.0",
+  "modules": [
+    {
+      "type": "gemden.profile-hero",
+      "version": 1,
+      "title": "Profilauftakt",
+      "description": "Zeigt ein Mitglied, seine öffentliche Kurzbeschreibung und eine optionale Dynastie.",
+      "status": "pilot",
+      "renderer": "profileHero",
+      "data_inputs": [
+        { "name": "member", "entity": "community.member", "cardinality": "one", "required": true },
+        { "name": "dynasty", "entity": "community.dynasty", "cardinality": "one", "required": false }
+      ],
+      "capabilities": {
+        "requires": ["module:data.public.community.read", "module:navigation.internal"],
+        "optional": ["module:ui.motion.decorative"],
+        "emits": ["page:module-ready"]
+      },
+      "ffe_refs": ["K05", "R01", "F04", "T05", "T10"]
+    },
+    {
+      "type": "gemden.skill-grid",
+      "version": 1,
+      "title": "Fähigkeitsraster",
+      "description": "Zeigt kontextbezogene Fähigkeiten ohne globale Personenrangliste.",
+      "status": "pilot",
+      "renderer": "skillGrid",
+      "data_inputs": [
+        { "name": "skills", "entity": "community.skill", "cardinality": "many", "required": true }
+      ],
+      "capabilities": {
+        "requires": ["module:data.public.community.read"],
+        "optional": ["module:ui.motion.decorative"],
+        "emits": ["page:module-ready"]
+      },
+      "ffe_refs": ["K05", "W01", "T05"]
+    },
+    {
+      "type": "gemden.evidence-grid",
+      "version": 1,
+      "title": "Evidenzraster",
+      "description": "Zeigt Nachweise samt Herkunftsstatus und einer sichtbaren Einsatzgrenze.",
+      "status": "pilot",
+      "renderer": "evidenceGrid",
+      "data_inputs": [
+        { "name": "evidence", "entity": "community.evidence", "cardinality": "many", "required": true }
+      ],
+      "capabilities": {
+        "requires": ["module:data.public.community.read"],
+        "optional": ["module:ui.motion.decorative"],
+        "emits": ["page:module-ready"]
+      },
+      "ffe_refs": ["K05", "F04", "T05"]
+    },
+    {
+      "type": "gemden.link-cards",
+      "version": 1,
+      "title": "Wegkarten",
+      "description": "Verbindet eine Seite über kuratierte interne Links mit Projekten, Werkzeugen oder Situationen.",
+      "status": "pilot",
+      "renderer": "linkCards",
+      "data_inputs": [],
+      "capabilities": {
+        "requires": ["module:navigation.internal"],
+        "optional": ["module:ui.motion.decorative"],
+        "emits": ["navigation:open", "page:module-ready"]
+      },
+      "ffe_refs": ["K10", "T06", "T10"]
+    }
+  ]
+}
