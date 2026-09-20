@@ -59,7 +59,11 @@ function createField(field) {
 }
 
 function dataIndex(page, community) {
-  const collections = new Map(Object.entries(community).map(([name, items]) => [name, new Map((items || []).map(item => [item.id, item]))]));
+  const collections = new Map(
+    Object.entries(community)
+      .filter(([, items]) => Array.isArray(items))
+      .map(([name, items]) => [name, new Map(items.map(item => [item.id, item]))])
+  );
   const entity = bindingName => {
     const binding = page.bindings[bindingName];
     if (!binding || binding.kind !== 'entity') return null;
