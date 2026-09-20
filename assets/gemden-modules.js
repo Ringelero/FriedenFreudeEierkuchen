@@ -70,6 +70,22 @@
         requireCondition(id.startsWith(MODULE_PERMISSION_PREFIX), `${module.type}: ${id} ist keine Modulberechtigung.`);
         if (knownCapabilities) requireCondition(knownCapabilities.has(id), `${module.type}: unbekannte Capability ${id}.`);
       });
+      requireCondition(isRecord(module.editor), `${module.type}: Editor-Vertrag fehlt.`);
+      requireCondition(/^[a-z][a-z0-9-]*$/.test(module.editor.category || ''), `${module.type}: ungültige Editor-Kategorie.`);
+      requireCondition(typeof module.editor.category_title === 'string' && module.editor.category_title, `${module.type}: Editor-Kategorietitel fehlt.`);
+      requireCondition(isRecord(module.editor.default_props), `${module.type}: Editor-Standardwerte fehlen.`);
+      requireCondition(isRecord(module.editor.default_appearance), `${module.type}: Editor-Standarddarstellung fehlt.`);
+      requireCondition(TONES.has(module.editor.default_appearance.tone), `${module.type}: ungültiger Editor-Standardton.`);
+      requireCondition(MOTIONS.has(module.editor.default_appearance.motion), `${module.type}: ungültige Editor-Standardanimation.`);
+      requireCondition(Array.isArray(module.editor.fields), `${module.type}: Editor-Felder fehlen.`);
+      requireCondition(unique(module.editor.fields.map(field => field.id)), `${module.type}: Editor-Feld-IDs müssen eindeutig sein.`);
+      requireCondition(unique(module.editor.fields.map(field => field.target)), `${module.type}: Editor-Ziele müssen eindeutig sein.`);
+      module.editor.fields.forEach(field => {
+        requireCondition(/^[a-z][a-z0-9_]*$/.test(field.id || ''), `${module.type}: ungültige Editor-Feld-ID.`);
+        requireCondition(/^(props|appearance)\.[a-z][a-z0-9_]*$/.test(field.target || ''), `${module.type}: unsicheres Editor-Ziel ${field.target}.`);
+        requireCondition(['text', 'textarea', 'select', 'link-list'].includes(field.control), `${module.type}: unbekanntes Editor-Steuerelement.`);
+        if (field.control === 'select') requireCondition(Array.isArray(field.options) && field.options.length, `${module.type}: Auswahloptionen fehlen.`);
+      });
     });
     return catalog;
   }

@@ -19,6 +19,46 @@
         "optional": ["module:ui.motion.decorative"],
         "emits": ["page:module-ready"]
       },
+      "editor": {
+        "category": "profil",
+        "category_title": "Profil",
+        "default_props": {
+          "eyebrow": "Mitglied",
+          "visual": "ruby-gem",
+          "visual_label": "Animiertes Profilzeichen",
+          "breadcrumb": []
+        },
+        "default_appearance": { "tone": "ruby", "motion": "rise" },
+        "fields": [
+          { "id": "eyebrow", "target": "props.eyebrow", "label": "Kleine Überschrift", "control": "text" },
+          { "id": "visual_label", "target": "props.visual_label", "label": "Beschreibung des Motivs", "control": "text" },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Farbton",
+            "control": "select",
+            "options": [
+              { "label": "Rubin", "value": "ruby" },
+              { "label": "Gold", "value": "gold" },
+              { "label": "Minze", "value": "mint" },
+              { "label": "Neutral", "value": "neutral" }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Bewegung",
+            "control": "select",
+            "options": [
+              { "label": "Keine", "value": "none" },
+              { "label": "Einblenden", "value": "fade" },
+              { "label": "Aufsteigen", "value": "rise" },
+              { "label": "Schweben", "value": "float" },
+              { "label": "Pulsieren", "value": "pulse" }
+            ]
+          }
+        ]
+      },
       "ffe_refs": ["K05", "R01", "F04", "T05", "T10"]
     },
     {
@@ -35,6 +75,47 @@
         "requires": ["module:data.public.community.read"],
         "optional": ["module:ui.motion.decorative"],
         "emits": ["page:module-ready"]
+      },
+      "editor": {
+        "category": "faehigkeiten",
+        "category_title": "Fähigkeiten",
+        "default_props": {
+          "eyebrow": "Fähigkeitsportfolio",
+          "title": "Was ich einbringen kann.",
+          "intro": "Fähigkeiten gelten in ihrem jeweiligen Kontext und sind keine globale Rangliste.",
+          "icons": {}
+        },
+        "default_appearance": { "tone": "neutral", "motion": "rise" },
+        "fields": [
+          { "id": "eyebrow", "target": "props.eyebrow", "label": "Kleine Überschrift", "control": "text" },
+          { "id": "title", "target": "props.title", "label": "Überschrift", "control": "text" },
+          { "id": "intro", "target": "props.intro", "label": "Einleitung", "control": "textarea" },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Farbton",
+            "control": "select",
+            "options": [
+              { "label": "Neutral", "value": "neutral" },
+              { "label": "Rubin", "value": "ruby" },
+              { "label": "Gold", "value": "gold" },
+              { "label": "Minze", "value": "mint" }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Bewegung",
+            "control": "select",
+            "options": [
+              { "label": "Keine", "value": "none" },
+              { "label": "Einblenden", "value": "fade" },
+              { "label": "Aufsteigen", "value": "rise" },
+              { "label": "Schweben", "value": "float" },
+              { "label": "Pulsieren", "value": "pulse" }
+            ]
+          }
+        ]
       },
       "ffe_refs": ["K05", "W01", "T05"]
     },
@@ -53,6 +134,46 @@
         "optional": ["module:ui.motion.decorative"],
         "emits": ["page:module-ready"]
       },
+      "editor": {
+        "category": "nachweise",
+        "category_title": "Nachweise",
+        "default_props": {
+          "eyebrow": "Nachweise",
+          "title": "Woher die Erfahrung kommt.",
+          "boundary": "Nachweise gelten nur im beschriebenen Kontext und ersetzen keine erforderliche Zulassung."
+        },
+        "default_appearance": { "tone": "gold", "motion": "fade" },
+        "fields": [
+          { "id": "eyebrow", "target": "props.eyebrow", "label": "Kleine Überschrift", "control": "text" },
+          { "id": "title", "target": "props.title", "label": "Überschrift", "control": "text" },
+          { "id": "boundary", "target": "props.boundary", "label": "Sichtbare Grenze", "control": "textarea" },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Farbton",
+            "control": "select",
+            "options": [
+              { "label": "Gold", "value": "gold" },
+              { "label": "Rubin", "value": "ruby" },
+              { "label": "Minze", "value": "mint" },
+              { "label": "Neutral", "value": "neutral" }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Bewegung",
+            "control": "select",
+            "options": [
+              { "label": "Keine", "value": "none" },
+              { "label": "Einblenden", "value": "fade" },
+              { "label": "Aufsteigen", "value": "rise" },
+              { "label": "Schweben", "value": "float" },
+              { "label": "Pulsieren", "value": "pulse" }
+            ]
+          }
+        ]
+      },
       "ffe_refs": ["K05", "F04", "T05"]
     },
     {
@@ -67,6 +188,55 @@
         "requires": ["module:navigation.internal"],
         "optional": ["module:ui.motion.decorative"],
         "emits": ["navigation:open", "page:module-ready"]
+      },
+      "editor": {
+        "category": "wege",
+        "category_title": "Wege & Projekte",
+        "default_props": {
+          "eyebrow": "Wege",
+          "title": "Wohin es weitergeht.",
+          "items": [
+            {
+              "icon": "✨",
+              "title": "Neue Wegkarte",
+              "description": "Beschreibe, wohin dieser Weg führt.",
+              "label": "Öffnen →",
+              "href": "/community/",
+              "tone": "ruby"
+            }
+          ]
+        },
+        "default_appearance": { "tone": "neutral", "motion": "rise" },
+        "fields": [
+          { "id": "eyebrow", "target": "props.eyebrow", "label": "Kleine Überschrift", "control": "text" },
+          { "id": "title", "target": "props.title", "label": "Überschrift", "control": "text" },
+          { "id": "items", "target": "props.items", "label": "Wegkarten", "control": "link-list" },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Farbton",
+            "control": "select",
+            "options": [
+              { "label": "Neutral", "value": "neutral" },
+              { "label": "Rubin", "value": "ruby" },
+              { "label": "Gold", "value": "gold" },
+              { "label": "Minze", "value": "mint" }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Bewegung",
+            "control": "select",
+            "options": [
+              { "label": "Keine", "value": "none" },
+              { "label": "Einblenden", "value": "fade" },
+              { "label": "Aufsteigen", "value": "rise" },
+              { "label": "Schweben", "value": "float" },
+              { "label": "Pulsieren", "value": "pulse" }
+            ]
+          }
+        ]
       },
       "ffe_refs": ["K10", "T06", "T10"]
     }
