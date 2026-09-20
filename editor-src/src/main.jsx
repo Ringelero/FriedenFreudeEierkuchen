@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Puck } from '@puckeditor/core';
+import { Puck, useGetPuck } from '@puckeditor/core';
 import '@puckeditor/core/puck.css';
 import './editor.css';
 import { createLocalDraft, editorStorageKey, fromPuckData, toPuckData } from './gemden-adapter.mjs';
@@ -112,12 +112,14 @@ function EditorApp({ page, catalog, capabilities, community, restoredLocal }) {
     }
   }
 
-  function HeaderActions({ state }) {
+  function HeaderActions({ children }) {
+    const getPuck = useGetPuck();
     return (
       <div className="editor-header-actions">
+        {children}
         <button type="button" onClick={() => {
           try {
-            downloadDocument(buildDocument(state.data));
+            downloadDocument(buildDocument(getPuck().appState.data));
             setStatus({ kind: 'success', message: 'Geprüftes Seitendokument wurde heruntergeladen.' });
           } catch (error) {
             setStatus({ kind: 'error', message: `Download blockiert: ${formatError(error)}` });
@@ -137,7 +139,7 @@ function EditorApp({ page, catalog, capabilities, community, restoredLocal }) {
         config={config}
         data={initialData}
         onPublish={saveDraft}
-        renderHeaderActions={HeaderActions}
+        overrides={{ headerActions: HeaderActions }}
         headerTitle="GemDen-Seitenwerkstatt"
         headerPath="Julius · lokaler Pilot"
         dictionary={GERMAN_DICTIONARY}

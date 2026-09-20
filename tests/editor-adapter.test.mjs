@@ -100,3 +100,10 @@ test('module catalogs reject editor fields that can write outside declared props
     /unsicheres Editor-Ziel/
   );
 });
+
+test('custom header actions keep Puck’s visible draft-save action', async () => {
+  const source = await readFile(new URL('../editor-src/src/main.jsx', import.meta.url), 'utf8');
+  assert.match(source, /overrides=\{\{ headerActions: HeaderActions \}\}/);
+  assert.match(source, /<div className="editor-header-actions">\s*\{children\}/);
+  assert.doesNotMatch(source, /renderHeaderActions=/);
+});
