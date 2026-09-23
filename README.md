@@ -13,6 +13,7 @@
 - `/leistungen/smart-home/` – experimentelles Smart-Home-Erlebnis
 - `/system/` – Browser für Institutionen, operative Profile, Methoden und Entwicklungsnetz
 - `/konto/` – eingeladener Zugang mit Supabase-Sitzung, eigenem Profil und eigenen Rechten
+- `/gestalten/` – private Seitenwerkstatt mit validierter Vorschau, Serverrevisionen und deterministischem Blob-Regelassistenten
 
 Die Julius-Seite ist zugleich der erste Pilot der editorunabhängigen Modulplattform. Ihr versioniertes Seitendokument, der Modulkatalog, Capability-Grenzen, JSON-Schemas und der generische Renderer liegen unter `assets/data/pages/`, `assets/data/modules.v1.json`, `assets/data/capabilities.v1.json`, `schemas/` und `assets/gemden-modules.js`.
 
@@ -33,6 +34,8 @@ Die öffentliche Website ist statisches HTML, CSS und JavaScript auf GitHub Page
 Die Kontoseite ist als erster echter Client-Schritt mit Supabase Auth verbunden. Sie erlaubt nur bereits eingeladenen Adressen einen einmal verwendbaren Link und anschließend das selbstbestimmte Setzen eines Passworts. Mit E-Mail-Adresse und Passwort funktioniert die Anmeldung danach browserübergreifend, ohne einen Link zwischen Geräten zu übertragen. Die Seite lädt über die eigene Sitzung ausschließlich das eigene private Profil und die eigenen Rechte und kann nur die per Tabellengrant freigegebenen Profilfelder ändern. Ein Mitglied mit bestätigter stabiler `MEM-*`-ID kann dort außerdem genau seine eigene private Profilseite über `create_own_profile_page` anlegen; die erste Revision entsteht unveränderlich, ohne Veröffentlichung oder zusätzliche Rechte. Die Seite enthält ausschließlich den öffentlichen Publishable Key; Schutz entsteht durch RLS und den eng begrenzten RPC, und ein `service_role`-Schlüssel gehört niemals in Browsercode. Die P-Hain-Inhaltsmodule bleiben vorerst statisch und speichern weiterhin keine Formulareingaben.
 
 Die Seitenwerkstatt lädt für angemeldete Eigentümer den aktuellen privaten Serverentwurf über RLS. „Entwurf sichern“ schreibt zuerst einen lokalen Rückfallstand und erzeugt anschließend ausschließlich über `save_page_revision` eine neue unveränderliche Revision mit optimistischer Konfliktprüfung. Ein fremder oder parallel veränderter Stand wird nicht überschrieben; die lokale Arbeit bleibt erhalten. Speichern verschiebt keinen Veröffentlichungszeiger und veröffentlicht nichts.
+
+Blob verwendet in der Seitenwerkstatt ausschließlich deterministische Regeln. Freigeschaltet sind Seitendesign, Modulreihenfolge, modulbezogene Darstellung und ausdrücklich deklarierte Abschnittstexte. Jede erkannte Anfrage erzeugt zunächst nur einen erklärten Vorschlag; Anwenden verändert ausschließlich die Vorschau. Speichern und Veröffentlichen bleiben getrennte menschliche Schritte. Ollama ist keine aktive Website-Route. Die eigene Rubin/Psyche-KI kann später denselben engen Vorschlagsvertrag bedienen, bleibt aber bis zu ihrer separaten Core- und Vertragsprüfung deaktiviert.
 
 Der neue Modulrenderer ist Progressive Enhancement: Er ersetzt die statische Julius-Seite nur nach erfolgreicher Prüfung aller Verträge und öffentlichen Datenbindungen. Bei deaktiviertem JavaScript, Ladefehlern oder einer verweigerten Capability bleibt die vollständige HTML-Seite nutzbar. Menschliche Skills, KI-Operationsprofile und technische Modulberechtigungen sind getrennte Typen und verleihen einander keine Rechte.
 
