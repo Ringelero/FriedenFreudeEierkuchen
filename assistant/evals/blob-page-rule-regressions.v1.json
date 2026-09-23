@@ -18,6 +18,11 @@
       "expected_intent": { "theme": "unchanged", "motion": "none", "radius": "unchanged", "move": "unchanged", "clarify": false }
     },
     {
+      "id": "motion-stop-natural-language",
+      "prompt": "Bitte keine Bewegung mehr.",
+      "expected_intent": { "theme": "unchanged", "motion": "none", "radius": "unchanged", "move": "unchanged", "clarify": false }
+    },
+    {
       "id": "motion-subtle",
       "prompt": "Lass die Übergänge nur ganz dezent wirken.",
       "expected_intent": { "theme": "unchanged", "motion": "gentle", "radius": "unchanged", "move": "unchanged", "clarify": false }

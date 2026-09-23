@@ -27,8 +27,11 @@ const THEME_TERMS = Object.freeze({
 
 const MOTION_TERMS = Object.freeze({
   none: Object.freeze([
-    'ohne animation', 'keine animation', 'animation aus', 'weniger bewegung',
-    'ruhig', 'ruhige', 'ruhiger', 'reduzierte bewegung', 'stillstehen', 'stillsteht'
+    'ohne animation', 'keine animation', 'animation aus', 'animationen aus',
+    'ohne bewegung', 'keine bewegung', 'keine bewegung mehr',
+    'bewegung aus', 'bewegung ausschalten', 'bewegung stoppen',
+    'nicht mehr bewegen', 'weniger bewegung', 'ruhig', 'ruhige', 'ruhiger',
+    'reduzierte bewegung', 'stillstehen', 'stillsteht'
   ]),
   gentle: Object.freeze([
     'sanft', 'sanfte bewegung', 'sanfter', 'dezente bewegung',

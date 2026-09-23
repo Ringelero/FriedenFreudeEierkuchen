@@ -54,6 +54,16 @@ test('Blob turns a style request into a small explainable proposal', () => {
   assert.match(proposal.summary, /Bewegung ausschalten/);
 });
 
+test('Blob recognizes natural requests to stop motion without a fallback choice', () => {
+  const analysis = analyzePageRequest('Bitte keine Bewegung mehr.', page);
+  assert.equal(analysis.reason, 'recognized_by_rules');
+  assert.deepEqual(analysis.proposal.operations, [{
+    type: 'theme.set',
+    values: { motion: 'none' }
+  }]);
+  assert.deepEqual(analysis.proposal.questions, []);
+});
+
 test('Blob can propose one explicit module reorder without hidden ranking', () => {
   const proposal = createPageProposal('Bitte Projekte und Wege ganz nach oben.', page);
   assert.deepEqual(proposal.operations, [{
