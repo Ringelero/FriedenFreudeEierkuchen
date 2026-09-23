@@ -33,6 +33,12 @@ So kann ein Recht nicht stillschweigend auf einen anderen Kiez oder die ganze Pl
 - Das erste Kiezrecht darf Beschreibung und Sichtbarkeit pflegen, aber weder stabile ID, Name, FFE-Verweise noch Lebenszyklusstatus verändern.
 - `service_role` gehört niemals in GitHub, HTML oder Browser-JavaScript.
 
+## Browserübergreifender Zugang
+
+Der Supabase-Standardversand dieses Projekts erlaubt derzeit keine bearbeitbare Magic-Link-Vorlage; ein sechsstelliger E-Mail-Code würde einen eigenen SMTP-Versand voraussetzen. Die Kontoseite verwendet deshalb den vorhandenen Einmal-Link nur für den ersten Zugang. Ein bereits angemeldeter Nutzer kann danach selbst ein mindestens zwölfstelliges Passwort setzen und sich damit in jedem Browser anmelden.
+
+Der Linkversand verwendet weiterhin `shouldCreateUser: false`. Weder Passwort noch Session oder E-Mail-Adresse gehören in Logs, Git oder Support-Chats. Ein Passwort wird ausschließlich über `supabase.auth.updateUser({ password })` an Supabase übertragen und von GemDen weder gelesen noch gespeichert.
+
 ## Lokaler Prüfweg
 
 Voraussetzung ist die aktuelle Supabase CLI. Beim ersten lokalen Lauf:

@@ -1,17 +1,22 @@
 (function () {
   const client = window.FFE_SUPABASE_CLIENT;
+  const authFlow = window.FFE_AUTH_FLOW;
   const connectionChip = document.getElementById('connection-chip');
   const signedOutPanel = document.getElementById('signed-out-panel');
   const signedInPanel = document.getElementById('signed-in-panel');
   const loginForm = document.getElementById('login-form');
   const loginSubmit = document.getElementById('login-submit');
+  const loginLinkSubmit = document.getElementById('login-link-submit');
   const loginStatus = document.getElementById('login-status');
   const accountDataStatus = document.getElementById('account-data-status');
   const profileForm = document.getElementById('profile-form');
   const profileSubmit = document.getElementById('profile-submit');
   const profileStatus = document.getElementById('profile-status');
+  const passwordForm = document.getElementById('password-form');
+  const passwordSubmit = document.getElementById('password-submit');
+  const passwordStatus = document.getElementById('password-status');
   const logoutButton = document.getElementById('logout-button');
-  const authErrorFromUrl = new URLSearchParams(location.hash.slice(1)).get('error_description');
+  let authErrorFromUrl = authFlow?.authErrorFromLocation(location) || '';
   let currentUser = null;
 
   function setMessage(target, message, state) {
@@ -45,9 +50,9 @@
   }
 
   function cleanAuthAddress() {
-    const hasAuthHash = /(?:access_token|error_description|type)=/.test(location.hash);
-    const hasAuthCode = new URLSearchParams(location.search).has('code');
-    if (hasAuthHash || hasAuthCode) history.replaceState(null, '', location.pathname);
+    if (authFlow?.hasAuthCallbackParams(location)) {
+      history.replaceState(null, '', location.pathname);
+    }
   }
 
   async function loadAccountData(user) {
@@ -94,7 +99,8 @@
       setConnection('Bereit zur Anmeldung', 'open');
       if (authErrorFromUrl) {
         cleanAuthAddress();
-        setMessage(loginStatus, authErrorFromUrl, 'error');
+        setMessage(loginStatus, authFlow.describeAuthError(authErrorFromUrl), 'error');
+        authErrorFromUrl = '';
       }
       return;
     }
@@ -117,37 +123,78 @@
     }
   }
 
-  if (!client) {
+  if (!client || !authFlow) {
     signedOutPanel.hidden = false;
     setConnection('Verbindung nicht verfügbar', 'open');
     loginSubmit.disabled = true;
+    loginLinkSubmit.disabled = true;
+    passwordSubmit.disabled = true;
     setMessage(loginStatus, window.FFE_SUPABASE_ERROR || 'Die Anmeldung konnte nicht gestartet werden.', 'error');
     return;
   }
 
   loginForm.addEventListener('submit', async event => {
     event.preventDefault();
-    const email = document.getElementById('login-email').value.trim();
-    if (!email) return;
+    const emailInput = document.getElementById('login-email');
+    const email = emailInput.value.trim();
+    const password = document.getElementById('login-password').value;
+    if (!email) {
+      emailInput.focus();
+      setMessage(loginStatus, 'Bitte gib deine eingeladene E-Mail-Adresse ein.', 'error');
+      return;
+    }
 
     loginSubmit.disabled = true;
-    setMessage(loginStatus, 'Der sichere Anmeldelink wird angefordert …');
+    setMessage(loginStatus, 'Die sichere Sitzung wird aufgebaut …');
     try {
-      const redirectTo = new URL('./', location.href).href;
-      const { error } = await client.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: redirectTo,
-          shouldCreateUser: false
-        }
-      });
-      if (error) throw error;
-      loginForm.reset();
-      setMessage(loginStatus, 'Falls die Adresse eingeladen ist, liegt der einmalige Link gleich im Postfach.', 'success');
+      const data = await authFlow.signInWithPassword(client, { email, password });
+      document.getElementById('login-password').value = '';
+      setMessage(loginStatus, 'Dieser Browser ist jetzt sicher angemeldet.', 'success');
+      await renderSession(data.session);
     } catch (error) {
-      setMessage(loginStatus, error.message || 'Der Link konnte nicht gesendet werden.', 'error');
+      setMessage(loginStatus, authFlow.describeAuthError(error), 'error');
     } finally {
       loginSubmit.disabled = false;
+    }
+  });
+
+  loginLinkSubmit.addEventListener('click', async () => {
+    const email = document.getElementById('login-email').value.trim();
+    if (!email) {
+      document.getElementById('login-email').focus();
+      setMessage(loginStatus, 'Bitte gib deine eingeladene E-Mail-Adresse ein.', 'error');
+      return;
+    }
+
+    loginLinkSubmit.disabled = true;
+    setMessage(loginStatus, 'Der einmalige Anmeldelink wird angefordert …');
+    try {
+      const redirectTo = new URL('./', location.href).href;
+      await authFlow.requestEmailLogin(client, { email, redirectTo });
+      setMessage(loginStatus, 'Falls die Adresse eingeladen ist, liegt der einmalige Link gleich im Postfach. Öffne ihn auf einem Gerät und setze danach im Konto ein Passwort.', 'success');
+    } catch (error) {
+      setMessage(loginStatus, authFlow.describeAuthError(error, 'Der Link konnte nicht gesendet werden.'), 'error');
+    } finally {
+      loginLinkSubmit.disabled = false;
+    }
+  });
+
+  passwordForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!currentUser) return;
+
+    const password = document.getElementById('new-password').value;
+    const confirmation = document.getElementById('confirm-password').value;
+    passwordSubmit.disabled = true;
+    setMessage(passwordStatus, 'Das neue Passwort wird sicher gespeichert …');
+    try {
+      await authFlow.updatePassword(client, { password, confirmation });
+      passwordForm.reset();
+      setMessage(passwordStatus, 'Passwort gespeichert. Du kannst dich damit jetzt in anderen Browsern anmelden.', 'success');
+    } catch (error) {
+      setMessage(passwordStatus, authFlow.describeAuthError(error, 'Das Passwort konnte nicht gespeichert werden.'), 'error');
+    } finally {
+      passwordSubmit.disabled = false;
     }
   });
 

@@ -31,7 +31,7 @@
         <div class="section-head">
           <p class="eyebrow">Pilotzugang</p>
           <h2 id="account-title">Einladung annehmen oder anmelden.</h2>
-          <p>Der Link aus deiner Einladungs-E-Mail führt hierher. Später kannst du dich mit derselben Adresse erneut über einen einmaligen E-Mail-Link anmelden.</p>
+          <p>Mit einem selbst gesetzten Passwort kannst du dich in jedem Browser anmelden. Für den ersten Zugang bleibt der einmalige E-Mail-Link verfügbar.</p>
         </div>
 
         <article class="panel account-panel" id="signed-out-panel">
@@ -39,16 +39,23 @@
             <span class="account-icon" aria-hidden="true">✉️</span>
             <div>
               <p class="eyebrow">Noch nicht angemeldet</p>
-              <h3>Anmeldelink anfordern</h3>
+              <h3>Sicher anmelden</h3>
             </div>
           </div>
-          <p class="account-copy">Das funktioniert ausschließlich für eine bereits eingeladene Adresse. Dadurch kann niemand über dieses Formular selbst ein neues Konto eröffnen.</p>
+          <p class="account-copy">Hast du bereits ein Passwort gesetzt, funktioniert die Anmeldung direkt. Andernfalls fordere den einmaligen Link an, öffne ihn auf deinem Handy und setze anschließend unten im Konto ein Passwort.</p>
           <form class="form-grid" id="login-form">
             <div class="field">
               <label for="login-email">E-Mail-Adresse</label>
               <input id="login-email" name="email" type="email" autocomplete="email" inputmode="email" required placeholder="name@beispiel.de">
             </div>
-            <button class="button" id="login-submit" type="submit">Einmaligen Link senden</button>
+            <div class="field">
+              <label for="login-password">Passwort</label>
+              <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+            </div>
+            <div class="button-row account-login-actions">
+              <button class="button" id="login-submit" type="submit">Mit Passwort anmelden</button>
+              <button class="button secondary" id="login-link-submit" type="button">Einmaligen Link senden</button>
+            </div>
             <p class="form-status" id="login-status" role="status" aria-live="polite"></p>
           </form>
         </article>
@@ -92,6 +99,25 @@
             <p class="form-status" id="profile-status" role="status" aria-live="polite"></p>
           </form>
 
+          <form class="form-grid password-form" id="password-form">
+            <div>
+              <p class="eyebrow">Browserübergreifender Zugang</p>
+              <h4>Passwort setzen oder ändern</h4>
+              <p class="account-copy">Das Passwort wird direkt an Supabase übertragen und nie von GemDen gespeichert oder angezeigt. Danach kannst du dich auf anderen Geräten ohne Linkübertragung anmelden.</p>
+            </div>
+            <div class="field">
+              <label for="new-password">Neues Passwort</label>
+              <input id="new-password" name="new-password" type="password" autocomplete="new-password" minlength="12" required>
+              <small>Mindestens zwölf Zeichen.</small>
+            </div>
+            <div class="field">
+              <label for="confirm-password">Neues Passwort wiederholen</label>
+              <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" minlength="12" required>
+            </div>
+            <button class="button secondary" id="password-submit" type="submit">Passwort sicher speichern</button>
+            <p class="form-status" id="password-status" role="status" aria-live="polite"></p>
+          </form>
+
           <div class="button-row account-actions">
             <a class="button" href="../gestalten/?page=PAGE-MEM-JULIUS">Julius-Werkstatt testen</a>
             <a class="button secondary" href="../community/kieze/p-hain/">Zu P-Hain</a>
@@ -117,6 +143,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="../assets/supabase-config.js" defer></script>
   <script src="../assets/supabase-client.js" defer></script>
+  <script src="./auth-flow.js" defer></script>
   <script src="./konto.js" defer></script>
 </body>
 </html>
