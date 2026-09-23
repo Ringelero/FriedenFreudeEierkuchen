@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client';
 import { Puck, useGetPuck } from '@puckeditor/core';
 import '@puckeditor/core/puck.css';
 import './editor.css';
-import { createLocalDraft, editorStorageKey, fromPuckData, toPuckData } from './gemden-adapter.mjs';
+import { fromPuckData, toPuckData } from './gemden-adapter.mjs';
+import { createPageRevisionStore } from './page-revision-store.mjs';
 import { createPuckConfig } from './puck-config.jsx';
 
 const PAGE_SOURCES = Object.freeze({
@@ -62,17 +63,9 @@ async function fetchJson(url) {
   return response.json();
 }
 
-function loadLocalDocument(page) {
-  try {
-    const raw = localStorage.getItem(editorStorageKey(page.id));
-    if (!raw) return page;
-    const envelope = JSON.parse(raw);
-    if (envelope?.format !== 'gemden-local-draft' || envelope?.version !== 1 || envelope?.page_id !== page.id) return page;
-    return envelope.document;
-  } catch (error) {
-    console.warn('Lokaler GemDen-Entwurf konnte nicht geladen werden:', error);
-    return page;
-  }
+async function waitForDeferredScripts() {
+  if (document.readyState !== 'loading') return;
+  await new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve, { once: true }));
 }
 
 function StatusBar({ status }) {
@@ -84,13 +77,8 @@ function StatusBar({ status }) {
   );
 }
 
-function EditorApp({ page, catalog, capabilities, community, restoredLocal }) {
-  const [status, setStatus] = useState({
-    kind: restoredLocal ? 'info' : 'info',
-    message: restoredLocal
-      ? 'Lokaler Entwurf wiederhergestellt. Noch nichts wurde veröffentlicht.'
-      : 'Werkstatt bereit. Änderungen werden erst nach „Entwurf sichern“ gespeichert.'
-  });
+function EditorApp({ page, catalog, capabilities, community, revisionStore, initialStatus }) {
+  const [status, setStatus] = useState(initialStatus);
   const config = useMemo(() => createPuckConfig(page, catalog, community), [page, catalog, community]);
   const initialData = useMemo(() => toPuckData(page, catalog), [page, catalog]);
 
@@ -104,9 +92,8 @@ function EditorApp({ page, catalog, capabilities, community, restoredLocal }) {
     setStatus({ kind: 'info', message: 'Entwurf wird geprüft und gesichert …' });
     try {
       const document = buildDocument(data);
-      const localDraft = createLocalDraft(document);
-      localStorage.setItem(editorStorageKey(document.id), JSON.stringify(localDraft));
-      setStatus({ kind: 'success', message: 'Lokal in diesem Browser gesichert. Es wurde nichts veröffentlicht.' });
+      const result = await revisionStore.save(document);
+      setStatus(result.status);
     } catch (error) {
       setStatus({ kind: 'error', message: `Nicht gespeichert: ${formatError(error)}` });
     }
@@ -141,7 +128,7 @@ function EditorApp({ page, catalog, capabilities, community, restoredLocal }) {
         onPublish={saveDraft}
         overrides={{ headerActions: HeaderActions }}
         headerTitle="GemDen-Seitenwerkstatt"
-        headerPath="Julius · lokaler Pilot"
+        headerPath="Julius · privater Entwurf"
         dictionary={GERMAN_DICTIONARY}
         iframe={{ enabled: true, syncHostStyles: true, waitForStyles: true }}
         viewports={[
@@ -183,9 +170,15 @@ async function start() {
   window.GemDenModules.validateCapabilityCatalog(capabilities);
   window.GemDenModules.validateModuleCatalog(catalog, capabilities);
   window.GemDenModules.validatePageDocument(publishedPage, catalog, capabilities);
+  await waitForDeferredScripts();
 
-  const page = loadLocalDocument(publishedPage);
-  const restoredLocal = JSON.stringify(page) !== JSON.stringify(publishedPage);
+  const revisionStore = createPageRevisionStore({
+    client: window.FFE_SUPABASE_CLIENT || null,
+    storage: window.localStorage,
+    validateDocument: document => window.GemDenModules.validatePageDocument(document, catalog, capabilities)
+  });
+  const loaded = await revisionStore.load(publishedPage);
+  const page = loaded.document;
   window.GemDenModules.validatePageDocument(page, catalog, capabilities);
   createRoot(document.getElementById('editor-root')).render(
     <EditorApp
@@ -193,7 +186,8 @@ async function start() {
       catalog={catalog}
       capabilities={capabilities}
       community={community}
-      restoredLocal={restoredLocal}
+      revisionStore={revisionStore}
+      initialStatus={loaded.status}
     />
   );
 }

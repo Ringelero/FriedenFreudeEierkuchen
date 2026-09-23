@@ -43,6 +43,8 @@ Der Linkversand verwendet weiterhin `shouldCreateUser: false`. Weder Passwort no
 
 Die Kontoseite prüft über RLS, ob für die stabile Mitglieds-ID bereits eine eigene Seite existiert. Fehlt sie, lädt der Browser die freigegebene statische Startvorlage und ruft ausschließlich `create_own_profile_page` auf. Der RPC leitet Seiten-ID und Eigentümer aus `auth.uid()` und der bestätigten `MEM-*`-ID ab; der Client sendet weder eine fremde Eigentümer-ID noch eine frei gewählte Seiten-ID. Die erzeugte Seite bleibt privat und im Entwurfsstatus, erhält genau eine erste unveränderliche Revision und wird nicht veröffentlicht.
 
+Die Seitenwerkstatt liest danach nur den durch RLS sichtbaren Seitenzeiger und dessen aktuelle Entwurfsrevision. Beim Sichern wird der geprüfte Stand zunächst lokal erhalten und anschließend mit der zuvor geladenen Revisions-ID an `save_page_revision` übergeben. Hat sich der Serverstand zwischenzeitlich geändert, verweigert die optimistische Sperre eine neue Serverrevision; der lokale Entwurf bleibt erhalten. Die Werkstatt ruft keinen Publish-RPC auf.
+
 ## Lokaler Prüfweg
 
 Voraussetzung ist die aktuelle Supabase CLI. Beim ersten lokalen Lauf:
