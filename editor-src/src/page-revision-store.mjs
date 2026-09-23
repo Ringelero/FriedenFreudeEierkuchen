@@ -3,6 +3,10 @@ import { createLocalDraft, editorStorageKey } from './gemden-adapter.mjs';
 const REMOTE_SELECT = 'id,draft_revision_id,published_revision_id,revision_count';
 const REVISION_SELECT = 'id,revision_number,document,created_at';
 
+export function editorConflictBackupKey(pageId) {
+  return `${editorStorageKey(pageId)}:conflict-backup`;
+}
+
 function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
@@ -47,7 +51,7 @@ function localStatus(mode) {
     return 'Lokal in diesem Browser gesichert. Nach einer Anmeldung kann zusätzlich eine Server-Revision entstehen. Es wurde nichts veröffentlicht.';
   }
   if (mode === 'remote-conflict') {
-    return 'Lokal gesichert. Der Serverstand hat sich geändert; deshalb wurde keine Server-Revision erzeugt. Es wurde nichts veröffentlicht.';
+    return 'Lokal gesichert. Der Serverstand hat sich geändert; deshalb wurde keine Server-Revision erzeugt. Lade die Werkstatt neu, um beide Stände sicher aufzulösen. Es wurde nichts veröffentlicht.';
   }
   return 'Lokal in diesem Browser gesichert. Die Server-Speicherung ist für diese Seite noch nicht verfügbar. Es wurde nichts veröffentlicht.';
 }
@@ -65,6 +69,7 @@ export function createPageRevisionStore({
     publishedRevisionId: null,
     revisionNumber: null
   };
+  let conflict = null;
 
   function writeLocal(document, persistence) {
     assert(storage?.setItem, 'Der lokale Entwurfsspeicher ist nicht verfügbar.');
@@ -81,6 +86,11 @@ export function createPageRevisionStore({
       document: clone(document),
       source,
       mode: state.mode,
+      conflict: conflict ? {
+        localSavedAt: conflict.localEnvelope?.saved_at || null,
+        remoteRevisionId: conflict.remoteRevisionId,
+        remoteRevisionNumber: conflict.remoteRevisionNumber
+      } : null,
       status: { kind: 'info', message }
     };
   }
@@ -104,6 +114,7 @@ export function createPageRevisionStore({
       publishedRevisionId: null,
       revisionNumber: null
     };
+    conflict = null;
 
     if (!client?.auth?.getSession || !client?.from || !client?.rpc) {
       return loadResult(
@@ -221,6 +232,13 @@ export function createPageRevisionStore({
 
       if (!matchesRemote) {
         state.mode = 'remote-conflict';
+        conflict = {
+          localDocument: clone(local.document),
+          localEnvelope: clone(local.envelope),
+          remoteDocument: clone(revisionResult.data.document),
+          remoteRevisionId: state.expectedRevisionId,
+          remoteRevisionNumber: revisionResult.data.revision_number
+        };
         return loadResult(
           local.document,
           'local-conflict',
@@ -242,9 +260,61 @@ export function createPageRevisionStore({
     );
   }
 
+  function resolveConflict(choice) {
+    assert(state.mode === 'remote-conflict' && conflict, 'Es liegt kein auflösbarer Entwurfskonflikt vor.');
+    assert(choice === 'local' || choice === 'remote', 'Unbekannte Konfliktentscheidung.');
+
+    const selected = conflict;
+    if (choice === 'local') {
+      writeLocal(selected.localDocument, {
+        state: 'pending',
+        based_on_revision_id: selected.remoteRevisionId,
+        conflict_resolution: 'keep-local'
+      });
+      state.mode = 'remote-ready';
+      conflict = null;
+      return loadResult(
+        selected.localDocument,
+        'local-resolved',
+        `Lokalen Entwurf geöffnet. Er ist noch nicht serverseitig gesichert; „Entwurf sichern“ würde auf Server-Revision ${selected.remoteRevisionNumber} aufbauen. Veröffentlicht wurde nichts.`
+      );
+    }
+
+    assert(storage?.setItem, 'Der lokale Entwurfsspeicher ist nicht verfügbar.');
+    storage.setItem(editorConflictBackupKey(state.pageId), JSON.stringify({
+      ...selected.localEnvelope,
+      conflict_backup: {
+        created_at: now(),
+        replaced_by_revision_id: selected.remoteRevisionId,
+        replaced_by_revision_number: selected.remoteRevisionNumber
+      }
+    }));
+    writeLocal(selected.remoteDocument, {
+      state: 'synced',
+      revision_id: selected.remoteRevisionId,
+      revision_number: selected.remoteRevisionNumber
+    });
+    state.mode = 'remote-ready';
+    conflict = null;
+    return loadResult(
+      selected.remoteDocument,
+      'remote-resolved',
+      `Server-Revision ${selected.remoteRevisionNumber} geöffnet. Der vorherige lokale Entwurf bleibt als Konflikt-Backup in diesem Browser erhalten. Veröffentlicht wurde nichts.`
+    );
+  }
+
   async function save(document, { revisionSummary = 'Änderung in der visuellen Seitenwerkstatt' } = {}) {
     assert(document?.id && document.id === state.pageId, 'Der Entwurf gehört nicht zur geöffneten Seite.');
     validateDocument(document);
+
+    if (state.mode === 'remote-conflict') {
+      return {
+        localSaved: true,
+        remoteSaved: false,
+        mode: state.mode,
+        status: { kind: 'error', message: localStatus(state.mode) }
+      };
+    }
 
     const pendingPersistence = {
       state: 'pending',
@@ -322,6 +392,5 @@ export function createPageRevisionStore({
     };
   }
 
-  return Object.freeze({ load, save });
+  return Object.freeze({ load, resolveConflict, save });
 }
-

@@ -3,7 +3,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { createPageRevisionStore } from '../editor-src/src/page-revision-store.mjs';
+import {
+  createPageRevisionStore,
+  editorConflictBackupKey
+} from '../editor-src/src/page-revision-store.mjs';
 
 const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 
@@ -19,6 +22,7 @@ function memoryStorage() {
   return {
     getItem: key => values.get(key) ?? null,
     setItem: (key, value) => values.set(key, value),
+    raw: key => values.get(key) ?? null,
     value: key => JSON.parse(values.get(key))
   };
 }
@@ -203,10 +207,134 @@ test('keeps an untracked legacy local draft and blocks an automatic server overw
 
   assert.equal(loaded.mode, 'remote-conflict');
   assert.equal(loaded.source, 'local-conflict');
+  assert.deepEqual(loaded.conflict, {
+    localSavedAt: '2026-09-22T10:00:00.000Z',
+    remoteRevisionId: '11111111-1111-4111-8111-111111111111',
+    remoteRevisionNumber: 1
+  });
   assert.deepEqual(loaded.document, localDocument);
   assert.equal(saved.remoteSaved, false);
   assert.equal(client.calls.some(call => call.type === 'rpc'), false);
   assert.match(saved.status.message, /keine server-revision/i);
+  assert.equal(storage.value('gemden:page-draft:v1:PAGE-MEM-JULIUS').persistence, undefined);
+});
+
+test('an explicit local conflict choice unlocks one optimistic server save', async () => {
+  const storage = memoryStorage();
+  const localDocument = { ...page, title: 'Bewusst übernommener Altentwurf' };
+  storage.setItem('gemden:page-draft:v1:PAGE-MEM-JULIUS', JSON.stringify({
+    format: 'gemden-local-draft',
+    version: 1,
+    page_id: page.id,
+    saved_at: '2026-09-22T10:00:00.000Z',
+    document: localDocument
+  }));
+  const client = authenticatedClient({
+    pageResult: {
+      data: {
+        id: page.id,
+        draft_revision_id: '11111111-1111-4111-8111-111111111111',
+        published_revision_id: null,
+        revision_count: 1
+      },
+      error: null
+    },
+    revisionResult: {
+      data: {
+        id: '11111111-1111-4111-8111-111111111111',
+        revision_number: 1,
+        document: page,
+        created_at: '2026-09-23T09:00:00.000Z'
+      },
+      error: null
+    },
+    rpcResult: {
+      data: [{
+        revision_id: '22222222-2222-4222-8222-222222222222',
+        revision_number: 2,
+        published_revision_id: null
+      }],
+      error: null
+    }
+  });
+  const store = createPageRevisionStore({ client, storage, validateDocument: () => {}, now: () => '2026-09-23T10:00:00.000Z' });
+
+  await store.load(page);
+  const resolved = store.resolveConflict('local');
+  const pending = storage.value('gemden:page-draft:v1:PAGE-MEM-JULIUS');
+  const saved = await store.save(localDocument);
+
+  assert.equal(resolved.mode, 'remote-ready');
+  assert.equal(resolved.source, 'local-resolved');
+  assert.deepEqual(resolved.document, localDocument);
+  assert.equal(resolved.conflict, null);
+  assert.deepEqual(pending.persistence, {
+    state: 'pending',
+    based_on_revision_id: '11111111-1111-4111-8111-111111111111',
+    conflict_resolution: 'keep-local'
+  });
+  assert.equal(saved.remoteSaved, true);
+  const rpcCall = client.calls.find(call => call.type === 'rpc');
+  assert.equal(rpcCall.args.expected_revision_id, '11111111-1111-4111-8111-111111111111');
+  assert.deepEqual(rpcCall.args.page_document, localDocument);
+});
+
+test('an explicit server choice keeps a recoverable local backup', async () => {
+  const storage = memoryStorage();
+  const localDocument = { ...page, title: 'Lokaler Altentwurf' };
+  const remoteDocument = { ...page, title: 'Aktueller Serverstand' };
+  storage.setItem('gemden:page-draft:v1:PAGE-MEM-JULIUS', JSON.stringify({
+    format: 'gemden-local-draft',
+    version: 1,
+    page_id: page.id,
+    saved_at: '2026-09-22T10:00:00.000Z',
+    document: localDocument
+  }));
+  const client = authenticatedClient({
+    pageResult: {
+      data: {
+        id: page.id,
+        draft_revision_id: '11111111-1111-4111-8111-111111111111',
+        published_revision_id: null,
+        revision_count: 1
+      },
+      error: null
+    },
+    revisionResult: {
+      data: {
+        id: '11111111-1111-4111-8111-111111111111',
+        revision_number: 1,
+        document: remoteDocument,
+        created_at: '2026-09-23T09:00:00.000Z'
+      },
+      error: null
+    },
+    rpcResult: { data: null, error: null }
+  });
+  const store = createPageRevisionStore({ client, storage, validateDocument: () => {}, now: () => '2026-09-23T10:00:00.000Z' });
+
+  await store.load(page);
+  const resolved = store.resolveConflict('remote');
+  const backup = storage.value(editorConflictBackupKey(page.id));
+  const active = storage.value('gemden:page-draft:v1:PAGE-MEM-JULIUS');
+
+  assert.equal(resolved.mode, 'remote-ready');
+  assert.equal(resolved.source, 'remote-resolved');
+  assert.deepEqual(resolved.document, remoteDocument);
+  assert.deepEqual(backup.document, localDocument);
+  assert.deepEqual(backup.conflict_backup, {
+    created_at: '2026-09-23T10:00:00.000Z',
+    replaced_by_revision_id: '11111111-1111-4111-8111-111111111111',
+    replaced_by_revision_number: 1
+  });
+  assert.deepEqual(active.document, remoteDocument);
+  assert.deepEqual(active.persistence, {
+    state: 'synced',
+    revision_id: '11111111-1111-4111-8111-111111111111',
+    revision_number: 1
+  });
+  assert.equal(client.calls.some(call => call.type === 'rpc'), false);
+  assert.match(resolved.status.message, /konflikt-backup/i);
 });
 
 test('a concurrent server change preserves the edited document locally', async () => {
@@ -264,6 +392,10 @@ test('the editor connects the public Supabase client before starting the revisio
   assert.ok(html.indexOf('/assets/supabase-client.js') < html.indexOf('/src/main.jsx'));
   assert.match(main, /createPageRevisionStore/);
   assert.match(main, /revisionStore\.save/);
+  assert.match(main, /Zwei unterschiedliche Entwürfe gefunden/);
+  assert.match(main, /Lokalen Entwurf öffnen/);
+  assert.match(main, /Server-Revision \{conflict\.remoteRevisionNumber\} öffnen/);
   assert.match(store, /client\.rpc\('save_page_revision'/);
+  assert.match(store, /conflict-backup/);
   assert.doesNotMatch(store, /publish_page_revision/);
 });
