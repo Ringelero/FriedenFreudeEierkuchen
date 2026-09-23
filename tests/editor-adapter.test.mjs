@@ -107,3 +107,11 @@ test('custom header actions keep Puck’s visible draft-save action', async () =
   assert.match(source, /<div className="editor-header-actions">\s*\{children\}/);
   assert.doesNotMatch(source, /renderHeaderActions=/);
 });
+
+test('Blob evaluates the live preview and offers deterministic guided choices', async () => {
+  const source = await readFile(new URL('../editor-src/src/main.jsx', import.meta.url), 'utf8');
+  assert.match(source, /buildDocument\(getPuck\(\)\.appState\.data\)/);
+  assert.match(source, /createPageProposalFromIntent/);
+  assert.match(source, /Oder direkt auswählen/);
+  assert.match(source, /Sichere Direktauswahl/);
+});

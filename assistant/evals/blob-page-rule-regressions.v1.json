@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0.0",
+  "purpose": "Dauerhafte Regelregressionen aus der abgelehnten lokalen 2B-Intent-Evaluation.",
+  "cases": [
+    {
+      "id": "sunny-theme",
+      "prompt": "Gib der Seite eine sonnige, honigfarbene Stimmung.",
+      "expected_intent": { "theme": "gold", "motion": "unchanged", "radius": "unchanged", "move": "unchanged", "clarify": false }
+    },
+    {
+      "id": "mint-leaves-theme",
+      "prompt": "Die Seite soll frisch wie Minzblätter wirken.",
+      "expected_intent": { "theme": "mint", "motion": "unchanged", "radius": "unchanged", "move": "unchanged", "clarify": false }
+    },
+    {
+      "id": "motion-stop",
+      "prompt": "Die Übergänge sollen völlig stillstehen.",
+      "expected_intent": { "theme": "unchanged", "motion": "none", "radius": "unchanged", "move": "unchanged", "clarify": false }
+    },
+    {
+      "id": "motion-stop-natural-language",
+      "prompt": "Bitte keine Bewegung mehr.",
+      "expected_intent": { "theme": "unchanged", "motion": "none", "radius": "unchanged", "move": "unchanged", "clarify": false }
+    },
+    {
+      "id": "motion-subtle",
+      "prompt": "Lass die Übergänge nur ganz dezent wirken.",
+      "expected_intent": { "theme": "unchanged", "motion": "gentle", "radius": "unchanged", "move": "unchanged", "clarify": false }
+    },
+    {
+      "id": "motion-energy",
+      "prompt": "Die Übergänge dürfen mehr Energie zeigen.",
+      "expected_intent": { "theme": "unchanged", "motion": "expressive", "radius": "unchanged", "move": "unchanged", "clarify": false }
+    },
+    {
+      "id": "rounded-pebbles",
+      "prompt": "Die Karten sollen wie weiche Kiesel wirken.",
+      "expected_intent": { "theme": "unchanged", "motion": "unchanged", "radius": "40px", "move": "unchanged", "clarify": false }
+    },
+    {
+      "id": "projects-prominent",
+      "prompt": "Meine Arbeiten sollen vor allen anderen Bereichen erscheinen.",
+      "expected_intent": { "theme": "unchanged", "motion": "unchanged", "radius": "unchanged", "move": "gemden.link-cards@1", "clarify": false }
+    },
+    {
+      "id": "evidence-prominent",
+      "prompt": "Die Belege meiner Erfahrung sollen den Auftakt bilden.",
+      "expected_intent": { "theme": "unchanged", "motion": "unchanged", "radius": "unchanged", "move": "gemden.evidence-grid@1", "clarify": false }
+    },
+    {
+      "id": "combined-paraphrase",
+      "prompt": "Die Stimmung darf sonnig sein, die Übergänge aber stillstehen.",
+      "expected_intent": { "theme": "gold", "motion": "none", "radius": "unchanged", "move": "unchanged", "clarify": false }
+    },
+    {
+      "id": "ambiguous-safe",
+      "prompt": "Mach das Ganze harmonischer.",
+      "expected_intent": { "theme": "unchanged", "motion": "unchanged", "radius": "unchanged", "move": "unchanged", "clarify": true }
+    }
+  ]
+}
