@@ -352,6 +352,72 @@ function EditorApp({ page, catalog, capabilities, community, revisionStore, init
   );
 }
 
+function DraftConflict({ conflict, onResolve }) {
+  const [error, setError] = useState('');
+  const localSavedAt = conflict.localSavedAt
+    ? new Date(conflict.localSavedAt).toLocaleString('de-DE')
+    : 'Zeitpunkt unbekannt';
+
+  function choose(choice) {
+    try {
+      onResolve(choice);
+    } catch (resolutionError) {
+      setError(`Konflikt nicht aufgelöst: ${formatError(resolutionError)}`);
+    }
+  }
+
+  return (
+    <main className="draft-conflict" aria-labelledby="draft-conflict-title">
+      <span className="draft-conflict-gem" aria-hidden="true">◆</span>
+      <p className="draft-conflict-eyebrow">Entwurfsschutz</p>
+      <h1 id="draft-conflict-title">Zwei unterschiedliche Entwürfe gefunden.</h1>
+      <p>Ein lokaler Browserentwurf und Server-Revision {conflict.remoteRevisionNumber} gehören zur gleichen Seite, haben aber keine sichere gemeinsame Ausgangsrevision. GemDen überschreibt deshalb keinen der beiden Stände automatisch.</p>
+      <div className="draft-conflict-options">
+        <section>
+          <p className="draft-conflict-eyebrow">Lokal · {localSavedAt}</p>
+          <h2>Lokalen Entwurf prüfen</h2>
+          <p>Öffnet den lokalen Stand. Erst ein späterer Klick auf „Entwurf sichern“ kann daraus eine neue Serverrevision auf Basis von Revision {conflict.remoteRevisionNumber} machen.</p>
+          <button type="button" onClick={() => choose('local')}>Lokalen Entwurf öffnen</button>
+        </section>
+        <section>
+          <p className="draft-conflict-eyebrow">Server · Revision {conflict.remoteRevisionNumber}</p>
+          <h2>Serverstand verwenden</h2>
+          <p>Öffnet den aktuellen Serverstand. Der bisherige lokale Entwurf bleibt zuvor als Konflikt-Backup in diesem Browser erhalten.</p>
+          <button type="button" onClick={() => choose('remote')}>Server-Revision {conflict.remoteRevisionNumber} öffnen</button>
+        </section>
+      </div>
+      <p className="draft-conflict-boundary"><strong>Nicht betroffen:</strong> Die öffentliche Seite bleibt unverändert. Keine Auswahl veröffentlicht etwas.</p>
+      {error && <p className="draft-conflict-error" role="alert">{error}</p>}
+    </main>
+  );
+}
+
+function WorkshopApp({ initialLoaded, catalog, capabilities, community, revisionStore }) {
+  const [loaded, setLoaded] = useState(initialLoaded);
+
+  function resolveConflict(choice) {
+    const resolved = revisionStore.resolveConflict(choice);
+    window.GemDenModules.validatePageDocument(resolved.document, catalog, capabilities);
+    setLoaded(resolved);
+  }
+
+  if (loaded.mode === 'remote-conflict' && loaded.conflict) {
+    return <DraftConflict conflict={loaded.conflict} onResolve={resolveConflict} />;
+  }
+
+  return (
+    <EditorApp
+      key={`${loaded.source}-${loaded.document.id}`}
+      page={loaded.document}
+      catalog={catalog}
+      capabilities={capabilities}
+      community={community}
+      revisionStore={revisionStore}
+      initialStatus={loaded.status}
+    />
+  );
+}
+
 function FatalError({ error }) {
   return (
     <main className="editor-fatal">
@@ -387,16 +453,14 @@ async function start() {
     validateDocument: document => window.GemDenModules.validatePageDocument(document, catalog, capabilities)
   });
   const loaded = await revisionStore.load(publishedPage);
-  const page = loaded.document;
-  window.GemDenModules.validatePageDocument(page, catalog, capabilities);
+  window.GemDenModules.validatePageDocument(loaded.document, catalog, capabilities);
   createRoot(document.getElementById('editor-root')).render(
-    <EditorApp
-      page={page}
+    <WorkshopApp
+      initialLoaded={loaded}
       catalog={catalog}
       capabilities={capabilities}
       community={community}
       revisionStore={revisionStore}
-      initialStatus={loaded.status}
     />
   );
 }
