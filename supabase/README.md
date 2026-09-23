@@ -39,6 +39,10 @@ Der Supabase-Standardversand dieses Projekts erlaubt derzeit keine bearbeitbare 
 
 Der Linkversand verwendet weiterhin `shouldCreateUser: false`. Weder Passwort noch Session oder E-Mail-Adresse gehören in Logs, Git oder Support-Chats. Ein Passwort wird ausschließlich über `supabase.auth.updateUser({ password })` an Supabase übertragen und von GemDen weder gelesen noch gespeichert.
 
+## Eigene Profilseite aus der Mitgliedssitzung
+
+Die Kontoseite prüft über RLS, ob für die stabile Mitglieds-ID bereits eine eigene Seite existiert. Fehlt sie, lädt der Browser die freigegebene statische Startvorlage und ruft ausschließlich `create_own_profile_page` auf. Der RPC leitet Seiten-ID und Eigentümer aus `auth.uid()` und der bestätigten `MEM-*`-ID ab; der Client sendet weder eine fremde Eigentümer-ID noch eine frei gewählte Seiten-ID. Die erzeugte Seite bleibt privat und im Entwurfsstatus, erhält genau eine erste unveränderliche Revision und wird nicht veröffentlicht.
+
 ## Lokaler Prüfweg
 
 Voraussetzung ist die aktuelle Supabase CLI. Beim ersten lokalen Lauf:

@@ -1,6 +1,7 @@
 (function () {
   const client = window.FFE_SUPABASE_CLIENT;
   const authFlow = window.FFE_AUTH_FLOW;
+  const pageBootstrap = window.FFE_PAGE_BOOTSTRAP;
   const connectionChip = document.getElementById('connection-chip');
   const signedOutPanel = document.getElementById('signed-out-panel');
   const signedInPanel = document.getElementById('signed-in-panel');
@@ -15,9 +16,13 @@
   const passwordForm = document.getElementById('password-form');
   const passwordSubmit = document.getElementById('password-submit');
   const passwordStatus = document.getElementById('password-status');
+  const pageCreateButton = document.getElementById('page-create-button');
+  const pageWorkshopLink = document.getElementById('page-workshop-link');
+  const pageStatus = document.getElementById('page-status');
   const logoutButton = document.getElementById('logout-button');
   let authErrorFromUrl = authFlow?.authErrorFromLocation(location) || '';
   let currentUser = null;
+  let currentProfile = null;
 
   function setMessage(target, message, state) {
     target.textContent = message;
@@ -55,6 +60,38 @@
     }
   }
 
+  function renderPageState(page, expectedPageId) {
+    if (page) {
+      pageCreateButton.hidden = true;
+      pageCreateButton.disabled = true;
+      pageWorkshopLink.hidden = false;
+      const revisionLabel = page.revision_count === 1 ? 'eine Server-Revision' : `${page.revision_count} Server-Revisionen`;
+      setMessage(pageStatus, `${page.id} ist als privater Entwurf mit ${revisionLabel} bereit. Veröffentlicht wurde nichts.`, 'success');
+      return;
+    }
+
+    pageCreateButton.hidden = false;
+    pageCreateButton.disabled = false;
+    pageWorkshopLink.hidden = true;
+    setMessage(pageStatus, `${expectedPageId} ist noch nicht angelegt. Nur deine eigene Sitzung darf den privaten Entwurf erzeugen.`);
+  }
+
+  async function loadPageState(user, profile) {
+    pageCreateButton.disabled = true;
+    pageWorkshopLink.hidden = true;
+    setMessage(pageStatus, 'Seitenstatus wird sicher geprüft …');
+    const expectedPageId = pageBootstrap.profilePageId(profile.stable_id);
+    const { data, error } = await client
+      .from('page_documents')
+      .select('id,title,visibility,publication_status,draft_revision_id,published_revision_id,revision_count')
+      .eq('id', expectedPageId)
+      .eq('owner_user_id', user.id)
+      .maybeSingle();
+    if (error) throw error;
+    renderPageState(data, expectedPageId);
+    return data;
+  }
+
   async function loadAccountData(user) {
     const profileQuery = client
       .from('profiles')
@@ -73,6 +110,7 @@
     if (!profileResult.data) throw new Error('Zu diesem Konto wurde noch kein Profil gefunden.');
 
     const profile = profileResult.data;
+    currentProfile = profile;
     document.getElementById('profile-heading').textContent = profile.display_name || 'Dein Profil';
     document.getElementById('account-stable-id').textContent = profile.stable_id || 'Noch nicht vergeben';
     document.getElementById('account-profile-status').textContent = formatProfileStatus(profile);
@@ -88,10 +126,19 @@
     document.getElementById('profile-visibility').value = profile.visibility;
     setMessage(accountDataStatus, 'Profil und Rechte wurden über deine eigene Sitzung geladen.', 'success');
     profileForm.hidden = false;
+
+    try {
+      await loadPageState(user, profile);
+    } catch (error) {
+      pageCreateButton.disabled = true;
+      pageWorkshopLink.hidden = true;
+      setMessage(pageStatus, pageBootstrap.describePageError(error, 'Der sichere Seitenstatus konnte nicht geladen werden.'), 'error');
+    }
   }
 
   async function renderSession(session) {
     currentUser = session?.user || null;
+    currentProfile = null;
     signedOutPanel.hidden = Boolean(currentUser);
     signedInPanel.hidden = !currentUser;
 
@@ -123,12 +170,13 @@
     }
   }
 
-  if (!client || !authFlow) {
+  if (!client || !authFlow || !pageBootstrap) {
     signedOutPanel.hidden = false;
     setConnection('Verbindung nicht verfügbar', 'open');
     loginSubmit.disabled = true;
     loginLinkSubmit.disabled = true;
     passwordSubmit.disabled = true;
+    pageCreateButton.disabled = true;
     setMessage(loginStatus, window.FFE_SUPABASE_ERROR || 'Die Anmeldung konnte nicht gestartet werden.', 'error');
     return;
   }
@@ -195,6 +243,36 @@
       setMessage(passwordStatus, authFlow.describeAuthError(error, 'Das Passwort konnte nicht gespeichert werden.'), 'error');
     } finally {
       passwordSubmit.disabled = false;
+    }
+  });
+
+  pageCreateButton.addEventListener('click', async () => {
+    if (!currentUser || !currentProfile) return;
+
+    pageCreateButton.disabled = true;
+    setMessage(pageStatus, 'Die private Julius-Seite und ihre erste Revision werden sicher angelegt …');
+    try {
+      const result = await pageBootstrap.createOwnProfilePage(client, {
+        stableId: currentProfile.stable_id,
+        slug: 'julius',
+        title: currentProfile.display_name || 'Julius',
+        templateUrl: '../assets/data/pages/julius.v1.json',
+        fetchImpl: window.fetch.bind(window)
+      });
+      renderPageState({
+        id: result.page_id,
+        revision_count: Number(result.revision_number)
+      }, result.page_id);
+      setMessage(pageStatus, `${result.page_id} wurde über deine eigene Sitzung als privater Entwurf mit Server-Revision ${result.revision_number} angelegt. Veröffentlicht wurde nichts.`, 'success');
+    } catch (error) {
+      try {
+        const page = await loadPageState(currentUser, currentProfile);
+        if (page) return;
+      } catch {
+        // Die ursprüngliche, sicher übersetzte Fehlermeldung bleibt maßgeblich.
+      }
+      pageCreateButton.disabled = false;
+      setMessage(pageStatus, pageBootstrap.describePageError(error), 'error');
     }
   });
 
