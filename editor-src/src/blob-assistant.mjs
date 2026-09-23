@@ -2,6 +2,8 @@ const REQUIRED_AI_OPERATIONS = Object.freeze(['OP-K10', 'OP-T05', 'OP-T06', 'OP-
 const ROOT_FIELDS = new Set(['accent', 'accent_deep', 'surface', 'radius', 'motion']);
 const MOTIONS = new Set(['none', 'gentle', 'expressive']);
 const RADII = new Set(['12px', '20px', '30px', '40px']);
+const MODULE_TONES = new Set(['ruby', 'gold', 'mint', 'neutral']);
+const MODULE_MOTIONS = new Set(['none', 'fade', 'rise', 'float', 'pulse']);
 const HEX = /^#[0-9a-f]{6}$/i;
 const UNCHANGED = 'unchanged';
 
@@ -20,7 +22,7 @@ const THEME_TERMS = Object.freeze({
     'honigfarben', 'honigfarbene', 'honigfarbener', 'honigfarbenes'
   ]),
   mint: Object.freeze([
-    'minze', 'mint', 'mintfarben', 'minzblatter',
+    'minze', 'mint', 'mintfarben', 'minzfarben', 'minzblatter',
     'grun', 'grune', 'gruner', 'grunes', 'turkis', 'turkise'
   ])
 });
@@ -47,6 +49,21 @@ const RADIUS_TERMS = Object.freeze({
   '12px': Object.freeze(['eckig', 'kantig', 'klarere ecken']),
   '30px': Object.freeze(['weiche ecken', 'weicher', 'sanfte ecken']),
   '40px': Object.freeze(['sehr rund', 'runder', 'rundere ecken', 'rund', 'weiche kiesel'])
+});
+
+const MODULE_MOTION_TERMS = Object.freeze({
+  none: MOTION_TERMS.none,
+  fade: Object.freeze(['einblenden', 'sanft einblenden', 'dezent einblenden']),
+  rise: Object.freeze(['aufsteigen', 'aufsteigend', 'von unten erscheinen']),
+  float: Object.freeze(['schweben', 'schwebend', 'sanft schweben', 'sanft bewegen']),
+  pulse: Object.freeze(['pulsieren', 'pulsierend', 'pochen'])
+});
+
+const MODULE_TONE_TERMS = Object.freeze({
+  ruby: THEME_TERMS.ruby,
+  gold: THEME_TERMS.gold,
+  mint: THEME_TERMS.mint,
+  neutral: Object.freeze(['neutral', 'neutrale', 'neutraler', 'schlicht', 'schlichte'])
 });
 
 const MOVE_TERMS = Object.freeze([
@@ -101,12 +118,27 @@ const MODULE_LABELS = Object.freeze({
   'gemden.link-cards@1': 'Projekte und Wege'
 });
 
+const MODULE_TEXT_FIELDS = Object.freeze({
+  'gemden.profile-hero@1': Object.freeze({ eyebrow: 60, visual_label: 180 }),
+  'gemden.skill-grid@1': Object.freeze({ eyebrow: 60, title: 100, intro: 280 }),
+  'gemden.evidence-grid@1': Object.freeze({ eyebrow: 60, title: 100, boundary: 320 }),
+  'gemden.link-cards@1': Object.freeze({ eyebrow: 60, title: 100 })
+});
+
+const TEXT_FIELD_LABELS = Object.freeze({
+  eyebrow: 'kleine Überschrift',
+  title: 'Überschrift',
+  intro: 'Einleitung',
+  boundary: 'sichtbare Grenze',
+  visual_label: 'Motivbeschreibung'
+});
+
 export const BLOB_PAGE_CAPABILITY = Object.freeze({
   id: 'blob.page.compose',
   version: 1,
   mode: 'proposal_only',
   required_ai_operations: REQUIRED_AI_OPERATIONS,
-  allowed_operations: Object.freeze(['theme.set', 'module.move']),
+  allowed_operations: Object.freeze(['theme.set', 'module.move', 'module.appearance.set', 'module.text.set']),
   human_confirmation_required: true,
   autosave: false,
   publish: false
@@ -189,6 +221,95 @@ function moduleIntentFor(text) {
   };
 }
 
+function moduleTypesForText(text) {
+  return [...new Set(MODULE_HINTS
+    .filter(module => module.labels.some(label => hasPhrase(text, label)))
+    .map(module => module.type))];
+}
+
+function pageModule(page, type) {
+  return (page?.regions || [])
+    .flatMap(region => Array.isArray(region?.modules) ? region.modules : [])
+    .find(module => `${module.type}@${module.version}` === type) || null;
+}
+
+function quotedValue(sourcePrompt) {
+  const value = [
+    /„([^“]+)“/u,
+    /“([^”]+)”/u,
+    /"([^"]+)"/u
+  ].map(pattern => sourcePrompt.match(pattern)?.[1]).find(Boolean);
+  return value?.trim() || null;
+}
+
+function requestedTextFields(text) {
+  const fields = [];
+  if (includesAny(text, ['beschreibung des motivs', 'motivbeschreibung', 'motiv beschreiben'])) fields.push('visual_label');
+  if (includesAny(text, ['sichtbare grenze', 'grenzhinweis', 'sicherheitshinweis'])) fields.push('boundary');
+  if (includesAny(text, ['einleitung', 'intro', 'einfuhrung'])) fields.push('intro');
+  const withoutEyebrow = ` ${text} `.replaceAll(' kleine uberschrift ', ' ');
+  if (hasPhrase(text, 'kleine uberschrift') || includesAny(text, ['eyebrow', 'kicker'])) fields.push('eyebrow');
+  if (includesAny(withoutEyebrow.trim(), ['uberschrift', 'titel'])) fields.push('title');
+  return [...new Set(fields)];
+}
+
+function textEditIntent(sourcePrompt, text, page) {
+  const value = quotedValue(sourcePrompt);
+  if (!value) return { requested: false };
+  const modules = moduleTypesForText(text);
+  const fields = requestedTextFields(text);
+  if (modules.length !== 1) {
+    return {
+      requested: true,
+      error: modules.length > 1 ? 'multiple_modules' : 'unknown_module'
+    };
+  }
+  if (fields.length !== 1) {
+    return {
+      requested: true,
+      error: fields.length > 1 ? 'multiple_fields' : 'unknown_field',
+      component_type: modules[0]
+    };
+  }
+  const componentType = modules[0];
+  const field = fields[0];
+  const limit = MODULE_TEXT_FIELDS[componentType]?.[field];
+  if (!limit) return { requested: true, error: 'field_not_allowed', component_type: componentType, field };
+  if (value.length > limit || /[<>\r\n]/u.test(value)) {
+    return { requested: true, error: 'unsafe_value', component_type: componentType, field };
+  }
+  const instance = pageModule(page, componentType);
+  if (!instance) return { requested: true, error: 'missing_module', component_type: componentType, field };
+  if (instance.props?.[field] === value) return { requested: true, error: 'no_change', component_type: componentType, field };
+  return { requested: true, component_type: componentType, field, value };
+}
+
+function moduleAppearanceIntent(text, page, move) {
+  if (move.requested) return { requested: false };
+  const modules = moduleTypesForText(text);
+  const tones = matchingKeys(text, MODULE_TONE_TERMS);
+  const motions = matchingKeys(text, MODULE_MOTION_TERMS);
+  if (!tones.length && !motions.length) return { requested: false };
+  if (!modules.length) return { requested: false };
+  if (modules.length !== 1) {
+    return {
+      requested: true,
+      error: modules.length > 1 ? 'multiple_modules' : 'unknown_module'
+    };
+  }
+  if (tones.length > 1 || motions.length > 1) {
+    return { requested: true, error: 'conflicting_values', component_type: modules[0] };
+  }
+  const componentType = modules[0];
+  const instance = pageModule(page, componentType);
+  if (!instance) return { requested: true, error: 'missing_module', component_type: componentType };
+  const values = {};
+  if (tones[0] && instance.appearance?.tone !== tones[0]) values.tone = tones[0];
+  if (motions[0] && instance.appearance?.motion !== motions[0]) values.motion = motions[0];
+  if (!Object.keys(values).length) return { requested: true, error: 'no_change', component_type: componentType };
+  return { requested: true, component_type: componentType, values };
+}
+
 function filterThemeNoOps(patch, page) {
   const active = currentTheme(page);
   if (!active) return patch;
@@ -218,12 +339,46 @@ function moveSummary(operation) {
   return `${MODULE_LABELS[operation.component_type] || operation.component_type} an den Anfang setzen`;
 }
 
+function appearanceSummary(operation) {
+  const moduleName = MODULE_LABELS[operation.component_type] || operation.component_type;
+  const parts = [];
+  if (operation.values.tone) parts.push(`Farbton ${operation.values.tone}`);
+  if (operation.values.motion) parts.push(`Bewegung ${operation.values.motion}`);
+  return `${moduleName}: ${parts.join(' und ')}`;
+}
+
+function textSummary(operation) {
+  const moduleName = MODULE_LABELS[operation.component_type] || operation.component_type;
+  return `${moduleName}: ${TEXT_FIELD_LABELS[operation.field] || operation.field} ändern`;
+}
+
+function textEditQuestion(intent) {
+  if (intent.error === 'multiple_modules') return 'Welcher einzelne Bereich soll den neuen Text erhalten?';
+  if (intent.error === 'unknown_module') return 'Nenne bitte Profil, Fähigkeiten, Nachweise oder Projekte als Zielbereich.';
+  if (intent.error === 'multiple_fields') return 'Soll die kleine Überschrift, Überschrift, Einleitung oder sichtbare Grenze geändert werden?';
+  if (intent.error === 'field_not_allowed') return 'Dieses Textfeld ist für den gewählten Bereich nicht freigeschaltet.';
+  if (intent.error === 'unsafe_value') return 'Nutze bitte einen einzelnen Text ohne HTML, Zeilenumbruch oder übermäßige Länge.';
+  if (intent.error === 'missing_module') return 'Der gewünschte Bereich ist auf dieser Seite nicht vorhanden.';
+  if (intent.error === 'no_change') return 'Dieser Text ist bereits eingetragen. Welcher andere Text soll gelten?';
+  return 'Nenne das Textfeld und setze den gewünschten Wortlaut in Anführungszeichen.';
+}
+
+function appearanceQuestion(intent) {
+  if (intent.error === 'multiple_modules') return 'Welcher einzelne Bereich soll anders aussehen?';
+  if (intent.error === 'unknown_module') return 'Nenne bitte Profil, Fähigkeiten, Nachweise oder Projekte als Zielbereich.';
+  if (intent.error === 'conflicting_values') return 'Welcher einzelne Farbton und welche einzelne Bewegung sollen gelten?';
+  if (intent.error === 'missing_module') return 'Der gewünschte Bereich ist auf dieser Seite nicht vorhanden.';
+  if (intent.error === 'no_change') return 'Diese Bereichsdarstellung ist bereits aktiv. Welche andere soll gelten?';
+  return 'Soll der Bereich Rubin, Gold, Minze oder Neutral sein beziehungsweise einblenden, aufsteigen, schweben, pulsieren oder stillstehen?';
+}
+
 function boundaries(mode) {
   return mode === 'local-rule-pilot'
     ? [
         'Lokaler regelbasierter Pilot – noch keine freie KI.',
         'Der Vorschlag verändert nur die Vorschau und wird nicht automatisch gespeichert.',
-        'Blob kann weder veröffentlichen noch freie Skripte, HTML oder CSS erzeugen.'
+        'Blob kann weder veröffentlichen noch freie Skripte, HTML oder CSS erzeugen.',
+        'Textänderungen bleiben auf registrierte Abschnittsfelder begrenzt.'
       ]
     : [
         'Das Sprachmodell ordnet nur eine kleine, streng geprüfte Absicht zu.',
@@ -259,7 +414,7 @@ function buildProposal({
       : 'Dafür kenne ich noch keine freigeschaltete Seitenfähigkeit.'),
     explanations,
     operations,
-    questions: recognized ? [] : [question || 'Meinst du Farbe, Rundung, Bewegung oder die Reihenfolge von Profil, Fähigkeiten, Nachweisen und Projekten?'],
+    questions: recognized ? [] : [question || 'Meinst du Seitendesign, Bereichsdarstellung, Abschnittstext oder die Reihenfolge von Profil, Fähigkeiten, Nachweisen und Projekten?'],
     boundaries: boundaries(mode)
   };
 }
@@ -364,6 +519,36 @@ export function analyzePageRequest(prompt, page) {
     };
   }
 
+  const textEdit = textEditIntent(sourcePrompt, text, page);
+  if (textEdit.requested) {
+    if (textEdit.error) {
+      return {
+        model_eligible: false,
+        reason: `text_${textEdit.error}`,
+        proposal: buildProposal({
+          sourcePrompt,
+          summary: 'Die Textänderung ist noch nicht eindeutig oder nicht freigeschaltet.',
+          question: textEditQuestion(textEdit)
+        })
+      };
+    }
+    const operation = {
+      type: 'module.text.set',
+      component_type: textEdit.component_type,
+      field: textEdit.field,
+      value: textEdit.value
+    };
+    return {
+      model_eligible: false,
+      reason: 'recognized_by_rules',
+      proposal: buildProposal({
+        sourcePrompt,
+        operations: [operation],
+        explanations: [textSummary(operation)]
+      })
+    };
+  }
+
   const themes = matchingKeys(text, THEME_TERMS);
   const motions = matchingKeys(text, MOTION_TERMS);
   const radii = matchingKeys(text, RADIUS_TERMS);
@@ -416,6 +601,35 @@ export function analyzePageRequest(prompt, page) {
     };
   }
 
+  const appearance = moduleAppearanceIntent(text, page, move);
+  if (appearance.requested) {
+    if (appearance.error) {
+      return {
+        model_eligible: false,
+        reason: `appearance_${appearance.error}`,
+        proposal: buildProposal({
+          sourcePrompt,
+          summary: 'Die Bereichsdarstellung ist noch nicht eindeutig oder bewirkt keine Änderung.',
+          question: appearanceQuestion(appearance)
+        })
+      };
+    }
+    const operation = {
+      type: 'module.appearance.set',
+      component_type: appearance.component_type,
+      values: appearance.values
+    };
+    return {
+      model_eligible: false,
+      reason: 'recognized_by_rules',
+      proposal: buildProposal({
+        sourcePrompt,
+        operations: [operation],
+        explanations: [appearanceSummary(operation)]
+      })
+    };
+  }
+
   const intent = {
     theme: themes[0] || UNCHANGED,
     motion: motions[0] || UNCHANGED,
@@ -459,6 +673,24 @@ function validateThemeValues(values) {
   });
 }
 
+function validateModuleAppearanceValues(values) {
+  assert(values && typeof values === 'object' && !Array.isArray(values), 'Ungültige Bereichsdarstellung.');
+  const entries = Object.entries(values);
+  assert(entries.length > 0 && entries.length <= 2, 'Die Bereichsdarstellung enthält keine gültige Änderung.');
+  entries.forEach(([key, value]) => {
+    assert(key === 'tone' || key === 'motion', `Blob darf die Bereichseigenschaft ${key} nicht ändern.`);
+    if (key === 'tone') assert(MODULE_TONES.has(value), `Unzulässiger Bereichsfarbton ${value}.`);
+    else assert(MODULE_MOTIONS.has(value), `Unzulässige Bereichsbewegung ${value}.`);
+  });
+}
+
+function validateModuleText(componentType, field, value) {
+  const limit = MODULE_TEXT_FIELDS[componentType]?.[field];
+  assert(limit, `Blob darf das Textfeld ${field || 'unbekannt'} in ${componentType || 'diesem Bereich'} nicht ändern.`);
+  assert(typeof value === 'string' && value.trim() === value && value.length > 0 && value.length <= limit, 'Der neue Abschnittstext hat eine ungültige Länge.');
+  assert(!/[<>\r\n]/u.test(value), 'Der neue Abschnittstext enthält nicht erlaubte Zeichen.');
+}
+
 export function applyPageProposal(puckData, proposal) {
   assert(puckData && Array.isArray(puckData.content), 'Die aktuelle Seitenvorschau ist ungültig.');
   assert(proposal?.schema_version === '1.0.0', 'Unbekannte Blob-Vorschlagsversion.');
@@ -485,6 +717,24 @@ export function applyPageProposal(puckData, proposal) {
       const [component] = next.content.splice(sourceIndex, 1);
       const targetIndex = Math.min(operation.to_index, next.content.length);
       next.content.splice(targetIndex, 0, component);
+      return;
+    }
+    if (operation.type === 'module.appearance.set') {
+      assert(typeof operation.component_type === 'string', 'Der Zielbereich fehlt.');
+      validateModuleAppearanceValues(operation.values);
+      const component = next.content.find(item => item.type === operation.component_type);
+      assert(component, `Baustein ${operation.component_type} ist auf dieser Seite nicht vorhanden.`);
+      component.props = component.props || {};
+      Object.assign(component.props, clone(operation.values));
+      return;
+    }
+    if (operation.type === 'module.text.set') {
+      assert(typeof operation.component_type === 'string', 'Der Zielbereich fehlt.');
+      validateModuleText(operation.component_type, operation.field, operation.value);
+      const component = next.content.find(item => item.type === operation.component_type);
+      assert(component, `Baustein ${operation.component_type} ist auf dieser Seite nicht vorhanden.`);
+      component.props = component.props || {};
+      component.props[operation.field] = operation.value;
     }
   });
   return next;

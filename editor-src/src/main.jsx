@@ -150,9 +150,10 @@ function BlobHeaderActions({ children, buildDocument, setStatus }) {
   const [assistantError, setAssistantError] = useState('');
   const examples = [
     'Gib der Seite eine sonnige, honigfarbene Stimmung.',
-    'Lass die Übergänge nur ganz dezent wirken.',
+    'Mach die Fähigkeiten minzfarben und lass sie schweben.',
+    'Nenne die Überschrift der Fähigkeiten „Meine Superkräfte.“',
     'Meine Arbeiten sollen vor allen anderen Bereichen erscheinen.',
-    'Goldener, sehr rund und ohne Animation.'
+    'Bitte keine Bewegung mehr.'
   ];
 
   function currentPage() {

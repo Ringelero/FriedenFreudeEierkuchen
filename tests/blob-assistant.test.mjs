@@ -74,6 +74,64 @@ test('Blob can propose one explicit module reorder without hidden ranking', () =
   assert.match(proposal.summary, /Projekte und Wege/);
 });
 
+test('Blob can style one named module without changing the whole page', () => {
+  const proposal = createPageProposal('Mach die Fähigkeiten minzfarben und lass sie schweben.', page);
+  assert.deepEqual(proposal.operations, [{
+    type: 'module.appearance.set',
+    component_type: 'gemden.skill-grid@1',
+    values: { tone: 'mint', motion: 'float' }
+  }]);
+
+  const current = toPuckData(page, modules);
+  const next = applyPageProposal(current, proposal);
+  const skills = next.content.find(component => component.type === 'gemden.skill-grid@1');
+  assert.equal(skills.props.tone, 'mint');
+  assert.equal(skills.props.motion, 'float');
+  assert.equal(next.root.props.accent, current.root.props.accent);
+  assert.doesNotThrow(() => GemDenModules.validatePageDocument(
+    fromPuckData(next, page, modules),
+    modules,
+    capabilities
+  ));
+});
+
+test('Blob can update a declared section text from an exact quoted value', () => {
+  const proposal = createPageProposal('Nenne die Überschrift der Fähigkeiten „Meine Superkräfte.“', page);
+  assert.deepEqual(proposal.operations, [{
+    type: 'module.text.set',
+    component_type: 'gemden.skill-grid@1',
+    field: 'title',
+    value: 'Meine Superkräfte.'
+  }]);
+
+  const next = applyPageProposal(toPuckData(page, modules), proposal);
+  const skills = next.content.find(component => component.type === 'gemden.skill-grid@1');
+  assert.equal(skills.props.title, 'Meine Superkräfte.');
+  assert.doesNotThrow(() => GemDenModules.validatePageDocument(
+    fromPuckData(next, page, modules),
+    modules,
+    capabilities
+  ));
+});
+
+test('module edits stay explicit, scoped and fail closed', () => {
+  const ambiguous = createPageProposal('Nenne die Überschrift „Neu“.', page);
+  assert.equal(ambiguous.recognized, false);
+  assert.deepEqual(ambiguous.operations, []);
+
+  const unsupported = createPageProposal('Nenne die Einleitung der Projekte „Neu“.', page);
+  assert.equal(unsupported.recognized, false);
+  assert.deepEqual(unsupported.operations, []);
+
+  const unsafe = createPageProposal('Nenne die Überschrift der Fähigkeiten „<script>“.', page);
+  assert.equal(unsafe.recognized, false);
+  assert.deepEqual(unsafe.operations, []);
+
+  const same = createPageProposal('Nenne die Überschrift der Fähigkeiten „Was Julius einbringen kann.“', page);
+  assert.equal(same.recognized, false);
+  assert.deepEqual(same.operations, []);
+});
+
 test('an unknown request stays an explicit question and changes nothing', () => {
   const proposal = createPageProposal('Mach es irgendwie majestätischer.', page);
   assert.equal(proposal.recognized, false);
@@ -97,7 +155,7 @@ test('applying a Blob proposal is immutable and remains a valid GemDen page', ()
   assert.doesNotThrow(() => GemDenModules.validatePageDocument(document, modules, capabilities));
 });
 
-test('the executor rejects invented operations and arbitrary theme fields', () => {
+test('the executor rejects invented operations and arbitrary theme, module and text fields', () => {
   const current = toPuckData(page, modules);
   const base = createPageProposal('Mach die Seite ruhiger.', page);
   const invented = structuredClone(base);
@@ -107,6 +165,23 @@ test('the executor rejects invented operations and arbitrary theme fields', () =
   const unsafe = structuredClone(base);
   unsafe.operations = [{ type: 'theme.set', values: { custom_css: 'body { display: none }' } }];
   assert.throws(() => applyPageProposal(current, unsafe), /custom_css nicht ändern/);
+
+  const moduleStyle = structuredClone(base);
+  moduleStyle.operations = [{
+    type: 'module.appearance.set',
+    component_type: 'gemden.skill-grid@1',
+    values: { custom_css: 'display:none' }
+  }];
+  assert.throws(() => applyPageProposal(current, moduleStyle), /custom_css nicht ändern/);
+
+  const moduleText = structuredClone(base);
+  moduleText.operations = [{
+    type: 'module.text.set',
+    component_type: 'gemden.profile-hero@1',
+    field: 'bio',
+    value: 'Ungeprüfter Profiltext'
+  }];
+  assert.throws(() => applyPageProposal(current, moduleText), /Textfeld bio/);
 });
 
 test('rule terms use word boundaries instead of unsafe substrings', () => {
