@@ -99,6 +99,17 @@
             <p class="form-status" id="profile-status" role="status" aria-live="polite"></p>
           </form>
 
+          <section class="form-grid page-setup" aria-labelledby="page-setup-title">
+            <div>
+              <p class="eyebrow">Persönliche Seitenwerkstatt</p>
+              <h4 id="page-setup-title">Eigene Julius-Seite</h4>
+              <p class="account-copy">Die Seite wird ausschließlich über deine angemeldete Sitzung als privater Entwurf angelegt. Der erste Stand ist eine unveränderliche Server-Revision; veröffentlicht wird dabei nichts.</p>
+            </div>
+            <button class="button" id="page-create-button" type="button" disabled>Private Julius-Seite anlegen</button>
+            <a class="button secondary" id="page-workshop-link" href="../gestalten/?page=PAGE-MEM-JULIUS" hidden>Julius-Werkstatt öffnen</a>
+            <p class="form-status" id="page-status" role="status" aria-live="polite">Seitenstatus wird geprüft …</p>
+          </section>
+
           <form class="form-grid password-form" id="password-form">
             <div>
               <p class="eyebrow">Browserübergreifender Zugang</p>
@@ -119,7 +130,6 @@
           </form>
 
           <div class="button-row account-actions">
-            <a class="button" href="../gestalten/?page=PAGE-MEM-JULIUS">Julius-Werkstatt testen</a>
             <a class="button secondary" href="../community/kieze/p-hain/">Zu P-Hain</a>
             <button class="button dark" id="logout-button" type="button">Auf diesem Gerät abmelden</button>
           </div>
@@ -144,6 +154,7 @@
   <script src="../assets/supabase-config.js" defer></script>
   <script src="../assets/supabase-client.js" defer></script>
   <script src="./auth-flow.js" defer></script>
+  <script src="./page-bootstrap.js" defer></script>
   <script src="./konto.js" defer></script>
 </body>
 </html>
