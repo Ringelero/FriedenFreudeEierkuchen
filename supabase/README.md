@@ -1,6 +1,6 @@
 # Supabase-Fundament für GemDen / FFE
 
-Status: am 19. September 2026 auf das produktive Projekt angewendet und mit 37/37 bestandenen RLS-Gegenproben verifiziert.
+Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern seit 24. September 2026 produktiv und mit anonymen sowie eigentümergebundenen RLS-Gegenproben geprüft.
 
 ## Enthalten
 
@@ -8,6 +8,10 @@ Status: am 19. September 2026 auf das produktive Projekt angewendet und mit 37/3
 - `kieze` – stabile Kiezbereiche, zunächst mit `KIEZ-P-HAIN`
 - `permission_grants` – konkrete, zeitlich begrenzbare Bereichsrechte
 - `audit_events` – durch Datenbank-Trigger erzeugter, für Browser unveränderbarer Verlauf
+- `skills` und `profile_skills` – generischer Katalog und persönlicher Kontext ohne globale Rangliste
+- `profile_fields` – einzeln sichtbare Profiltexte
+- `skill_evidence` und `skill_evidence_links` – Nachweise mit explizitem Prüfstatus
+- `projects`, `project_skills` und `project_evidence_links` – Projektportfolio und Bezüge
 - RLS-Regeln und minimale SQL-Rechte für `anon` und `authenticated`
 - pgTAP-Gegenproben unter `tests/`
 - ein absichtlich nicht automatisch ausführbares Bootstrap-Beispiel unter `bootstrap/`
@@ -28,6 +32,9 @@ So kann ein Recht nicht stillschweigend auf einen anderen Kiez oder die ganze Pl
 - Signup-Metadaten dürfen weder `MEM-*`-IDs noch Rechte festlegen.
 - Browserrollen dürfen Rechte und Audit-Ereignisse nicht schreiben.
 - Anonyme Zugriffe sehen nur `public` + `published`.
+- Ein Portfolioeintrag wird zusätzlich nur bei einem öffentlichen, veröffentlichten und aktiven Eigentümerprofil sichtbar.
+- Browsernutzer können in den Portfolio-Tabellen ausschließlich eigene Entwürfe schreiben; ein Publish-Weg folgt separat.
+- Selbst erfasste Nachweise bleiben `self_reported`; höhere Prüfstatus können nicht selbst vergeben werden.
 - Noch nicht umgesetzte Sichtbarkeiten wie `members` und `scope_members` bleiben geschlossen.
 - Ein Kiezrecht gilt nur, solange es begonnen hat, nicht abgelaufen und nicht widerrufen ist.
 - Das erste Kiezrecht darf Beschreibung und Sichtbarkeit pflegen, aber weder stabile ID, Name, FFE-Verweise noch Lebenszyklusstatus verändern.
@@ -72,31 +79,33 @@ Das Projekt hat die Referenz `svigcbgdcuidokjjqhfy`. Die Fundament-Migration wur
 - ein automatisch erzeugtes Audit-Ereignis für dessen Anlage,
 - 37/37 bestandene pgTAP-Gegenproben.
 
+Am 24. September 2026 folgten die Migrationen `20260924091709_profile_portfolio_core` und `20260924092033_profile_portfolio_policy_tuning`. Bestätigt wurden:
+
+- 8 neue Tabellen mit aktiver RLS und expliziten Browserrechten,
+- 12 generische Fähigkeiten im Katalog,
+- für `MEM-JULIUS` 2 Profilfelder, 5 Fähigkeiten, 2 Nachweise und 1 Projekt als `private` + `draft`,
+- anonym sichtbar: 12 Katalogfähigkeiten und 0 Profilfelder, 0 persönliche Fähigkeiten, 0 Nachweise, 0 Projekte,
+- als Julius-Eigentümer sichtbar: 2 Profilfelder, 5 Fähigkeiten, 2 Nachweise und 1 Projekt,
+- keine neuen Security-Advisor-Funde und keine fehlenden Fremdschlüsselindizes für die neuen Tabellen.
+
 Die Sicherheitstests liefen in einer eigenen Transaktion. Testnutzer, Testrechte, Test-Kieze und die nur dafür aktivierte pgTAP-Erweiterung wurden vollständig zurückgerollt; danach waren weiterhin 0 Auth-Nutzer, 0 Profile und 0 Berechtigungsvergabe vorhanden.
 
-Die SQL-Ausführung erfolgte kontrolliert im Supabase SQL Editor. Deshalb muss die bereits angewendete Version `20260919000100` vor dem nächsten `db push` noch mit der offiziellen CLI als angewendet in der Remote-Historie markiert werden:
+Die produktive Migrationshistorie enthält jetzt das Fundament, die Seitenrevisionen, die RLS-Härtung und beide Portfolio-Migrationen. Die Versionsnummern der Dateien stimmen mit der Remote-Historie überein.
 
-```bash
-supabase link --project-ref svigcbgdcuidokjjqhfy
-supabase migration repair --status applied 20260919000100
-supabase migration list
-```
+Für die weitere kontrollierte Pilotfreigabe bleiben:
 
-`migration repair` darf hier nur den Verlauf berichtigen und die SQL-Datei nicht erneut ausführen. Die Migrationsdatei und die Datenbank-Historie bleiben danach gemeinsam die Quelle für Schemaänderungen.
-
-Für die kontrollierte Pilotfreigabe bleiben:
-
-1. Julius und Leni über Supabase Auth mit eindeutig bestätigten E-Mail-Adressen einladen,
-2. die echten Auth-UUIDs und die legitim vergebende Stelle in einer Kopie von `bootstrap/assign_pilot_identities.sql.example` einsetzen,
-3. Login, anonyme Abfragen und jeden RLS-Gegenfall mit den realen Konten erneut testen.
+1. Leni erst zum gewünschten Pilotzeitpunkt über eine eindeutig bestätigte Adresse einladen,
+2. eine stabile Mitglieds-ID oder ein erweitertes Recht nur über eine legitimierte, dokumentierte Vergabe zuordnen,
+3. Login und Eigentümerwege für jedes neu zugeordnete reale Konto erneut prüfen.
 
 ## Noch bewusst offen
 
 - Einladung oder offene Registrierung
 - wer das erste erweiterte Recht legitim vergibt
 - genaue Standardsichtbarkeit der späteren P-Hain-Module
-- Löschung, Export und Aufbewahrungsfristen
-- produktive Auth-Domain und Redirect-Konfiguration
-- Client-Anbindung mit dem veröffentlichbaren Schlüssel
+- Kontolöschung, vollständiger Kontoexport und Aufbewahrungsfristen
+- eigene produktive Auth-Domain
+- enger Veröffentlichungsablauf für strukturierte Profildaten
+- bestätigte Beiträge weiterer Projektmitglieder
 
-Darum erstellt die Migration selbst keine echten Konten und verbindet die öffentliche Website noch nicht mit der Datenbank.
+Darum erstellt keine Portfolio-Migration echte Konten oder Rechte. Die Website ist verbunden, liest öffentlich aber ausschließlich ausdrücklich veröffentlichte RLS-Zeilen.

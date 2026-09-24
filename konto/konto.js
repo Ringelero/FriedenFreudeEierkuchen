@@ -2,6 +2,7 @@
   const client = window.FFE_SUPABASE_CLIENT;
   const authFlow = window.FFE_AUTH_FLOW;
   const pageBootstrap = window.FFE_PAGE_BOOTSTRAP;
+  const profileWorkspace = window.FFE_PROFILE_WORKSPACE;
   const connectionChip = document.getElementById('connection-chip');
   const signedOutPanel = document.getElementById('signed-out-panel');
   const signedInPanel = document.getElementById('signed-in-panel');
@@ -95,7 +96,7 @@
   async function loadAccountData(user) {
     const profileQuery = client
       .from('profiles')
-      .select('id,stable_id,display_name,bio,visibility,publication_status,account_status')
+      .select('id,stable_id,display_name,visibility,publication_status,account_status')
       .eq('id', user.id)
       .maybeSingle();
     const permissionQuery = client
@@ -122,7 +123,6 @@
     });
     document.getElementById('account-permissions').textContent = describePermissions(activeGrants);
     document.getElementById('profile-display-name').value = profile.display_name || '';
-    document.getElementById('profile-bio').value = profile.bio || '';
     document.getElementById('profile-visibility').value = profile.visibility;
     setMessage(accountDataStatus, 'Profil und Rechte wurden über deine eigene Sitzung geladen.', 'success');
     profileForm.hidden = false;
@@ -134,11 +134,18 @@
       pageWorkshopLink.hidden = true;
       setMessage(pageStatus, pageBootstrap.describePageError(error, 'Der sichere Seitenstatus konnte nicht geladen werden.'), 'error');
     }
+
+    try {
+      await profileWorkspace.initialize({ client, profile });
+    } catch {
+      // Die Portfolio-Werkstatt zeigt ihren eigenen, präziseren Fehlerzustand.
+    }
   }
 
   async function renderSession(session) {
     currentUser = session?.user || null;
     currentProfile = null;
+    profileWorkspace?.reset();
     signedOutPanel.hidden = Boolean(currentUser);
     signedInPanel.hidden = !currentUser;
 
@@ -170,7 +177,7 @@
     }
   }
 
-  if (!client || !authFlow || !pageBootstrap) {
+  if (!client || !authFlow || !pageBootstrap || !profileWorkspace) {
     signedOutPanel.hidden = false;
     setConnection('Verbindung nicht verfügbar', 'open');
     loginSubmit.disabled = true;
@@ -281,7 +288,6 @@
     if (!currentUser) return;
 
     const displayName = document.getElementById('profile-display-name').value.trim();
-    const bio = document.getElementById('profile-bio').value.trim();
     const visibility = document.getElementById('profile-visibility').value;
     if (!displayName) {
       setMessage(profileStatus, 'Bitte gib einen Anzeigenamen ein.', 'error');
@@ -293,11 +299,13 @@
     try {
       const { data, error } = await client
         .from('profiles')
-        .update({ display_name: displayName, bio, visibility })
+        .update({ display_name: displayName, visibility })
         .eq('id', currentUser.id)
-        .select('id,stable_id,display_name,bio,visibility,publication_status,account_status')
+        .select('id,stable_id,display_name,visibility,publication_status,account_status')
         .single();
       if (error) throw error;
+      currentProfile = data;
+      profileWorkspace.setProfile(data);
       document.getElementById('profile-heading').textContent = data.display_name;
       document.getElementById('account-profile-status').textContent = formatProfileStatus(data);
       setMessage(profileStatus, 'Gespeichert. Supabase hat die Änderung mit deiner eigenen Sitzung geprüft.', 'success');

@@ -7,7 +7,7 @@
   <title>Konto · GemDen</title>
   <link rel="stylesheet" href="../assets/site.css">
   <link rel="stylesheet" href="../assets/blob.css">
-  <link rel="stylesheet" href="./konto.css?v=20260923-1">
+  <link rel="stylesheet" href="./konto.css?v=20260924-1">
 </head>
 <body data-area="account" data-blob-mode="guide">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
@@ -20,7 +20,7 @@
       <header class="hero compact account-hero">
         <p class="eyebrow">Persönlicher Zugang</p>
         <h1 class="display small">Dein Konto.</h1>
-        <p class="lead">Hier kommt nur zusammen, was zu deiner Anmeldung gehört: Sitzung, eigenes Profil und ausdrücklich vergebene Rechte.</p>
+        <p class="lead">Hier pflegst du dein Profil, dein Fähigkeitsportfolio, Nachweise und Projekte. Alles beginnt als privater Entwurf.</p>
         <div class="status-row">
           <span class="status-chip open" id="connection-chip">Verbindung wird geprüft</span>
           <span class="id-chip">SUPABASE · RLS</span>
@@ -83,21 +83,185 @@
               <input id="profile-display-name" maxlength="120" required autocomplete="name">
             </div>
             <div class="field">
-              <label for="profile-bio">Kurzbeschreibung</label>
-              <textarea id="profile-bio" maxlength="4000" placeholder="Was möchtest du über dich zeigen?"></textarea>
-            </div>
-            <div class="field">
-              <label for="profile-visibility">Sichtbarkeit</label>
+              <label for="profile-visibility">Rahmen des Gesamtprofils</label>
               <select id="profile-visibility">
                 <option value="private">Privat – nur für mich</option>
                 <option value="members">Mitglieder – technisch noch gesperrt</option>
                 <option value="public">Öffentlich – erst nach Veröffentlichung sichtbar</option>
               </select>
-              <small>Eine öffentliche Sichtbarkeit allein veröffentlicht das Profil noch nicht.</small>
+              <small>Texte und Portfolio-Einträge steuerst du darunter einzeln. Eine Sichtbarkeit allein veröffentlicht nichts.</small>
             </div>
-            <button class="button" id="profile-submit" type="submit">Eigenes Profil speichern</button>
+            <button class="button" id="profile-submit" type="submit">Profilrahmen speichern</button>
             <p class="form-status" id="profile-status" role="status" aria-live="polite"></p>
           </form>
+
+          <section class="portfolio-workspace" id="portfolio-workspace" aria-labelledby="portfolio-title" hidden>
+            <header class="portfolio-head">
+              <div>
+                <p class="eyebrow">Mein Portfolio</p>
+                <h4 id="portfolio-title">Zeig, was du einbringst.</h4>
+                <p class="account-copy">Du entscheidest für jedes Feld, welche Sichtbarkeit es später haben soll. Gespeichert wird hier ausschließlich als Entwurf.</p>
+              </div>
+              <button class="button secondary" id="portfolio-export" type="button">Eigene Daten als JSON</button>
+            </header>
+
+            <div class="portfolio-meter" aria-label="Portfolio-Übersicht">
+              <div><strong id="portfolio-field-count">0</strong><span>Profilfelder</span></div>
+              <div><strong id="portfolio-skill-count">0</strong><span>Fähigkeiten</span></div>
+              <div><strong id="portfolio-evidence-count">0</strong><span>Nachweise</span></div>
+              <div><strong id="portfolio-project-count">0</strong><span>Projekte</span></div>
+            </div>
+            <p class="form-status" id="portfolio-status" role="status" aria-live="polite"></p>
+
+            <details class="workspace-block" open>
+              <summary>
+                <span><b>Über mich</b><small>Jedes Feld mit eigener Sichtbarkeit</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <form class="form-grid workspace-body" id="profile-fields-form">
+                <div class="field-row">
+                  <div class="field">
+                    <label for="field-tagline">Kurzsatz</label>
+                    <input id="field-tagline" maxlength="240" placeholder="Wofür möchtest du gefunden werden?">
+                  </div>
+                  <div class="field compact-field">
+                    <label for="field-tagline-visibility">Sichtbarkeit</label>
+                    <select id="field-tagline-visibility" data-visibility-select></select>
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="field-bio">Über mich</label>
+                    <textarea id="field-bio" maxlength="4000" placeholder="Was möchtest du über dich erzählen?"></textarea>
+                  </div>
+                  <div class="field compact-field">
+                    <label for="field-bio-visibility">Sichtbarkeit</label>
+                    <select id="field-bio-visibility" data-visibility-select></select>
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="field-location">Ort oder Wirkungsraum</label>
+                    <input id="field-location" maxlength="240" placeholder="z. B. Berlin oder remote">
+                  </div>
+                  <div class="field compact-field">
+                    <label for="field-location-visibility">Sichtbarkeit</label>
+                    <select id="field-location-visibility" data-visibility-select></select>
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="field-availability_note">Verfügbarkeit</label>
+                    <textarea id="field-availability_note" maxlength="2000" placeholder="Wann und in welchem Rahmen bist du ansprechbar?"></textarea>
+                  </div>
+                  <div class="field compact-field">
+                    <label for="field-availability_note-visibility">Sichtbarkeit</label>
+                    <select id="field-availability_note-visibility" data-visibility-select></select>
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="field-boundaries">Grenzen</label>
+                    <textarea id="field-boundaries" maxlength="4000" placeholder="Was ist dir bei Anfragen und Zusammenarbeit wichtig?"></textarea>
+                  </div>
+                  <div class="field compact-field">
+                    <label for="field-boundaries-visibility">Sichtbarkeit</label>
+                    <select id="field-boundaries-visibility" data-visibility-select></select>
+                  </div>
+                </div>
+                <button class="button" id="profile-fields-submit" type="submit">Profilfelder als Entwurf speichern</button>
+                <p class="form-status" id="profile-fields-status" role="status" aria-live="polite"></p>
+              </form>
+            </details>
+
+            <details class="workspace-block" open>
+              <summary>
+                <span><b>Fähigkeiten</b><small>Kontext statt Rangliste</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body">
+                <div class="portfolio-list" id="profile-skills-list"></div>
+                <details class="entry-composer">
+                  <summary>Fähigkeit hinzufügen</summary>
+                  <form class="form-grid" id="profile-skill-create-form">
+                    <div class="field">
+                      <label for="profile-skill-id">Fähigkeit</label>
+                      <select id="profile-skill-id" required></select>
+                    </div>
+                    <div class="field">
+                      <label for="profile-skill-statement">So setze ich sie ein</label>
+                      <textarea id="profile-skill-statement" maxlength="4000"></textarea>
+                    </div>
+                    <div class="field">
+                      <label for="profile-skill-boundaries">Rahmen und Grenzen</label>
+                      <textarea id="profile-skill-boundaries" maxlength="4000"></textarea>
+                    </div>
+                    <div class="form-columns">
+                      <div class="field"><label for="profile-skill-intent">Wofür?</label><select id="profile-skill-intent" data-intent-select></select></div>
+                      <div class="field"><label for="profile-skill-stage">Selbsteinschätzung (optional)</label><select id="profile-skill-stage" data-stage-select></select></div>
+                      <div class="field"><label for="profile-skill-visibility">Sichtbarkeit</label><select id="profile-skill-visibility" data-visibility-select></select></div>
+                    </div>
+                    <button class="button" type="submit">Fähigkeit als Entwurf hinzufügen</button>
+                    <p class="form-status" id="profile-skill-create-status" role="status" aria-live="polite"></p>
+                  </form>
+                </details>
+              </div>
+            </details>
+
+            <details class="workspace-block">
+              <summary>
+                <span><b>Nachweise</b><small>Herkunft und Prüfstatus sichtbar halten</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body">
+                <div class="portfolio-list" id="skill-evidence-list"></div>
+                <details class="entry-composer">
+                  <summary>Nachweis hinzufügen</summary>
+                  <form class="form-grid" id="skill-evidence-create-form">
+                    <div class="field"><label for="evidence-title">Titel</label><input id="evidence-title" maxlength="200" required></div>
+                    <div class="field"><label for="evidence-description">Beschreibung</label><textarea id="evidence-description" maxlength="8000"></textarea></div>
+                    <div class="form-columns">
+                      <div class="field"><label for="evidence-type">Art</label><select id="evidence-type" data-evidence-type-select></select></div>
+                      <div class="field"><label for="evidence-visibility">Sichtbarkeit</label><select id="evidence-visibility" data-visibility-select></select></div>
+                    </div>
+                    <div class="form-columns">
+                      <div class="field"><label for="evidence-source-label">Quelle oder Organisation</label><input id="evidence-source-label" maxlength="200"></div>
+                      <div class="field"><label for="evidence-source-url">Link (optional)</label><input id="evidence-source-url" type="url" maxlength="2048" inputmode="url"></div>
+                    </div>
+                    <fieldset class="choice-fieldset"><legend>Verknüpfte Fähigkeiten</legend><div class="choice-grid" id="evidence-skill-choices"></div></fieldset>
+                    <p class="account-copy small-copy">Neue Nachweise sind immer „selbst berichtet“. Eine Bestätigung durch andere kann nicht selbst vergeben werden.</p>
+                    <button class="button" type="submit">Nachweis als Entwurf hinzufügen</button>
+                    <p class="form-status" id="skill-evidence-create-status" role="status" aria-live="polite"></p>
+                  </form>
+                </details>
+              </div>
+            </details>
+
+            <details class="workspace-block">
+              <summary>
+                <span><b>Projekte</b><small>Arbeit, Rolle und eingesetzte Fähigkeiten</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body">
+                <div class="portfolio-list" id="projects-list"></div>
+                <details class="entry-composer">
+                  <summary>Projekt hinzufügen</summary>
+                  <form class="form-grid" id="project-create-form">
+                    <div class="field"><label for="project-title">Titel</label><input id="project-title" maxlength="200" required></div>
+                    <div class="field"><label for="project-summary">Worum geht es?</label><textarea id="project-summary" maxlength="8000"></textarea></div>
+                    <div class="field"><label for="project-role-summary">Meine Rolle</label><textarea id="project-role-summary" maxlength="4000"></textarea></div>
+                    <div class="form-columns">
+                      <div class="field"><label for="project-lifecycle-status">Stand</label><select id="project-lifecycle-status" data-project-status-select></select></div>
+                      <div class="field"><label for="project-visibility">Sichtbarkeit</label><select id="project-visibility" data-visibility-select></select></div>
+                    </div>
+                    <fieldset class="choice-fieldset"><legend>Eingesetzte Fähigkeiten</legend><div class="choice-grid" id="project-skill-choices"></div></fieldset>
+                    <button class="button" type="submit">Projekt als Entwurf hinzufügen</button>
+                    <p class="form-status" id="project-create-status" role="status" aria-live="polite"></p>
+                  </form>
+                </details>
+              </div>
+            </details>
+          </section>
 
           <section class="form-grid page-setup" aria-labelledby="page-setup-title">
             <div>
@@ -155,6 +319,7 @@
   <script src="../assets/supabase-client.js" defer></script>
   <script src="./auth-flow.js" defer></script>
   <script src="./page-bootstrap.js?v=20260923-1" defer></script>
-  <script src="./konto.js?v=20260923-1" defer></script>
+  <script src="./profile-workspace.js?v=20260924-1" defer></script>
+  <script src="./konto.js?v=20260924-1" defer></script>
 </body>
 </html>
