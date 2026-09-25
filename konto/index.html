@@ -7,7 +7,7 @@
   <title>Konto · GemDen</title>
   <link rel="stylesheet" href="../assets/site.css">
   <link rel="stylesheet" href="../assets/blob.css">
-  <link rel="stylesheet" href="./konto.css?v=20260924-2">
+  <link rel="stylesheet" href="./konto.css?v=20260925-1">
 </head>
 <body data-area="account" data-blob-mode="guide">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
@@ -95,6 +95,54 @@
             <p class="form-status" id="profile-status" role="status" aria-live="polite"></p>
           </form>
 
+          <section class="publication-center" id="publication-center" aria-labelledby="publication-title" hidden>
+            <header class="portfolio-head publication-head">
+              <div>
+                <p class="eyebrow">Veröffentlichungszentrale</p>
+                <h4 id="publication-title">Du bestimmst, was live geht.</h4>
+                <p class="account-copy">Sichtbarkeit ist nur die Auswahl. Erst eine bestätigte Einzelfreigabe und das geöffnete Gesamtprofil machen einen Inhalt öffentlich. Beides kannst du jederzeit zurücknehmen.</p>
+              </div>
+              <a class="button secondary" id="profile-publication-link" href="../community/mitglieder/julius/" hidden>Profilseite ansehen</a>
+            </header>
+
+            <div class="publication-gate">
+              <div>
+                <p class="entry-kicker">Sicherheitsschalter</p>
+                <div class="publication-gate-title">
+                  <h5>Gesamtprofil</h5>
+                  <span class="publication-badge state-staged" id="profile-publication-badge">Gesamtprofil ist geschlossen</span>
+                </div>
+                <p class="entry-description" id="profile-publication-copy">Der aktuelle Stand wird geladen.</p>
+              </div>
+              <button class="button" id="profile-publication-action" type="button" disabled>Gesamtprofil veröffentlichen</button>
+            </div>
+
+            <div class="portfolio-meter publication-meter" role="group" aria-label="Veröffentlichungsübersicht">
+              <div><strong id="publication-count-live">0</strong><span>jetzt öffentlich</span></div>
+              <div><strong id="publication-count-staged">0</strong><span>freigegeben, offline</span></div>
+              <div><strong id="publication-count-ready">0</strong><span>zur Freigabe bereit</span></div>
+              <div><strong id="publication-count-excluded">0</strong><span>nicht ausgewählt</span></div>
+            </div>
+
+            <p class="form-status" id="publication-status" role="status" aria-live="polite"></p>
+
+            <details class="workspace-block publication-block" open>
+              <summary>
+                <span><b>Öffentliche Vorschau</b><small>Was außen sichtbar wäre – ohne private Einträge</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body" id="publication-preview"></div>
+            </details>
+
+            <details class="workspace-block publication-block" open>
+              <summary>
+                <span><b>Einzelfreigaben</b><small>Profilfelder, Fähigkeiten, Nachweise und Projekte</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body publication-list" id="publication-items"></div>
+            </details>
+          </section>
+
           <section class="portfolio-workspace" id="portfolio-workspace" aria-labelledby="portfolio-title" hidden>
             <header class="portfolio-head">
               <div>
@@ -105,7 +153,7 @@
               <button class="button secondary" id="portfolio-export" type="button">Eigene Daten als JSON</button>
             </header>
 
-            <div class="portfolio-meter" aria-label="Portfolio-Übersicht">
+            <div class="portfolio-meter" role="group" aria-label="Portfolio-Übersicht">
               <div><strong id="portfolio-field-count">0</strong><span>Profilfelder</span></div>
               <div><strong id="portfolio-skill-count">0</strong><span>Fähigkeiten</span></div>
               <div><strong id="portfolio-evidence-count">0</strong><span>Nachweise</span></div>
@@ -263,11 +311,11 @@
             </details>
           </section>
 
-          <section class="portfolio-workspace opportunity-workspace" id="opportunity-workspace" aria-labelledby="opportunity-title" hidden>
+          <section class="portfolio-workspace opportunity-workspace" id="opportunity-workspace" aria-labelledby="opportunity-workspace-title" hidden>
             <header class="portfolio-head">
               <div>
                 <p class="eyebrow">Meine Möglichkeiten</p>
-                <h4 id="opportunity-title">Aus Signalen kann Zusammenarbeit entstehen.</h4>
+                <h4 id="opportunity-workspace-title">Aus Signalen kann Zusammenarbeit entstehen.</h4>
                 <p class="account-copy">Eine Möglichkeit ist eine Einladung zur Klärung – keine automatische Zuteilung oder Zusage. Ort, Zeit, Vergütung und Grenzen bleiben sichtbar.</p>
               </div>
               <div class="button-row">
@@ -276,7 +324,7 @@
               </div>
             </header>
 
-            <div class="portfolio-meter" aria-label="Möglichkeiten-Übersicht">
+            <div class="portfolio-meter" role="group" aria-label="Möglichkeiten-Übersicht">
               <div><strong id="opportunity-count-all">0</strong><span>gesamt</span></div>
               <div><strong id="opportunity-count-draft">0</strong><span>Entwürfe</span></div>
               <div><strong id="opportunity-count-open">0</strong><span>öffentlich offen</span></div>
@@ -447,8 +495,9 @@
   <script src="../assets/supabase-client.js" defer></script>
   <script src="./auth-flow.js" defer></script>
   <script src="./page-bootstrap.js?v=20260923-1" defer></script>
-  <script src="./profile-workspace.js?v=20260924-1" defer></script>
+  <script src="./profile-workspace.js?v=20260925-1" defer></script>
+  <script src="./publication-center.js?v=20260925-1" defer></script>
   <script src="./opportunity-workspace.js?v=20260924-1" defer></script>
-  <script src="./konto.js?v=20260924-2" defer></script>
+  <script src="./konto.js?v=20260925-1" defer></script>
 </body>
 </html>

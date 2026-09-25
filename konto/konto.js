@@ -3,6 +3,7 @@
   const authFlow = window.FFE_AUTH_FLOW;
   const pageBootstrap = window.FFE_PAGE_BOOTSTRAP;
   const profileWorkspace = window.FFE_PROFILE_WORKSPACE;
+  const publicationCenter = window.FFE_PUBLICATION_CENTER;
   const opportunityWorkspace = window.FFE_OPPORTUNITY_WORKSPACE;
   const connectionChip = document.getElementById('connection-chip');
   const signedOutPanel = document.getElementById('signed-out-panel');
@@ -54,6 +55,17 @@
   function describePermissions(grants) {
     if (!grants.length) return 'Keine erweiterten Rechte vergeben';
     return grants.map(grant => `${grant.permission_key}:${grant.scope_id}`).join(', ');
+  }
+
+  function applyProfile(profile) {
+    currentProfile = { ...currentProfile, ...profile };
+    profileWorkspace.setProfile(currentProfile);
+    publicationCenter.setProfile(currentProfile);
+    opportunityWorkspace.setProfile(currentProfile);
+    document.getElementById('profile-heading').textContent = currentProfile.display_name || 'Dein Profil';
+    document.getElementById('account-profile-status').textContent = formatProfileStatus(currentProfile);
+    document.getElementById('profile-display-name').value = currentProfile.display_name || '';
+    document.getElementById('profile-visibility').value = currentProfile.visibility;
   }
 
   function cleanAuthAddress() {
@@ -143,6 +155,18 @@
     }
 
     try {
+      await publicationCenter.initialize({
+        client,
+        profile,
+        profileWorkspace,
+        onProfileChange: applyProfile
+      });
+    } catch (error) {
+      const target = document.getElementById('publication-status');
+      if (target) setMessage(target, error.message || 'Die Veröffentlichungszentrale konnte nicht geladen werden.', 'error');
+    }
+
+    try {
       await opportunityWorkspace.initialize({ client, profile });
     } catch (error) {
       const target = document.getElementById('opportunity-status');
@@ -154,6 +178,7 @@
     currentUser = session?.user || null;
     currentProfile = null;
     profileWorkspace?.reset();
+    publicationCenter?.reset();
     opportunityWorkspace?.reset();
     signedOutPanel.hidden = Boolean(currentUser);
     signedInPanel.hidden = !currentUser;
@@ -186,7 +211,7 @@
     }
   }
 
-  if (!client || !authFlow || !pageBootstrap || !profileWorkspace || !opportunityWorkspace) {
+  if (!client || !authFlow || !pageBootstrap || !profileWorkspace || !publicationCenter || !opportunityWorkspace) {
     signedOutPanel.hidden = false;
     setConnection('Verbindung nicht verfügbar', 'open');
     loginSubmit.disabled = true;
@@ -313,11 +338,7 @@
         .select('id,stable_id,display_name,visibility,publication_status,account_status')
         .single();
       if (error) throw error;
-      currentProfile = data;
-      profileWorkspace.setProfile(data);
-      opportunityWorkspace.setProfile(data);
-      document.getElementById('profile-heading').textContent = data.display_name;
-      document.getElementById('account-profile-status').textContent = formatProfileStatus(data);
+      applyProfile(data);
       setMessage(profileStatus, 'Gespeichert. Supabase hat die Änderung mit deiner eigenen Sitzung geprüft.', 'success');
     } catch (error) {
       setMessage(profileStatus, error.message || 'Das Profil konnte nicht gespeichert werden.', 'error');

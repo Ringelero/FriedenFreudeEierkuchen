@@ -54,7 +54,7 @@ const GUIDED_CHOICES = Object.freeze([
       Object.freeze({ label: 'Profil', value: 'gemden.profile-hero@1' }),
       Object.freeze({ label: 'Fähigkeiten', value: 'gemden.skill-grid@1' }),
       Object.freeze({ label: 'Nachweise', value: 'gemden.evidence-grid@1' }),
-      Object.freeze({ label: 'Projekte', value: 'gemden.link-cards@1' })
+      Object.freeze({ label: 'Projekte', value: 'gemden.project-grid@1' })
     ])
   })
 ]);

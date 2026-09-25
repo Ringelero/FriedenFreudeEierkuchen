@@ -288,9 +288,14 @@
     const copy = element('div');
     copy.append(element('p', { className: 'eyebrow', text: props.eyebrow || 'Mitglied' }));
     copy.append(element('h1', { className: 'display', text: member.name }));
-    copy.append(element('p', { className: 'lead', text: member.bio }));
+    const lead = member.tagline || member.bio;
+    if (lead) copy.append(element('p', { className: 'lead', text: lead }));
+    if (member.tagline && member.bio) {
+      copy.append(element('p', { className: 'gdm-profile-bio', text: member.bio }));
+    }
     const statuses = element('div', { className: 'status-row gdm-status-row' });
     statuses.append(element('span', { className: 'id-chip', text: member.id }));
+    if (member.location) statuses.append(element('span', { className: 'tag', text: member.location }));
     if (dynasty) {
       statuses.append(element('a', {
         className: 'status-chip',
@@ -299,6 +304,14 @@
       }));
     }
     copy.append(statuses);
+    if (member.availability_note) {
+      copy.append(element('p', { className: 'gdm-profile-availability', text: member.availability_note }));
+    }
+    if (Array.isArray(member.boundaries) && member.boundaries.length) {
+      const boundaries = element('ul', { className: 'gdm-profile-boundaries' });
+      member.boundaries.forEach(boundary => boundaries.append(element('li', { text: boundary })));
+      copy.append(boundaries);
+    }
 
     const visual = element('div', { className: 'gdm-profile-visual', attrs: { 'aria-label': props.visual_label || 'Profilmotiv' } });
     if (props.visual === 'ruby-gem') visual.append(element('div', { className: 'gdm-gem' }));
@@ -341,6 +354,9 @@
       card.append(element('span', { className: 'id-chip', text: evidence.id }));
       card.append(element('h3', { text: evidence.title }));
       card.append(element('p', { text: evidence.description }));
+      if (evidence.source_label) {
+        card.append(element('p', { className: 'gdm-evidence-source', text: `Quelle: ${evidence.source_label}` }));
+      }
       card.append(element('span', { className: 'tag', text: evidenceLabel(evidence.verification) }));
       grid.append(card);
     });
@@ -352,6 +368,40 @@
       panel.append(notice);
     }
     return decorate(element('section', { className: 'section', attrs: { 'aria-labelledby': headingId } }, [panel]), instance, context);
+  }
+
+  function projectStatusLabel(value) {
+    return {
+      idea: 'Idee',
+      active: 'aktiv',
+      paused: 'pausiert',
+      completed: 'abgeschlossen'
+    }[value] || value || 'Stand offen';
+  }
+
+  function projectGrid(instance, bindings, context) {
+    const props = instance.props;
+    const { head, headingId } = headingBlock(instance, props);
+    const grid = element('div', { className: 'grid two' });
+    if (!bindings.projects.length) {
+      grid.append(element('p', {
+        className: 'empty-state',
+        text: 'Noch kein Projekt ist für dieses Profil öffentlich freigegeben.'
+      }));
+    }
+    bindings.projects.forEach((project, index) => {
+      const card = element('article', { className: 'card gdm-project-card' });
+      card.style.setProperty('--gdm-index', String(index));
+      card.append(element('span', { className: 'id-chip', text: project.id }));
+      card.append(element('h3', { text: project.title }));
+      if (project.summary) card.append(element('p', { text: project.summary }));
+      if (project.role_summary) {
+        card.append(element('p', { className: 'gdm-card-boundary', text: `Meine Rolle: ${project.role_summary}` }));
+      }
+      card.append(element('span', { className: 'tag', text: projectStatusLabel(project.lifecycle_status) }));
+      grid.append(card);
+    });
+    return decorate(element('section', { className: 'section', attrs: { 'aria-labelledby': headingId } }, [head, grid]), instance, context);
   }
 
   function linkCards(instance, bindings, context) {
@@ -375,7 +425,7 @@
     return decorate(element('section', { className: 'section', attrs: { 'aria-labelledby': headingId } }, [head, grid]), instance, context);
   }
 
-  const renderers = { profileHero, skillGrid, evidenceGrid, linkCards };
+  const renderers = { profileHero, skillGrid, evidenceGrid, projectGrid, linkCards };
 
   function applyTheme(node, theme, canAnimate) {
     Object.entries(theme.tokens || {}).forEach(([name, value]) => {
@@ -485,7 +535,10 @@
 
   function autoMount() {
     if (typeof document === 'undefined') return;
-    document.querySelectorAll('[data-gemden-page-root]').forEach(node => mount(node));
+    document.querySelectorAll('[data-gemden-page-root]').forEach(node => {
+      if (node.dataset.gemdenManualMount === 'true') return;
+      mount(node);
+    });
   }
 
   if (typeof document !== 'undefined') {

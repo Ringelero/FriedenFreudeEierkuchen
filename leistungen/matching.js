@@ -70,11 +70,65 @@
   };
   let communityData;
 
+  async function publicRows(request) {
+    const { data, error } = await request;
+    if (error) throw error;
+    return data || [];
+  }
+
   async function getData() {
     if (communityData) return communityData;
     const response = await fetch('../assets/data/community-v0.1.json');
     if (!response.ok) throw new Error('Community-Daten konnten nicht geladen werden.');
-    communityData = await response.json();
+    const staticData = await response.json();
+    const client = window.FFE_SUPABASE_CLIENT;
+    if (!client) {
+      communityData = staticData;
+      return communityData;
+    }
+
+    try {
+      const [profiles, profileSkills, evidence] = await Promise.all([
+        publicRows(client.from('profiles')
+          .select('stable_id,display_name,visibility,publication_status,account_status')),
+        publicRows(client.from('profile_skills')
+          .select('member_id,skill_id,sort_order')
+          .order('sort_order')),
+        publicRows(client.from('skill_evidence')
+          .select('stable_id,member_id,title,description,verification_status,created_at')
+          .order('created_at'))
+      ]);
+      const memberStubs = new Map((staticData.members || []).map(member => [member.id, member]));
+      const publicEvidence = evidence.map(item => ({
+        id: item.stable_id,
+        member_id: item.member_id,
+        title: item.title,
+        description: item.description,
+        verification: {
+          self_reported: 'selbst berichtet',
+          community_confirmed: 'durch die Community bestätigt',
+          externally_verified: 'extern verifiziert'
+        }[item.verification_status] || item.verification_status
+      }));
+      communityData = {
+        ...staticData,
+        members: profiles.map(profile => {
+          const stub = memberStubs.get(profile.stable_id) || {};
+          return {
+            ...stub,
+            id: profile.stable_id,
+            slug: stub.slug || profile.stable_id.toLocaleLowerCase('de-DE').replace(/^mem-/, ''),
+            name: profile.display_name,
+            skill_ids: profileSkills.filter(item => item.member_id === profile.stable_id).map(item => item.skill_id),
+            evidence_ids: publicEvidence.filter(item => item.member_id === profile.stable_id).map(item => item.id)
+          };
+        }),
+        evidence: publicEvidence
+      };
+    } catch (error) {
+      console.warn('Matching nutzt nur den geschlossenen öffentlichen Grundbestand:', error);
+      communityData = staticData;
+    }
     return communityData;
   }
 
