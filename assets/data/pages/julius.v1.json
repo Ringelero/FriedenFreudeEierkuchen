@@ -30,7 +30,7 @@
       "type": "json",
       "url": "../community-v0.1.json",
       "classification": "public",
-      "collections": ["members", "dynasties", "skills", "evidence"]
+      "collections": ["members", "dynasties", "skills", "evidence", "projects"]
     }
   ],
   "bindings": {
@@ -57,6 +57,12 @@
       "source": "community",
       "collection": "evidence",
       "ids_from": { "binding": "member", "field": "evidence_ids" }
+    },
+    "projects": {
+      "kind": "related",
+      "source": "community",
+      "collection": "projects",
+      "ids_from": { "binding": "member", "field": "project_ids" }
     }
   },
   "theme": {
@@ -121,6 +127,18 @@
             "boundary": "Allgemeines elektrotechnisches Verständnis ist kein pauschaler Nachweis für jede zulassungspflichtige Arbeit. Sicherheit, Rechtslage, Qualifikation und Auftrag werden immer konkret geprüft."
           },
           "appearance": { "tone": "gold", "motion": "fade" }
+        },
+        {
+          "id": "julius-projects",
+          "type": "gemden.project-grid",
+          "version": 1,
+          "bindings": { "projects": "projects" },
+          "props": {
+            "eyebrow": "Veröffentlichte Projekte",
+            "title": "Woran Julius arbeitet.",
+            "intro": "Projekte zeigen den beschriebenen Stand und die eigene Rolle. Sie sind keine automatische Zusage für neue Aufträge."
+          },
+          "appearance": { "tone": "mint", "motion": "rise" }
         },
         {
           "id": "julius-paths",

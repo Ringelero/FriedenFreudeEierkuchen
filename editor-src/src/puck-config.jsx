@@ -74,7 +74,8 @@ function dataIndex(page, community) {
     member,
     dynasty: entity('dynasty'),
     skills: (member?.skill_ids || []).map(id => collections.get('skills')?.get(id)).filter(Boolean),
-    evidence: (member?.evidence_ids || []).map(id => collections.get('evidence')?.get(id)).filter(Boolean)
+    evidence: (member?.evidence_ids || []).map(id => collections.get('evidence')?.get(id)).filter(Boolean),
+    projects: (member?.project_ids || []).map(id => collections.get('projects')?.get(id)).filter(Boolean)
   };
 }
 
@@ -92,7 +93,7 @@ function ProfileHero({ props, data, type }) {
       <div className="preview-hero-copy">
         <p className="preview-eyebrow">{props.eyebrow}</p>
         <h1>{data.member?.name || 'Mitglied'}</h1>
-        <p className="preview-lead">{data.member?.bio || 'Hier entsteht eine persönliche GemDen-Seite.'}</p>
+        <p className="preview-lead">{data.member?.tagline || data.member?.bio || 'Hier entsteht eine persönliche GemDen-Seite.'}</p>
         <div className="preview-chips">
           {data.member?.id && <span>{data.member.id}</span>}
           {data.dynasty?.name && <span>{data.dynasty.name}</span>}
@@ -160,10 +161,31 @@ function LinkCards({ props, type }) {
   );
 }
 
+function ProjectGrid({ props, data, type }) {
+  return (
+    <ModuleShell type={type} tone={props.tone} motion={props.motion}>
+      <p className="preview-eyebrow">{props.eyebrow}</p>
+      <h2>{props.title}</h2>
+      <p className="preview-intro">{props.intro}</p>
+      <div className="preview-card-grid">
+        {data.projects.map(project => (
+          <article className="preview-card" key={project.id}>
+            <strong>{project.title}</strong>
+            <p>{project.summary}</p>
+            {project.role_summary && <p>Meine Rolle: {project.role_summary}</p>}
+            <small>{project.id}</small>
+          </article>
+        ))}
+      </div>
+    </ModuleShell>
+  );
+}
+
 function renderModule(type, props, data) {
   if (type === 'gemden.profile-hero') return <ProfileHero props={props} data={data} type={type} />;
   if (type === 'gemden.skill-grid') return <SkillGrid props={props} data={data} type={type} />;
   if (type === 'gemden.evidence-grid') return <EvidenceGrid props={props} data={data} type={type} />;
+  if (type === 'gemden.project-grid') return <ProjectGrid props={props} data={data} type={type} />;
   if (type === 'gemden.link-cards') return <LinkCards props={props} type={type} />;
   return <ModuleShell type={type} tone={props.tone} motion={props.motion}><p>Vorschau für {type}</p></ModuleShell>;
 }

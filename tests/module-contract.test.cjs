@@ -13,6 +13,27 @@ const capabilities = readJson('assets/data/capabilities.v1.json');
 const modules = readJson('assets/data/modules.v1.json');
 const page = readJson('assets/data/pages/julius.v1.json');
 const community = readJson('assets/data/community-v0.1.json');
+const liveCommunity = clone(community);
+const liveMember = liveCommunity.members.find(member => member.id === 'MEM-JULIUS');
+liveMember.tagline = 'Technik verständlich und gemeinsam gestalten.';
+liveMember.skill_ids = [...page.capability_context.human_skill_refs];
+liveMember.evidence_ids = ['EVID-PUBLISHED-TEST'];
+liveMember.project_ids = ['PROJECT-PUBLISHED-TEST'];
+liveCommunity.evidence = [{
+  id: 'EVID-PUBLISHED-TEST',
+  member_id: 'MEM-JULIUS',
+  title: 'Freigegebener Testnachweis',
+  description: 'Nur im Laufzeittest zusammengesetzt.',
+  verification: 'self-reported'
+}];
+liveCommunity.projects = [{
+  id: 'PROJECT-PUBLISHED-TEST',
+  member_id: 'MEM-JULIUS',
+  title: 'Freigegebenes Testprojekt',
+  summary: 'Nur im Laufzeittest zusammengesetzt.',
+  role_summary: 'Testrolle',
+  lifecycle_status: 'active'
+}];
 
 test('Capability-, Modul- und Seitenverträge bilden eine gültige Kette', () => {
   assert.equal(runtime.validateCapabilityCatalog(capabilities), capabilities);
@@ -20,12 +41,13 @@ test('Capability-, Modul- und Seitenverträge bilden eine gültige Kette', () =>
   assert.equal(runtime.validatePageDocument(page, modules, capabilities), page);
 });
 
-test('Julius-Bindings lösen Entität, Skills und Evidenz ohne Duplikatdaten auf', () => {
-  const bindings = runtime.resolveBindings(page.bindings, { community }, page.data_sources);
+test('Julius-Bindings lösen veröffentlichte Skills, Evidenz und Projekte ohne Duplikatdaten auf', () => {
+  const bindings = runtime.resolveBindings(page.bindings, { community: liveCommunity }, page.data_sources);
   assert.equal(bindings.member.id, 'MEM-JULIUS');
   assert.equal(bindings.dynasty.id, 'DYN-RUBYBUBYS');
   assert.deepEqual(bindings.skills.map(item => item.id), page.capability_context.human_skill_refs);
   assert.deepEqual(bindings.evidence.map(item => item.id), bindings.member.evidence_ids);
+  assert.deepEqual(bindings.projects.map(item => item.id), bindings.member.project_ids);
 });
 
 test('Ein Modul ohne ausdrücklich gewährte Pflicht-Capability wird abgewiesen', () => {
@@ -74,15 +96,25 @@ test('Alle lokalen JSON-Quellen des Seitendokuments existieren', () => {
   });
 });
 
-test('Julius behält einen statischen No-JS-Rückfallweg', () => {
+test('Julius behält einen geschlossenen No-JS-Rückfallweg', () => {
   const html = fs.readFileSync(path.join(root, 'community/mitglieder/julius/index.html'), 'utf8');
   assert.match(html, /data-gemden-page-root/);
   assert.match(html, /assets\/gemden-modules\.js/);
   assert.match(html, /<h1 class="display">Julius<\/h1>/);
-  assert.match(html, /SKILL-SMART-HOME/);
+  assert.match(html, /derzeit nicht öffentlich freigegeben/);
+  assert.doesNotMatch(html, /SKILL-SMART-HOME/);
 });
 
-test('Der Browser-Renderer erzeugt alle vier Pilotmodule ohne HTML-Strings', () => {
+test('der öffentliche JSON-Grundbestand enthält kein ungeöffnetes Julius-Portfolio', () => {
+  const member = community.members.find(item => item.id === 'MEM-JULIUS');
+  assert.deepEqual(member.skill_ids, []);
+  assert.deepEqual(member.evidence_ids, []);
+  assert.deepEqual(member.project_ids, []);
+  assert.deepEqual(community.evidence, []);
+  assert.deepEqual(community.projects, []);
+});
+
+test('Der Browser-Renderer erzeugt alle fünf Pilotmodule ohne HTML-Strings', () => {
   class FakeNode {
     constructor(tagName, textContent = '') {
       this.tagName = tagName;
@@ -113,7 +145,7 @@ test('Der Browser-Renderer erzeugt alle vier Pilotmodule ohne HTML-Strings', () 
   global.window = { location: { origin: 'https://gemden.red' } };
 
   try {
-    const bindings = runtime.resolveBindings(page.bindings, { community }, page.data_sources);
+    const bindings = runtime.resolveBindings(page.bindings, { community: liveCommunity }, page.data_sources);
     const tree = runtime.renderPage(page, modules, bindings);
     const all = [];
     const visit = node => {
@@ -126,10 +158,12 @@ test('Der Browser-Renderer erzeugt alle vier Pilotmodule ohne HTML-Strings', () 
       'julius-hero',
       'julius-skills',
       'julius-evidence',
+      'julius-projects',
       'julius-paths'
     ]);
     assert.equal(all.filter(node => node.className.includes('gdm-skill-card')).length, 5);
-    assert.equal(all.filter(node => node.className.includes('gdm-evidence-card')).length, 2);
+    assert.equal(all.filter(node => node.className.includes('gdm-evidence-card')).length, 1);
+    assert.equal(all.filter(node => node.className.includes('gdm-project-card')).length, 1);
     assert.equal(all.some(node => node.tagName === 'h1' && node.textContent === 'Julius'), true);
   } finally {
     delete global.document;
@@ -138,7 +172,7 @@ test('Der Browser-Renderer erzeugt alle vier Pilotmodule ohne HTML-Strings', () 
 });
 
 test('Modulereignisse sind versioniert und auf deklarierte Typen begrenzt', () => {
-  const instance = page.regions[0].modules[3];
+  const instance = page.regions[0].modules.find(item => item.id === 'julius-paths');
   const manifest = modules.modules.find(item => item.type === instance.type && item.version === instance.version);
   const event = runtime.createEventEnvelope(page, instance, manifest, 'navigation:open', { href: '/leistungen/' });
   assert.deepEqual(event.source, {

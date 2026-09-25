@@ -110,42 +110,18 @@
       "id": "MEM-JULIUS",
       "slug": "julius",
       "name": "Julius",
-      "status": "public-profile-prototype",
-      "bio": "Ein Berliner mit Herz. Meine Leidenschaft ist es, Menschen mit Technik zu verbinden und Kreativität zu unterstützen.",
-      "dynasty_ids": ["DYN-RUBYBUBYS"],
+      "status": "publication-gated",
+      "tagline": "",
+      "bio": "",
+      "dynasty_ids": [],
       "kiez_ids": [],
-      "skill_ids": [
-        "SKILL-SMART-HOME",
-        "SKILL-ELECTRICAL-UNDERSTANDING",
-        "SKILL-TINKERING",
-        "SKILL-TROUBLESHOOTING",
-        "SKILL-TECH-COMMUNICATION"
-      ],
+      "skill_ids": [],
       "public_path": "/community/mitglieder/julius/",
-      "boundaries": [
-        "Eine Empfehlung ist noch keine Auftragsannahme.",
-        "Sicherheits- und zulassungspflichtige Arbeiten werden vorab fachlich und rechtlich geprüft.",
-        "Verfügbarkeit und Rahmen werden für jede Anfrage neu geklärt."
-      ],
-      "evidence_ids": ["EVID-JULIUS-BETTERATHOME", "EVID-JULIUS-ADLON"]
+      "boundaries": [],
+      "evidence_ids": [],
+      "project_ids": []
     }
   ],
-  "evidence": [
-    {
-      "id": "EVID-JULIUS-BETTERATHOME",
-      "member_id": "MEM-JULIUS",
-      "type": "self_reported_work_experience",
-      "title": "Berufserfahrung bei BetterAtHome GmbH",
-      "description": "Von Julius angegebene Arbeitserfahrung in einem Smart-Home-Start-up.",
-      "verification": "self-reported"
-    },
-    {
-      "id": "EVID-JULIUS-ADLON",
-      "member_id": "MEM-JULIUS",
-      "type": "self_reported_work_experience",
-      "title": "Erfahrung als Haustechniker im Hotel Adlon",
-      "description": "Von Julius angegebene praktische Erfahrung in der Haustechnik.",
-      "verification": "self-reported"
-    }
-  ]
+  "evidence": [],
+  "projects": []
 }

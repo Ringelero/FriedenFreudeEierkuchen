@@ -75,6 +75,14 @@
     return options.find(option => option[0] === value)?.[1] || value || 'Keine Angabe';
   }
 
+  function publicationLabel(value) {
+    return {
+      draft: 'Entwurf',
+      published: 'einzeln freigegeben',
+      archived: 'archiviert'
+    }[value] || value;
+  }
+
   function fillSelect(select, options, value) {
     if (!select) return;
     select.replaceChildren();
@@ -296,7 +304,7 @@
       card.classList.add('skill-entry');
       appendText(card, record.statement || skill.description);
       appendText(card, record.boundaries, 'entry-boundary');
-      appendTags(card, [optionLabel(INTENTS, record.intent), optionLabel(STAGES, record.self_assessed_stage), optionLabel(VISIBILITIES, record.visibility), 'Entwurf']);
+      appendTags(card, [optionLabel(INTENTS, record.intent), optionLabel(STAGES, record.self_assessed_stage), optionLabel(VISIBILITIES, record.visibility), publicationLabel(record.publication_status)]);
       if (record.publication_status === 'draft') {
         const actions = node('div', 'button-row entry-actions');
         actions.append(
@@ -319,7 +327,7 @@
       appendText(card, record.description);
       appendText(card, record.source_label ? `Quelle: ${record.source_label}` : '');
       const linked = state.evidenceLinks.filter(link => link.evidence_id === record.id).map(link => catalogSkill(link.skill_id).name);
-      appendTags(card, [record.verification_status === 'self_reported' ? 'selbst berichtet' : record.verification_status, optionLabel(VISIBILITIES, record.visibility), ...linked]);
+      appendTags(card, [record.verification_status === 'self_reported' ? 'selbst berichtet' : record.verification_status, optionLabel(VISIBILITIES, record.visibility), publicationLabel(record.publication_status), ...linked]);
       if (record.publication_status === 'draft') {
         const actions = node('div', 'button-row entry-actions');
         actions.append(
@@ -342,7 +350,7 @@
       appendText(card, record.summary);
       appendText(card, record.role_summary ? `Meine Rolle: ${record.role_summary}` : '');
       const linked = state.projectSkills.filter(link => link.project_id === record.id).map(link => catalogSkill(link.skill_id).name);
-      appendTags(card, [optionLabel(VISIBILITIES, record.visibility), 'Entwurf', ...linked]);
+      appendTags(card, [optionLabel(VISIBILITIES, record.visibility), publicationLabel(record.publication_status), ...linked]);
       if (record.publication_status === 'draft') {
         const actions = node('div', 'button-row entry-actions');
         actions.append(
@@ -365,23 +373,38 @@
     renderSkills();
     renderEvidence();
     renderProjects();
-    setMessage(byId('portfolio-status'), 'Dein privater Portfolio-Entwurf ist geladen.', 'success');
+    const publishedCount = [
+      ...state.fields,
+      ...state.profileSkills,
+      ...state.evidence,
+      ...state.projects
+    ].filter(item => item.publication_status === 'published').length;
+    setMessage(
+      byId('portfolio-status'),
+      publishedCount
+        ? `${publishedCount} Einträge sind einzeln freigegeben. Veröffentlichte Einträge werden vor Änderungen zuerst zurückgezogen.`
+        : 'Deine Portfolio-Entwürfe sind geladen.',
+      'success'
+    );
   }
 
   async function loadPortfolio() {
     const memberId = state.profile.stable_id;
     const [catalog, fields, profileSkills, evidence, evidenceLinks, projects, projectSkills, projectEvidenceLinks] = await Promise.all([
       result(state.client.from('skills').select('id,name,description,branch,safety_note,lifecycle_status').eq('lifecycle_status', 'active').order('name')),
-      result(state.client.from('profile_fields').select('member_id,field_key,value_text,visibility,publication_status,sort_order,updated_at').eq('member_id', memberId).order('sort_order')),
-      result(state.client.from('profile_skills').select('id,member_id,skill_id,statement,boundaries,self_assessed_stage,intent,visibility,publication_status,sort_order,updated_at').eq('member_id', memberId).order('sort_order')),
-      result(state.client.from('skill_evidence').select('id,stable_id,member_id,evidence_type,verification_status,title,description,source_label,source_url,occurred_from,occurred_until,visibility,publication_status,created_at,updated_at').eq('member_id', memberId).order('created_at')),
+      result(state.client.from('profile_fields').select('member_id,field_key,value_text,visibility,publication_status,published_at,sort_order,updated_at').eq('member_id', memberId).order('sort_order')),
+      result(state.client.from('profile_skills').select('id,member_id,skill_id,statement,boundaries,self_assessed_stage,intent,visibility,publication_status,published_at,sort_order,updated_at').eq('member_id', memberId).order('sort_order')),
+      result(state.client.from('skill_evidence').select('id,stable_id,member_id,evidence_type,verification_status,title,description,source_label,source_url,occurred_from,occurred_until,visibility,publication_status,published_at,created_at,updated_at').eq('member_id', memberId).order('created_at')),
       result(state.client.from('skill_evidence_links').select('evidence_id,skill_id')),
-      result(state.client.from('projects').select('id,stable_id,owner_member_id,title,summary,role_summary,lifecycle_status,started_on,completed_on,visibility,publication_status,sort_order,created_at,updated_at').eq('owner_member_id', memberId).order('sort_order')),
+      result(state.client.from('projects').select('id,stable_id,owner_member_id,title,summary,role_summary,lifecycle_status,started_on,completed_on,visibility,publication_status,published_at,sort_order,created_at,updated_at').eq('owner_member_id', memberId).order('sort_order')),
       result(state.client.from('project_skills').select('project_id,skill_id,relation_type')),
       result(state.client.from('project_evidence_links').select('project_id,evidence_id,relation_type'))
     ]);
     Object.assign(state, { catalog, fields, profileSkills, evidence, evidenceLinks, projects, projectSkills, projectEvidenceLinks });
     renderPortfolio();
+    if (typeof window.CustomEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('ffe:portfolio-changed'));
+    }
   }
 
   async function syncSkillLinks(table, foreignKey, foreignId, existingIds, wantedIds) {
@@ -655,6 +678,11 @@
     state.profile = { ...state.profile, ...profile };
   }
 
+  async function refresh() {
+    if (!state.client || !state.profile?.stable_id) return;
+    await loadPortfolio();
+  }
+
   function reset() {
     Object.assign(state, {
       client: null,
@@ -685,5 +713,5 @@
     byId('portfolio-workspace').hidden = true;
   }
 
-  window.FFE_PROFILE_WORKSPACE = { initialize, setProfile, reset };
+  window.FFE_PROFILE_WORKSPACE = { initialize, refresh, setProfile, reset };
 })();

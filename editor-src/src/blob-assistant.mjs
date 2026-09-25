@@ -75,7 +75,8 @@ const MODULE_HINTS = Object.freeze([
   Object.freeze({ type: 'gemden.profile-hero@1', labels: Object.freeze(['profil', 'julius', 'profilauftakt']) }),
   Object.freeze({ type: 'gemden.skill-grid@1', labels: Object.freeze(['fahigkeiten', 'skills', 'konnen']) }),
   Object.freeze({ type: 'gemden.evidence-grid@1', labels: Object.freeze(['nachweise', 'evidenz', 'erfahrung']) }),
-  Object.freeze({ type: 'gemden.link-cards@1', labels: Object.freeze(['projekte', 'projekt', 'arbeiten', 'wege', 'smart home', 'lichterkette']) })
+  Object.freeze({ type: 'gemden.project-grid@1', labels: Object.freeze(['projektportfolio', 'projektraster']) }),
+  Object.freeze({ type: 'gemden.link-cards@1', labels: Object.freeze(['projekte und wege', 'projekte', 'projekt', 'arbeiten', 'wege', 'links', 'smart home', 'lichterkette']) })
 ]);
 
 const FORBIDDEN_GROUPS = Object.freeze([
@@ -115,6 +116,7 @@ const MODULE_LABELS = Object.freeze({
   'gemden.profile-hero@1': 'Profilauftakt',
   'gemden.skill-grid@1': 'Fähigkeiten',
   'gemden.evidence-grid@1': 'Nachweise',
+  'gemden.project-grid@1': 'Projekte',
   'gemden.link-cards@1': 'Projekte und Wege'
 });
 
@@ -122,6 +124,7 @@ const MODULE_TEXT_FIELDS = Object.freeze({
   'gemden.profile-hero@1': Object.freeze({ eyebrow: 60, visual_label: 180 }),
   'gemden.skill-grid@1': Object.freeze({ eyebrow: 60, title: 100, intro: 280 }),
   'gemden.evidence-grid@1': Object.freeze({ eyebrow: 60, title: 100, boundary: 320 }),
+  'gemden.project-grid@1': Object.freeze({ eyebrow: 60, title: 100, intro: 280 }),
   'gemden.link-cards@1': Object.freeze({ eyebrow: 60, title: 100 })
 });
 
@@ -739,4 +742,3 @@ export function applyPageProposal(puckData, proposal) {
   });
   return next;
 }
-

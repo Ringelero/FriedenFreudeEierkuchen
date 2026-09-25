@@ -177,6 +177,63 @@
       "ffe_refs": ["K05", "F04", "T05"]
     },
     {
+      "type": "gemden.project-grid",
+      "version": 1,
+      "title": "Projektraster",
+      "description": "Zeigt ausdrücklich veröffentlichte Projekte mit Rolle und Lebenszyklus.",
+      "status": "pilot",
+      "renderer": "projectGrid",
+      "data_inputs": [
+        { "name": "projects", "entity": "community.project", "cardinality": "many", "required": true }
+      ],
+      "capabilities": {
+        "requires": ["module:data.public.community.read"],
+        "optional": ["module:ui.motion.decorative"],
+        "emits": ["page:module-ready"]
+      },
+      "editor": {
+        "category": "projekte",
+        "category_title": "Projekte",
+        "default_props": {
+          "eyebrow": "Projekte",
+          "title": "Woran ich arbeite.",
+          "intro": "Veröffentlichte Projekte zeigen Kontext und eigene Rolle, nicht automatisch eine Zusage für neue Aufträge."
+        },
+        "default_appearance": { "tone": "mint", "motion": "rise" },
+        "fields": [
+          { "id": "eyebrow", "target": "props.eyebrow", "label": "Kleine Überschrift", "control": "text" },
+          { "id": "title", "target": "props.title", "label": "Überschrift", "control": "text" },
+          { "id": "intro", "target": "props.intro", "label": "Einleitung", "control": "textarea" },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Farbton",
+            "control": "select",
+            "options": [
+              { "label": "Minze", "value": "mint" },
+              { "label": "Rubin", "value": "ruby" },
+              { "label": "Gold", "value": "gold" },
+              { "label": "Neutral", "value": "neutral" }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Bewegung",
+            "control": "select",
+            "options": [
+              { "label": "Keine", "value": "none" },
+              { "label": "Einblenden", "value": "fade" },
+              { "label": "Aufsteigen", "value": "rise" },
+              { "label": "Schweben", "value": "float" },
+              { "label": "Pulsieren", "value": "pulse" }
+            ]
+          }
+        ]
+      },
+      "ffe_refs": ["K05", "W01", "T05"]
+    },
+    {
       "type": "gemden.link-cards",
       "version": 1,
       "title": "Wegkarten",

@@ -1,6 +1,6 @@
 # Supabase-Fundament für GemDen / FFE
 
-Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern seit 24. September 2026 und Möglichkeiten-Kern seit 25. September 2026 produktiv. Alle drei Schichten wurden mit anonymen sowie eigentümergebundenen RLS-Gegenproben geprüft.
+Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern seit 24. September 2026 sowie Möglichkeiten-Kern und kontrollierte Veröffentlichung seit 25. September 2026 produktiv. Alle Schichten wurden mit anonymen sowie eigentümergebundenen RLS-Gegenproben geprüft.
 
 ## Enthalten
 
@@ -14,6 +14,7 @@ Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern 
 - `projects`, `project_skills` und `project_evidence_links` – Projektportfolio und Bezüge
 - `opportunities` – die fünf Signale mit Ort, Zeit, Beziehungs-, Vergütungs-, Risiko-, Sichtbarkeits- und Lebenszyklusrahmen
 - `opportunity_requirements` – notwendige, hilfreiche oder im Zusammenhang erlernbare Fähigkeiten einer Möglichkeit
+- `publication_actions` – eigentümergebundenes, unveränderliches Protokoll bestätigter Freigaben und Rücknahmen
 - RLS-Regeln und minimale SQL-Rechte für `anon` und `authenticated`
 - pgTAP-Gegenproben unter `tests/`
 - ein absichtlich nicht automatisch ausführbares Bootstrap-Beispiel unter `bootstrap/`
@@ -35,7 +36,8 @@ So kann ein Recht nicht stillschweigend auf einen anderen Kiez oder die ganze Pl
 - Browserrollen dürfen Rechte und Audit-Ereignisse nicht schreiben.
 - Anonyme Zugriffe sehen nur `public` + `published`.
 - Ein Portfolioeintrag wird zusätzlich nur bei einem öffentlichen, veröffentlichten und aktiven Eigentümerprofil sichtbar.
-- Browsernutzer können in den Portfolio-Tabellen ausschließlich eigene Entwürfe schreiben; ein Publish-Weg folgt separat.
+- Browsernutzer können in den Portfolio-Tabellen ausschließlich eigene Entwürfe schreiben. Freigaben und Rücknahmen laufen append-only über `publication_actions`; ein nicht aufrufbarer privater Trigger prüft `auth.uid()`, Eigentum, Sichtbarkeit und Lebenszyklus und verändert ausschließlich Veröffentlichungsmetadaten.
+- Die Rücknahme des Gesamtprofils schließt alle einzeln freigegebenen Inhalte sofort. Ein veröffentlichter Eintrag wird erst nach der Einzelfreigabe wieder zum bearbeitbaren Entwurf.
 - Möglichkeiten entstehen im Browser als eigene Entwürfe. Öffentlich lesbar werden sie erst nach bewusster Freigabe und nur zusammen mit einem öffentlichen, veröffentlichten und aktiven Eigentümerprofil.
 - `members`-sichtbare Möglichkeiten bleiben geschlossen, bis echte Mitgliedschaftsregeln vorliegen.
 - Selbst erfasste Nachweise bleiben `self_reported`; höhere Prüfstatus können nicht selbst vergeben werden.
@@ -104,7 +106,17 @@ Am 25. September 2026 folgte `20260925163040_opportunity_core`. Bestätigt wurde
 - weiterhin 0 produktive Möglichkeiten und 0 produktive Fähigkeitsanforderungen nach den Tests,
 - keine neuen Security-Advisor-Funde und keine fehlenden Fremdschlüsselindizes für die beiden Tabellen.
 
-Die produktive Migrationshistorie enthält jetzt das Fundament, die Seitenrevisionen, die RLS-Härtung, beide Portfolio-Migrationen und den Möglichkeiten-Kern. Die Versionsnummern der Dateien stimmen mit der Remote-Historie überein.
+Danach folgten `20260925175420_publication_center` und `20260925175658_publication_actions_member_index`. Bestätigt wurden:
+
+- `publication_actions` mit RLS, eigentümergebundener Lese- und Einfügepolicy sowie expliziten Spaltenrechten,
+- kein direktes Browserrecht mehr auf `profiles.publication_status`,
+- kein Ausführungsrecht für Browserrollen auf die privilegierte Triggerfunktion,
+- erfolgreiche Gegenproben für Profil- und Einzelfreigabe, Rücknahme, Unveränderlichkeit veröffentlichter Inhalte und blockierte Fremdveröffentlichung,
+- vollständiger Rollback aller Testnutzer, Testprofile und Testaktionen,
+- `MEM-JULIUS` weiterhin `members` + `draft`, 0 Veröffentlichungsaktionen und 0 veröffentlichte Portfolioeinträge,
+- keine neuen Security-Advisor-Funde und kein neuer Hinweis auf einen fehlenden Fremdschlüsselindex.
+
+Die produktive Migrationshistorie enthält jetzt das Fundament, die Seitenrevisionen, die RLS-Härtung, beide Portfolio-Migrationen, den Möglichkeiten-Kern und die Veröffentlichungszentrale. Die im Repository geführten Versionsnummern stimmen mit der Remote-Historie überein.
 
 Für die weitere kontrollierte Pilotfreigabe bleiben:
 
@@ -119,7 +131,6 @@ Für die weitere kontrollierte Pilotfreigabe bleiben:
 - genaue Standardsichtbarkeit der späteren P-Hain-Module
 - Kontolöschung, vollständiger Kontoexport und Aufbewahrungsfristen
 - eigene produktive Auth-Domain
-- enger Veröffentlichungsablauf für strukturierte Profildaten
 - bestätigte Beiträge weiterer Projektmitglieder
 
 Darum erstellt keine Portfolio-Migration echte Konten oder Rechte. Die Website ist verbunden, liest öffentlich aber ausschließlich ausdrücklich veröffentlichte RLS-Zeilen.
