@@ -11,19 +11,74 @@
     .matching-hero{background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(255,232,188,.65))}
     .prompt-panel{display:grid;gap:20px}.examples{display:flex;flex-wrap:wrap;gap:8px}.example{border:1px solid var(--line);border-radius:999px;padding:9px 12px;color:var(--ruby);background:white;font-weight:800;cursor:pointer}
     .match-person{border-color:rgba(0,168,150,.26);background:linear-gradient(145deg,#fff,rgba(0,168,150,.08))}.match-reasons{margin:10px 0 0;padding-left:20px;color:var(--muted);line-height:1.5}.match-score{color:var(--green);font-weight:900}.question-list{display:grid;gap:7px;margin:10px 0 0;padding:0;list-style:none}.question-list li::before{content:"?";display:inline-grid;place-items:center;width:21px;height:21px;margin-right:8px;border-radius:50%;color:white;background:var(--ruby);font-weight:900}
+    .opportunity-stream-shell{display:grid;gap:18px}.opportunity-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.opportunity-stream{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.opportunity-public-card{display:grid;align-content:start;gap:13px}.opportunity-public-head{display:flex;align-items:start;justify-content:space-between;gap:14px}.opportunity-public-head h3{margin:2px 0 0;font-size:clamp(1.35rem,3vw,2rem);line-height:1}.opportunity-summary{margin:0;color:var(--muted);line-height:1.6}.opportunity-owner{margin:0;color:var(--mint);font-weight:900}.opportunity-facts{display:grid;gap:8px;margin:0}.opportunity-facts div{display:grid;grid-template-columns:minmax(78px,110px) 1fr;gap:10px}.opportunity-facts dt{color:var(--muted);font-size:.78rem;font-weight:900;text-transform:uppercase}.opportunity-facts dd{margin:0}.opportunity-skill-block h4{margin:0}.opportunity-boundary{margin:0;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;line-height:1.5}.opportunity-public-card.signal-have{background:linear-gradient(145deg,#fff,rgba(255,184,92,.12))}.opportunity-public-card.signal-can{background:linear-gradient(145deg,#fff,rgba(0,168,150,.11))}.opportunity-public-card.signal-need{background:linear-gradient(145deg,#fff,rgba(201,0,70,.08))}.opportunity-public-card.signal-time{background:linear-gradient(145deg,#fff,rgba(92,78,255,.08))}.opportunity-public-card.signal-chance{background:linear-gradient(145deg,#fff,rgba(255,226,92,.14))}.opportunity-empty{grid-column:1/-1}.opportunity-empty p{margin-bottom:0}@media(max-width:720px){.opportunity-filters,.opportunity-stream{grid-template-columns:1fr}.opportunity-public-head{flex-direction:column}.opportunity-facts div{grid-template-columns:1fr;gap:2px}}
   </style>
 </head>
 <body data-area="matching" data-blob-mode="sales">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <div class="site-shell">
-    <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation"><a class="site-mark" href="../">GemDen</a><div class="nav-links"><a href="../">Start</a><a href="../community/">Community</a><a href="../leistungen/" aria-current="page">Leistungen</a><a href="../system/">FFE-System</a></div></nav>
+    <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation"><a class="site-mark" href="../">GemDen</a><div class="nav-links"><a href="../">Start</a><a href="../community/">Community</a><a href="../leistungen/" aria-current="page">Möglichkeiten</a><a href="../system/">FFE-System</a></div></nav>
     <main id="inhalt">
       <header class="hero compact matching-hero">
-        <p class="eyebrow">W01 Möglichkeiten-Marktplatz · K05 Fähigkeiten</p>
+        <p class="eyebrow">W01 Möglichkeitenstrom · K05 Fähigkeiten</p>
         <h1 class="display small">Was möchtest du möglich machen?</h1>
-        <p class="lead">Keine endlose Liste von Berufsbezeichnungen. Beschreibe einen Wunsch, ein Problem oder eine Idee. Blob übersetzt die Situation in generische Fähigkeiten und erklärt, wer oder was passen könnte.</p>
-        <div class="status-row"><span class="status-chip experiment">regelbasierter Prototyp</span><span class="id-chip">W01 → OP-W01</span><span class="id-chip">K10 → OP-K10</span></div>
+        <p class="lead">Teile, was du hast, kannst, brauchst, wann du Zeit hast oder welche Chance du siehst. Darunter zerlegt Blob konkrete Situationen nachvollziehbar in Fähigkeiten.</p>
+        <div class="status-row"><span class="status-chip open">echter Möglichkeitenstrom</span><span class="status-chip experiment">regelbasiertes Matching</span><span class="id-chip">W01 → OP-W01</span></div>
       </header>
+
+      <section class="section" id="moeglichkeitenstrom" aria-labelledby="opportunity-stream-title">
+        <div class="section-head">
+          <p class="eyebrow">Haben · Können · Brauchen · Zeit · Chance</p>
+          <h2 id="opportunity-stream-title">Öffentliche Möglichkeiten.</h2>
+          <p>Hier erscheinen nur bewusst veröffentlichte Einträge von ebenfalls veröffentlichten Profilen. Private Entwürfe und geschlossene Mitgliederbereiche bleiben unsichtbar.</p>
+        </div>
+        <div class="panel opportunity-stream-shell">
+          <div class="opportunity-filters" aria-label="Möglichkeiten filtern">
+            <div class="field">
+              <label for="opportunity-filter-signal">Signal</label>
+              <select id="opportunity-filter-signal">
+                <option value="">alle fünf Signale</option>
+                <option value="have">Ich habe</option>
+                <option value="can">Ich kann</option>
+                <option value="need">Ich brauche</option>
+                <option value="time">Ich habe Zeit</option>
+                <option value="chance">Es gibt eine Chance</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="opportunity-filter-mode">Rahmen</label>
+              <select id="opportunity-filter-mode">
+                <option value="">alle Rahmen</option>
+                <option value="commission">Auftrag</option>
+                <option value="job">Job</option>
+                <option value="learning">Lernen</option>
+                <option value="voluntary">Freiwillige Hilfe</option>
+                <option value="care">Care</option>
+                <option value="commons">Commons / Leihe</option>
+                <option value="project">Projekt</option>
+                <option value="event">Veranstaltung</option>
+                <option value="cooperation">Kooperation</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="opportunity-filter-location">Ortsmodus</label>
+              <select id="opportunity-filter-location">
+                <option value="">alle Ortsmodi</option>
+                <option value="local">vor Ort</option>
+                <option value="remote">remote</option>
+                <option value="hybrid">hybrid</option>
+                <option value="flexible">flexibel</option>
+              </select>
+            </div>
+          </div>
+          <p class="form-status" id="opportunity-stream-status" role="status" aria-live="polite">Öffentliche Möglichkeiten werden geladen …</p>
+          <div class="opportunity-stream" id="opportunity-stream" aria-live="polite"></div>
+          <div class="button-row">
+            <a class="button" href="../konto/">Eigene Möglichkeit anlegen</a>
+            <span class="notice"><strong>Grenze:</strong> Sichtbarkeit ist keine Zusage, Buchung oder Qualifikationsprüfung.</span>
+          </div>
+        </div>
+      </section>
 
       <section class="section" aria-labelledby="matching-title">
         <div class="panel prompt-panel">
@@ -74,6 +129,12 @@
     <footer class="footer"><span>Matching-Prototyp · keine Buchung, kein Profilranking</span><a href="../system/#institution-W01">W01 im System ansehen</a></footer>
   </div>
   <script>window.BLOB_CONFIG={mode:"sales",root:"../",context:"matching",actionLabel:"Wunsch starten",actionTarget:"#request-text"};</script>
-  <script src="../assets/site.js" defer></script><script src="../assets/blob.js" defer></script><script src="./matching.js" defer></script>
+  <script src="../assets/site.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="../assets/supabase-config.js" defer></script>
+  <script src="../assets/supabase-client.js" defer></script>
+  <script src="./opportunities.js?v=20260924-1" defer></script>
+  <script src="../assets/blob.js" defer></script>
+  <script src="./matching.js" defer></script>
 </body>
 </html>

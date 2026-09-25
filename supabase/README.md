@@ -1,6 +1,6 @@
 # Supabase-Fundament für GemDen / FFE
 
-Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern seit 24. September 2026 produktiv und mit anonymen sowie eigentümergebundenen RLS-Gegenproben geprüft.
+Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern seit 24. September 2026 und Möglichkeiten-Kern seit 25. September 2026 produktiv. Alle drei Schichten wurden mit anonymen sowie eigentümergebundenen RLS-Gegenproben geprüft.
 
 ## Enthalten
 
@@ -12,6 +12,8 @@ Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern 
 - `profile_fields` – einzeln sichtbare Profiltexte
 - `skill_evidence` und `skill_evidence_links` – Nachweise mit explizitem Prüfstatus
 - `projects`, `project_skills` und `project_evidence_links` – Projektportfolio und Bezüge
+- `opportunities` – die fünf Signale mit Ort, Zeit, Beziehungs-, Vergütungs-, Risiko-, Sichtbarkeits- und Lebenszyklusrahmen
+- `opportunity_requirements` – notwendige, hilfreiche oder im Zusammenhang erlernbare Fähigkeiten einer Möglichkeit
 - RLS-Regeln und minimale SQL-Rechte für `anon` und `authenticated`
 - pgTAP-Gegenproben unter `tests/`
 - ein absichtlich nicht automatisch ausführbares Bootstrap-Beispiel unter `bootstrap/`
@@ -34,6 +36,8 @@ So kann ein Recht nicht stillschweigend auf einen anderen Kiez oder die ganze Pl
 - Anonyme Zugriffe sehen nur `public` + `published`.
 - Ein Portfolioeintrag wird zusätzlich nur bei einem öffentlichen, veröffentlichten und aktiven Eigentümerprofil sichtbar.
 - Browsernutzer können in den Portfolio-Tabellen ausschließlich eigene Entwürfe schreiben; ein Publish-Weg folgt separat.
+- Möglichkeiten entstehen im Browser als eigene Entwürfe. Öffentlich lesbar werden sie erst nach bewusster Freigabe und nur zusammen mit einem öffentlichen, veröffentlichten und aktiven Eigentümerprofil.
+- `members`-sichtbare Möglichkeiten bleiben geschlossen, bis echte Mitgliedschaftsregeln vorliegen.
 - Selbst erfasste Nachweise bleiben `self_reported`; höhere Prüfstatus können nicht selbst vergeben werden.
 - Noch nicht umgesetzte Sichtbarkeiten wie `members` und `scope_members` bleiben geschlossen.
 - Ein Kiezrecht gilt nur, solange es begonnen hat, nicht abgelaufen und nicht widerrufen ist.
@@ -90,7 +94,17 @@ Am 24. September 2026 folgten die Migrationen `20260924091709_profile_portfolio_
 
 Die Sicherheitstests liefen in einer eigenen Transaktion. Testnutzer, Testrechte, Test-Kieze und die nur dafür aktivierte pgTAP-Erweiterung wurden vollständig zurückgerollt; danach waren weiterhin 0 Auth-Nutzer, 0 Profile und 0 Berechtigungsvergabe vorhanden.
 
-Die produktive Migrationshistorie enthält jetzt das Fundament, die Seitenrevisionen, die RLS-Härtung und beide Portfolio-Migrationen. Die Versionsnummern der Dateien stimmen mit der Remote-Historie überein.
+Am 25. September 2026 folgte `20260925163040_opportunity_core`. Bestätigt wurden:
+
+- `opportunities` und `opportunity_requirements` mit aktiver RLS,
+- fünf Signalarten und neun ausdrücklich benannte Beziehungsmodi,
+- spaltenweise begrenzte Schreibrechte für angemeldete Mitglieder,
+- erfolgreicher Eigentümertest für Anlegen, Ändern und Löschen in vollständig zurückgerollten Transaktionen,
+- anonym sichtbar: 0 Möglichkeiten und 0 Fähigkeitsanforderungen,
+- weiterhin 0 produktive Möglichkeiten und 0 produktive Fähigkeitsanforderungen nach den Tests,
+- keine neuen Security-Advisor-Funde und keine fehlenden Fremdschlüsselindizes für die beiden Tabellen.
+
+Die produktive Migrationshistorie enthält jetzt das Fundament, die Seitenrevisionen, die RLS-Härtung, beide Portfolio-Migrationen und den Möglichkeiten-Kern. Die Versionsnummern der Dateien stimmen mit der Remote-Historie überein.
 
 Für die weitere kontrollierte Pilotfreigabe bleiben:
 
