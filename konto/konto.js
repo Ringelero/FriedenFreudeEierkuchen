@@ -3,6 +3,7 @@
   const authFlow = window.FFE_AUTH_FLOW;
   const pageBootstrap = window.FFE_PAGE_BOOTSTRAP;
   const profileWorkspace = window.FFE_PROFILE_WORKSPACE;
+  const opportunityWorkspace = window.FFE_OPPORTUNITY_WORKSPACE;
   const connectionChip = document.getElementById('connection-chip');
   const signedOutPanel = document.getElementById('signed-out-panel');
   const signedInPanel = document.getElementById('signed-in-panel');
@@ -140,12 +141,20 @@
     } catch {
       // Die Portfolio-Werkstatt zeigt ihren eigenen, präziseren Fehlerzustand.
     }
+
+    try {
+      await opportunityWorkspace.initialize({ client, profile });
+    } catch (error) {
+      const target = document.getElementById('opportunity-status');
+      if (target) setMessage(target, error.message || 'Die Möglichkeiten konnten nicht geladen werden.', 'error');
+    }
   }
 
   async function renderSession(session) {
     currentUser = session?.user || null;
     currentProfile = null;
     profileWorkspace?.reset();
+    opportunityWorkspace?.reset();
     signedOutPanel.hidden = Boolean(currentUser);
     signedInPanel.hidden = !currentUser;
 
@@ -177,7 +186,7 @@
     }
   }
 
-  if (!client || !authFlow || !pageBootstrap || !profileWorkspace) {
+  if (!client || !authFlow || !pageBootstrap || !profileWorkspace || !opportunityWorkspace) {
     signedOutPanel.hidden = false;
     setConnection('Verbindung nicht verfügbar', 'open');
     loginSubmit.disabled = true;
@@ -306,6 +315,7 @@
       if (error) throw error;
       currentProfile = data;
       profileWorkspace.setProfile(data);
+      opportunityWorkspace.setProfile(data);
       document.getElementById('profile-heading').textContent = data.display_name;
       document.getElementById('account-profile-status').textContent = formatProfileStatus(data);
       setMessage(profileStatus, 'Gespeichert. Supabase hat die Änderung mit deiner eigenen Sitzung geprüft.', 'success');

@@ -9,10 +9,10 @@
 - `/community/kieze/p-hain/` – öffentlicher P-Hain-Prototyp
 - `/community/dynastien/rubybubys/` – erste Dynastie
 - `/community/mitglieder/julius/` – Julius’ Mitglieds- und Fähigkeitsprofil
-- `/leistungen/` – regelbasiertes, erklärbares Fähigkeiten-Matching
+- `/leistungen/` – öffentlicher Möglichkeitenstrom mit Filtern sowie regelbasiertes, erklärbares Fähigkeiten-Matching
 - `/leistungen/smart-home/` – experimentelles Smart-Home-Erlebnis
 - `/system/` – Browser für Institutionen, operative Profile, Methoden und Entwicklungsnetz
-- `/konto/` – eingeladener Zugang mit Profilfeldern, Fähigkeitsportfolio, Nachweisen, Projekten, Export und eigenen Rechten
+- `/konto/` – eingeladener Zugang mit Profilfeldern, Fähigkeitsportfolio, Nachweisen, Projekten, Möglichkeiten, Export und eigenen Rechten
 - `/gestalten/` – private Seitenwerkstatt mit validierter Vorschau, Serverrevisionen und deterministischem Blob-Regelassistenten
 
 Die Julius-Seite ist zugleich der erste Pilot der editorunabhängigen Modulplattform. Ihr versioniertes Seitendokument, der Modulkatalog, Capability-Grenzen, JSON-Schemas und der generische Renderer liegen unter `assets/data/pages/`, `assets/data/modules.v1.json`, `assets/data/capabilities.v1.json`, `schemas/` und `assets/gemden-modules.js`.
@@ -29,9 +29,11 @@ Handoff und Buch wurden als bereitgestellte Arbeitsquellen ausgewertet, sind abe
 
 ## Technischer Stand
 
-Die öffentliche Website ist statisches HTML, CSS und JavaScript auf GitHub Pages. Das Supabase-Fundament liegt unter `supabase/` als reproduzierbare Migrationsfolge mit RLS-, Revisions- und Audit-Regeln vor. Das Profil- und Portfolio-Modell wurde am 24. September 2026 produktiv ergänzt. Alle acht neuen Tabellen haben RLS und explizite Data-API-Rechte; anonyme Gegenproben sehen nur den generischen Fähigkeitsthesaurus und keine privaten Julius-Entwürfe.
+Die öffentliche Website ist statisches HTML, CSS und JavaScript auf GitHub Pages. Das Supabase-Fundament liegt unter `supabase/` als reproduzierbare Migrationsfolge mit RLS-, Revisions- und Audit-Regeln vor. Das Profil- und Portfolio-Modell wurde am 24. September 2026 produktiv ergänzt; am 25. September 2026 folgten der Kern für die fünf Signale und ihre Fähigkeitsanforderungen. Alle zehn neuen Tabellen haben RLS und explizite Data-API-Rechte. Anonyme Gegenproben sehen nur den generischen Fähigkeitsthesaurus und weder private Julius-Entwürfe noch Möglichkeiten.
 
-Die Kontoseite ist mit Supabase Auth verbunden. Sie erlaubt nur bereits eingeladenen Adressen einen einmal verwendbaren Link und anschließend das selbstbestimmte Setzen eines Passworts. Mit E-Mail-Adresse und Passwort funktioniert die Anmeldung danach browserübergreifend, ohne einen Link zwischen Geräten zu übertragen. Ein Mitglied mit bestätigter `MEM-*`-ID kann einzeln sichtbare Profilfelder, generische Fähigkeiten im eigenen Kontext, selbst berichtete Nachweise und Projekte als private Entwürfe pflegen und ohne Auth-Daten als JSON exportieren. Browserzugriffe können keinen dieser Datensätze veröffentlichen oder sich einen höheren Prüfstatus geben. Der vollständige Vertrag steht in `docs/PROFILE-PORTFOLIO-DATA-CONTRACT.md`.
+Die Kontoseite ist mit Supabase Auth verbunden. Sie erlaubt nur bereits eingeladenen Adressen einen einmal verwendbaren Link und anschließend das selbstbestimmte Setzen eines Passworts. Mit E-Mail-Adresse und Passwort funktioniert die Anmeldung danach browserübergreifend, ohne einen Link zwischen Geräten zu übertragen. Ein Mitglied mit bestätigter `MEM-*`-ID kann einzeln sichtbare Profilfelder, generische Fähigkeiten im eigenen Kontext, selbst berichtete Nachweise und Projekte als private Entwürfe pflegen und ohne Auth-Daten als JSON exportieren. Browserzugriffe können keinen dieser Portfolio-Datensätze veröffentlichen oder sich einen höheren Prüfstatus geben. Der vollständige Vertrag steht in `docs/PROFILE-PORTFOLIO-DATA-CONTRACT.md`.
+
+Dasselbe Konto kann die fünf Signale „Ich habe“, „Ich kann“, „Ich brauche“, „Ich habe Zeit“ und „Es gibt eine Chance“ als Möglichkeiten erfassen. Jeder Eintrag beginnt als Entwurf; Ort, Zeit, Beziehungsmodus, Vergütungsrahmen, Risikohinweis und benötigte Fähigkeiten bleiben ausdrücklich sichtbar. Eine Veröffentlichung verlangt sowohl die bewusst gewählte Sichtbarkeit `public` als auch ein bereits öffentlich veröffentlichtes Eigentümerprofil. Der öffentliche Strom unter `/leistungen/` liest ausschließlich die dadurch von RLS freigegebenen Zeilen. Interessenbekundung und automatische Zuordnung sind noch nicht Teil dieses Kerns. Der Vertrag steht in `docs/OPPORTUNITY-DATA-CONTRACT.md`.
 
 Ein Mitglied kann außerdem genau seine eigene private Profilseite über `create_own_profile_page` anlegen; die erste Revision entsteht unveränderlich, ohne Veröffentlichung oder zusätzliche Rechte. Die Seite enthält ausschließlich den öffentlichen Publishable Key; Schutz entsteht durch RLS und den eng begrenzten RPC, und ein `service_role`-Schlüssel gehört niemals in Browsercode. Die P-Hain-Inhaltsmodule bleiben vorerst statisch und speichern weiterhin keine Formulareingaben.
 

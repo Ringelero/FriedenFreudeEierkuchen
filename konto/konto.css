@@ -217,6 +217,37 @@
   line-height: 1.5;
 }
 .small-copy { font-size: .9rem; }
+.opportunity-workspace {
+  margin-top: 6px;
+  padding: 28px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.opportunity-workspace .portfolio-head .button-row {
+  justify-content: flex-end;
+  max-width: 440px;
+}
+.opportunity-workspace .form-columns:not(.three-columns) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.opportunity-entry { border-color: rgba(201,0,70,.16); }
+.opportunity-entry.signal-have { background: linear-gradient(145deg,#fff,rgba(255,184,92,.12)); }
+.opportunity-entry.signal-can { background: linear-gradient(145deg,#fff,rgba(0,168,150,.11)); }
+.opportunity-entry.signal-need { background: linear-gradient(145deg,#fff,rgba(201,0,70,.08)); }
+.opportunity-entry.signal-time { background: linear-gradient(145deg,#fff,rgba(92,78,255,.08)); }
+.opportunity-entry.signal-chance { background: linear-gradient(145deg,#fff,rgba(255,226,92,.14)); }
+.entry-context { margin: 0; color: var(--ink); font-size: .9rem; font-weight: 780; line-height: 1.5; }
+.compact-requirements { margin: 0; padding-left: 19px; color: var(--muted); line-height: 1.5; }
+.requirement-grid { display: grid; gap: 8px; }
+.requirement-choice {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(130px, 170px);
+  gap: 9px;
+  align-items: center;
+}
+.requirement-choice select { min-width: 0; }
+.requirement-skill { border-radius: 14px; }
+.compact-notice { margin: 0; }
 .account-actions { padding-top: 4px; }
 .form-status { min-height: 1.5em; margin: 0; color: var(--muted); font-weight: 750; line-height: 1.5; }
 .form-status[data-state="success"] { color: var(--green); }
@@ -233,7 +264,10 @@
   .portfolio-head { align-items: stretch; flex-direction: column; }
   .portfolio-head .button { width: 100%; }
   .portfolio-meter { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .field-row, .form-columns, .portfolio-list { grid-template-columns: 1fr; }
+  .field-row, .form-columns, .portfolio-list,
+  .opportunity-workspace .form-columns:not(.three-columns),
+  .requirement-choice { grid-template-columns: 1fr; }
+  .opportunity-workspace .portfolio-head .button-row { max-width: none; }
   .workspace-block > summary { padding: 16px; }
   .workspace-body { padding-right: 14px; padding-left: 14px; }
   .entry-head { align-items: flex-start; flex-direction: column; }

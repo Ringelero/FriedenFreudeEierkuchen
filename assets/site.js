@@ -7,7 +7,7 @@
   const links = [
     ['start', 'Start', root],
     ['community', 'Community', root + 'community/'],
-    ['matching', 'Leistungen', root + 'leistungen/'],
+    ['matching', 'Möglichkeiten', root + 'leistungen/'],
     ['system', 'FFE-System', root + 'system/'],
     ['account', 'Konto', root + 'konto/']
   ];

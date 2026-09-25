@@ -7,7 +7,7 @@
   <title>Konto · GemDen</title>
   <link rel="stylesheet" href="../assets/site.css">
   <link rel="stylesheet" href="../assets/blob.css">
-  <link rel="stylesheet" href="./konto.css?v=20260924-1">
+  <link rel="stylesheet" href="./konto.css?v=20260924-2">
 </head>
 <body data-area="account" data-blob-mode="guide">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
@@ -20,7 +20,7 @@
       <header class="hero compact account-hero">
         <p class="eyebrow">Persönlicher Zugang</p>
         <h1 class="display small">Dein Konto.</h1>
-        <p class="lead">Hier pflegst du dein Profil, dein Fähigkeitsportfolio, Nachweise und Projekte. Alles beginnt als privater Entwurf.</p>
+        <p class="lead">Hier pflegst du dein Profil, dein Fähigkeitsportfolio, Projekte und die fünf Signale „Ich habe“, „Ich kann“, „Ich brauche“, „Ich habe Zeit“ und „Es gibt eine Chance“. Alles beginnt als privater Entwurf.</p>
         <div class="status-row">
           <span class="status-chip open" id="connection-chip">Verbindung wird geprüft</span>
           <span class="id-chip">SUPABASE · RLS</span>
@@ -263,6 +263,134 @@
             </details>
           </section>
 
+          <section class="portfolio-workspace opportunity-workspace" id="opportunity-workspace" aria-labelledby="opportunity-title" hidden>
+            <header class="portfolio-head">
+              <div>
+                <p class="eyebrow">Meine Möglichkeiten</p>
+                <h4 id="opportunity-title">Aus Signalen kann Zusammenarbeit entstehen.</h4>
+                <p class="account-copy">Eine Möglichkeit ist eine Einladung zur Klärung – keine automatische Zuteilung oder Zusage. Ort, Zeit, Vergütung und Grenzen bleiben sichtbar.</p>
+              </div>
+              <div class="button-row">
+                <a class="button secondary" href="../leistungen/#moeglichkeitenstrom">Öffentlichen Strom ansehen</a>
+                <button class="button secondary" id="opportunities-export" type="button">Eigene Möglichkeiten als JSON</button>
+              </div>
+            </header>
+
+            <div class="portfolio-meter" aria-label="Möglichkeiten-Übersicht">
+              <div><strong id="opportunity-count-all">0</strong><span>gesamt</span></div>
+              <div><strong id="opportunity-count-draft">0</strong><span>Entwürfe</span></div>
+              <div><strong id="opportunity-count-open">0</strong><span>öffentlich offen</span></div>
+              <div><strong id="opportunity-count-closed">0</strong><span>abgeschlossen</span></div>
+            </div>
+            <p class="form-status" id="opportunity-status" role="status" aria-live="polite"></p>
+
+            <details class="workspace-block" open>
+              <summary>
+                <span><b>Meine Einträge</b><small>Entwürfe, offene und abgeschlossene Möglichkeiten</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body">
+                <div class="portfolio-list" id="opportunities-list"></div>
+              </div>
+            </details>
+
+            <details class="workspace-block opportunity-composer" open>
+              <summary>
+                <span><b>Möglichkeit anlegen</b><small>Ein gemeinsames Formular für alle fünf Signale</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <form class="form-grid workspace-body" id="opportunity-form">
+                <div class="form-columns">
+                  <div class="field">
+                    <label for="opportunity-signal">Was möchtest du sagen?</label>
+                    <select id="opportunity-signal" required></select>
+                  </div>
+                  <div class="field">
+                    <label for="opportunity-mode">In welchem Rahmen?</label>
+                    <select id="opportunity-mode" required></select>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="opportunity-title">Kurzer Titel</label>
+                  <input id="opportunity-title" maxlength="200" required placeholder="Zum Beispiel: Hilfe bei einer interaktiven Lichterkette gesucht">
+                </div>
+                <div class="field">
+                  <label for="opportunity-summary">Worum geht es konkret?</label>
+                  <textarea id="opportunity-summary" maxlength="8000" placeholder="Gewünschtes Ergebnis, vorhandene Dinge, offene Fragen und wichtige Grenzen"></textarea>
+                </div>
+
+                <div class="form-columns">
+                  <div class="field">
+                    <label for="opportunity-location-mode">Ortsmodus</label>
+                    <select id="opportunity-location-mode"></select>
+                  </div>
+                  <div class="field">
+                    <label for="opportunity-location-label">Ort oder Wirkungsraum</label>
+                    <input id="opportunity-location-label" maxlength="240" placeholder="z. B. Berlin-Friedrichshain">
+                  </div>
+                </div>
+
+                <div class="form-columns three-columns">
+                  <div class="field">
+                    <label for="opportunity-starts-at">Beginn (optional)</label>
+                    <input id="opportunity-starts-at" type="datetime-local">
+                  </div>
+                  <div class="field">
+                    <label for="opportunity-ends-at">Ende (optional)</label>
+                    <input id="opportunity-ends-at" type="datetime-local">
+                  </div>
+                  <div class="field">
+                    <label for="opportunity-duration-note">Dauer oder Rhythmus</label>
+                    <input id="opportunity-duration-note" maxlength="1000" placeholder="z. B. einmalig 3 Stunden">
+                  </div>
+                </div>
+
+                <div class="form-columns">
+                  <div class="field">
+                    <label for="opportunity-compensation">Vergütungsrahmen</label>
+                    <select id="opportunity-compensation"></select>
+                  </div>
+                  <div class="field">
+                    <label for="opportunity-compensation-note">Erläuterung</label>
+                    <input id="opportunity-compensation-note" maxlength="2000" placeholder="Betrag, Tauschidee oder noch zu klärende Frage">
+                  </div>
+                </div>
+
+                <div class="form-columns">
+                  <div class="field">
+                    <label for="opportunity-risk">Sicherheits- und Rechtsrahmen</label>
+                    <select id="opportunity-risk"></select>
+                  </div>
+                  <div class="field" id="opportunity-risk-note-field" hidden>
+                    <label for="opportunity-risk-note">Was muss vorab geklärt werden?</label>
+                    <textarea id="opportunity-risk-note" maxlength="3000"></textarea>
+                  </div>
+                  <div class="field">
+                    <label for="opportunity-visibility">Gewünschte Sichtbarkeit</label>
+                    <select id="opportunity-visibility"></select>
+                    <small>Auch „öffentlich“ bleibt zunächst ein Entwurf. Eine Freigabe ist ein eigener bewusster Schritt.</small>
+                  </div>
+                </div>
+
+                <fieldset class="choice-fieldset">
+                  <legend>Verknüpfte Fähigkeiten</legend>
+                  <p class="account-copy small-copy">Markiere Fähigkeiten als notwendig, hilfreich oder als etwas, das in diesem Zusammenhang gelernt werden kann.</p>
+                  <div class="requirement-grid" id="opportunity-requirements"></div>
+                </fieldset>
+
+                <div class="notice compact-notice">
+                  <strong>Kein verstecktes Ranking:</strong> Diese Angaben beschreiben nur den konkreten Kontext. Sie erzeugen keine Gesamtpunktzahl und vergeben keinen Auftrag.
+                </div>
+                <div class="button-row">
+                  <button class="button" type="submit">Möglichkeit als Entwurf speichern</button>
+                  <button class="button secondary" id="opportunity-cancel-edit" type="button" hidden>Bearbeitung abbrechen</button>
+                </div>
+                <p class="form-status" id="opportunity-form-status" role="status" aria-live="polite"></p>
+              </form>
+            </details>
+          </section>
+
           <section class="form-grid page-setup" aria-labelledby="page-setup-title">
             <div>
               <p class="eyebrow">Persönliche Seitenwerkstatt</p>
@@ -320,6 +448,7 @@
   <script src="./auth-flow.js" defer></script>
   <script src="./page-bootstrap.js?v=20260923-1" defer></script>
   <script src="./profile-workspace.js?v=20260924-1" defer></script>
-  <script src="./konto.js?v=20260924-1" defer></script>
+  <script src="./opportunity-workspace.js?v=20260924-1" defer></script>
+  <script src="./konto.js?v=20260924-2" defer></script>
 </body>
 </html>
