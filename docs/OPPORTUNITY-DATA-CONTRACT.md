@@ -65,5 +65,12 @@ Verknüpft eine Möglichkeit mit generischen Fähigkeiten.
 4. Eine bewusste Freigabe kann den Eintrag in den öffentlichen Strom bringen;
    ohne öffentliches Eigentümerprofil bleibt er unsichtbar.
 5. Pause, Abschluss und Archiv bleiben Zustände des Eintrags.
-6. Interessenbekundung, Kontaktanbahnung und Matching folgen in der nächsten
-   Schicht und verändern niemals automatisch diesen Datensatz.
+6. Ein angemeldetes Mitglied kann auf eine offene, öffentlich sichtbare
+   Möglichkeit genau eine private Resonanz senden.
+7. Die Person hinter der Möglichkeit kann diese Resonanz annehmen oder
+   ablehnen; die antwortende Person kann sie zurückziehen.
+8. Erst eine Annahme öffnet einen privaten Klärungsraum. Weder E-Mail-Adressen
+   noch eine Zusage, Buchung oder Bewertung werden dabei automatisch erzeugt.
+
+Der getrennte Antwort- und Nachrichtenvertrag steht in
+`docs/RESONANCE-DATA-CONTRACT.md`.

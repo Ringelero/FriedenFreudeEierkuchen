@@ -439,6 +439,46 @@
             </details>
           </section>
 
+          <section class="portfolio-workspace resonance-center" id="resonance-center" aria-labelledby="resonance-center-title" hidden>
+            <header class="portfolio-head">
+              <div>
+                <p class="eyebrow">Private Resonanz</p>
+                <h4 id="resonance-center-title">Interesse klären, ohne Kontaktdaten offenzulegen.</h4>
+                <p class="account-copy">Hier siehst du nur Antworten, an denen du selbst beteiligt bist. Erst wenn die Person hinter einer Möglichkeit eine Resonanz annimmt, öffnet sich für beide ein privater Klärungsraum.</p>
+              </div>
+              <a class="button secondary" href="../leistungen/#moeglichkeitenstrom">Auf Möglichkeit reagieren</a>
+            </header>
+
+            <div class="portfolio-meter resonance-meter" role="group" aria-label="Resonanz-Übersicht">
+              <div><strong id="resonance-count-incoming">0</strong><span>eingegangen</span></div>
+              <div><strong id="resonance-count-pending">0</strong><span>noch offen</span></div>
+              <div><strong id="resonance-count-sent">0</strong><span>gesendet</span></div>
+              <div><strong id="resonance-count-rooms">0</strong><span>Klärungsräume</span></div>
+            </div>
+            <p class="form-status" id="resonance-status" role="status" aria-live="polite"></p>
+
+            <div class="resonance-columns">
+              <section class="resonance-column" aria-labelledby="resonance-incoming-title">
+                <div>
+                  <p class="entry-kicker">Auf meine Möglichkeiten</p>
+                  <h5 id="resonance-incoming-title">Eingegangen</h5>
+                </div>
+                <div class="resonance-list" id="resonance-incoming"></div>
+              </section>
+              <section class="resonance-column" aria-labelledby="resonance-sent-title">
+                <div>
+                  <p class="entry-kicker">Meine Interessenbekundungen</p>
+                  <h5 id="resonance-sent-title">Gesendet</h5>
+                </div>
+                <div class="resonance-list" id="resonance-sent"></div>
+              </section>
+            </div>
+
+            <div class="notice compact-notice">
+              <strong>Klare Grenze:</strong> Eine Annahme ist nur die Zustimmung zur gemeinsamen Klärung – kein Auftrag, Vertrag oder automatischer Austausch von E-Mail-Adressen.
+            </div>
+          </section>
+
           <section class="form-grid page-setup" aria-labelledby="page-setup-title">
             <div>
               <p class="eyebrow">Persönliche Seitenwerkstatt</p>
@@ -496,8 +536,9 @@
   <script src="./auth-flow.js" defer></script>
   <script src="./page-bootstrap.js?v=20260923-1" defer></script>
   <script src="./profile-workspace.js?v=20260925-1" defer></script>
-  <script src="./publication-center.js?v=20260925-1" defer></script>
-  <script src="./opportunity-workspace.js?v=20260924-1" defer></script>
-  <script src="./konto.js?v=20260925-1" defer></script>
+  <script src="./publication-center.js?v=20260925-2" defer></script>
+  <script src="./opportunity-workspace.js?v=20260925-2" defer></script>
+  <script src="./resonance-workspace.js?v=20260925-1" defer></script>
+  <script src="./konto.js?v=20260925-2" defer></script>
 </body>
 </html>

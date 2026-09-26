@@ -1,6 +1,6 @@
 # Supabase-Fundament für GemDen / FFE
 
-Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern seit 24. September 2026 sowie Möglichkeiten-Kern und kontrollierte Veröffentlichung seit 25. September 2026 produktiv. Alle Schichten wurden mit anonymen sowie eigentümergebundenen RLS-Gegenproben geprüft.
+Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern seit 24. September 2026 sowie Möglichkeiten-Kern, kontrollierte Veröffentlichung und private Resonanz seit 25. September 2026 produktiv. Alle Schichten wurden mit anonymen, eigentümergebundenen und beteiligtengebundenen RLS-Gegenproben geprüft.
 
 ## Enthalten
 
@@ -15,6 +15,9 @@ Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern 
 - `opportunities` – die fünf Signale mit Ort, Zeit, Beziehungs-, Vergütungs-, Risiko-, Sichtbarkeits- und Lebenszyklusrahmen
 - `opportunity_requirements` – notwendige, hilfreiche oder im Zusammenhang erlernbare Fähigkeiten einer Möglichkeit
 - `publication_actions` – eigentümergebundenes, unveränderliches Protokoll bestätigter Freigaben und Rücknahmen
+- `opportunity_responses` – private Interessenbekundungen mit serverseitig abgeleiteten Beteiligten
+- `opportunity_response_actions` – unveränderliche Annahmen, Ablehnungen und Rückzüge
+- `opportunity_response_messages` – privater Klärungsverlauf nach ausdrücklicher Annahme
 - RLS-Regeln und minimale SQL-Rechte für `anon` und `authenticated`
 - pgTAP-Gegenproben unter `tests/`
 - ein absichtlich nicht automatisch ausführbares Bootstrap-Beispiel unter `bootstrap/`
@@ -39,6 +42,9 @@ So kann ein Recht nicht stillschweigend auf einen anderen Kiez oder die ganze Pl
 - Browsernutzer können in den Portfolio-Tabellen ausschließlich eigene Entwürfe schreiben. Freigaben und Rücknahmen laufen append-only über `publication_actions`; ein nicht aufrufbarer privater Trigger prüft `auth.uid()`, Eigentum, Sichtbarkeit und Lebenszyklus und verändert ausschließlich Veröffentlichungsmetadaten.
 - Die Rücknahme des Gesamtprofils schließt alle einzeln freigegebenen Inhalte sofort. Ein veröffentlichter Eintrag wird erst nach der Einzelfreigabe wieder zum bearbeitbaren Entwurf.
 - Möglichkeiten entstehen im Browser als eigene Entwürfe. Öffentlich lesbar werden sie erst nach bewusster Freigabe und nur zusammen mit einem öffentlichen, veröffentlichten und aktiven Eigentümerprofil.
+- Auch Möglichkeiten werden ausschließlich über `publication_actions` freigegeben; direkte Browseränderungen an `publication_status` sind entzogen. Veröffentlichte Inhalte müssen vor einer Bearbeitung zurückgenommen werden.
+- Resonanzen sind nur für Möglichkeitseigentümer und antwortendes Mitglied lesbar. Der Browser darf weder Beteiligtenidentitäten noch Status oder Absender vorgeben.
+- Ein privater Klärungsraum nimmt Nachrichten erst nach Annahme und nur von seinen beiden Beteiligten an. Ablehnung oder Rückzug öffnen keine Kontaktdaten und schließen neue Nachrichten.
 - `members`-sichtbare Möglichkeiten bleiben geschlossen, bis echte Mitgliedschaftsregeln vorliegen.
 - Selbst erfasste Nachweise bleiben `self_reported`; höhere Prüfstatus können nicht selbst vergeben werden.
 - Noch nicht umgesetzte Sichtbarkeiten wie `members` und `scope_members` bleiben geschlossen.
@@ -116,7 +122,19 @@ Danach folgten `20260925175420_publication_center` und `20260925175658_publicati
 - `MEM-JULIUS` weiterhin `members` + `draft`, 0 Veröffentlichungsaktionen und 0 veröffentlichte Portfolioeinträge,
 - keine neuen Security-Advisor-Funde und kein neuer Hinweis auf einen fehlenden Fremdschlüsselindex.
 
-Die produktive Migrationshistorie enthält jetzt das Fundament, die Seitenrevisionen, die RLS-Härtung, beide Portfolio-Migrationen, den Möglichkeiten-Kern und die Veröffentlichungszentrale. Die im Repository geführten Versionsnummern stimmen mit der Remote-Historie überein.
+Mit `20260925202520_resonance_core` folgte private Resonanz. Bestätigt wurden:
+
+- drei neue Tabellen mit aktiver RLS und ausschließlich schmalen Spaltenrechten,
+- serverseitige Ableitung von Eigentümer, antwortendem Mitglied, Akteur und Nachrichtenabsender,
+- blockierte Eigen- und Doppelantworten sowie vollständig unsichtbare Antworten und Nachrichten für Außenstehende,
+- ein Nachrichtenraum erst nach Eigentümerannahme und keine neuen Nachrichten nach Rückzug,
+- Möglichkeiten-Freigaben über denselben unveränderlichen `publication_actions`-Pfad wie Portfolioinhalte,
+- blockierte Direktveröffentlichung und blockierte Inhaltsänderung an veröffentlichten Möglichkeiten bei weiterhin erlaubter Pause und Wiederöffnung,
+- vollständiger Rollback aller Gegenprobendaten; produktiv weiterhin 0 Möglichkeiten, 0 Resonanzen, 0 Antwortaktionen und 0 Nachrichten,
+- `MEM-JULIUS` weiterhin `members` + `draft`, ohne neue Veröffentlichungsaktion,
+- keine neue Security-Advisor-Meldung und kein fehlender Fremdschlüsselindex an den drei neuen Tabellen.
+
+Die produktive Migrationshistorie enthält jetzt das Fundament, die Seitenrevisionen, die RLS-Härtung, beide Portfolio-Migrationen, den Möglichkeiten-Kern, die Veröffentlichungszentrale und private Resonanz. Die im Repository geführten Versionsnummern stimmen mit der Remote-Historie überein.
 
 Für die weitere kontrollierte Pilotfreigabe bleiben:
 

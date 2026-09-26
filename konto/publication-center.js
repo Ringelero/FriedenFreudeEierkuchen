@@ -10,7 +10,8 @@
     'profile_field',
     'profile_skill',
     'skill_evidence',
-    'project'
+    'project',
+    'opportunity'
   ]);
   const FIELD_LABELS = {
     tagline: 'Kurzsatz',
@@ -23,7 +24,8 @@
     profile_field: 'Profilfeld',
     profile_skill: 'Fähigkeit',
     skill_evidence: 'Nachweis',
-    project: 'Projekt'
+    project: 'Projekt',
+    opportunity: 'Möglichkeit'
   };
   const STATE_LABELS = {
     live: 'jetzt öffentlich',
@@ -38,11 +40,13 @@
     profile: null,
     onProfileChange: null,
     profileWorkspace: null,
+    opportunityWorkspace: null,
     catalog: [],
     fields: [],
     profileSkills: [],
     evidence: [],
     projects: [],
+    opportunities: [],
     loadToken: 0,
     mutating: false
   };
@@ -205,6 +209,20 @@
         published_at: record.published_at || null,
         lifecycle_status: record.lifecycle_status,
         sort_order: record.sort_order || 0
+      });
+    });
+
+    (snapshot.opportunities || []).forEach(record => {
+      items.push({
+        kind: 'opportunity',
+        key: record.id,
+        title: record.title,
+        detail: truncate(record.summary),
+        visibility: record.visibility,
+        publication_status: record.publication_status,
+        published_at: record.published_at || null,
+        lifecycle_status: record.lifecycle_status,
+        sort_order: 0
       });
     });
 
@@ -433,7 +451,7 @@
     setMessage(byId('publication-status'), 'Veröffentlichungsstand wird sicher geladen …');
     const memberId = state.profile.stable_id;
     try {
-      const [catalog, fields, profileSkills, evidence, projects] = await Promise.all([
+      const [catalog, fields, profileSkills, evidence, projects, opportunities] = await Promise.all([
         query(state.client.from('skills')
           .select('id,name,description,branch,lifecycle_status')
           .eq('lifecycle_status', 'active')
@@ -453,10 +471,14 @@
         query(state.client.from('projects')
           .select('id,stable_id,owner_member_id,title,summary,role_summary,lifecycle_status,visibility,publication_status,published_at,sort_order')
           .eq('owner_member_id', memberId)
-          .order('sort_order'))
+          .order('sort_order')),
+        query(state.client.from('opportunities')
+          .select('id,stable_id,owner_member_id,title,summary,lifecycle_status,visibility,publication_status,published_at,updated_at')
+          .eq('owner_member_id', memberId)
+          .order('updated_at', { ascending: false }))
       ]);
       if (token !== state.loadToken) return;
-      Object.assign(state, { catalog, fields, profileSkills, evidence, projects });
+      Object.assign(state, { catalog, fields, profileSkills, evidence, projects, opportunities });
       render();
     } catch (error) {
       if (token !== state.loadToken) return;
@@ -510,6 +532,9 @@
       });
       await refresh();
       if (state.profileWorkspace?.refresh) await state.profileWorkspace.refresh();
+      if (item.kind === 'opportunity' && state.opportunityWorkspace?.refresh) {
+        await state.opportunityWorkspace.refresh();
+      }
       setMessage(
         byId('publication-status'),
         publish
@@ -540,6 +565,7 @@
     state.profile = options.profile;
     state.onProfileChange = options.onProfileChange || null;
     state.profileWorkspace = options.profileWorkspace || null;
+    state.opportunityWorkspace = options.opportunityWorkspace || null;
     const center = byId('publication-center');
     center.hidden = false;
     wire();
@@ -563,11 +589,13 @@
       profile: null,
       onProfileChange: null,
       profileWorkspace: null,
+      opportunityWorkspace: null,
       catalog: [],
       fields: [],
       profileSkills: [],
       evidence: [],
       projects: [],
+      opportunities: [],
       mutating: false
     });
     const center = byId('publication-center');
