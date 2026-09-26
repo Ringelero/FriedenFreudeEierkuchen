@@ -163,7 +163,9 @@ Welche Inhalte standardmäßig welchen Wert erhalten, ist teilweise noch politis
 - `KIEZ-P-HAIN` anlegen
 - Leni gezielt `manage_kiez:KIEZ-P-HAIN` geben
 
-**Technischer Stand vom 20. September 2026:** Das Repository enthält unter `supabase/` eine reproduzierbare Fundament-Migration für `profiles`, `kieze`, `permission_grants` und `audit_events`, minimale Tabellenrechte, RLS-Regeln, Trigger für private Profilentwürfe und Änderungsverlauf sowie 37 pgTAP-Gegenproben. Die Migration ist im produktiven Projekt angewendet. Dort wurden 4 Tabellen mit RLS, 4 private Funktionen, 6 Trigger, 8 Policies, `KIEZ-P-HAIN` und dessen Audit-Ereignis verifiziert; 37/37 Gegenproben bestanden in einer vollständig zurückgerollten Testtransaktion. Das erste eindeutig bestätigte Pilotkonto ist eingeladen und besitzt ein privates Entwurfsprofil, aber noch keine stabile Mitglieds-ID oder erweiterten Rechte. Die neue Kontoseite verwendet ausschließlich den öffentlichen Publishable Key, verhindert offene Kontoerstellung und liest Profil und Rechte über die reale Sitzung. Weil die Migration über den SQL Editor angewendet wurde, ist außerdem noch der reine Historienabgleich für Version `20260919000100` mit `supabase migration repair --status applied` offen.
+**Technischer Stand vom 26. September 2026:** Das Fundament sowie Profil, Portfolio, Möglichkeiten, Veröffentlichung, Resonanz und generische private Mitgliedsseiten sind im produktiven Projekt angewendet und mit vollständig zurückgerollten RLS-Gegenproben geprüft. Ein bestätigtes reales Konto besitzt `MEM-JULIUS`; es bestehen keine realen Berechtigungsvergaben. Die Kontoseite verwendet ausschließlich den öffentlichen Publishable Key, verhindert offene Kontoerstellung und liest Profil und eigene Rechte über die reale Sitzung. Die Migrationshistorie stimmt mit dem Repository überein.
+
+Die kontrollierte Einladung ist nun als JWT-geschützte Edge Function und Website-Arbeitsbereich umgesetzt. Nur ein aktives Konto mit `manage_members:platform:GemDen` kann E-Mail-Adressen sehen, Einladungen senden, die erste und einzige `MEM-*`-ID vergeben oder ein vorhandenes `manage_kiez`-Recht mit Begründung erteilen beziehungsweise widerrufen. 29/29 zusätzliche Verwaltungsgegenproben bestanden produktiv und wurden vollständig zurückgerollt. Der erste reale Mitglieder-Admin wurde bewusst noch nicht automatisch ernannt; dafür ist eine ausdrückliche Legitimation erforderlich.
 
 Die aktuellen Regeln verweigern noch nicht umgesetzte Sichtbarkeiten wie `members` und `scope_members` sicher. Ein Signup kann weder eine stabile `MEM-*`-ID noch ein Recht aus Metadaten übernehmen. Browserrollen dürfen Rechte und Audit-Ereignisse nicht schreiben.
 
@@ -204,8 +206,8 @@ Die aktuellen Regeln verweigern noch nicht umgesetzte Sichtbarkeiten wie `member
 ## 9. Noch offen
 
 - genaue Standard-Sichtbarkeit der einzelnen P-Hain-Module
-- Einladungs- oder offener Registrierungsweg
-- wer Mitgliedschaften und erweiterte Rechte legitim vergibt
+- ob und wann zusätzlich zur kontrollierten Einladung eine offene Registrierung nötig ist
+- wer den ersten realen Mitglieder-Admin, weitere Mitgliedschaften und erweiterte Rechte legitimiert
 - Lösch-, Export- und Aufbewahrungsfristen
 - Moderations- und Beschwerdeweg
 - ob Chats in Version 1 nötig sind

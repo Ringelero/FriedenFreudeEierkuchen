@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Geschützte GemDen-Mitgliederverwaltung für Einladungen, stabile Mitglieds-IDs und klar begrenzte Kiez-Rechte.">
+  <title>Mitglieder verwalten · GemDen</title>
+  <link rel="stylesheet" href="../../assets/site.css">
+  <link rel="stylesheet" href="./mitglieder.css?v=20260926-1">
+</head>
+<body data-area="account">
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="site-shell admin-shell">
+    <nav class="site-nav" data-site-nav data-root="../../" aria-label="Hauptnavigation">
+      <a class="site-mark" href="../../">GemDen</a>
+    </nav>
+
+    <main id="inhalt">
+      <header class="hero compact admin-hero">
+        <p class="eyebrow">Geschützter Arbeitsbereich</p>
+        <h1 class="display small">Mitglieder verwalten.</h1>
+        <p class="lead">Einladen, den Kontostand sehen, eine feste Mitglieds-ID vergeben und Kiez-Rechte nachvollziehbar erteilen oder widerrufen.</p>
+        <div class="status-row">
+          <span class="status-chip open" id="admin-connection-chip">Berechtigung wird geprüft</span>
+          <span class="id-chip">manage_members · GemDen</span>
+        </div>
+      </header>
+
+      <section class="section admin-access" aria-labelledby="workspace-title">
+        <div class="section-head compact-head">
+          <p class="eyebrow">Mitgliederverwaltung</p>
+          <h2 id="workspace-title">Der Arbeitsbereich.</h2>
+          <p>E-Mail-Adressen und Verwaltungsaktionen werden erst nach Anmeldung und serverseitiger Rechteprüfung geladen.</p>
+        </div>
+
+        <article class="panel access-panel" id="access-loading">
+          <div class="access-symbol" aria-hidden="true">◆</div>
+          <div>
+            <h3>Zugang wird geprüft …</h3>
+            <p>Deine Sitzung und das eng begrenzte Verwaltungsrecht werden abgeglichen.</p>
+          </div>
+        </article>
+
+        <article class="panel access-panel" id="access-signed-out" hidden>
+          <div class="access-symbol" aria-hidden="true">↗</div>
+          <div>
+            <p class="eyebrow">Anmeldung erforderlich</p>
+            <h3>Erst sicher anmelden.</h3>
+            <p>Öffne dein Konto und melde dich an. Danach kannst du hierher zurückkehren; die Sitzung bleibt auf dieser Website erhalten.</p>
+            <a class="button" href="../../konto/">Zum Konto</a>
+          </div>
+        </article>
+
+        <article class="panel access-panel" id="access-forbidden" hidden>
+          <div class="access-symbol" aria-hidden="true">🔒</div>
+          <div>
+            <p class="eyebrow">Nicht freigeschaltet</p>
+            <h3>Keine Mitgliederverwaltung für dieses Konto.</h3>
+            <p>Die Anmeldung funktioniert, aber das Recht <code>manage_members:GemDen</code> fehlt. Deshalb werden keine Mitglieder oder E-Mail-Adressen angezeigt.</p>
+            <a class="button secondary" href="../../konto/">Zurück zum Konto</a>
+          </div>
+        </article>
+
+        <div class="admin-workspace" id="admin-workspace" hidden>
+          <div class="admin-toolbar">
+            <div class="admin-metrics" aria-label="Mitgliederübersicht">
+              <div><strong id="metric-total">0</strong><span>Konten</span></div>
+              <div><strong id="metric-invited">0</strong><span>Einladung offen</span></div>
+              <div><strong id="metric-without-id">0</strong><span>ohne MEM-ID</span></div>
+              <div><strong id="metric-active">0</strong><span>schon angemeldet</span></div>
+            </div>
+            <button class="button secondary" id="refresh-members" type="button">Liste aktualisieren</button>
+          </div>
+
+          <div class="admin-columns">
+            <section class="panel invite-panel" aria-labelledby="invite-title">
+              <div>
+                <p class="eyebrow">Schritt 1</p>
+                <h3 id="invite-title">Mitglied einladen</h3>
+                <p>Beim Absenden verschickt Supabase sofort eine echte Einladungs-E-Mail. Das neue Profil bleibt privat und erhält noch keine erweiterten Rechte.</p>
+              </div>
+              <form class="form-grid" id="invite-form">
+                <div class="field">
+                  <label for="invite-name">Anzeigename</label>
+                  <input id="invite-name" name="display-name" maxlength="120" autocomplete="off" required placeholder="z. B. Leni">
+                </div>
+                <div class="field">
+                  <label for="invite-email">E-Mail-Adresse</label>
+                  <input id="invite-email" name="email" type="email" maxlength="254" autocomplete="off" inputmode="email" required placeholder="name@beispiel.de">
+                </div>
+                <button class="button" id="invite-submit" type="submit">Einladung per E-Mail senden</button>
+                <p class="form-status" id="invite-status" role="status" aria-live="polite"></p>
+              </form>
+            </section>
+
+            <aside class="panel safety-panel" aria-labelledby="safety-title">
+              <p class="eyebrow">Feste Grenzen</p>
+              <h3 id="safety-title">Was hier absichtlich nicht geht</h3>
+              <ul>
+                <li>keine Passwörter ansehen oder setzen</li>
+                <li>keine Konten löschen</li>
+                <li>keine globalen Adminrechte vergeben</li>
+                <li>keine bestätigte <code>MEM-*</code>-ID umbenennen</li>
+              </ul>
+              <p>Diese Oberfläche verwaltet nur den sicheren Pilotumfang. Weitere Eingriffe brauchen einen eigenen, überprüften Ablauf.</p>
+            </aside>
+          </div>
+
+          <section class="panel member-directory" aria-labelledby="directory-title">
+            <header class="directory-head">
+              <div>
+                <p class="eyebrow">Schritt 2 und 3</p>
+                <h3 id="directory-title">Konten, IDs und Kiez-Rechte</h3>
+                <p>Die feste ID wird genau einmal vergeben. Ein Kiez-Recht ist davon getrennt und braucht immer eine dokumentierte Begründung.</p>
+              </div>
+            </header>
+            <p class="form-status" id="directory-status" role="status" aria-live="polite"></p>
+            <div class="member-list" id="member-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="guide-title">
+        <div class="section-head">
+          <p class="eyebrow">Bedienung</p>
+          <h2 id="guide-title">So läuft eine Einladung ab.</h2>
+          <p>Kontozugang, Mitgliedsidentität und zusätzliche Rechte sind drei getrennte Entscheidungen. Dadurch bekommt niemand versehentlich mehr Zugriff als vorgesehen.</p>
+        </div>
+        <ol class="guide-steps">
+          <li>
+            <span>1</span>
+            <div><h3>Einladen</h3><p>Name und E-Mail eintragen und die Einladung absenden. Supabase legt das Konto mit einem privaten Profilentwurf an und verschickt den Link.</p></div>
+          </li>
+          <li>
+            <span>2</span>
+            <div><h3>Mitglieds-ID bestätigen</h3><p>Beim neuen Konto die vorgeschlagene <code>MEM-*</code>-ID prüfen und fest vergeben. Diese ID bleibt dauerhaft stabil.</p></div>
+          </li>
+          <li>
+            <span>3</span>
+            <div><h3>Einladung annehmen</h3><p>Das Mitglied öffnet den E-Mail-Link, landet im persönlichen Konto und setzt dort ein eigenes Passwort mit mindestens zwölf Zeichen.</p></div>
+          </li>
+          <li>
+            <span>4</span>
+            <div><h3>Optionales Kiez-Recht</h3><p>Nur wenn es separat legitimiert ist: Kiez auswählen, Begründung dokumentieren und das begrenzte Recht erteilen. Es kann später mit neuer Begründung widerrufen werden.</p></div>
+          </li>
+          <li>
+            <span>5</span>
+            <div><h3>Eigenes Konto nutzen</h3><p>Das Mitglied pflegt Profil, Fähigkeiten, Projekte, Möglichkeiten und persönliche Seite selbst. Alles beginnt als privater Entwurf und wird nicht automatisch öffentlich.</p></div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section">
+        <div class="notice archive"><strong>Falls ein Einladungslink abläuft:</strong> Das Mitglied öffnet <a href="../../konto/">das Konto</a>, trägt dieselbe E-Mail-Adresse ein und fordert dort einen neuen einmaligen Link an. Es muss dafür kein zweites Konto angelegt werden.</div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>GemDen · geschützte Mitgliederverwaltung</span>
+      <a href="../../konto/">Zum persönlichen Konto</a>
+    </footer>
+  </div>
+
+  <script src="../../assets/site.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2" defer></script>
+  <script src="../../assets/supabase-config.js" defer></script>
+  <script src="../../assets/supabase-client.js" defer></script>
+  <script src="./member-admin.js?v=20260926-1" defer></script>
+  <script src="./verwaltung.js?v=20260926-1" defer></script>
+</body>
+</html>

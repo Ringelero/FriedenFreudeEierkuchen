@@ -1,6 +1,6 @@
 # Supabase-Fundament für GemDen / FFE
 
-Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern seit 24. September 2026, Möglichkeiten-Kern, kontrollierte Veröffentlichung und private Resonanz seit 25. September 2026 sowie generische private Mitgliedsseiten seit 26. September 2026 produktiv. Alle Schichten wurden mit anonymen, eigentümergebundenen und beteiligtengebundenen RLS-Gegenproben geprüft.
+Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern seit 24. September 2026, Möglichkeiten-Kern, kontrollierte Veröffentlichung und private Resonanz seit 25. September 2026 sowie generische private Mitgliedsseiten und die technische Mitgliederverwaltung seit 26. September 2026 produktiv. Alle Schichten wurden mit anonymen, eigentümergebundenen und beteiligtengebundenen RLS-Gegenproben geprüft. Der erste reale Mitglieder-Admin ist bewusst noch nicht automatisch ernannt.
 
 ## Enthalten
 
@@ -22,6 +22,9 @@ Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern 
 - RLS-Regeln und minimale SQL-Rechte für `anon` und `authenticated`
 - pgTAP-Gegenproben unter `tests/`
 - ein absichtlich nicht automatisch ausführbares Bootstrap-Beispiel unter `bootstrap/`
+- eine geschützte `member-admin` Edge Function für Mitgliederliste und Einladungen
+- `assign_member_identity` für die erste und einzige Vergabe einer stabilen `MEM-*`-ID
+- `set_member_kiez_permission` für begründete, auditierte Vergabe und Widerruf vorhandener Kiez-Rechte
 
 Das Schema behandelt `manage_kiez:KIEZ-P-HAIN` intern als drei getrennte Werte:
 
@@ -38,6 +41,9 @@ So kann ein Recht nicht stillschweigend auf einen anderen Kiez oder die ganze Pl
 - Neue Konten erhalten nur ein privates Profil im Entwurfsstatus.
 - Signup-Metadaten dürfen weder `MEM-*`-IDs noch Rechte festlegen.
 - Browserrollen dürfen Rechte und Audit-Ereignisse nicht schreiben.
+- Der Browser erhält niemals einen Secret- oder `service_role`-Schlüssel. Die Auth-Admin-API läuft ausschließlich in der JWT-geschützten Edge Function und prüft zusätzlich `manage_members:platform:GemDen`.
+- Mitglieder-Admins können über die freigegebene Oberfläche nur `manage_kiez` für einen vorhandenen Kiez verwalten; globale Plattformrechte bleiben ausgeschlossen.
+- Eine einmal bestätigte `MEM-*`-ID wird zusätzlich durch einen Datenbank-Trigger gegen spätere Umbenennung geschützt.
 - Anonyme Zugriffe sehen nur `public` + `published`.
 - Ein Portfolioeintrag wird zusätzlich nur bei einem öffentlichen, veröffentlichten und aktiven Eigentümerprofil sichtbar.
 - Browsernutzer können in den Portfolio-Tabellen ausschließlich eigene Entwürfe schreiben. Freigaben und Rücknahmen laufen append-only über `publication_actions`; ein nicht aufrufbarer privater Trigger prüft `auth.uid()`, Eigentum, Sichtbarkeit und Lebenszyklus und verändert ausschließlich Veröffentlichungsmetadaten.
@@ -52,7 +58,7 @@ So kann ein Recht nicht stillschweigend auf einen anderen Kiez oder die ganze Pl
 - Ein Kiezrecht gilt nur, solange es begonnen hat, nicht abgelaufen und nicht widerrufen ist.
 - Das erste Kiezrecht darf Beschreibung und Sichtbarkeit pflegen, aber weder stabile ID, Name, FFE-Verweise noch Lebenszyklusstatus verändern.
 - `service_role` gehört niemals in GitHub, HTML oder Browser-JavaScript.
-- `create_own_profile_page` ist bewusst der eine für angemeldete Mitglieder aufrufbare `SECURITY DEFINER`-Bootstrap: Die Funktion validiert die Dokumentstruktur, leitet Seiten-ID, Mitgliedssubjekt und Eigentümer serverseitig ab, verweigert `anon` und erlaubt pro bestätigter `MEM-*`-Identität nur eine private Seite. `save_page_revision` erzwingt dieselbe stabile Identität und Mitgliedsbindung in jeder Folgerevision.
+- `create_own_profile_page` ist ein bewusst eng begrenzter, für angemeldete Mitglieder aufrufbarer `SECURITY DEFINER`-Bootstrap: Die Funktion validiert die Dokumentstruktur, leitet Seiten-ID, Mitgliedssubjekt und Eigentümer serverseitig ab, verweigert `anon` und erlaubt pro bestätigter `MEM-*`-Identität nur eine private Seite. `save_page_revision` erzwingt dieselbe stabile Identität und Mitgliedsbindung in jeder Folgerevision.
 
 ## Browserübergreifender Zugang
 
@@ -153,15 +159,18 @@ Unmittelbar danach schloss `20260926192738_member_page_subject_integrity` den Re
 
 Die produktive Migrationshistorie enthält jetzt das Fundament, die Seitenrevisionen, die RLS-Härtung, beide Portfolio-Migrationen, den Möglichkeiten-Kern, die Veröffentlichungszentrale, private Resonanz und generische Mitgliedsseiten. Die im Repository geführten Versionsnummern stimmen mit der Remote-Historie überein.
 
+Am 26. September 2026 folgten außerdem `20260926231454_member_administration` und die Parallelzugriffshärtung `20260926232046_serialize_member_permission_changes`. Die Migrationen, die JWT-geschützte Edge Function `member-admin` und 29/29 vollständig zurückgerollte Verwaltungsgegenproben sind produktiv bestätigt. Anonyme Aufrufe der Edge Function enden mit HTTP 401; `anon` kann weder stabile Identitäten noch Kiez-Rechte ändern. Nach der Prüfung bestanden weiterhin genau ein reales Auth-Konto, ein reales Profil, keine Berechtigungsvergabe und keine Testnutzer.
+
 Für die weitere kontrollierte Pilotfreigabe bleiben:
 
-1. Leni erst zum gewünschten Pilotzeitpunkt über eine eindeutig bestätigte Adresse einladen,
-2. nach dem ersten Login eine stabile Mitglieds-ID und nur bei separater Legitimation das erweiterte P-Hain-Recht zuordnen,
-3. Lenis private Mitgliedsseite anlegen und Login, Eigentümerweg sowie Veröffentlichung mit ihrem realen Konto erneut prüfen.
+1. ausdrücklich entscheiden, welches bestehende Konto zuerst `manage_members:platform:GemDen` erhält,
+2. Leni erst zum gewünschten Pilotzeitpunkt über eine eindeutig bestätigte Adresse einladen,
+3. ihre stabile Mitglieds-ID und nur bei separater Legitimation das erweiterte P-Hain-Recht zuordnen,
+4. Lenis private Mitgliedsseite anlegen und Login, Eigentümerweg sowie Veröffentlichung mit ihrem realen Konto erneut prüfen.
 
 ## Noch bewusst offen
 
-- Einladung oder offene Registrierung
+- ob und wann neben der kontrollierten Einladung jemals eine offene Registrierung nötig ist
 - wer das erste erweiterte Recht legitim vergibt
 - genaue Standardsichtbarkeit der späteren P-Hain-Module
 - Kontolöschung, vollständiger Kontoexport und Aufbewahrungsfristen

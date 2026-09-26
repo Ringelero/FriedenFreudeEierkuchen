@@ -23,6 +23,7 @@
   const pageCreateButton = document.getElementById('page-create-button');
   const pageWorkshopLink = document.getElementById('page-workshop-link');
   const pageStatus = document.getElementById('page-status');
+  const memberAdminLink = document.getElementById('member-admin-link');
   const logoutButton = document.getElementById('logout-button');
   let authErrorFromUrl = authFlow?.authErrorFromLocation(location) || '';
   let currentUser = null;
@@ -139,6 +140,11 @@
       return hasStarted && hasNotEnded;
     });
     document.getElementById('account-permissions').textContent = describePermissions(activeGrants);
+    memberAdminLink.hidden = !activeGrants.some(grant => (
+      grant.permission_key === 'manage_members'
+      && grant.scope_type === 'platform'
+      && grant.scope_id === 'GemDen'
+    ));
     document.getElementById('profile-display-name').value = profile.display_name || '';
     document.getElementById('profile-visibility').value = profile.visibility;
     setMessage(accountDataStatus, 'Profil und Rechte wurden über deine eigene Sitzung geladen.', 'success');
@@ -189,6 +195,7 @@
   async function renderSession(session) {
     currentUser = session?.user || null;
     currentProfile = null;
+    memberAdminLink.hidden = true;
     profileWorkspace?.reset();
     publicationCenter?.reset();
     opportunityWorkspace?.reset();
