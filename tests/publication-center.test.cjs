@@ -55,20 +55,22 @@ test('item states distinguish live, staged, ready and excluded content', () => {
   assert.equal(publicationState({ visibility: 'public', publication_status: 'archived' }, liveProfile), 'archived');
 });
 
-test('the publication preview model covers fields, skills, evidence and projects', () => {
+test('the publication preview model covers fields, skills, evidence, projects and opportunities', () => {
   const items = buildPublicationItems({
     catalog: [{ id: 'SKILL-TEST', name: 'Sicher testen', description: 'Testbeschreibung' }],
     fields: [{ field_key: 'bio', value_text: 'Eine öffentliche Bio', visibility: 'public', publication_status: 'draft', sort_order: 10 }],
     profileSkills: [{ id: '11111111-1111-4111-8111-111111111111', skill_id: 'SKILL-TEST', statement: '', boundaries: '', visibility: 'public', publication_status: 'published', sort_order: 10 }],
     evidence: [{ id: '22222222-2222-4222-8222-222222222222', title: 'Testnachweis', description: 'Kontext', verification_status: 'self_reported', visibility: 'private', publication_status: 'draft' }],
-    projects: [{ id: '33333333-3333-4333-8333-333333333333', title: 'Testprojekt', summary: 'Projektkontext', role_summary: '', lifecycle_status: 'active', visibility: 'public', publication_status: 'published', sort_order: 10 }]
+    projects: [{ id: '33333333-3333-4333-8333-333333333333', title: 'Testprojekt', summary: 'Projektkontext', role_summary: '', lifecycle_status: 'active', visibility: 'public', publication_status: 'published', sort_order: 10 }],
+    opportunities: [{ id: '44444444-4444-4444-8444-444444444444', title: 'Testmöglichkeit', summary: 'Gemeinsam etwas klären', lifecycle_status: 'open', visibility: 'public', publication_status: 'draft' }]
   });
 
   assert.deepEqual(items.map(item => item.kind), [
     'profile_field',
     'profile_skill',
     'skill_evidence',
-    'project'
+    'project',
+    'opportunity'
   ]);
   assert.equal(items[0].title, 'Über mich');
   assert.equal(items[1].title, 'Sicher testen');
@@ -78,7 +80,7 @@ test('the publication preview model covers fields, skills, evidence and projects
     visibility: 'public',
     publication_status: 'draft'
   });
-  assert.deepEqual(summary, { live: 0, staged: 2, ready: 1, excluded: 1, archived: 0 });
+  assert.deepEqual(summary, { live: 0, staged: 2, ready: 2, excluded: 1, archived: 0 });
 });
 
 test('profile publication appends only a narrow authenticated action', async () => {
@@ -122,6 +124,27 @@ test('portfolio publication appends kind, key and status without an owner identi
     target_status: 'draft'
   }]);
   assert.equal('owner_member_id' in calls[0], false);
+});
+
+test('opportunity publication uses the same narrow action log', async () => {
+  const calls = [];
+  const client = actionClient(calls, payload => ({
+    ...payload,
+    member_id: 'MEM-JULIUS',
+    result_visibility: 'public',
+    result_publication_status: payload.target_status
+  }));
+
+  await setOwnPortfolioPublication(client, {
+    kind: 'opportunity',
+    key: '44444444-4444-4444-8444-444444444444',
+    status: 'published'
+  });
+  assert.deepEqual(calls, [{
+    target_kind: 'opportunity',
+    target_key: '44444444-4444-4444-8444-444444444444',
+    target_status: 'published'
+  }]);
 });
 
 test('invalid publication commands are blocked before an action write', async () => {

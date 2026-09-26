@@ -1,4 +1,5 @@
 (function () {
+  const publicationCenter = window.FFE_PUBLICATION_CENTER;
   const SIGNALS = [
     ['have', 'Ich habe', 'Ressource, Material oder Zugang'],
     ['can', 'Ich kann', 'Fähigkeit, Wissen oder Unterstützung'],
@@ -257,6 +258,7 @@
         .eq('id', record.id)
         .eq('owner_member_id', state.profile.stable_id)
         .eq('publication_status', 'draft'));
+      notifyChange();
       await loadOpportunities();
       setMessage(byId('opportunity-status'), 'Entwurf entfernt.', 'success');
     } catch (error) {
@@ -264,30 +266,74 @@
     }
   }
 
-  function canPublish() {
+  function profileIsLive() {
     return state.profile?.visibility === 'public'
       && state.profile?.publication_status === 'published';
   }
 
   async function publishOpportunity(record) {
-    if (!canPublish()) {
-      setMessage(byId('opportunity-status'), 'Dein Gesamtprofil ist noch nicht öffentlich veröffentlicht. Deshalb bleibt diese Möglichkeit sicher im Entwurf.', 'error');
-      return;
-    }
     if (record.visibility !== 'public') {
       setMessage(byId('opportunity-status'), 'Stelle die Sichtbarkeit im Entwurf zuerst bewusst auf „öffentlich“.', 'error');
       return;
     }
-    if (!window.confirm(`„${record.title}“ jetzt öffentlich freigeben? Der Eintrag wird dann im Möglichkeitenstrom sichtbar.`)) return;
-    await updateOpportunityState(record, { publication_status: 'published', lifecycle_status: 'open' }, 'Öffentlich freigegeben.');
+    const confirmation = profileIsLive()
+      ? `„${record.title}“ jetzt freigeben? Der Eintrag wird im öffentlichen Möglichkeitenstrom sichtbar.`
+      : `„${record.title}“ einzeln freigeben? Der Eintrag bleibt vorbereitet und geht erst mit deinem Gesamtprofil online.`;
+    if (!window.confirm(confirmation)) return;
+    try {
+      if (record.lifecycle_status !== 'open') {
+        await result(state.client.from('opportunities').update({ lifecycle_status: 'open' })
+          .eq('id', record.id)
+          .eq('owner_member_id', state.profile.stable_id)
+          .eq('publication_status', 'draft')
+          .select('id'));
+      }
+      await publicationCenter.setOwnPortfolioPublication(state.client, {
+        kind: 'opportunity',
+        key: record.id,
+        status: 'published'
+      });
+      notifyChange();
+      await loadOpportunities();
+      setMessage(
+        byId('opportunity-status'),
+        profileIsLive()
+          ? 'Möglichkeit freigegeben und jetzt öffentlich.'
+          : 'Möglichkeit einzeln freigegeben. Das geschlossene Gesamtprofil hält sie noch offline.',
+        'success'
+      );
+    } catch (error) {
+      setMessage(byId('opportunity-status'), describeError(error, 'Die Freigabe konnte nicht geändert werden.'), 'error');
+    }
   }
 
-  async function updateOpportunityState(record, values, successMessage) {
+  async function retractOpportunity(record) {
+    if (!window.confirm(`Freigabe für „${record.title}“ zurücknehmen? Die Möglichkeit verschwindet sofort aus dem öffentlichen Strom und wird wieder bearbeitbar.`)) return;
     try {
-      await result(state.client.from('opportunities').update(values)
+      await publicationCenter.setOwnPortfolioPublication(state.client, {
+        kind: 'opportunity',
+        key: record.id,
+        status: 'draft'
+      });
+      notifyChange();
+      await loadOpportunities();
+      setMessage(byId('opportunity-status'), 'Freigabe zurückgenommen. Die Möglichkeit ist wieder ein Entwurf.', 'success');
+    } catch (error) {
+      setMessage(byId('opportunity-status'), describeError(error, 'Die Freigabe konnte nicht zurückgenommen werden.'), 'error');
+    }
+  }
+
+  async function updateOpportunityLifecycle(record, lifecycleStatus, successMessage) {
+    if (!['open', 'paused', 'closed'].includes(lifecycleStatus)) {
+      setMessage(byId('opportunity-status'), 'Dieser Lebenszyklus ist nicht zulässig.', 'error');
+      return;
+    }
+    try {
+      await result(state.client.from('opportunities').update({ lifecycle_status: lifecycleStatus })
         .eq('id', record.id)
         .eq('owner_member_id', state.profile.stable_id)
         .select('id'));
+      notifyChange();
       await loadOpportunities();
       setMessage(byId('opportunity-status'), successMessage, 'success');
     } catch (error) {
@@ -338,20 +384,20 @@
       if (record.visibility === 'public') {
         actions.append(actionButton('Öffentlich freigeben', () => publishOpportunity(record)));
       }
-      if (!canPublish()) {
-        appendText(card, 'Öffentliche Freigabe bleibt gesperrt, bis dein Gesamtprofil bewusst veröffentlicht wurde.', 'entry-boundary');
+      if (!profileIsLive() && record.visibility === 'public') {
+        appendText(card, 'Du kannst die Einzelfreigabe vorbereiten. Online geht sie erst, wenn auch dein Gesamtprofil geöffnet ist.', 'entry-boundary');
       }
     } else if (record.publication_status === 'published') {
       if (record.lifecycle_status === 'open') {
-        actions.append(actionButton('Pausieren', () => updateOpportunityState(record, { lifecycle_status: 'paused' }, 'Möglichkeit pausiert.'), true));
+        actions.append(actionButton('Pausieren', () => updateOpportunityLifecycle(record, 'paused', 'Möglichkeit pausiert.'), true));
       }
       if (record.lifecycle_status === 'paused') {
-        actions.append(actionButton('Wieder öffnen', () => updateOpportunityState(record, { lifecycle_status: 'open' }, 'Möglichkeit wieder geöffnet.')));
+        actions.append(actionButton('Wieder öffnen', () => updateOpportunityLifecycle(record, 'open', 'Möglichkeit wieder geöffnet.')));
       }
       if (['open', 'paused'].includes(record.lifecycle_status)) {
-        actions.append(actionButton('Abschließen', () => updateOpportunityState(record, { lifecycle_status: 'closed' }, 'Möglichkeit abgeschlossen.'), true));
+        actions.append(actionButton('Abschließen', () => updateOpportunityLifecycle(record, 'closed', 'Möglichkeit abgeschlossen.'), true));
       }
-      actions.append(actionButton('Zurück in Entwurf', () => updateOpportunityState(record, { publication_status: 'draft' }, 'Öffentliche Freigabe zurückgenommen.'), true));
+      actions.append(actionButton('Freigabe zurücknehmen', () => retractOpportunity(record), true));
     }
     if (actions.childElementCount) card.append(actions);
     return card;
@@ -375,6 +421,7 @@
   }
 
   async function loadOpportunities() {
+    if (!state.client || !state.profile?.stable_id) return;
     const memberId = state.profile.stable_id;
     const opportunities = await result(state.client.from('opportunities')
       .select('id,stable_id,owner_member_id,signal_type,relationship_mode,title,summary,location_mode,location_label,starts_at,ends_at,duration_note,compensation_type,compensation_note,risk_level,risk_note,visibility,lifecycle_status,publication_status,published_at,created_at,updated_at')
@@ -429,6 +476,10 @@
     }
   }
 
+  function notifyChange() {
+    window.dispatchEvent(new CustomEvent('ffe:portfolio-changed'));
+  }
+
   function wireForm() {
     byId('opportunity-risk').addEventListener('change', updateRiskNote);
     byId('opportunity-cancel-edit').addEventListener('click', resetForm);
@@ -479,14 +530,13 @@
         } else {
           const inserted = await result(state.client.from('opportunities').insert({
             ...values,
-            owner_member_id: state.profile.stable_id,
-            lifecycle_status: 'open',
-            publication_status: 'draft'
+            owner_member_id: state.profile.stable_id
           }).select('id').single());
           opportunityId = inserted.id;
         }
 
         await syncRequirements(opportunityId, selectedRequirements());
+        notifyChange();
         resetForm();
         await loadOpportunities();
         setMessage(byId('opportunity-form-status'), 'Möglichkeit als privater Entwurf gespeichert.', 'success');
@@ -532,6 +582,10 @@
       setMessage(byId('opportunity-status'), 'Für Möglichkeiten fehlt noch deine bestätigte Mitglieds-ID.', 'error');
       return;
     }
+    if (!publicationCenter?.setOwnPortfolioPublication) {
+      setMessage(byId('opportunity-status'), 'Die sichere Veröffentlichungszentrale ist nicht verfügbar.', 'error');
+      return;
+    }
 
     state.catalog = await result(client.from('skills')
       .select('id,name,description,branch,safety_note,lifecycle_status')
@@ -566,5 +620,5 @@
     if (workspace) workspace.hidden = true;
   }
 
-  window.FFE_OPPORTUNITY_WORKSPACE = { initialize, setProfile, reset };
+  window.FFE_OPPORTUNITY_WORKSPACE = { initialize, refresh: loadOpportunities, setProfile, reset };
 })();

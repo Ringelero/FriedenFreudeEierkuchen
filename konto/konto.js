@@ -5,6 +5,7 @@
   const profileWorkspace = window.FFE_PROFILE_WORKSPACE;
   const publicationCenter = window.FFE_PUBLICATION_CENTER;
   const opportunityWorkspace = window.FFE_OPPORTUNITY_WORKSPACE;
+  const resonanceWorkspace = window.FFE_RESONANCE_WORKSPACE;
   const connectionChip = document.getElementById('connection-chip');
   const signedOutPanel = document.getElementById('signed-out-panel');
   const signedInPanel = document.getElementById('signed-in-panel');
@@ -62,6 +63,7 @@
     profileWorkspace.setProfile(currentProfile);
     publicationCenter.setProfile(currentProfile);
     opportunityWorkspace.setProfile(currentProfile);
+    resonanceWorkspace.setProfile(currentProfile);
     document.getElementById('profile-heading').textContent = currentProfile.display_name || 'Dein Profil';
     document.getElementById('account-profile-status').textContent = formatProfileStatus(currentProfile);
     document.getElementById('profile-display-name').value = currentProfile.display_name || '';
@@ -159,6 +161,7 @@
         client,
         profile,
         profileWorkspace,
+        opportunityWorkspace,
         onProfileChange: applyProfile
       });
     } catch (error) {
@@ -172,6 +175,13 @@
       const target = document.getElementById('opportunity-status');
       if (target) setMessage(target, error.message || 'Die Möglichkeiten konnten nicht geladen werden.', 'error');
     }
+
+    try {
+      await resonanceWorkspace.initialize({ client, profile });
+    } catch (error) {
+      const target = document.getElementById('resonance-status');
+      if (target) setMessage(target, error.message || 'Die privaten Resonanzen konnten nicht geladen werden.', 'error');
+    }
   }
 
   async function renderSession(session) {
@@ -180,6 +190,7 @@
     profileWorkspace?.reset();
     publicationCenter?.reset();
     opportunityWorkspace?.reset();
+    resonanceWorkspace?.reset();
     signedOutPanel.hidden = Boolean(currentUser);
     signedInPanel.hidden = !currentUser;
 
@@ -211,7 +222,7 @@
     }
   }
 
-  if (!client || !authFlow || !pageBootstrap || !profileWorkspace || !publicationCenter || !opportunityWorkspace) {
+  if (!client || !authFlow || !pageBootstrap || !profileWorkspace || !publicationCenter || !opportunityWorkspace || !resonanceWorkspace) {
     signedOutPanel.hidden = false;
     setConnection('Verbindung nicht verfügbar', 'open');
     loginSubmit.disabled = true;
