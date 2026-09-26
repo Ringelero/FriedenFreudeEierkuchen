@@ -1,0 +1,128 @@
+{
+  "$schema": "../../../schemas/gemden-page-document.v1.schema.json",
+  "schema_version": "1.0.0",
+  "id": "PAGE-MEM-MEMBER",
+  "subject": {
+    "kind": "member",
+    "id": "MEM-MEMBER"
+  },
+  "status": "pilot",
+  "visibility": "public",
+  "ffe_refs": ["K05", "W01", "F04", "K10", "T05", "T10"],
+  "capability_context": {
+    "human_skill_refs": [],
+    "ai_operation_refs": ["OP-K05", "OP-W01", "OP-F04", "OP-K10", "OP-T05", "OP-T10"],
+    "module_permission_grants": [
+      "module:data.public.community.read",
+      "module:navigation.internal",
+      "module:ui.motion.decorative"
+    ]
+  },
+  "data_sources": [
+    {
+      "id": "community",
+      "type": "json",
+      "url": "../community-v0.1.json",
+      "classification": "public",
+      "collections": ["members", "skills", "evidence", "projects"]
+    }
+  ],
+  "bindings": {
+    "member": {
+      "kind": "entity",
+      "source": "community",
+      "collection": "members",
+      "id": "MEM-MEMBER"
+    },
+    "skills": {
+      "kind": "related",
+      "source": "community",
+      "collection": "skills",
+      "ids_from": { "binding": "member", "field": "skill_ids" }
+    },
+    "evidence": {
+      "kind": "related",
+      "source": "community",
+      "collection": "evidence",
+      "ids_from": { "binding": "member", "field": "evidence_ids" }
+    },
+    "projects": {
+      "kind": "related",
+      "source": "community",
+      "collection": "projects",
+      "ids_from": { "binding": "member", "field": "project_ids" }
+    }
+  },
+  "theme": {
+    "preset": "ruby",
+    "tokens": {
+      "accent": "#c90046",
+      "accent_deep": "#8d0033",
+      "surface": "#fffaf6",
+      "radius": "30px"
+    },
+    "motion": "gentle"
+  },
+  "regions": [
+    {
+      "id": "main",
+      "layout": "flow",
+      "modules": [
+        {
+          "id": "member-hero",
+          "type": "gemden.profile-hero",
+          "version": 1,
+          "bindings": { "member": "member" },
+          "props": {
+            "eyebrow": "Mitgliedsprofil",
+            "visual": "ruby-gem",
+            "visual_label": "Animiertes Profilzeichen",
+            "breadcrumb": [
+              { "label": "Community", "href": "/community/" },
+              { "label": "Mitglieder" },
+              { "label": "Mitglied" }
+            ]
+          },
+          "appearance": { "tone": "ruby", "motion": "rise" }
+        },
+        {
+          "id": "member-skills",
+          "type": "gemden.skill-grid",
+          "version": 1,
+          "bindings": { "skills": "skills" },
+          "props": {
+            "eyebrow": "Fähigkeitsportfolio",
+            "title": "Was ich einbringen kann.",
+            "intro": "Fähigkeiten gelten in ihrem jeweiligen Kontext. Sie sind keine globale Rangliste und keine automatische Zusage für jeden Auftrag.",
+            "icons": {}
+          },
+          "appearance": { "tone": "neutral", "motion": "rise" }
+        },
+        {
+          "id": "member-evidence",
+          "type": "gemden.evidence-grid",
+          "version": 1,
+          "bindings": { "evidence": "evidence" },
+          "props": {
+            "eyebrow": "Evidenz statt Behauptungsnebel",
+            "title": "Woher die Erfahrung kommt.",
+            "boundary": "Nachweise gelten nur im beschriebenen Kontext und ersetzen keine erforderliche Zulassung oder konkrete Sicherheitsprüfung."
+          },
+          "appearance": { "tone": "gold", "motion": "fade" }
+        },
+        {
+          "id": "member-projects",
+          "type": "gemden.project-grid",
+          "version": 1,
+          "bindings": { "projects": "projects" },
+          "props": {
+            "eyebrow": "Veröffentlichte Projekte",
+            "title": "Woran ich arbeite.",
+            "intro": "Projekte zeigen den beschriebenen Stand und die eigene Rolle. Sie sind keine automatische Zusage für neue Aufträge."
+          },
+          "appearance": { "tone": "mint", "motion": "rise" }
+        }
+      ]
+    }
+  ]
+}

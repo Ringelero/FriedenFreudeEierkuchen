@@ -1,8 +1,11 @@
 (function (root, factory) {
-  const api = factory();
+  const memberTemplate = typeof module === 'object' && module.exports
+    ? require('../assets/member-page-template.js')
+    : root?.GemDenMemberPageTemplate;
+  const api = factory(memberTemplate);
   if (typeof module === 'object' && module.exports) module.exports = api;
   if (root) root.FFE_PAGE_BOOTSTRAP = Object.freeze(api);
-})(typeof window === 'object' ? window : null, function () {
+})(typeof window === 'object' ? window : null, function (memberTemplate) {
   function pageError(code, message) {
     const error = new Error(message);
     error.code = code;
@@ -16,11 +19,25 @@
   }
 
   function profilePageId(stableId) {
-    const value = String(stableId || '').trim();
-    if (!/^MEM-[A-Z0-9-]+$/.test(value)) {
+    if (!memberTemplate?.profilePageId) {
+      throw pageError('page_template_unavailable', 'Die allgemeine Mitgliederseiten-Vorlage ist momentan nicht verfügbar.');
+    }
+    try {
+      return memberTemplate.profilePageId(stableId);
+    } catch {
       throw pageError('page_stable_id_invalid', 'Zum Anlegen der Seite ist eine bestätigte Mitglieds-ID erforderlich.');
     }
-    return `PAGE-${value}`;
+  }
+
+  function profileSlug(displayName, stableId) {
+    if (!memberTemplate?.profileSlug) {
+      throw pageError('page_template_unavailable', 'Die allgemeine Mitgliederseiten-Vorlage ist momentan nicht verfügbar.');
+    }
+    try {
+      return memberTemplate.profileSlug(displayName, stableId);
+    } catch (error) {
+      throw pageError(error?.code || 'page_slug_invalid', error?.message || 'Der vorgesehene Seitenpfad ist ungültig.');
+    }
   }
 
   function validateSlug(slug) {
@@ -39,7 +56,7 @@
     return value;
   }
 
-  async function loadInitialDocument(fetchImpl, templateUrl, expectedPageId, stableId) {
+  async function loadInitialDocument(fetchImpl, templateUrl, expectedPageId, stableId, displayName) {
     if (typeof fetchImpl !== 'function') {
       throw pageError('page_template_unavailable', 'Die sichere Startvorlage ist momentan nicht verfügbar.');
     }
@@ -64,6 +81,17 @@
       throw pageError('page_template_invalid', 'Die Startvorlage ist nicht gültig.');
     }
 
+    if (document?.id === memberTemplate?.TEMPLATE_PAGE_ID) {
+      try {
+        document = memberTemplate.personalizeMemberPageTemplate(document, {
+          stableId,
+          displayName
+        });
+      } catch (error) {
+        throw pageError(error?.code || 'page_template_invalid', error?.message || 'Die Startvorlage ist nicht gültig.');
+      }
+    }
+
     if (document?.id !== expectedPageId
       || document?.subject?.kind !== 'member'
       || document?.subject?.id !== stableId) {
@@ -81,6 +109,7 @@
     stableId,
     slug,
     title,
+    displayName = title,
     templateUrl,
     fetchImpl
   }) {
@@ -92,7 +121,8 @@
       fetchImpl,
       templateUrl,
       expectedPageId,
-      stableId
+      stableId,
+      displayName
     );
 
     const { data, error } = await client.rpc('create_own_profile_page', {
@@ -132,6 +162,7 @@
     createOwnProfilePage,
     describePageError,
     profilePageId,
+    profileSlug,
     validateSlug,
     validateTitle
   };

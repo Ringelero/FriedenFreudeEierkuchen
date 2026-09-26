@@ -10,7 +10,8 @@ async function json(path) {
 const fixtures = [
   ['../schemas/gemden-capability.v1.schema.json', '../assets/data/capabilities.v1.json'],
   ['../schemas/gemden-module-manifest.v1.schema.json', '../assets/data/modules.v1.json'],
-  ['../schemas/gemden-page-document.v1.schema.json', '../assets/data/pages/julius.v1.json']
+  ['../schemas/gemden-page-document.v1.schema.json', '../assets/data/pages/julius.v1.json'],
+  ['../schemas/gemden-page-document.v1.schema.json', '../assets/data/pages/member-profile.v1.json']
 ];
 
 test('published capability, module and page JSON satisfy their Draft 2020-12 schemas', async () => {

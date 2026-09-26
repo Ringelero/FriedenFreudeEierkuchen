@@ -13,9 +13,10 @@ import { fromPuckData, toPuckData } from './gemden-adapter.mjs';
 import { createPageRevisionStore } from './page-revision-store.mjs';
 import { createPuckConfig } from './puck-config.jsx';
 
-const PAGE_SOURCES = Object.freeze({
+const LEGACY_PAGE_SOURCES = Object.freeze({
   'PAGE-MEM-JULIUS': '/assets/data/pages/julius.v1.json'
 });
+const MEMBER_TEMPLATE_SOURCE = '/assets/data/pages/member-profile.v1.json';
 
 const UNCHANGED = 'unchanged';
 const GUIDED_CHOICES = Object.freeze([
@@ -126,6 +127,51 @@ async function waitForDeferredScripts() {
   await new Promise(resolve => document.addEventListener('DOMContentLoaded', resolve, { once: true }));
 }
 
+function pageSource(pageId, memberTemplate) {
+  if (LEGACY_PAGE_SOURCES[pageId]) return LEGACY_PAGE_SOURCES[pageId];
+  memberTemplate.memberIdFromPageId(pageId);
+  return MEMBER_TEMPLATE_SOURCE;
+}
+
+async function loadEditorProfile(client, memberId) {
+  if (!client?.from) return null;
+  try {
+    const { data, error } = await client
+      .from('profiles')
+      .select('stable_id,display_name')
+      .eq('stable_id', memberId)
+      .maybeSingle();
+    if (error) return null;
+    return data || null;
+  } catch {
+    return null;
+  }
+}
+
+function withEditorMember(community, memberId, displayName) {
+  const source = structuredClone(community);
+  const existing = (source.members || []).find(member => member.id === memberId);
+  const member = {
+    id: memberId,
+    slug: memberId.slice(4).toLowerCase(),
+    name: displayName,
+    status: 'private-editor',
+    tagline: '',
+    bio: '',
+    dynasty_ids: [],
+    kiez_ids: [],
+    skill_ids: [],
+    boundaries: [],
+    evidence_ids: [],
+    project_ids: [],
+    ...(existing || {}),
+    name: displayName
+  };
+  source.members = (source.members || []).filter(item => item.id !== memberId);
+  source.members.push(member);
+  return source;
+}
+
 function StatusBar({ status }) {
   return (
     <div className={`editor-status editor-status-${status.kind}`} role="status" aria-live="polite">
@@ -135,7 +181,7 @@ function StatusBar({ status }) {
   );
 }
 
-function BlobHeaderActions({ children, buildDocument, setStatus }) {
+function BlobHeaderActions({ children, buildDocument, setStatus, publicProfileHref }) {
   const getPuck = useGetPuck();
   const [open, setOpen] = useState(false);
   const [prompt, setPrompt] = useState('');
@@ -295,14 +341,14 @@ function BlobHeaderActions({ children, buildDocument, setStatus }) {
         }}>
           JSON laden
         </button>
-        <a href="/community/mitglieder/julius/" target="_blank" rel="noreferrer">Live-Seite ↗</a>
+        <a href={publicProfileHref} target="_blank" rel="noreferrer">Profilseite ↗</a>
       </div>
       {panel}
     </>
   );
 }
 
-function EditorApp({ page, catalog, capabilities, community, revisionStore, initialStatus }) {
+function EditorApp({ page, catalog, capabilities, community, revisionStore, initialStatus, displayName, publicProfileHref }) {
   const [status, setStatus] = useState(initialStatus);
   const config = useMemo(() => createPuckConfig(page, catalog, community), [page, catalog, community]);
   const initialData = useMemo(() => toPuckData(page, catalog), [page, catalog]);
@@ -325,8 +371,8 @@ function EditorApp({ page, catalog, capabilities, community, revisionStore, init
   }
 
   const HeaderActions = useMemo(() => function HeaderActionsOverride({ children }) {
-    return <BlobHeaderActions buildDocument={buildDocument} setStatus={setStatus}>{children}</BlobHeaderActions>;
-  }, [buildDocument]);
+    return <BlobHeaderActions buildDocument={buildDocument} setStatus={setStatus} publicProfileHref={publicProfileHref}>{children}</BlobHeaderActions>;
+  }, [buildDocument, publicProfileHref]);
 
   return (
     <div className="editor-app">
@@ -337,7 +383,7 @@ function EditorApp({ page, catalog, capabilities, community, revisionStore, init
         onPublish={saveDraft}
         overrides={{ headerActions: HeaderActions }}
         headerTitle="GemDen-Seitenwerkstatt"
-        headerPath="Julius · privater Entwurf"
+        headerPath={`${displayName} · privater Entwurf`}
         dictionary={GERMAN_DICTIONARY}
         iframe={{ enabled: true, syncHostStyles: true, waitForStyles: true }}
         viewports={[
@@ -392,7 +438,7 @@ function DraftConflict({ conflict, onResolve }) {
   );
 }
 
-function WorkshopApp({ initialLoaded, catalog, capabilities, community, revisionStore }) {
+function WorkshopApp({ initialLoaded, catalog, capabilities, community, revisionStore, displayName, publicProfileHref }) {
   const [loaded, setLoaded] = useState(initialLoaded);
 
   function resolveConflict(choice) {
@@ -414,6 +460,8 @@ function WorkshopApp({ initialLoaded, catalog, capabilities, community, revision
       community={community}
       revisionStore={revisionStore}
       initialStatus={loaded.status}
+      displayName={displayName}
+      publicProfileHref={publicProfileHref}
     />
   );
 }
@@ -424,7 +472,7 @@ function FatalError({ error }) {
       <span aria-hidden="true">◆</span>
       <h1>Die Seitenwerkstatt konnte nicht starten.</h1>
       <p>{formatError(error)}</p>
-      <a href="/community/mitglieder/julius/">Zur unveränderten Julius-Seite</a>
+      <a href="/konto/">Zum persönlichen Konto</a>
     </main>
   );
 }
@@ -432,23 +480,34 @@ function FatalError({ error }) {
 async function start() {
   const params = new URLSearchParams(location.search);
   const pageId = params.get('page') || 'PAGE-MEM-JULIUS';
-  const pageSource = PAGE_SOURCES[pageId];
-  if (!pageSource) throw new Error('Diese PAGE-ID ist für den Piloteditor nicht freigeschaltet.');
+  await waitForDeferredScripts();
+  const memberTemplate = window.GemDenMemberPageTemplate;
+  if (!memberTemplate) throw new Error('Die allgemeine Mitgliederseiten-Vorlage ist nicht verfügbar.');
+  const memberId = memberTemplate.memberIdFromPageId(pageId);
+  const source = pageSource(pageId, memberTemplate);
   if (!window.GemDenModules) throw new Error('Der GemDen-Vertragsprüfer ist nicht verfügbar.');
 
-  const [publishedPage, catalog, capabilities, community] = await Promise.all([
-    fetchJson(pageSource),
+  const [basePage, catalog, capabilities, baseCommunity] = await Promise.all([
+    fetchJson(source),
     fetchJson('/assets/data/modules.v1.json'),
     fetchJson('/assets/data/capabilities.v1.json'),
     fetchJson('/assets/data/community-v0.1.json')
   ]);
+  const client = window.FFE_SUPABASE_CLIENT || null;
+  const profile = await loadEditorProfile(client, memberId);
+  const displayName = profile?.display_name
+    || baseCommunity.members?.find(member => member.id === memberId)?.name
+    || 'Mitglied';
+  const publishedPage = source === MEMBER_TEMPLATE_SOURCE
+    ? memberTemplate.personalizeMemberPageTemplate(basePage, { stableId: memberId, displayName })
+    : basePage;
+  const community = withEditorMember(baseCommunity, memberId, displayName);
   window.GemDenModules.validateCapabilityCatalog(capabilities);
   window.GemDenModules.validateModuleCatalog(catalog, capabilities);
   window.GemDenModules.validatePageDocument(publishedPage, catalog, capabilities);
-  await waitForDeferredScripts();
 
   const revisionStore = createPageRevisionStore({
-    client: window.FFE_SUPABASE_CLIENT || null,
+    client,
     storage: window.localStorage,
     validateDocument: document => window.GemDenModules.validatePageDocument(document, catalog, capabilities)
   });
@@ -461,6 +520,8 @@ async function start() {
       capabilities={capabilities}
       community={community}
       revisionStore={revisionStore}
+      displayName={displayName}
+      publicProfileHref={memberTemplate.publicProfilePath(memberId)}
     />
   );
 }

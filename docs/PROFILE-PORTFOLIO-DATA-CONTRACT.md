@@ -1,6 +1,6 @@
 # Profil- und Portfolio-Datenvertrag v1
 
-Status: Profilkern seit 24. September 2026 produktiv; kontrollierter Veröffentlichungsweg seit 25. September 2026 ergänzt.
+Status: Profilkern seit 24. September 2026 produktiv; kontrollierter Veröffentlichungsweg seit 25. September 2026 und generische Mitgliedsseiten seit 26. September 2026 ergänzt.
 
 ## Zweck
 
@@ -56,9 +56,10 @@ Neue Nachweise aus dem eigenen Konto erhalten immer `self_reported`. Ein Mitglie
 - eine ausschließlich aus zur Öffentlichkeit gewählten Inhalten gebildete Vorschau anzeigen,
 - Profilfelder, Fähigkeiten, Nachweise und Projekte einzeln freigeben oder zurückziehen,
 - das Gesamtprofil als zweiten, unabhängigen Sicherheitsschalter öffnen oder schließen,
+- genau eine private, revisionsbasierte Mitgliedsseite aus der gemeinsamen Vorlage anlegen und in der Seitenwerkstatt bearbeiten,
 - die eigenen strukturierten Daten ohne E-Mail, Auth-UUID oder Sitzungsschlüssel als JSON exportieren.
 
-Die öffentliche Julius-Seite ist ausfallsicher geschlossen. Ohne ein `public` + `published` + `active` Supabase-Profil, bei deaktiviertem JavaScript oder bei einem API-Fehler zeigt sie nur den neutralen geschlossenen Profilrahmen. Der öffentliche statische JSON-Grundbestand enthält keine Julius-Fähigkeiten, Nachweise oder Projekte. Erst nach erfolgreicher Profilprüfung setzt der Adapter ausschließlich die durch RLS lesbaren Profilfelder, Fähigkeiten, Nachweise und Projekte zusammen. Das regelbasierte Matching verwendet dieselben veröffentlichten RLS-Zeilen und fällt bei Fehlern auf einen leeren Personenbestand zurück.
+Der öffentliche Profilweg `/community/mitglieder/profil/?mitglied=MEM-*` und Julius’ kompatible Bestandsroute sind ausfallsicher geschlossen. Ohne eine gültige Mitglieds-ID und ein `public` + `published` + `active` Supabase-Profil, bei deaktiviertem JavaScript oder bei einem API-Fehler zeigen sie nur den neutralen geschlossenen Profilrahmen. Der öffentliche statische JSON-Grundbestand enthält keine privaten Fähigkeiten, Nachweise oder Projekte. Erst nach erfolgreicher Profilprüfung personalisiert der Adapter die gemeinsame Seitenvorlage und setzt ausschließlich die durch RLS lesbaren Profilfelder, Fähigkeiten, Nachweise und Projekte zusammen. Die Datenbank bindet Erstanlage und jede spätere Revision unveränderlich an dieselbe stabile Mitglieds-ID; ein direkter RPC kann weder Seitensubjekt noch Mitgliedsbindung austauschen. Das regelbasierte Matching verwendet dieselben veröffentlichten RLS-Zeilen und fällt bei Fehlern auf einen leeren Personenbestand zurück.
 
 ## KI-Grenze
 
