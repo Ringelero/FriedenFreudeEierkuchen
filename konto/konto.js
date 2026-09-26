@@ -81,6 +81,8 @@
       pageCreateButton.hidden = true;
       pageCreateButton.disabled = true;
       pageWorkshopLink.hidden = false;
+      pageWorkshopLink.href = `../gestalten/?page=${encodeURIComponent(page.id)}`;
+      pageWorkshopLink.textContent = `${currentProfile?.display_name || 'Profil'}-Werkstatt öffnen`;
       const revisionLabel = page.revision_count === 1 ? 'eine Server-Revision' : `${page.revision_count} Server-Revisionen`;
       setMessage(pageStatus, `${page.id} ist als privater Entwurf mit ${revisionLabel} bereit. Veröffentlicht wurde nichts.`, 'success');
       return;
@@ -302,13 +304,15 @@
     if (!currentUser || !currentProfile) return;
 
     pageCreateButton.disabled = true;
-    setMessage(pageStatus, 'Die private Julius-Seite und ihre erste Revision werden sicher angelegt …');
+    setMessage(pageStatus, 'Deine private Mitgliedsseite und ihre erste Revision werden sicher angelegt …');
     try {
+      const displayName = currentProfile.display_name || 'Mitglied';
       const result = await pageBootstrap.createOwnProfilePage(client, {
         stableId: currentProfile.stable_id,
-        slug: 'julius',
-        title: currentProfile.display_name || 'Julius',
-        templateUrl: '../assets/data/pages/julius.v1.json',
+        slug: pageBootstrap.profileSlug(displayName, currentProfile.stable_id),
+        title: displayName,
+        displayName,
+        templateUrl: '../assets/data/pages/member-profile.v1.json',
         fetchImpl: window.fetch.bind(window)
       });
       renderPageState({

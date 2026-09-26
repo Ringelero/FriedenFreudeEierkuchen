@@ -290,8 +290,11 @@
   }
 
   function publicProfilePath(profile) {
-    if (profile?.stable_id === 'MEM-JULIUS') return '../community/mitglieder/julius/';
-    return '';
+    try {
+      return window.GemDenMemberPageTemplate?.publicProfilePath(profile?.stable_id) || '';
+    } catch {
+      return '';
+    }
   }
 
   function renderGate(items) {

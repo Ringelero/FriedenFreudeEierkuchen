@@ -5,6 +5,7 @@ const {
   createOwnProfilePage,
   describePageError,
   profilePageId,
+  profileSlug,
   validateSlug,
   validateTitle
 } = require('../konto/page-bootstrap.js');
@@ -26,6 +27,7 @@ test('derives only a valid profile page ID from a stable member ID', () => {
 
 test('validates the fixed slug and title before an RPC can run', () => {
   assert.equal(validateSlug('julius'), 'julius');
+  assert.equal(profileSlug('Léni Groß', 'MEM-LENI'), 'leni-gross');
   assert.equal(validateTitle(' Julius '), 'Julius');
   assert.throws(() => validateSlug('../admin'), /Seitenpfad/);
   assert.throws(() => validateTitle(''), /Seitentitel/);
@@ -79,6 +81,43 @@ test('creates the personal page only through the dedicated authenticated RPC', a
   }]);
   assert.equal('owner_user_id' in calls[0].args, false);
   assert.equal('page_id' in calls[0].args, false);
+});
+
+test('specializes the shared member template before the authenticated RPC', async () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const template = JSON.parse(fs.readFileSync(
+    path.join(__dirname, '..', 'assets', 'data', 'pages', 'member-profile.v1.json'),
+    'utf8'
+  ));
+  let rpcArgs = null;
+  const client = {
+    rpc: async (_name, args) => {
+      rpcArgs = args;
+      return {
+        data: [{
+          page_id: 'PAGE-MEM-LENI',
+          revision_id: '22222222-2222-4222-8222-222222222222',
+          revision_number: 1
+        }],
+        error: null
+      };
+    }
+  };
+
+  await createOwnProfilePage(client, {
+    stableId: 'MEM-LENI',
+    slug: 'leni',
+    title: 'Leni',
+    displayName: 'Leni',
+    templateUrl: '/assets/data/pages/member-profile.v1.json',
+    fetchImpl: async () => ({ ok: true, json: async () => template })
+  });
+
+  assert.equal(rpcArgs.initial_document.id, 'PAGE-MEM-LENI');
+  assert.equal(rpcArgs.initial_document.subject.id, 'MEM-LENI');
+  assert.equal(rpcArgs.initial_document.bindings.member.id, 'MEM-LENI');
+  assert.equal(rpcArgs.initial_document.regions[0].modules[0].props.breadcrumb.at(-1).label, 'Leni');
 });
 
 test('blocks a template for another page or member before the RPC', async () => {

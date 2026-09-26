@@ -1,6 +1,6 @@
 # Supabase-Fundament für GemDen / FFE
 
-Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern seit 24. September 2026 sowie Möglichkeiten-Kern, kontrollierte Veröffentlichung und private Resonanz seit 25. September 2026 produktiv. Alle Schichten wurden mit anonymen, eigentümergebundenen und beteiligtengebundenen RLS-Gegenproben geprüft.
+Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern seit 24. September 2026, Möglichkeiten-Kern, kontrollierte Veröffentlichung und private Resonanz seit 25. September 2026 sowie generische private Mitgliedsseiten seit 26. September 2026 produktiv. Alle Schichten wurden mit anonymen, eigentümergebundenen und beteiligtengebundenen RLS-Gegenproben geprüft.
 
 ## Enthalten
 
@@ -18,6 +18,7 @@ Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern 
 - `opportunity_responses` – private Interessenbekundungen mit serverseitig abgeleiteten Beteiligten
 - `opportunity_response_actions` – unveränderliche Annahmen, Ablehnungen und Rückzüge
 - `opportunity_response_messages` – privater Klärungsverlauf nach ausdrücklicher Annahme
+- `page_documents` und `page_revisions` – private Seitendokumente mit unveränderlichen Revisionen und getrennten Entwurfs-/Veröffentlichungszeigern
 - RLS-Regeln und minimale SQL-Rechte für `anon` und `authenticated`
 - pgTAP-Gegenproben unter `tests/`
 - ein absichtlich nicht automatisch ausführbares Bootstrap-Beispiel unter `bootstrap/`
@@ -51,6 +52,7 @@ So kann ein Recht nicht stillschweigend auf einen anderen Kiez oder die ganze Pl
 - Ein Kiezrecht gilt nur, solange es begonnen hat, nicht abgelaufen und nicht widerrufen ist.
 - Das erste Kiezrecht darf Beschreibung und Sichtbarkeit pflegen, aber weder stabile ID, Name, FFE-Verweise noch Lebenszyklusstatus verändern.
 - `service_role` gehört niemals in GitHub, HTML oder Browser-JavaScript.
+- `create_own_profile_page` ist bewusst der eine für angemeldete Mitglieder aufrufbare `SECURITY DEFINER`-Bootstrap: Die Funktion validiert die Dokumentstruktur, leitet Seiten-ID, Mitgliedssubjekt und Eigentümer serverseitig ab, verweigert `anon` und erlaubt pro bestätigter `MEM-*`-Identität nur eine private Seite. `save_page_revision` erzwingt dieselbe stabile Identität und Mitgliedsbindung in jeder Folgerevision.
 
 ## Browserübergreifender Zugang
 
@@ -60,7 +62,7 @@ Der Linkversand verwendet weiterhin `shouldCreateUser: false`. Weder Passwort no
 
 ## Eigene Profilseite aus der Mitgliedssitzung
 
-Die Kontoseite prüft über RLS, ob für die stabile Mitglieds-ID bereits eine eigene Seite existiert. Fehlt sie, lädt der Browser die freigegebene statische Startvorlage und ruft ausschließlich `create_own_profile_page` auf. Der RPC leitet Seiten-ID und Eigentümer aus `auth.uid()` und der bestätigten `MEM-*`-ID ab; der Client sendet weder eine fremde Eigentümer-ID noch eine frei gewählte Seiten-ID. Die erzeugte Seite bleibt privat und im Entwurfsstatus, erhält genau eine erste unveränderliche Revision und wird nicht veröffentlicht.
+Die Kontoseite prüft über RLS, ob für die stabile Mitglieds-ID bereits eine eigene Seite existiert. Fehlt sie, personalisiert der Browser die freigegebene gemeinsame Vorlage `assets/data/pages/member-profile.v1.json` und ruft ausschließlich `create_own_profile_page` auf. Der RPC leitet Seiten-ID, Mitgliedssubjekt und Eigentümer aus `auth.uid()` und der bestätigten `MEM-*`-ID ab; der Client sendet weder eine fremde Eigentümer-ID noch eine frei gewählte Seiten-ID. Die erzeugte Seite bleibt privat und im Entwurfsstatus, erhält genau eine erste unveränderliche Revision und wird nicht veröffentlicht.
 
 Die Seitenwerkstatt liest danach nur den durch RLS sichtbaren Seitenzeiger und dessen aktuelle Entwurfsrevision. Beim Sichern wird der geprüfte Stand zunächst lokal erhalten und anschließend mit der zuvor geladenen Revisions-ID an `save_page_revision` übergeben. Hat sich der Serverstand zwischenzeitlich geändert, verweigert die optimistische Sperre eine neue Serverrevision; der lokale Entwurf bleibt erhalten. Beim nächsten Laden verlangt die Werkstatt eine ausdrückliche Auswahl zwischen lokalem Entwurf und Serverrevision. Ein Wechsel zum Server schreibt vorab ein lokales Konflikt-Backup; die Wahl des lokalen Entwurfs bereitet nur die Ausgangsrevision vor und speichert noch nichts auf dem Server. Die Werkstatt ruft keinen Publish-RPC auf.
 
@@ -134,13 +136,28 @@ Mit `20260925202520_resonance_core` folgte private Resonanz. Bestätigt wurden:
 - `MEM-JULIUS` weiterhin `members` + `draft`, ohne neue Veröffentlichungsaktion,
 - keine neue Security-Advisor-Meldung und kein fehlender Fremdschlüsselindex an den drei neuen Tabellen.
 
-Die produktive Migrationshistorie enthält jetzt das Fundament, die Seitenrevisionen, die RLS-Härtung, beide Portfolio-Migrationen, den Möglichkeiten-Kern, die Veröffentlichungszentrale und private Resonanz. Die im Repository geführten Versionsnummern stimmen mit der Remote-Historie überein.
+Am 26. September 2026 folgte `20260926192114_generic_member_pages`. Bestätigt wurden:
+
+- Seiten-ID, Mitgliedssubjekt, Eigentümer und privater Entwurfsstatus werden aus der bestätigten Sitzung abgeleitet,
+- manipulierte Fremdsubjekte und eine zweite Profilseite derselben Mitgliedsidentität werden blockiert,
+- genau eine unveränderliche erste Revision entsteht,
+- `authenticated` besitzt das beabsichtigte enge Ausführungsrecht, `anon` nicht,
+- der produktive Gegenprobentest wurde vollständig zurückgerollt; danach verblieben 0 Testnutzer und 0 Testseiten,
+- der Security Advisor weist den absichtlich browseraufrufbaren `SECURITY DEFINER`-Eigentümerweg aus; seine Eingaben, Identitätsableitung und Rechte sind deshalb separat geprüft und dokumentiert.
+
+Unmittelbar danach schloss `20260926192738_member_page_subject_integrity` den Revisionsweg:
+
+- weder `subject.kind`, `subject.id` noch `bindings.member.id` können über einen direkten Revisions-RPC auf eine andere Person umgebogen werden,
+- eine gültige zweite Revision bleibt weiterhin möglich und unveränderlich,
+- der produktive Gegenprobentest blockierte beide Manipulationswege und wurde mit 0 verbleibenden Testnutzern und 0 Testseiten vollständig zurückgerollt.
+
+Die produktive Migrationshistorie enthält jetzt das Fundament, die Seitenrevisionen, die RLS-Härtung, beide Portfolio-Migrationen, den Möglichkeiten-Kern, die Veröffentlichungszentrale, private Resonanz und generische Mitgliedsseiten. Die im Repository geführten Versionsnummern stimmen mit der Remote-Historie überein.
 
 Für die weitere kontrollierte Pilotfreigabe bleiben:
 
 1. Leni erst zum gewünschten Pilotzeitpunkt über eine eindeutig bestätigte Adresse einladen,
-2. eine stabile Mitglieds-ID oder ein erweitertes Recht nur über eine legitimierte, dokumentierte Vergabe zuordnen,
-3. Login und Eigentümerwege für jedes neu zugeordnete reale Konto erneut prüfen.
+2. nach dem ersten Login eine stabile Mitglieds-ID und nur bei separater Legitimation das erweiterte P-Hain-Recht zuordnen,
+3. Lenis private Mitgliedsseite anlegen und Login, Eigentümerweg sowie Veröffentlichung mit ihrem realen Konto erneut prüfen.
 
 ## Noch bewusst offen
 

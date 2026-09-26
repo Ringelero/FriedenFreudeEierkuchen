@@ -17,7 +17,7 @@ Der öffentliche P-Hain-Prototyp zeigt bereits die geplanten Bereiche:
 
 Die Oberfläche ist aktuell noch statisch. Eingaben erzeugen nur eine Vorschau und werden ausdrücklich **nicht** gespeichert oder versendet.
 
-Zusätzlich ist die technische Datenbankgrundlage produktiv vorhanden: private Profilentwürfe, Kieze, eng begrenzte Rechte, Zugriffsschutz und Änderungsverlauf. Die erste allgemeine Kontoseite ist mit Supabase verbunden. Lenis reales Konto und das P-Hain-Dashboard sind trotzdem noch nicht freigeschaltet; die sichtbaren P-Hain-Formulare speichern weiterhin nichts.
+Zusätzlich ist die technische Datenbankgrundlage produktiv vorhanden: private Profilentwürfe, Kieze, eng begrenzte Rechte, Zugriffsschutz und Änderungsverlauf. Die allgemeine Kontoseite kann für jede bestätigte `MEM-*`-Identität eine eigene private Mitgliedsseite aus derselben sicheren Vorlage anlegen und in der Seitenwerkstatt bearbeiten. Eine öffentliche Profilansicht erscheint erst nach ausdrücklicher Einzel- und Gesamtfreigabe. Lenis reales Konto und das P-Hain-Dashboard sind trotzdem noch nicht freigeschaltet; die sichtbaren P-Hain-Formulare speichern weiterhin nichts.
 
 ## Was dein Konto später können soll
 
@@ -46,4 +46,4 @@ Julius kann den Wunsch dann mit Codex bearbeiten, ohne erst raten zu müssen, we
 
 ## Nächster technischer Schritt
 
-Das Supabase-Fundament ist seit dem 19. September 2026 produktiv vorhanden und hat 37/37 Zugriffstests bestanden. Als Nächstes werden die echten Auth-Konten mit eindeutig bestätigten E-Mail-Adressen eingeladen; anschließend erhält dein reales Benutzerkonto ausschließlich das Recht `manage_kiez:KIEZ-P-HAIN`. Erst danach wird das Dashboard verbunden und mit deinem echten Login erneut geprüft. Bis dahin ist diese Datei eine Bedienvorschau, keine Zugangsanleitung.
+Das Supabase-Fundament ist seit dem 19. September 2026 produktiv vorhanden; der generische, eigentümergebundene Weg für private Mitgliedsseiten wurde am 26. September 2026 zusätzlich geprüft. Als Nächstes wird dein echtes Konto ausschließlich über deine eindeutig bestätigte E-Mail-Adresse eingeladen. Nach dem ersten Login bekommt es eine stabile Mitglieds-ID; das Recht `manage_kiez:KIEZ-P-HAIN` folgt getrennt und nur nach dokumentierter Legitimation. Danach werden private Mitgliedsseite, Login, Veröffentlichung und später das verbundene Dashboard mit deinem echten Konto geprüft. Bis dahin ist diese Datei eine Bedienvorschau, keine Zugangsanleitung.

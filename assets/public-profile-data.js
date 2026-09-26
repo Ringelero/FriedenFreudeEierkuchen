@@ -1,7 +1,8 @@
 (function () {
-  const root = document.querySelector('[data-gemden-page-root][data-public-member-id]');
+  const root = document.querySelector('[data-gemden-page-root][data-public-member-id], [data-gemden-page-root][data-public-member-query]');
   const client = window.FFE_SUPABASE_CLIENT;
   const modules = window.GemDenModules;
+  const memberTemplate = window.GemDenMemberPageTemplate;
   if (!root) return;
 
   // Prevent the generic renderer from mounting the repository prototype before
@@ -12,8 +13,27 @@
   root.dataset.publicDataSource = 'publication-gate';
   if (!client || !modules) return;
 
-  const memberId = root.dataset.publicMemberId;
+  function resolveMemberId() {
+    const queryName = root.dataset.publicMemberQuery;
+    const rawValue = root.dataset.publicMemberId
+      || (queryName ? new URL(location.href).searchParams.get(queryName) : '');
+    try {
+      if (memberTemplate?.validateMemberId) return memberTemplate.validateMemberId(rawValue);
+      const value = String(rawValue || '').trim();
+      return /^MEM-[A-Z0-9][A-Z0-9-]*$/.test(value) ? value : '';
+    } catch {
+      return '';
+    }
+  }
+
+  const memberId = resolveMemberId();
+  if (!memberId) {
+    root.dataset.publicDataSource = 'invalid-member';
+    return;
+  }
   const communityUrl = new URL(root.dataset.publicCommunityData, document.baseURI);
+  const pageDocumentUrl = new URL(root.dataset.pageDocument, document.baseURI);
+  const personalizeTemplate = root.dataset.personalizePageTemplate === 'true';
   const originalFetch = window.fetch.bind(window);
 
   async function query(request) {
@@ -29,8 +49,20 @@
   }
 
   function visibleProfileSource(staticSource, profile, fields, profileSkills, catalog, evidence, projects) {
-    const originalMember = (staticSource.members || []).find(member => member.id === memberId);
-    if (!originalMember) throw new Error('Statisches Mitglied für den sicheren Rückfallweg fehlt.');
+    const originalMember = (staticSource.members || []).find(member => member.id === memberId) || {
+      id: memberId,
+      slug: memberId.slice(4).toLowerCase(),
+      name: profile.display_name,
+      status: 'publication-gated',
+      tagline: '',
+      bio: '',
+      dynasty_ids: [],
+      kiez_ids: [],
+      skill_ids: [],
+      boundaries: [],
+      evidence_ids: [],
+      project_ids: []
+    };
 
     const fieldMap = new Map(fields.map(field => [field.field_key, field.value_text]));
     const catalogMap = new Map(catalog.map(skill => [skill.id, skill]));
@@ -116,11 +148,32 @@
       if (!staticResponse.ok) throw new Error('Öffentlicher Rückfall-Datensatz konnte nicht geladen werden.');
       const staticSource = await staticResponse.json();
       const liveSource = visibleProfileSource(staticSource, profile, fields, profileSkills, catalog, evidence, projects);
+      let livePage = null;
+      if (personalizeTemplate) {
+        if (!memberTemplate?.personalizeMemberPageTemplate) {
+          throw new Error('Die allgemeine Mitgliederseiten-Vorlage ist nicht verfügbar.');
+        }
+        const templateResponse = await originalFetch(pageDocumentUrl, {
+          credentials: 'same-origin',
+          headers: { Accept: 'application/json' }
+        });
+        if (!templateResponse.ok) throw new Error('Mitgliederseiten-Vorlage konnte nicht geladen werden.');
+        livePage = memberTemplate.personalizeMemberPageTemplate(await templateResponse.json(), {
+          stableId: memberId,
+          displayName: profile.display_name
+        });
+      }
 
       const fetchPublishedSource = (url, options) => {
         const target = url instanceof URL ? url : new URL(url, document.baseURI);
         if (target.href === communityUrl.href) {
           return Promise.resolve(new Response(JSON.stringify(liveSource), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+          }));
+        }
+        if (livePage && target.href === pageDocumentUrl.href) {
+          return Promise.resolve(new Response(JSON.stringify(livePage), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
           }));
@@ -132,6 +185,7 @@
       if (mounted) {
         root.dataset.gemdenRenderState = 'ready';
         root.dataset.publicDataSource = 'supabase-published';
+        document.title = `${profile.display_name} · Mitglied · GemDen`;
       }
     } catch (error) {
       root.dataset.gemdenRenderState = 'closed';
