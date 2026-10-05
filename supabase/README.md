@@ -1,6 +1,6 @@
 # Supabase-Fundament für GemDen / FFE
 
-Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern seit 24. September 2026, Möglichkeiten-Kern, kontrollierte Veröffentlichung und private Resonanz seit 25. September 2026 sowie generische private Mitgliedsseiten und die technische Mitgliederverwaltung seit 26. September 2026 produktiv. Alle Schichten wurden mit anonymen, eigentümergebundenen und beteiligtengebundenen RLS-Gegenproben geprüft. Der erste reale Mitglieder-Admin ist bewusst noch nicht automatisch ernannt.
+Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern seit 24. September 2026, Möglichkeiten-Kern, kontrollierte Veröffentlichung und private Resonanz seit 25. September 2026, generische private Mitgliedsseiten und technische Mitgliederverwaltung seit 26. September 2026 sowie Kontoverwaltung V2 seit 5. Oktober 2026 produktiv. Alle Schichten wurden mit anonymen, eigentümergebundenen und beteiligtengebundenen RLS-Gegenproben geprüft. Das ausdrücklich legitimierte Konto `MEM-JULIUS` besitzt das erste reale `manage_members:platform:GemDen`-Recht.
 
 ## Enthalten
 
@@ -8,6 +8,7 @@ Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern 
 - `kieze` – stabile Kiezbereiche, zunächst mit `KIEZ-P-HAIN`
 - `permission_grants` – konkrete, zeitlich begrenzbare Bereichsrechte
 - `audit_events` – durch Datenbank-Trigger erzeugter, für Browser unveränderbarer Verlauf
+- `member_admin_events` – menschenlesbarer, append-only Verlauf begründeter Kontoverwaltungsentscheidungen ohne Auth-Geheimnisse oder E-Mail-Adressen
 - `skills` und `profile_skills` – generischer Katalog und persönlicher Kontext ohne globale Rangliste
 - `profile_fields` – einzeln sichtbare Profiltexte
 - `skill_evidence` und `skill_evidence_links` – Nachweise mit explizitem Prüfstatus
@@ -22,7 +23,8 @@ Status: Fundament seit 19. September 2026 produktiv; Profil- und Portfolio-Kern 
 - RLS-Regeln und minimale SQL-Rechte für `anon` und `authenticated`
 - pgTAP-Gegenproben unter `tests/`
 - ein absichtlich nicht automatisch ausführbares Bootstrap-Beispiel unter `bootstrap/`
-- eine geschützte `member-admin` Edge Function für Mitgliederliste und Einladungen
+- eine geschützte `member-admin` Edge Function für Mitgliederliste, Einladungen, Anzeigenamen, Login-Links und Kontostatus
+- `administer_member_account` als ausschließlich für `service_role` aufrufbarer Datenbankweg hinter der Edge Function
 - `assign_member_identity` für die erste und einzige Vergabe einer stabilen `MEM-*`-ID
 - `set_member_kiez_permission` für begründete, auditierte Vergabe und Widerruf vorhandener Kiez-Rechte
 
@@ -42,6 +44,9 @@ So kann ein Recht nicht stillschweigend auf einen anderen Kiez oder die ganze Pl
 - Signup-Metadaten dürfen weder `MEM-*`-IDs noch Rechte festlegen.
 - Browserrollen dürfen Rechte und Audit-Ereignisse nicht schreiben.
 - Der Browser erhält niemals einen Secret- oder `service_role`-Schlüssel. Die Auth-Admin-API läuft ausschließlich in der JWT-geschützten Edge Function und prüft zusätzlich `manage_members:platform:GemDen`.
+- Eine Kontodeaktivierung sperrt Supabase Auth und setzt zugleich `profiles.account_status = paused`. `has_active_permission` verlangt ein aktives Profil, sodass alte Zugriffstoken keine Bereichsrechte weiterverwenden können.
+- Das aktuell verwendete Verwaltungskonto kann sich nicht selbst deaktivieren. Reaktivierung ist nur für ein zuvor pausiertes Konto möglich.
+- Anzeigenamen, Einladungen, neue Login-Links, Kontostatus, stabile IDs und Kiez-Rechte erhalten einen begründeten `member_admin_events`-Eintrag. Browserrollen können diese Zeilen weder lesen noch schreiben; Update und Delete werden zusätzlich durch einen Trigger blockiert.
 - Mitglieder-Admins können über die freigegebene Oberfläche nur `manage_kiez` für einen vorhandenen Kiez verwalten; globale Plattformrechte bleiben ausgeschlossen.
 - Eine einmal bestätigte `MEM-*`-ID wird zusätzlich durch einen Datenbank-Trigger gegen spätere Umbenennung geschützt.
 - Anonyme Zugriffe sehen nur `public` + `published`.
@@ -159,14 +164,26 @@ Unmittelbar danach schloss `20260926192738_member_page_subject_integrity` den Re
 
 Die produktive Migrationshistorie enthält jetzt das Fundament, die Seitenrevisionen, die RLS-Härtung, beide Portfolio-Migrationen, den Möglichkeiten-Kern, die Veröffentlichungszentrale, private Resonanz und generische Mitgliedsseiten. Die im Repository geführten Versionsnummern stimmen mit der Remote-Historie überein.
 
-Am 26. September 2026 folgten außerdem `20260926231454_member_administration` und die Parallelzugriffshärtung `20260926232046_serialize_member_permission_changes`. Die Migrationen, die JWT-geschützte Edge Function `member-admin` und 29/29 vollständig zurückgerollte Verwaltungsgegenproben sind produktiv bestätigt. Anonyme Aufrufe der Edge Function enden mit HTTP 401; `anon` kann weder stabile Identitäten noch Kiez-Rechte ändern. Nach der Prüfung bestanden weiterhin genau ein reales Auth-Konto, ein reales Profil, keine Berechtigungsvergabe und keine Testnutzer.
+Am 26. September 2026 folgten außerdem `20260926231454_member_administration` und die Parallelzugriffshärtung `20260926232046_serialize_member_permission_changes`. Die Migrationen, die JWT-geschützte Edge Function `member-admin` und 29/29 vollständig zurückgerollte Verwaltungsgegenproben sind produktiv bestätigt. Anonyme Aufrufe der Edge Function enden mit HTTP 401; `anon` kann weder stabile Identitäten noch Kiez-Rechte ändern.
+
+Am 5. Oktober 2026 folgte `20261005121116_member_account_management` mit Version 2 der Edge Function. Produktiv bestätigt wurden:
+
+- begründete Anzeigenamenänderungen,
+- neue Einmal-Links ausschließlich für bestehende aktive Konten mit `shouldCreateUser: false`,
+- doppelte Deaktivierung über Supabase Auth und sofort wirksamen Datenbankstatus,
+- sichere Reaktivierung und blockierte Selbstdeaktivierung des aktiven Verwaltungskontos,
+- Suche und Statusfilter in der Website,
+- ein unveränderbarer Verwaltungsverlauf ohne E-Mail-Adressen, Passwörter oder Linkinhalte,
+- 40/40 vollständig zurückgerollte Datenbank-Gegenproben und 111/111 lokale Funktions- und Vertragstests.
+
+Nach der produktiven Prüfung bestanden weiterhin genau ein reales Auth-Konto, ein reales Profil, ein aktives `manage_members:platform:GemDen`-Recht und zwei aus dem vorherigen Realbestand abgeleitete Verwaltungsereignisse. Es verblieben keine Testnutzer, Testrechte oder pgTAP-Erweiterung. Der Advisor meldet für `member_admin_events` erwartungsgemäß RLS ohne Browserpolicy; diese Tabelle ist absichtlich ausschließlich über `service_role` les- und einfügbar.
 
 Für die weitere kontrollierte Pilotfreigabe bleiben:
 
-1. ausdrücklich entscheiden, welches bestehende Konto zuerst `manage_members:platform:GemDen` erhält,
-2. Leni erst zum gewünschten Pilotzeitpunkt über eine eindeutig bestätigte Adresse einladen,
-3. ihre stabile Mitglieds-ID und nur bei separater Legitimation das erweiterte P-Hain-Recht zuordnen,
-4. Lenis private Mitgliedsseite anlegen und Login, Eigentümerweg sowie Veröffentlichung mit ihrem realen Konto erneut prüfen.
+1. Leni erst zum gewünschten Pilotzeitpunkt über eine eindeutig bestätigte Adresse einladen,
+2. ihre stabile Mitglieds-ID und nur bei separater Legitimation das erweiterte P-Hain-Recht zuordnen,
+3. Lenis private Mitgliedsseite anlegen und Login, Eigentümerweg sowie Veröffentlichung mit ihrem realen Konto erneut prüfen,
+4. Lösch-, Export- und Aufbewahrungsregeln fachlich und rechtlich festlegen, bevor ein harter Löschweg entsteht.
 
 ## Noch bewusst offen
 

@@ -27,6 +27,22 @@
     return displayName;
   }
 
+  function normalizeReason(value) {
+    const reason = String(value || '').trim().replace(/\s+/g, ' ');
+    if (reason.length < 12 || reason.length > 2000 || /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(reason)) {
+      throw memberAdminError('reason_invalid', 'Bitte dokumentiere die Entscheidung mit mindestens zwölf Zeichen.');
+    }
+    return reason;
+  }
+
+  function normalizeUserId(value) {
+    const userId = String(value || '').trim().toLowerCase();
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(userId)) {
+      throw memberAdminError('member_invalid', 'Das ausgewählte Mitglied ist nicht gültig.');
+    }
+    return userId;
+  }
+
   function normalizeStableId(value) {
     const stableId = String(value || '').trim().toUpperCase();
     if (!/^MEM-[A-Z0-9]+(?:-[A-Z0-9]+)*$/.test(stableId) || stableId.length > 80) {
@@ -81,28 +97,83 @@
     requireFunctionClient(client);
     const result = await client.functions.invoke(FUNCTION_NAME, { method: 'GET' });
     const data = await unwrapInvocation(result, 'Die Mitgliederliste konnte nicht geladen werden.');
-    if (!data || !Array.isArray(data.members) || !Array.isArray(data.kieze)) {
+    if (!data
+      || !Array.isArray(data.members)
+      || !Array.isArray(data.kieze)
+      || !Array.isArray(data.audit)
+      || typeof data.current_user_id !== 'string') {
       throw memberAdminError('member_list_invalid', 'Die Mitgliederliste wurde nicht vollständig bestätigt.');
     }
     return data;
   }
 
-  async function inviteMember(client, { email, displayName }) {
+  async function invokeAction(client, body, fallback) {
+    requireFunctionClient(client);
+    const result = await client.functions.invoke(FUNCTION_NAME, {
+      method: 'POST',
+      body
+    });
+    return await unwrapInvocation(result, fallback);
+  }
+
+  async function inviteMember(client, { email, displayName, reason }) {
     requireFunctionClient(client);
     const payload = {
       action: 'invite',
       email: normalizeEmail(email),
-      display_name: normalizeDisplayName(displayName)
+      display_name: normalizeDisplayName(displayName),
+      reason: normalizeReason(reason)
     };
-    const result = await client.functions.invoke(FUNCTION_NAME, {
-      method: 'POST',
-      body: payload
-    });
-    const data = await unwrapInvocation(result, 'Die Einladung konnte nicht versendet werden.');
+    const data = await invokeAction(client, payload, 'Die Einladung konnte nicht versendet werden.');
     if (!data?.invited?.id || data.invited.email !== payload.email) {
       throw memberAdminError('invite_unconfirmed', 'Der Server hat die Einladung nicht vollständig bestätigt.');
     }
     return data.invited;
+  }
+
+  async function updateMemberDisplayName(client, { userId, displayName, reason }) {
+    const payload = {
+      action: 'update_display_name',
+      user_id: normalizeUserId(userId),
+      display_name: normalizeDisplayName(displayName),
+      reason: normalizeReason(reason)
+    };
+    const data = await invokeAction(client, payload, 'Der Anzeigename konnte nicht geändert werden.');
+    if (data?.account?.user_id !== payload.user_id || data.account.display_name !== payload.display_name) {
+      throw memberAdminError('account_change_unconfirmed', 'Der Server hat den neuen Anzeigenamen nicht bestätigt.');
+    }
+    return data.account;
+  }
+
+  async function sendMemberLoginLink(client, { userId, reason }) {
+    const payload = {
+      action: 'send_login_link',
+      user_id: normalizeUserId(userId),
+      reason: normalizeReason(reason)
+    };
+    const data = await invokeAction(client, payload, 'Der neue Login-Link konnte nicht versendet werden.');
+    if (data?.login_link?.user_id !== payload.user_id || data.login_link.sent !== true) {
+      throw memberAdminError('login_link_unconfirmed', 'Der Server hat den Linkversand nicht bestätigt.');
+    }
+    return data.login_link;
+  }
+
+  async function setMemberAccountStatus(client, { userId, accountStatus, reason }) {
+    const normalizedStatus = String(accountStatus || '').trim().toLowerCase();
+    if (normalizedStatus !== 'active' && normalizedStatus !== 'paused') {
+      throw memberAdminError('account_status_invalid', 'Der gewünschte Kontostatus ist nicht gültig.');
+    }
+    const payload = {
+      action: 'set_account_status',
+      user_id: normalizeUserId(userId),
+      account_status: normalizedStatus,
+      reason: normalizeReason(reason)
+    };
+    const data = await invokeAction(client, payload, 'Der Kontostatus konnte nicht geändert werden.');
+    if (data?.account?.user_id !== payload.user_id || data.account.account_status !== normalizedStatus) {
+      throw memberAdminError('account_change_unconfirmed', 'Der Server hat den neuen Kontostatus nicht bestätigt.');
+    }
+    return data.account;
   }
 
   async function assignIdentity(client, { userId, stableId }) {
@@ -122,10 +193,7 @@
 
   async function setKiezPermission(client, { userId, kiezId, enabled, reason }) {
     requireRpcClient(client);
-    const normalizedReason = String(reason || '').trim();
-    if (normalizedReason.length < 12 || normalizedReason.length > 2000) {
-      throw memberAdminError('reason_invalid', 'Bitte dokumentiere die Entscheidung mit mindestens zwölf Zeichen.');
-    }
+    const normalizedReason = normalizeReason(reason);
     if (!/^KIEZ-[A-Z0-9][A-Z0-9-]*$/.test(String(kiezId || ''))) {
       throw memberAdminError('kiez_invalid', 'Bitte wähle einen gültigen Kiez aus.');
     }
@@ -164,6 +232,15 @@
     if (/rate|too many|invite_rate_limited/.test(source)) {
       return 'Zu viele Einladungen in kurzer Zeit. Bitte warte kurz und versuche es dann erneut.';
     }
+    if (/self_pause_forbidden/.test(source)) {
+      return 'Das aktuell verwendete Verwaltungskonto kann sich nicht selbst deaktivieren.';
+    }
+    if (/account_not_active/.test(source)) {
+      return 'Für ein deaktiviertes Konto kann kein Login-Link versendet werden.';
+    }
+    if (/account_archived/.test(source)) {
+      return 'Archivierte Konten brauchen einen eigenen Aufbewahrungsablauf.';
+    }
     if (/network|fetch|offline/.test(source)) {
       return 'Die Verwaltung konnte den Server nicht erreichen. Bitte prüfe die Verbindung.';
     }
@@ -177,8 +254,13 @@
     listMembers,
     normalizeDisplayName,
     normalizeEmail,
+    normalizeReason,
     normalizeStableId,
+    normalizeUserId,
+    sendMemberLoginLink,
+    setMemberAccountStatus,
     setKiezPermission,
-    suggestStableId
+    suggestStableId,
+    updateMemberDisplayName
   };
 });

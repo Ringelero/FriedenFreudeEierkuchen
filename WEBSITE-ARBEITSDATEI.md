@@ -1,7 +1,7 @@
 # GemDen / FriedenFreudeEierkuchen – Website-Arbeitsdatei
 
-Version: 0.5
-Stand: 19. September 2026
+Version: 0.6
+Stand: 5. Oktober 2026
 Status: gemeinsame technische und inhaltliche Planungsgrundlage  
 Kein Ersatz für Satzung, Buch oder legitimierte FFE-Entscheidungen
 
@@ -438,6 +438,12 @@ Rechte werden für konkrete Bereiche vergeben, zum Beispiel:
 - `manage_dynasty:DYN-RUBYBUBYS`
 - `platform_operator:GemDen`
 
+### Mitgliederverwaltung
+
+Ein aktives Konto mit `manage_members:platform:GemDen` kann über den geschützten Website-Arbeitsbereich Mitglieder einladen, Anzeigenamen begründet korrigieren, neue Einmal-Links senden, Konten deaktivieren oder reaktivieren, die erste stabile `MEM-*`-ID festlegen und begrenzte Kiez-Rechte verwalten. Jede Entscheidung erscheint in einem unveränderbaren, menschenlesbaren Verlauf. Passwörter, Login-Links und E-Mail-Inhalte werden dort nicht gespeichert.
+
+`MEM-JULIUS` besitzt seit 5. Oktober 2026 das erste ausdrücklich legitimierte Verwaltungsrecht. Eine Deaktivierung sperrt Supabase Auth und die Wirkung vorhandener Datenbankrechte gemeinsam. Das verwendete Verwaltungskonto kann sich nicht selbst deaktivieren.
+
 ### Leni
 
 Geplanter erster Bereich:
@@ -487,9 +493,10 @@ Die Trennung verhindert, dass eine Terminbearbeitung versehentlich zur Verfassun
 - HTML, CSS und JavaScript
 - statischer FFE-Systemindex v0.6
 - statische öffentliche Community-Testdaten v0.1
-- keine echte Anmeldung oder Speicherung
+- echte, einladungsgebundene Anmeldung und operative Supabase-Speicherung mit RLS
+- geschützte Kontoverwaltung über eine JWT-geprüfte Edge Function
 
-### Nächster Aufbau
+### Weiterer Aufbau
 
 - GitHub Pages: öffentliche und eingeloggte Browseroberfläche
 - Supabase Auth: Konten
@@ -508,16 +515,17 @@ Details stehen in `BACKEND-PLAN.md`.
 |---|---|---|
 | Startseite | an v2.30 angepasst | Texte und visuelle Welt gemeinsam weiterentwickeln |
 | Community-Hub | umgesetzt | dynamisch aus Backend laden |
-| P-Hain | öffentlicher statischer Pilot; stabile Bauteil-IDs und übertragungssichere Vorschau | Konten, Daten und Dashboard |
+| P-Hain | öffentlicher statischer Pilot; stabile Bauteil-IDs und übertragungssichere Vorschau | echte operative Kiez-Daten und Lenis Dashboard |
 | Rubybubys | Grundseite umgesetzt | kulturelle Inhalte nur nach echter Entscheidung |
 | Julius | unter Mitglieder verschoben | Projekte/Evidenz ergänzen |
 | Leistungen | regelbasiertes Matching; alle Pflichtfähigkeiten nötig; Evidenzgrenze sichtbar | Fähigkeitenbestand und echte Anfragen |
 | Blob | Navigation und Kontextaktionen; lokaler Speicher fällt sicher aus | geführte Dialogzustände, später geschützte KI |
 | FFE-System | Indexbrowser mit sichtbaren Quellenstatus/Gates und Statusfilter | UX testen, spätere Quellupdates automatisieren |
 | Smart-Home-Erlebnis | Gardinenprototyp erhalten | echtes Gemälde und Interaktionen |
-| Supabase | Fundament produktiv angewendet; 4 RLS-Tabellen, 4 private Funktionen, 6 Trigger, 8 Policies, P-Hain-Audit und 37/37 zurückgerollte Gegenproben verifiziert; erstes Pilotkonto eingeladen; Kontoseite angebunden | Version `20260919000100` in der Remote-Historie markieren, Einladung annehmen und echte Sitzung prüfen |
-| Konto | Anmeldung nur für eingeladene Adressen; eigenes Profil und eigene Rechte RLS-geschützt lesbar; freigegebene eigene Profilfelder bearbeitbar | Einladungslink und Rücksprung auf `gemden.red/konto/` produktiv prüfen |
-| Lenis Dashboard | beschrieben, nicht gebaut | nach produktiv geprüftem Backend-Fundament und realer Rechtevergabe |
+| Supabase | gesamte Migrationsfolge bis `20261005121116` produktiv; Kontoverwaltung V2 und Edge Function aktiv; 40/40 neue Gegenproben vollständig zurückgerollt | Lösch-, Export- und Aufbewahrungsregeln fachlich klären |
+| Konto | Einladung, Login, Passwort, eigenes Portfolio, Möglichkeiten, Resonanz, Veröffentlichung und Seitenentwurf produktiv verbunden | Bedienung mit dem zweiten realen Pilotkonto gegenprüfen |
+| Mitgliederverwaltung | `MEM-JULIUS` freigeschaltet; Suche, Kontobearbeitung, Login-Link, Deaktivierung/Reaktivierung, IDs, Kiez-Rechte und Verlauf produktiv | erstes weiteres Mitglied zum abgestimmten Zeitpunkt einladen |
+| Lenis Dashboard | beschrieben, nicht gebaut | Leni kontrolliert einladen, `MEM-LENI` zuordnen und nur nach separater Legitimation P-Hain-Recht vergeben |
 
 ## 18. Bauabschnitte
 
@@ -529,17 +537,18 @@ Details stehen in `BACKEND-PLAN.md`.
 - keine offenen Kulturentscheidungen schließen
 - P-Hain-Module für Version 1 auswählen
 
-### Phase B – Supabase-Fundament
+### Phase B – Supabase-Fundament und Konten
 
-- Schema und erste Migration: **produktiv angewendet; offizieller Historienabgleich der Version noch offen**
-- Auth-Trigger für minimale private Profilentwürfe: **produktiv vorhanden; erstes Pilotkonto eingeladen, Annahme offen**
+- Schema und Migrationsfolge: **produktiv angewendet und mit der Remote-Historie abgeglichen**
+- Auth-Trigger für minimale private Profilentwürfe: **produktiv vorhanden; erstes reales Konto aktiv**
 - Profile: **produktives Fundament vorhanden**
 - Kieze und `KIEZ-P-HAIN`: **produktiv vorhanden und geprüft**
-- bereichsbezogene, ablauf- und widerrufbare Rechte: **produktiv vorhanden; legitime Erstvergabe offen**
-- RLS-Tests für erlaubte und verbotene Wege: **37/37 im produktiven Schema bestanden; Testdaten vollständig zurückgerollt**
-- durch Browser nicht veränderbarer Änderungsverlauf: **produktiv vorhanden; P-Hain-Anlage protokolliert**
+- bereichsbezogene, ablauf- und widerrufbare Rechte: **produktiv vorhanden; erstes `manage_members`-Recht ausdrücklich legitimiert**
+- RLS-Tests für erlaubte und verbotene Wege: **Fundament- und Fachsuiten sowie 40/40 neue Kontoverwaltungsgegenproben bestanden; Testdaten vollständig zurückgerollt**
+- durch Browser nicht veränderbarer Änderungsverlauf: **technisches Audit und menschenlesbarer Verwaltungsverlauf produktiv vorhanden**
+- Kontobearbeitung, Login-Links und Deaktivierung/Reaktivierung: **produktiv vorhanden**
 
-Das Repository enthält weder `service_role` noch echte Konto-UUIDs. Das Bootstrap-Beispiel bricht absichtlich ab, solange Platzhalter oder die legitim vergebende Stelle nicht ersetzt wurden. Vor dem nächsten `db push` wird die bereits angewendete Version `20260919000100` mit der offiziellen Supabase CLI als angewendet in der Remote-Historie markiert.
+Das Repository enthält weder `service_role` noch echte Konto-UUIDs. Auth-Admin-Aktionen bleiben in der Edge Function; der Browser erhält nur den öffentlichen Schlüssel. Neue reale Konten oder Rechte entstehen weiterhin ausschließlich durch eine bewusste Verwaltungsentscheidung.
 
 ### Phase C – P-Hain und Lenis Dashboard
 
@@ -584,7 +593,7 @@ Das Repository enthält weder `service_role` noch echte Konto-UUIDs. Das Bootstr
 Diese Punkte werden nicht durch Website-Code entschieden:
 
 - genaue öffentliche und geschützte Sichtbarkeit in P-Hain
-- Registrierungs- und Einladungsweg
+- ob neben der kontrollierten Einladung jemals eine offene Registrierung nötig ist
 - legitime Vergabe erweiterter Rechte und Mitgliedschaften
 - Moderations-, Beschwerde- und Konfliktwege
 - Aufbewahrungs-, Export- und Löschfristen

@@ -9,9 +9,13 @@ const {
   listMembers,
   normalizeDisplayName,
   normalizeEmail,
+  normalizeReason,
   normalizeStableId,
+  sendMemberLoginLink,
+  setMemberAccountStatus,
   setKiezPermission,
-  suggestStableId
+  suggestStableId,
+  updateMemberDisplayName
 } = require('../verwaltung/mitglieder/member-admin.js');
 
 test('normalizes invitation fields and derives a reviewable stable ID', () => {
@@ -19,8 +23,10 @@ test('normalizes invitation fields and derives a reviewable stable ID', () => {
   assert.equal(normalizeDisplayName('  Leni   Groß  '), 'Leni Groß');
   assert.equal(suggestStableId('Léni Groß'), 'MEM-LENI-GROSS');
   assert.equal(normalizeStableId(' mem-leni-gross '), 'MEM-LENI-GROSS');
+  assert.equal(normalizeReason('  Durch   das Pilotteam bestätigt. '), 'Durch das Pilotteam bestätigt.');
   assert.throws(() => normalizeStableId('ADMIN-LENI'), /MEM-/);
   assert.throws(() => normalizeEmail('keine-mail'), /E-Mail/);
+  assert.throws(() => normalizeReason('zu kurz'), /mindestens zwölf Zeichen/);
 });
 
 test('sends invitations only through the authenticated Edge Function', async () => {
@@ -45,7 +51,8 @@ test('sends invitations only through the authenticated Edge Function', async () 
 
   const result = await inviteMember(client, {
     email: ' Leni@Example.Test ',
-    displayName: ' Leni '
+    displayName: ' Leni ',
+    reason: 'Die Pilotgruppe hat die Einladung bestätigt.'
   });
   assert.equal(result.email, 'leni@example.test');
   assert.deepEqual(calls, [{
@@ -55,14 +62,21 @@ test('sends invitations only through the authenticated Edge Function', async () 
       body: {
         action: 'invite',
         email: 'leni@example.test',
-        display_name: 'Leni'
+        display_name: 'Leni',
+        reason: 'Die Pilotgruppe hat die Einladung bestätigt.'
       }
     }
   }]);
 });
 
 test('loads only a confirmed member administration response', async () => {
-  const data = { members: [], kieze: [], truncated: false };
+  const data = {
+    current_user_id: '71111111-1111-4111-8111-111111111111',
+    members: [],
+    kieze: [],
+    audit: [],
+    truncated: false
+  };
   const client = {
     functions: {
       invoke: async () => ({ data, error: null })
@@ -74,6 +88,69 @@ test('loads only a confirmed member administration response', async () => {
     listMembers({ functions: { invoke: async () => ({ data: { members: [] }, error: null }) } }),
     /nicht vollständig bestätigt/
   );
+});
+
+test('edits account data only through documented Edge Function actions', async () => {
+  const calls = [];
+  const userId = '72222222-2222-4222-8222-222222222222';
+  const client = {
+    functions: {
+      invoke: async (name, options) => {
+        calls.push({ name, options });
+        if (options.body.action === 'update_display_name') {
+          return {
+            data: { account: { user_id: userId, display_name: 'Leni Neu', account_status: 'active' } },
+            error: null
+          };
+        }
+        if (options.body.action === 'send_login_link') {
+          return {
+            data: { login_link: { user_id: userId, sent: true, audit_recorded: true } },
+            error: null
+          };
+        }
+        return {
+          data: { account: { user_id: userId, display_name: 'Leni Neu', account_status: 'paused' } },
+          error: null
+        };
+      }
+    }
+  };
+
+  await updateMemberDisplayName(client, {
+    userId,
+    displayName: '  Leni   Neu ',
+    reason: 'Der Anzeigename wurde gemeinsam korrigiert.'
+  });
+  await sendMemberLoginLink(client, {
+    userId,
+    reason: 'Der bisherige Einladungslink ist abgelaufen.'
+  });
+  await setMemberAccountStatus(client, {
+    userId,
+    accountStatus: 'paused',
+    reason: 'Der Zugang wird auf bestätigten Wunsch pausiert.'
+  });
+
+  assert.deepEqual(calls.map(call => call.options.body), [
+    {
+      action: 'update_display_name',
+      user_id: userId,
+      display_name: 'Leni Neu',
+      reason: 'Der Anzeigename wurde gemeinsam korrigiert.'
+    },
+    {
+      action: 'send_login_link',
+      user_id: userId,
+      reason: 'Der bisherige Einladungslink ist abgelaufen.'
+    },
+    {
+      action: 'set_account_status',
+      user_id: userId,
+      account_status: 'paused',
+      reason: 'Der Zugang wird auf bestätigten Wunsch pausiert.'
+    }
+  ]);
 });
 
 test('assigns a stable identity through the dedicated database function', async () => {
@@ -146,9 +223,37 @@ test('keeps admin secrets out of browser files and pins Supabase dependencies', 
   assert.match(html, /@supabase\/supabase-js@2\.117\.2/);
   assert.doesNotMatch(`${html}\n${browserJs}`, /service_role|SUPABASE_SECRET|supabaseAdmin/);
   assert.match(edgeJs, /ctx\.supabaseAdmin\.auth\.admin\.inviteUserByEmail/);
+  assert.match(edgeJs, /auth\.signInWithOtp/);
+  assert.match(edgeJs, /shouldCreateUser: false/);
+  assert.match(edgeJs, /ban_duration: requestedStatus === "paused"/);
+  assert.match(edgeJs, /ACCOUNT_BAN_DURATION = "876000h"/);
+  assert.match(edgeJs, /requestedStatus === "paused" \? ACCOUNT_BAN_DURATION : "none"/);
+  assert.match(edgeJs, /rpc\("administer_member_account"/);
   assert.match(edgeJs, /permissionKey: "manage_members"/);
   assert.match(denoConfig, /@supabase\/server@1\.8\.0/);
   assert.match(denoConfig, /@supabase\/supabase-js@2\.117\.2/);
+});
+
+test('ships filters, account actions and a readable immutable administration history', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'verwaltung', 'mitglieder', 'index.html'), 'utf8');
+  const controller = fs.readFileSync(path.join(__dirname, '..', 'verwaltung', 'mitglieder', 'verwaltung.js'), 'utf8');
+  const migration = fs.readFileSync(
+    path.join(__dirname, '..', 'supabase', 'migrations', '20261005121116_member_account_management.sql'),
+    'utf8'
+  );
+
+  assert.match(html, /id="member-search"/);
+  assert.match(html, /id="member-status-filter"/);
+  assert.match(html, /id="audit-list"/);
+  assert.match(controller, /updateMemberDisplayName/);
+  assert.match(controller, /sendMemberLoginLink/);
+  assert.match(controller, /setMemberAccountStatus/);
+  assert.match(migration, /create table public\.member_admin_events/);
+  assert.match(migration, /member_admin_events_prevent_mutation/);
+  assert.match(migration, /join public\.profiles as account_profile/);
+  assert.match(migration, /account_profile\.account_status = 'active'/);
+  assert.match(migration, /grant execute on function public\.administer_member_account[\s\S]+to service_role/);
+  assert.doesNotMatch(migration, /grant execute on function public\.administer_member_account[\s\S]{0,120}to authenticated/);
 });
 
 test('shows the administration link in the account only after the scoped grant is loaded', () => {
