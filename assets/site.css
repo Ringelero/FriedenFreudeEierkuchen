@@ -128,6 +128,16 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 .hero.compact { min-height: auto; }
 .hero > * { position: relative; z-index: 1; }
+.work-hero {
+  min-height: auto;
+  padding: clamp(28px, 5vw, 58px);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+}
+.work-hero .hero-copy { display: grid; gap: 14px; min-width: 0; }
+.work-hero .display { font-size: clamp(2.9rem, 7vw, 5.9rem); line-height: .88; }
+.work-hero .lead { font-size: clamp(1rem, 1.8vw, 1.2rem); line-height: 1.5; }
+.work-hero .status-row { align-self: end; justify-content: flex-end; max-width: 310px; }
 .eyebrow {
   margin: 0;
   color: var(--ruby);
@@ -174,6 +184,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .tag { color: var(--muted); background: rgba(36, 16, 24, .06); }
 
 .section { padding: clamp(52px, 9vw, 100px) 0 0; }
+.section.working-section { padding-top: clamp(28px, 5vw, 52px); }
 .section-head { display: grid; gap: 12px; margin: 0 0 24px; }
 .section-head h2 {
   max-width: 880px;
@@ -318,10 +329,81 @@ button.button {
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
+/* A usable first scene with a visible entrance into the GemDen world. */
+.home-hero {
+  min-height: min(760px, calc(100svh - 90px));
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr);
+  align-items: center;
+  align-content: center;
+  column-gap: clamp(24px, 5vw, 70px);
+}
+.home-story { display: grid; gap: 18px; min-width: 0; }
+.home-hero .display { font-size: clamp(3.7rem, 8.5vw, 7.7rem); }
+.world-portal {
+  position: relative;
+  display: grid;
+  width: min(100%, 390px);
+  aspect-ratio: 1;
+  place-items: center;
+  justify-self: end;
+  border: 1px solid rgba(201, 0, 70, .17);
+  border-radius: 48% 52% 45% 55% / 54% 42% 58% 46%;
+  background: radial-gradient(circle at 43% 40%, rgba(255,255,255,.94) 0 8%, transparent 9%), radial-gradient(circle at 48% 48%, rgba(255,79,135,.28), rgba(255,184,92,.24) 38%, rgba(0,168,150,.15) 66%, transparent 68%);
+  box-shadow: inset 0 0 70px rgba(255,255,255,.55), 0 28px 70px rgba(92,0,34,.13);
+  animation: portal-breathe 8s ease-in-out infinite;
+}
+.world-portal::before, .world-portal::after { content: ""; position: absolute; border: 1px solid rgba(201,0,70,.17); border-radius: 50%; }
+.world-portal::before { inset: 10%; transform: rotate(24deg); }
+.world-portal::after { inset: 22%; border-color: rgba(0,168,150,.25); transform: rotate(-18deg); }
+.portal-gem {
+  position: relative;
+  z-index: 2;
+  width: 38%;
+  aspect-ratio: 1;
+  clip-path: polygon(50% 0, 88% 18%, 100% 58%, 72% 100%, 28% 100%, 0 58%, 12% 18%);
+  background: conic-gradient(from 28deg, #ff94b8, #c90046, #690021, #ff377a, #fff0f5, #c90046, #ff94b8);
+  filter: drop-shadow(0 20px 24px rgba(141,0,51,.25));
+  animation: gem-turn 10s ease-in-out infinite;
+}
+.portal-label { position: absolute; z-index: 3; right: 3%; bottom: 8%; max-width: 145px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 16px; color: var(--muted); background: rgba(255,255,255,.82); box-shadow: 0 12px 30px rgba(92,0,34,.1); font-size: .78rem; font-weight: 800; line-height: 1.35; }
+@keyframes portal-breathe { 50% { transform: translateY(-9px) rotate(2deg); } }
+@keyframes gem-turn { 50% { transform: rotate(8deg) scale(1.06); } }
+.route-dock { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.route-link { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: center; min-width: 0; padding: 13px 14px; border: 1px solid var(--line); border-radius: 18px; color: var(--ink); background: rgba(255,255,255,.74); text-decoration: none; transition: transform .18s ease, background .18s ease; }
+.route-link:hover { transform: translateY(-3px); background: rgba(255,255,255,.95); }
+.route-link span:first-child { font-size: 1.45rem; }
+.route-link b { display: block; font-size: .92rem; }
+.route-link small { display: block; margin-top: 2px; color: var(--muted); font-size: .74rem; line-height: 1.3; }
+
+/* Community rooms are shown as a connected place instead of a generic card grid. */
+.community-map { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; padding: clamp(22px, 5vw, 52px); border: 1px solid var(--line); border-radius: var(--radius); background: radial-gradient(circle at 18% 45%, rgba(0,168,150,.16), transparent 24%), radial-gradient(circle at 50% 24%, rgba(201,0,70,.14), transparent 25%), radial-gradient(circle at 83% 55%, rgba(255,184,92,.2), transparent 26%), rgba(255,255,255,.55); box-shadow: var(--shadow); }
+.community-map::before { content: ""; position: absolute; left: 16%; right: 16%; top: 50%; border-top: 2px dashed rgba(201,0,70,.2); }
+.community-place { position: relative; z-index: 1; display: grid; align-content: start; gap: 10px; min-height: 245px; padding: 22px; border: 1px solid rgba(201,0,70,.18); border-radius: 44px 22px 38px 20px; color: var(--ink); background: rgba(255,255,255,.88); text-decoration: none; box-shadow: 0 16px 40px rgba(92,0,34,.09); transition: transform .2s ease, box-shadow .2s ease; }
+.community-place:nth-child(2) { transform: translateY(-16px); border-radius: 22px 46px 24px 42px; }
+.community-place:nth-child(3) { border-radius: 36px 24px 48px 22px; }
+.community-place:hover { transform: translateY(-8px) rotate(-1deg); box-shadow: 0 22px 50px rgba(92,0,34,.14); }
+.community-place:nth-child(2):hover { transform: translateY(-24px) rotate(1deg); }
+.community-place h3 { margin: 0; font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1; }
+.community-place p { margin: 0; color: var(--muted); line-height: 1.5; }
+.place-symbol { font-size: 2.5rem; }
+.place-go { margin-top: auto; color: var(--ruby); font-weight: 900; }
+.signal-dock { display: flex; flex-wrap: wrap; gap: 8px; }
+.signal-dock a { padding: 8px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--ruby); background: rgba(255,255,255,.75); font-size: .82rem; font-weight: 900; text-decoration: none; }
+.member-hero .member-copy { display: grid; gap: 14px; min-width: 0; }
+.member-hero .display { line-height: .92; margin-bottom: 2px; }
+.member-hero .lead { position: relative; margin-top: 0; }
+
 @media (max-width: 860px) {
   .grid.three { grid-template-columns: 1fr 1fr; }
   .chain { grid-template-columns: 1fr; }
   .chain-item:not(:last-child)::after { content: "↓"; top: auto; right: 50%; bottom: -13px; }
+  .home-hero { grid-template-columns: 1fr; }
+  .world-portal { position: absolute; right: -65px; top: 22%; width: 280px; opacity: .52; }
+  .home-story { max-width: 86%; }
+  .route-dock { grid-template-columns: 1fr 1fr; }
+  .community-map { grid-template-columns: 1fr; }
+  .community-map::before { top: 12%; bottom: 12%; left: 50%; right: auto; border-top: 0; border-left: 2px dashed rgba(201,0,70,.2); }
+  .community-place, .community-place:nth-child(2) { min-height: 0; transform: none; }
 }
 
 @media (max-width: 650px) {
@@ -332,7 +414,17 @@ button.button {
   .nav-links a { padding: 9px 10px; }
   .hero { min-height: 72svh; padding: 32px 22px; border-radius: 25px; }
   .hero.compact { min-height: auto; }
+  .work-hero { grid-template-columns: 1fr; gap: 14px; padding: 26px 22px; }
+  .work-hero .status-row { justify-content: flex-start; max-width: none; }
   .display { font-size: clamp(3.3rem, 17vw, 5.6rem); }
+  .home-hero { min-height: auto; padding-bottom: 24px; }
+  .home-story { max-width: 100%; }
+  .home-hero .display { font-size: clamp(3.35rem, 16vw, 5.4rem); }
+  .world-portal { position: relative; inset: auto; width: min(76vw, 290px); justify-self: center; opacity: 1; }
+  .route-dock { grid-template-columns: 1fr; }
+  .route-link { padding: 11px 12px; }
+  .community-map { padding: 14px; }
+  .member-hero .grid.two { gap: 24px; }
   .grid.two, .grid.three { grid-template-columns: 1fr; }
   .card { min-height: 190px; }
   .button-row .button { width: 100%; }
