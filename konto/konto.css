@@ -1,5 +1,5 @@
 .account-shell { --content: 980px; }
-.account-hero { min-height: 430px; }
+.account-hero { min-height: auto; }
 .account-grid { display: grid; gap: 22px; }
 .account-grid > .section-head { margin-bottom: 2px; }
 .account-panel { display: grid; gap: 22px; }
