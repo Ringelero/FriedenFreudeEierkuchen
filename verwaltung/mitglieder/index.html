@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="description" content="Geschützte GemDen-Mitgliederverwaltung für Einladungen, stabile Mitglieds-IDs und klar begrenzte Kiez-Rechte.">
+  <meta name="description" content="Geschützte GemDen-Mitgliederverwaltung für Einladungen, Kontozugänge, stabile Mitglieds-IDs, begrenzte Kiez-Rechte und einen nachvollziehbaren Verlauf.">
   <title>Mitglieder verwalten · GemDen</title>
   <link rel="stylesheet" href="../../assets/site.css">
-  <link rel="stylesheet" href="./mitglieder.css?v=20260926-1">
+  <link rel="stylesheet" href="./mitglieder.css?v=20261005-1">
 </head>
 <body data-area="account">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
@@ -19,7 +19,7 @@
       <header class="hero compact admin-hero">
         <p class="eyebrow">Geschützter Arbeitsbereich</p>
         <h1 class="display small">Mitglieder verwalten.</h1>
-        <p class="lead">Einladen, den Kontostand sehen, eine feste Mitglieds-ID vergeben und Kiez-Rechte nachvollziehbar erteilen oder widerrufen.</p>
+        <p class="lead">Einladen, Kontodaten bearbeiten, Zugänge sicher steuern, eine feste Mitglieds-ID vergeben und jede Verwaltungsentscheidung nachvollziehen.</p>
         <div class="status-row">
           <span class="status-chip open" id="admin-connection-chip">Berechtigung wird geprüft</span>
           <span class="id-chip">manage_members · GemDen</span>
@@ -65,9 +65,9 @@
           <div class="admin-toolbar">
             <div class="admin-metrics" aria-label="Mitgliederübersicht">
               <div><strong id="metric-total">0</strong><span>Konten</span></div>
-              <div><strong id="metric-invited">0</strong><span>Einladung offen</span></div>
+              <div><strong id="metric-active">0</strong><span>aktive Konten</span></div>
+              <div><strong id="metric-paused">0</strong><span>deaktiviert</span></div>
               <div><strong id="metric-without-id">0</strong><span>ohne MEM-ID</span></div>
-              <div><strong id="metric-active">0</strong><span>schon angemeldet</span></div>
             </div>
             <button class="button secondary" id="refresh-members" type="button">Liste aktualisieren</button>
           </div>
@@ -88,6 +88,10 @@
                   <label for="invite-email">E-Mail-Adresse</label>
                   <input id="invite-email" name="email" type="email" maxlength="254" autocomplete="off" inputmode="email" required placeholder="name@beispiel.de">
                 </div>
+                <div class="field">
+                  <label for="invite-reason">Grund der Einladung</label>
+                  <textarea id="invite-reason" name="reason" minlength="12" maxlength="2000" rows="3" required placeholder="Wer hat die Einladung bestätigt und in welchem Zusammenhang?"></textarea>
+                </div>
                 <button class="button" id="invite-submit" type="submit">Einladung per E-Mail senden</button>
                 <p class="form-status" id="invite-status" role="status" aria-live="polite"></p>
               </form>
@@ -99,23 +103,53 @@
               <ul>
                 <li>keine Passwörter ansehen oder setzen</li>
                 <li>keine Konten löschen</li>
+                <li>keine E-Mail-Adressen verändern</li>
                 <li>keine globalen Adminrechte vergeben</li>
                 <li>keine bestätigte <code>MEM-*</code>-ID umbenennen</li>
               </ul>
-              <p>Diese Oberfläche verwaltet nur den sicheren Pilotumfang. Weitere Eingriffe brauchen einen eigenen, überprüften Ablauf.</p>
+              <p>Konten können vorübergehend deaktiviert und wieder reaktiviert werden. Löschung und E-Mail-Wechsel brauchen weiterhin einen eigenen, überprüften Ablauf.</p>
             </aside>
           </div>
 
           <section class="panel member-directory" aria-labelledby="directory-title">
             <header class="directory-head">
               <div>
-                <p class="eyebrow">Schritt 2 und 3</p>
-                <h3 id="directory-title">Konten, IDs und Kiez-Rechte</h3>
-                <p>Die feste ID wird genau einmal vergeben. Ein Kiez-Recht ist davon getrennt und braucht immer eine dokumentierte Begründung.</p>
+                <p class="eyebrow">Konten bearbeiten</p>
+                <h3 id="directory-title">Mitglieder, Zugänge und Rechte</h3>
+                <p>Name, Login-Zugang und Status lassen sich hier verwalten. Jede Änderung braucht eine Begründung; die feste ID bleibt davon getrennt und unveränderlich.</p>
               </div>
             </header>
+            <div class="directory-tools" aria-label="Mitglieder filtern">
+              <div class="field search-field">
+                <label for="member-search">Mitglied suchen</label>
+                <input id="member-search" type="search" autocomplete="off" placeholder="Name, E-Mail oder MEM-ID">
+              </div>
+              <div class="field status-filter-field">
+                <label for="member-status-filter">Status</label>
+                <select id="member-status-filter">
+                  <option value="all">Alle Konten</option>
+                  <option value="active">Aktiv</option>
+                  <option value="paused">Deaktiviert</option>
+                  <option value="invited">Einladung offen</option>
+                  <option value="pending_profile">Profil wird angelegt</option>
+                </select>
+              </div>
+              <span class="filter-count" id="visible-member-count">0 von 0</span>
+            </div>
             <p class="form-status" id="directory-status" role="status" aria-live="polite"></p>
             <div class="member-list" id="member-list"></div>
+          </section>
+
+          <section class="panel audit-panel" aria-labelledby="audit-title">
+            <header class="directory-head">
+              <div>
+                <p class="eyebrow">Nachvollziehbarer Verlauf</p>
+                <h3 id="audit-title">Wer hat was entschieden?</h3>
+                <p>Einladungen, Namensänderungen, Login-Links, Kontostatus, IDs und Kiez-Rechte werden ohne Passwörter oder E-Mail-Inhalte protokolliert.</p>
+              </div>
+            </header>
+            <p class="form-status" id="audit-status" role="status" aria-live="polite"></p>
+            <div class="audit-list" id="audit-list"></div>
           </section>
         </div>
       </section>
@@ -123,8 +157,8 @@
       <section class="section" aria-labelledby="guide-title">
         <div class="section-head">
           <p class="eyebrow">Bedienung</p>
-          <h2 id="guide-title">So läuft eine Einladung ab.</h2>
-          <p>Kontozugang, Mitgliedsidentität und zusätzliche Rechte sind drei getrennte Entscheidungen. Dadurch bekommt niemand versehentlich mehr Zugriff als vorgesehen.</p>
+          <h2 id="guide-title">So verwaltest du den gesamten Kontozyklus.</h2>
+          <p>Kontozugang, Mitgliedsidentität und zusätzliche Rechte bleiben getrennte Entscheidungen. Dadurch lässt sich jeder Schritt einzeln prüfen und bei Bedarf zurücknehmen.</p>
         </div>
         <ol class="guide-steps">
           <li>
@@ -141,11 +175,15 @@
           </li>
           <li>
             <span>4</span>
-            <div><h3>Optionales Kiez-Recht</h3><p>Nur wenn es separat legitimiert ist: Kiez auswählen, Begründung dokumentieren und das begrenzte Recht erteilen. Es kann später mit neuer Begründung widerrufen werden.</p></div>
+            <div><h3>Konto später verwalten</h3><p>Der Anzeigename kann begründet korrigiert und bei einem abgelaufenen Link ein neuer Einmal-Link versendet werden. Eine Deaktivierung sperrt Login und Datenbankrechte; Reaktivieren macht beides wieder verfügbar.</p></div>
           </li>
           <li>
             <span>5</span>
-            <div><h3>Eigenes Konto nutzen</h3><p>Das Mitglied pflegt Profil, Fähigkeiten, Projekte, Möglichkeiten und persönliche Seite selbst. Alles beginnt als privater Entwurf und wird nicht automatisch öffentlich.</p></div>
+            <div><h3>Optionales Kiez-Recht</h3><p>Nur wenn es separat legitimiert ist: Kiez auswählen, Begründung dokumentieren und das begrenzte Recht erteilen. Es kann später mit neuer Begründung widerrufen werden.</p></div>
+          </li>
+          <li>
+            <span>6</span>
+            <div><h3>Verlauf prüfen</h3><p>Unten im Arbeitsbereich siehst du Zeitpunkt, handelndes Verwaltungskonto, betroffenes Mitglied, Entscheidung und Begründung.</p></div>
           </li>
         </ol>
       </section>
@@ -165,7 +203,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2" defer></script>
   <script src="../../assets/supabase-config.js" defer></script>
   <script src="../../assets/supabase-client.js" defer></script>
-  <script src="./member-admin.js?v=20260926-1" defer></script>
-  <script src="./verwaltung.js?v=20260926-1" defer></script>
+  <script src="./member-admin.js?v=20261005-1" defer></script>
+  <script src="./verwaltung.js?v=20261005-1" defer></script>
 </body>
 </html>

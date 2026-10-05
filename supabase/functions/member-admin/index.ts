@@ -1,5 +1,6 @@
 import "@supabase/functions-js/edge-runtime.d.ts"
 import { withSupabase } from "@supabase/server"
+import { createClient } from "@supabase/supabase-js"
 
 const MANAGE_MEMBERS = Object.freeze({
   permissionKey: "manage_members",
@@ -8,6 +9,8 @@ const MANAGE_MEMBERS = Object.freeze({
 })
 const INVITE_REDIRECT = "https://gemden.red/konto/"
 const MAX_USERS = 200
+const MAX_AUDIT_EVENTS = 100
+const ACCOUNT_BAN_DURATION = "876000h"
 
 type JsonRecord = Record<string, unknown>
 
@@ -61,6 +64,22 @@ function normalizeDisplayName(value: unknown) {
   return displayName
 }
 
+function normalizeReason(value: unknown, fallback = "") {
+  const reason = String(value ?? fallback).trim().replace(/\s+/g, " ")
+  if (reason.length < 12 || reason.length > 2000 || /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(reason)) {
+    throw new MemberAdminError(400, "reason_invalid", "Bitte dokumentiere die Entscheidung mit mindestens zwölf Zeichen.")
+  }
+  return reason
+}
+
+function normalizeUserId(value: unknown) {
+  const userId = String(value ?? "").trim().toLowerCase()
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(userId)) {
+    throw new MemberAdminError(400, "member_invalid", "Das ausgewählte Mitglied ist nicht gültig.")
+  }
+  return userId
+}
+
 function isActiveGrant(grant: { starts_at?: string; ends_at?: string | null; revoked_at?: string | null }) {
   const now = Date.now()
   const startsAt = Date.parse(String(grant.starts_at || ""))
@@ -69,6 +88,31 @@ function isActiveGrant(grant: { starts_at?: string; ends_at?: string | null; rev
     && startsAt <= now
     && (endsAt === null || (Number.isFinite(endsAt) && endsAt > now))
     && !grant.revoked_at
+}
+
+function databaseActionError(error: any) {
+  const source = `${error?.code || ""} ${error?.message || ""}`.toLowerCase()
+  if (/42501|member administration permission required|active member administration actor/.test(source)) {
+    return new MemberAdminError(403, "member_admin_forbidden", "Dieses Konto ist nicht mehr für die Mitgliederverwaltung freigeschaltet.")
+  }
+  if (/active administration account cannot pause itself/.test(source)) {
+    return new MemberAdminError(409, "self_pause_forbidden", "Das aktuell verwendete Verwaltungskonto kann sich nicht selbst deaktivieren.")
+  }
+  if (/archived member accounts/.test(source)) {
+    return new MemberAdminError(409, "account_archived", "Archivierte Konten brauchen einen eigenen Aufbewahrungsablauf.")
+  }
+  if (/reason with at least 12|valid display name|target member profile|not available|22023/.test(source)) {
+    return new MemberAdminError(400, "account_change_invalid", error?.message || "Die Kontoänderung ist nicht gültig.")
+  }
+  return new MemberAdminError(503, "account_change_failed", "Die Kontoänderung konnte gerade nicht sicher gespeichert werden.")
+}
+
+async function requestBody(req: Request) {
+  try {
+    return await req.json() as JsonRecord
+  } catch {
+    throw new MemberAdminError(400, "body_invalid", "Die Verwaltungsdaten sind nicht gültig.")
+  }
 }
 
 async function requireMemberManager(ctx: any) {
@@ -104,7 +148,29 @@ async function requireMemberManager(ctx: any) {
   return userId
 }
 
-async function listMembers(ctx: any) {
+function safeAuditMetadata(value: unknown) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {}
+  const source = value as JsonRecord
+  const allowedKeys = [
+    "stable_id",
+    "display_name",
+    "old_display_name",
+    "new_display_name",
+    "previous_status",
+    "new_status",
+    "kiez_id",
+    "permission_key",
+    "scope_type",
+    "scope_id",
+    "authority",
+    "backfilled",
+  ]
+  return Object.fromEntries(allowedKeys
+    .filter((key) => typeof source[key] === "string" || typeof source[key] === "boolean")
+    .map((key) => [key, source[key]]))
+}
+
+async function listMembers(ctx: any, currentUserId: string) {
   const userResult = await ctx.supabaseAdmin.auth.admin.listUsers({
     page: 1,
     perPage: MAX_USERS,
@@ -116,7 +182,7 @@ async function listMembers(ctx: any) {
   const users = userResult.data?.users || []
   const userIds = users.map((user: any) => user.id)
   const emptyResult = { data: [], error: null }
-  const [profileResult, grantResult, kiezResult] = await Promise.all([
+  const [profileResult, grantResult, kiezResult, auditResult] = await Promise.all([
     userIds.length
       ? ctx.supabaseAdmin
         .from("profiles")
@@ -135,9 +201,14 @@ async function listMembers(ctx: any) {
       .select("id,name,lifecycle_status")
       .neq("lifecycle_status", "archived")
       .order("name"),
+    ctx.supabaseAdmin
+      .from("member_admin_events")
+      .select("id,actor_user_id,target_user_id,action,reason,metadata,occurred_at")
+      .order("occurred_at", { ascending: false })
+      .limit(MAX_AUDIT_EVENTS),
   ])
 
-  if (profileResult.error || grantResult.error || kiezResult.error) {
+  if (profileResult.error || grantResult.error || kiezResult.error || auditResult.error) {
     throw new MemberAdminError(503, "members_unavailable", "Die Mitgliedsdaten konnten gerade nicht vollständig geladen werden.")
   }
 
@@ -177,27 +248,108 @@ async function listMembers(ctx: any) {
     return String(left.display_name).localeCompare(String(right.display_name), "de")
   })
 
+  const profileLabel = (userId: string | null, metadata: JsonRecord = {}) => {
+    if (!userId) {
+      return { id: null, display_name: "Systembestand", stable_id: null }
+    }
+    const profile: any = userId ? profiles.get(userId) : null
+    return {
+      id: userId,
+      display_name: profile?.display_name
+        || metadata.display_name
+        || metadata.new_display_name
+        || "Nicht mehr vorhandenes Konto",
+      stable_id: profile?.stable_id || metadata.stable_id || null,
+    }
+  }
+
+  const audit = (auditResult.data || []).map((event: any) => {
+    const metadata = safeAuditMetadata(event.metadata)
+    return {
+      id: event.id,
+      action: event.action,
+      reason: event.reason,
+      occurred_at: event.occurred_at,
+      actor: profileLabel(event.actor_user_id),
+      target: profileLabel(event.target_user_id, metadata),
+      details: metadata,
+    }
+  })
+
   return response({
+    current_user_id: currentUserId,
     members,
     kieze: kiezResult.data || [],
+    audit,
     truncated: users.length >= MAX_USERS,
   })
 }
 
-async function inviteMember(req: Request, ctx: any) {
-  let input: JsonRecord
-  try {
-    input = await req.json()
-  } catch {
-    throw new MemberAdminError(400, "body_invalid", "Die Einladungsdaten sind nicht gültig.")
+async function applyAccountAction(ctx: any, {
+  actorUserId,
+  targetUserId,
+  action,
+  value = "",
+  reason,
+}: {
+  actorUserId: string
+  targetUserId: string
+  action: string
+  value?: string
+  reason: string
+}) {
+  const result = await ctx.supabaseAdmin.rpc("administer_member_account", {
+    actor_user_id: actorUserId,
+    target_user_id: targetUserId,
+    requested_action: action,
+    requested_value: value,
+    decision_reason: reason,
+  })
+  if (result.error) throw databaseActionError(result.error)
+  const row = Array.isArray(result.data) ? result.data[0] : result.data
+  if (!row || row.user_id !== targetUserId) {
+    throw new MemberAdminError(503, "account_change_unconfirmed", "Die Datenbank hat die Kontoänderung nicht bestätigt.")
   }
+  return row
+}
 
-  if (input.action !== "invite") {
-    throw new MemberAdminError(400, "action_invalid", "Diese Verwaltungsaktion ist nicht freigeschaltet.")
+async function getTargetMember(ctx: any, targetUserId: string) {
+  const [userResult, profileResult] = await Promise.all([
+    ctx.supabaseAdmin.auth.admin.getUserById(targetUserId),
+    ctx.supabaseAdmin
+      .from("profiles")
+      .select("id,display_name,account_status")
+      .eq("id", targetUserId)
+      .maybeSingle(),
+  ])
+  if (userResult.error || !userResult.data?.user || profileResult.error || !profileResult.data) {
+    throw new MemberAdminError(404, "member_not_found", "Dieses Mitgliedskonto wurde nicht gefunden.")
   }
+  return { user: userResult.data.user, profile: profileResult.data }
+}
 
+function publicAuthClient() {
+  const url = Deno.env.get("SUPABASE_URL")
+  const anonKey = Deno.env.get("SUPABASE_ANON_KEY")
+  if (!url || !anonKey) {
+    throw new MemberAdminError(503, "login_link_unavailable", "Der sichere Linkversand ist momentan nicht verfügbar.")
+  }
+  return createClient(url, anonKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+      detectSessionInUrl: false,
+    },
+  })
+}
+
+async function inviteMember(input: JsonRecord, ctx: any, actorUserId: string) {
   const email = normalizeEmail(input.email)
   const displayName = normalizeDisplayName(input.display_name)
+  const reason = normalizeReason(
+    input.reason,
+    "Einladung über die geschützte GemDen-Mitgliederverwaltung versendet.",
+  )
   const inviteResult = await ctx.supabaseAdmin.auth.admin.inviteUserByEmail(email, {
     data: { display_name: displayName },
     redirectTo: INVITE_REDIRECT,
@@ -206,7 +358,7 @@ async function inviteMember(req: Request, ctx: any) {
   if (inviteResult.error) {
     const source = `${inviteResult.error.code || ""} ${inviteResult.error.message || ""}`.toLowerCase()
     if (/already|exists|registered|email_exists|user_already_exists/.test(source)) {
-      throw new MemberAdminError(409, "member_exists", "Für diese E-Mail-Adresse gibt es bereits ein Konto. Die Person kann im Konto einen neuen Einmal-Link anfordern.")
+      throw new MemberAdminError(409, "member_exists", "Für diese E-Mail-Adresse gibt es bereits ein Konto. Sende beim bestehenden Konto stattdessen einen neuen Einmal-Link.")
     }
     if (/rate|too many|over_email_send_rate_limit/.test(source)) {
       throw new MemberAdminError(429, "invite_rate_limited", "Zu viele Einladungen in kurzer Zeit. Bitte warte kurz und versuche es dann erneut.")
@@ -214,14 +366,155 @@ async function inviteMember(req: Request, ctx: any) {
     throw new MemberAdminError(503, "invite_failed", "Die Einladung konnte gerade nicht versendet werden.")
   }
 
+  const invitedUserId = inviteResult.data.user?.id || null
+  let auditRecorded = false
+  if (invitedUserId) {
+    try {
+      await applyAccountAction(ctx, {
+        actorUserId,
+        targetUserId: invitedUserId,
+        action: "member_invited",
+        reason,
+      })
+      auditRecorded = true
+    } catch (error) {
+      console.error("member-admin invite audit failure", error)
+    }
+  }
+
   return response({
     invited: {
-      id: inviteResult.data.user?.id || null,
+      id: invitedUserId,
       email,
       display_name: displayName,
       redirect_to: INVITE_REDIRECT,
+      audit_recorded: auditRecorded,
     },
   }, 201)
+}
+
+async function updateDisplayName(input: JsonRecord, ctx: any, actorUserId: string) {
+  const targetUserId = normalizeUserId(input.user_id)
+  const displayName = normalizeDisplayName(input.display_name)
+  const reason = normalizeReason(input.reason)
+  const account = await applyAccountAction(ctx, {
+    actorUserId,
+    targetUserId,
+    action: "display_name_changed",
+    value: displayName,
+    reason,
+  })
+  return response({ account })
+}
+
+async function sendLoginLink(input: JsonRecord, ctx: any, actorUserId: string) {
+  const targetUserId = normalizeUserId(input.user_id)
+  const reason = normalizeReason(input.reason)
+  const target = await getTargetMember(ctx, targetUserId)
+  if (target.profile.account_status !== "active") {
+    throw new MemberAdminError(409, "account_not_active", "Ein neuer Login-Link kann nur für ein aktives Konto versendet werden.")
+  }
+  const email = normalizeEmail(target.user.email)
+  const linkResult = await publicAuthClient().auth.signInWithOtp({
+    email,
+    options: {
+      shouldCreateUser: false,
+      emailRedirectTo: INVITE_REDIRECT,
+    },
+  })
+  if (linkResult.error) {
+    const source = `${linkResult.error.code || ""} ${linkResult.error.message || ""}`.toLowerCase()
+    if (/rate|too many|over_email_send_rate_limit/.test(source)) {
+      throw new MemberAdminError(429, "login_link_rate_limited", "Zu viele Login-Links in kurzer Zeit. Bitte warte kurz und versuche es dann erneut.")
+    }
+    throw new MemberAdminError(503, "login_link_failed", "Der neue Login-Link konnte gerade nicht versendet werden.")
+  }
+
+  let auditRecorded = false
+  try {
+    await applyAccountAction(ctx, {
+      actorUserId,
+      targetUserId,
+      action: "login_link_sent",
+      reason,
+    })
+    auditRecorded = true
+  } catch (error) {
+    console.error("member-admin login link audit failure", error)
+  }
+
+  return response({
+    login_link: {
+      user_id: targetUserId,
+      sent: true,
+      audit_recorded: auditRecorded,
+    },
+  })
+}
+
+async function setAccountStatus(input: JsonRecord, ctx: any, actorUserId: string) {
+  const targetUserId = normalizeUserId(input.user_id)
+  const requestedStatus = String(input.account_status || "").trim().toLowerCase()
+  const reason = normalizeReason(input.reason)
+  if (requestedStatus !== "active" && requestedStatus !== "paused") {
+    throw new MemberAdminError(400, "account_status_invalid", "Der gewünschte Kontostatus ist nicht gültig.")
+  }
+  if (requestedStatus === "paused" && targetUserId === actorUserId) {
+    throw new MemberAdminError(409, "self_pause_forbidden", "Das aktuell verwendete Verwaltungskonto kann sich nicht selbst deaktivieren.")
+  }
+
+  const target = await getTargetMember(ctx, targetUserId)
+  if (target.profile.account_status === "archived") {
+    throw new MemberAdminError(409, "account_archived", "Archivierte Konten brauchen einen eigenen Aufbewahrungsablauf.")
+  }
+  if (requestedStatus === "active" && target.profile.account_status !== "paused") {
+    throw new MemberAdminError(409, "account_not_paused", "Nur ein zuvor deaktiviertes Konto kann reaktiviert werden.")
+  }
+
+  const wasBanned = Boolean(
+    target.user.banned_until
+    && Number.isFinite(Date.parse(target.user.banned_until))
+    && Date.parse(target.user.banned_until) > Date.now(),
+  )
+  const authResult = await ctx.supabaseAdmin.auth.admin.updateUserById(targetUserId, {
+    ban_duration: requestedStatus === "paused" ? ACCOUNT_BAN_DURATION : "none",
+  })
+  if (authResult.error) {
+    throw new MemberAdminError(503, "account_auth_change_failed", "Der Anmeldestatus konnte gerade nicht sicher geändert werden.")
+  }
+
+  try {
+    const account = await applyAccountAction(ctx, {
+      actorUserId,
+      targetUserId,
+      action: requestedStatus === "paused" ? "account_paused" : "account_reactivated",
+      reason,
+    })
+    return response({ account })
+  } catch (error) {
+    const rollbackDuration = wasBanned ? ACCOUNT_BAN_DURATION : "none"
+    const rollback = await ctx.supabaseAdmin.auth.admin.updateUserById(targetUserId, {
+      ban_duration: rollbackDuration,
+    })
+    if (rollback.error) console.error("member-admin auth compensation failure", rollback.error)
+    throw error
+  }
+}
+
+async function handleAction(req: Request, ctx: any, actorUserId: string) {
+  const input = await requestBody(req)
+  switch (input.action) {
+    case "invite":
+      return await inviteMember(input, ctx, actorUserId)
+    case "update_display_name":
+      return await updateDisplayName(input, ctx, actorUserId)
+    case "send_login_link":
+      return await sendLoginLink(input, ctx, actorUserId)
+    case "set_account_status":
+      return await setAccountStatus(input, ctx, actorUserId)
+    default:
+      throw new MemberAdminError(400, "action_invalid", "Diese Verwaltungsaktion ist nicht freigeschaltet.")
+  }
 }
 
 export default {
@@ -231,10 +524,10 @@ export default {
         throw new MemberAdminError(403, "origin_forbidden", "Diese Anfrage darf nur von der GemDen-Website kommen.")
       }
 
-      await requireMemberManager(ctx)
+      const actorUserId = await requireMemberManager(ctx)
 
-      if (req.method === "GET") return await listMembers(ctx)
-      if (req.method === "POST") return await inviteMember(req, ctx)
+      if (req.method === "GET") return await listMembers(ctx, actorUserId)
+      if (req.method === "POST") return await handleAction(req, ctx, actorUserId)
       return response({ code: "method_not_allowed", message: "Diese Anfrageart ist nicht freigeschaltet." }, 405)
     } catch (error) {
       if (error instanceof MemberAdminError) {

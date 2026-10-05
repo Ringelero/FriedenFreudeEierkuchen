@@ -163,9 +163,9 @@ Welche Inhalte standardmäßig welchen Wert erhalten, ist teilweise noch politis
 - `KIEZ-P-HAIN` anlegen
 - Leni gezielt `manage_kiez:KIEZ-P-HAIN` geben
 
-**Technischer Stand vom 26. September 2026:** Das Fundament sowie Profil, Portfolio, Möglichkeiten, Veröffentlichung, Resonanz und generische private Mitgliedsseiten sind im produktiven Projekt angewendet und mit vollständig zurückgerollten RLS-Gegenproben geprüft. Ein bestätigtes reales Konto besitzt `MEM-JULIUS`; es bestehen keine realen Berechtigungsvergaben. Die Kontoseite verwendet ausschließlich den öffentlichen Publishable Key, verhindert offene Kontoerstellung und liest Profil und eigene Rechte über die reale Sitzung. Die Migrationshistorie stimmt mit dem Repository überein.
+**Technischer Stand vom 5. Oktober 2026:** Das Fundament sowie Profil, Portfolio, Möglichkeiten, Veröffentlichung, Resonanz, generische private Mitgliedsseiten und Kontoverwaltung V2 sind im produktiven Projekt angewendet und mit vollständig zurückgerollten RLS-Gegenproben geprüft. Das bestätigte reale Konto `MEM-JULIUS` besitzt das ausdrücklich legitimierte Recht `manage_members:platform:GemDen`. Die Kontoseite verwendet ausschließlich den öffentlichen Publishable Key, verhindert offene Kontoerstellung und liest Profil und eigene Rechte über die reale Sitzung. Die Migrationshistorie stimmt mit dem Repository überein.
 
-Die kontrollierte Einladung ist nun als JWT-geschützte Edge Function und Website-Arbeitsbereich umgesetzt. Nur ein aktives Konto mit `manage_members:platform:GemDen` kann E-Mail-Adressen sehen, Einladungen senden, die erste und einzige `MEM-*`-ID vergeben oder ein vorhandenes `manage_kiez`-Recht mit Begründung erteilen beziehungsweise widerrufen. 29/29 zusätzliche Verwaltungsgegenproben bestanden produktiv und wurden vollständig zurückgerollt. Der erste reale Mitglieder-Admin wurde bewusst noch nicht automatisch ernannt; dafür ist eine ausdrückliche Legitimation erforderlich.
+Die kontrollierte Einladung und Kontoverwaltung sind als JWT-geschützte Edge Function und Website-Arbeitsbereich umgesetzt. Nur ein aktives Konto mit `manage_members:platform:GemDen` kann E-Mail-Adressen sehen, Einladungen und neue Login-Links senden, Anzeigenamen korrigieren, Konten deaktivieren oder reaktivieren, die erste und einzige `MEM-*`-ID vergeben oder ein vorhandenes `manage_kiez`-Recht begründet erteilen beziehungsweise widerrufen. Eine Deaktivierung sperrt Auth und Datenbankrechte gemeinsam; jede Entscheidung erhält einen unveränderbaren Verwaltungsverlauf. Zusätzlich zu den 29 Gegenproben der ersten Version bestanden 40/40 Kontoverwaltungsgegenproben produktiv und wurden vollständig zurückgerollt.
 
 Die aktuellen Regeln verweigern noch nicht umgesetzte Sichtbarkeiten wie `members` und `scope_members` sicher. Ein Signup kann weder eine stabile `MEM-*`-ID noch ein Recht aus Metadaten übernehmen. Browserrollen dürfen Rechte und Audit-Ereignisse nicht schreiben.
 
@@ -207,7 +207,7 @@ Die aktuellen Regeln verweigern noch nicht umgesetzte Sichtbarkeiten wie `member
 
 - genaue Standard-Sichtbarkeit der einzelnen P-Hain-Module
 - ob und wann zusätzlich zur kontrollierten Einladung eine offene Registrierung nötig ist
-- wer den ersten realen Mitglieder-Admin, weitere Mitgliedschaften und erweiterte Rechte legitimiert
+- wer weitere Mitgliedschaften und erweiterte Rechte legitimiert
 - Lösch-, Export- und Aufbewahrungsfristen
 - Moderations- und Beschwerdeweg
 - ob Chats in Version 1 nötig sind
@@ -226,4 +226,4 @@ Der erste Pilot ist erst fertig, wenn:
 - Änderungen nachvollziehbar und rücknehmbar sind,
 - alle Formulare ihren echten Speicherstatus klar anzeigen.
 
-Diese Definition ist noch nicht erfüllt. Fertig sind der statische, ehrlich gekennzeichnete P-Hain-Prototyp und das produktiv verifizierte Datenbankfundament. Noch fehlen echte Anmeldung, reale Konten, die kontrollierte Erstvergabe des P-Hain-Rechts, die Client-Anbindung und das Dashboard.
+Diese Definition ist noch nicht erfüllt. Fertig sind der statische, ehrlich gekennzeichnete P-Hain-Prototyp, das produktiv verifizierte Datenbankfundament, ein echtes freigeschaltetes Verwaltungskonto und die vollständige Kontoverwaltung. Noch fehlen Lenis reales Pilotkonto, die kontrollierte Erstvergabe des P-Hain-Rechts und das echte P-Hain-Dashboard.
