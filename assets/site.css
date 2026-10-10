@@ -407,27 +407,103 @@ button.button {
 }
 
 @media (max-width: 650px) {
-  .site-shell { padding: 10px 11px 55px; }
-  .site-nav { align-items: flex-start; border-radius: 24px; padding: 8px; }
-  .site-mark { padding: 8px; }
-  .nav-links { max-width: 68vw; }
-  .nav-links a { padding: 9px 10px; }
-  .hero { min-height: 72svh; padding: 32px 22px; border-radius: 25px; }
+  body {
+    background:
+      radial-gradient(circle at 8% 3%, rgba(255, 79, 135, .18), transparent 18rem),
+      radial-gradient(circle at 96% 18%, rgba(255, 184, 92, .18), transparent 16rem),
+      linear-gradient(155deg, #fff8f4, #fff4f8 58%, #f3fbf9);
+    background-attachment: scroll;
+  }
+  .site-shell { padding: 8px 10px calc(116px + env(safe-area-inset-bottom)); }
+  .site-nav {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 7px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 22px;
+    background: rgba(255,255,255,.9);
+  }
+  .site-mark { justify-content: center; min-height: 44px; padding: 6px 10px; }
+  .nav-links {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 4px;
+    width: 100%;
+    max-width: none;
+    overflow: visible;
+  }
+  .nav-links a {
+    display: grid;
+    grid-column: span 2;
+    min-width: 0;
+    min-height: 44px;
+    place-items: center;
+    padding: 7px 4px;
+    border-radius: 14px;
+    font-size: clamp(.78rem, 3.3vw, .85rem);
+    line-height: 1.12;
+    text-align: center;
+  }
+  .nav-links a:nth-child(4),
+  .nav-links a:nth-child(5) { grid-column: span 3; }
+  .hero { min-height: auto; padding: 28px 19px; border-radius: 24px; }
+  .hero::after { width: 21rem; height: 21rem; right: -12rem; bottom: -12rem; opacity: .7; }
   .hero.compact { min-height: auto; }
-  .work-hero { grid-template-columns: 1fr; gap: 14px; padding: 26px 22px; }
+  .work-hero { grid-template-columns: 1fr; gap: 16px; padding: 25px 19px; }
   .work-hero .status-row { justify-content: flex-start; max-width: none; }
-  .display { font-size: clamp(3.3rem, 17vw, 5.6rem); }
-  .home-hero { min-height: auto; padding-bottom: 24px; }
+  .work-hero .display,
+  .display,
+  .display.small { font-size: clamp(2.75rem, 13vw, 4.15rem); line-height: .93; letter-spacing: -.065em; }
+  .lead,
+  .work-hero .lead { font-size: 1rem; line-height: 1.58; font-weight: 620; }
+  .eyebrow { font-size: .7rem; line-height: 1.4; letter-spacing: .11em; }
+  .status-row { gap: 6px; }
+  .status-chip, .id-chip, .tag { padding: 6px 8px; font-size: .7rem; }
+  .home-hero { min-height: auto; gap: 24px; padding-bottom: 19px; }
   .home-story { max-width: 100%; }
-  .home-hero .display { font-size: clamp(3.35rem, 16vw, 5.4rem); }
-  .world-portal { position: relative; inset: auto; width: min(76vw, 290px); justify-self: center; opacity: 1; }
-  .route-dock { grid-template-columns: 1fr; }
-  .route-link { padding: 11px 12px; }
-  .community-map { padding: 14px; }
+  .home-hero .display { font-size: clamp(2.8rem, 12.2vw, 4rem); line-height: .96; text-wrap: balance; }
+  .world-portal { order: 2; position: relative; inset: auto; width: min(62vw, 235px); justify-self: center; opacity: 1; }
+  .portal-label { right: -20%; bottom: 0; max-width: 132px; font-size: .7rem; }
+  .route-dock { grid-template-columns: 1fr; gap: 7px; margin-top: 0; }
+  .route-link { min-height: 64px; padding: 11px 12px; border-radius: 16px; }
+  .route-link span:first-child { font-size: 1.3rem; }
+  .route-link b { font-size: .9rem; }
+  .route-link small { font-size: .72rem; }
+  .section { padding-top: 44px; }
+  .section.working-section { padding-top: 26px; }
+  .section-head { gap: 9px; margin-bottom: 17px; }
+  .section-head h2 { font-size: clamp(2rem, 10.5vw, 3.2rem); line-height: .98; letter-spacing: -.055em; }
+  .section-head p:not(.eyebrow) { font-size: .98rem; line-height: 1.58; }
+  .panel { padding: 21px 18px; border-radius: 23px; }
+  .panel h2 { font-size: clamp(1.85rem, 9vw, 2.8rem); line-height: 1; }
+  .grid { gap: 11px; }
   .member-hero .grid.two { gap: 24px; }
   .grid.two, .grid.three { grid-template-columns: 1fr; }
-  .card { min-height: 190px; }
+  .card { min-height: 0; gap: 10px; padding: 19px 17px; border-radius: 20px; }
+  .card h3 { font-size: 1.45rem; line-height: 1.08; }
+  .card p { font-size: .95rem; line-height: 1.52; }
+  .card .arrow { margin-top: 5px; font-size: .9rem; }
+  .icon { font-size: 1.8rem; }
+  .community-map { gap: 10px; padding: 10px; border-radius: 24px; }
+  .community-map::before { display: none; }
+  .community-place,
+  .community-place:nth-child(2),
+  .community-place:nth-child(3) { gap: 8px; min-height: 0; padding: 18px 16px; border-radius: 22px; }
+  .community-place h3 { font-size: 1.55rem; }
+  .community-place p { font-size: .94rem; }
+  .place-symbol { font-size: 2rem; }
+  .signal-dock { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .signal-dock a { display: grid; min-height: 44px; place-items: center; padding: 8px; border-radius: 13px; text-align: center; }
+  .chain { gap: 7px; }
+  .chain-item { padding: 11px 12px; }
+  .notice { padding: 14px 15px; font-size: .93rem; }
+  .field input, .field textarea, .field select, .search-input { min-height: 48px; padding: 12px; border-radius: 14px; font-size: 16px; }
+  .field textarea { min-height: 125px; }
+  .button, button.button { min-height: 48px; padding: 12px 15px; }
   .button-row .button { width: 100%; }
+  .footer { display: grid; gap: 8px; margin-top: 48px; padding: 18px 4px; line-height: 1.45; }
 }
 
 @media (prefers-reduced-motion: reduce) {

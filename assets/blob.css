@@ -118,24 +118,34 @@
 }
 @media(max-width:760px){
   #blob-character{
-    right:14px;
+    right:12px;
     top:auto;
-    bottom:22px;
+    bottom:calc(14px + env(safe-area-inset-bottom));
     transform:none;
-    width:66px;
-    height:62px;
+    width:58px;
+    height:55px;
+    box-shadow:0 12px 30px rgba(201,0,70,.3),inset -9px -9px 18px rgba(80,0,32,.16),inset 8px 8px 14px rgba(255,255,255,.22);
   }
   #blob-character.mode-sales{
     width:58px;
     height:116px;
   }
   #blob-chat{
-    right:12px;
-    left:12px;
+    right:10px;
+    left:10px;
     top:auto;
-    bottom:102px;
+    bottom:calc(82px + env(safe-area-inset-bottom));
     transform:none;
     width:auto;
+    max-height:min(65svh,520px);
+    overflow:auto;
+    border-radius:20px;
+  }
+  .blob-chat-actions button,.blob-chat-actions a{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:44px;
   }
 }
 
