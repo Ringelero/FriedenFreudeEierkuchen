@@ -2,6 +2,8 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import { Puck, useGetPuck } from '@puckeditor/core';
+import '../../assets/site.css';
+import '../../assets/gemden-modules.css';
 import '@puckeditor/core/puck.css';
 import './editor.css';
 import {
@@ -12,6 +14,7 @@ import {
 import { fromPuckData, toPuckData } from './gemden-adapter.mjs';
 import { createPageRevisionStore } from './page-revision-store.mjs';
 import { createPuckConfig } from './puck-config.jsx';
+import { DesignChooser, PagePreview } from './design-panels.jsx';
 
 const LEGACY_PAGE_SOURCES = Object.freeze({
   'PAGE-MEM-JULIUS': '/assets/data/pages/julius.v1.json'
@@ -181,9 +184,11 @@ function StatusBar({ status }) {
   );
 }
 
-function BlobHeaderActions({ children, buildDocument, setStatus, publicProfileHref }) {
+function BlobHeaderActions({ children, buildDocument, setStatus, publicProfileHref, catalog, community, mobileOnly = false, onSave }) {
   const getPuck = useGetPuck();
   const [open, setOpen] = useState(false);
+  const [designOpen, setDesignOpen] = useState(false);
+  const [previewPage, setPreviewPage] = useState(null);
   const [prompt, setPrompt] = useState('');
   const [proposal, setProposal] = useState(null);
   const [assistantError, setAssistantError] = useState('');
@@ -328,10 +333,15 @@ function BlobHeaderActions({ children, buildDocument, setStatus, publicProfileHr
 
   return (
     <>
-      <div className="editor-header-actions">
-        {children}
-        <button className="blob-assistant-trigger" type="button" aria-expanded={open} aria-controls="blob-assistant-panel" onClick={() => setOpen(value => !value)}>◆ Blob</button>
+      <div className={mobileOnly ? 'member-mobile-actions' : 'editor-header-actions'}>
+        <button type="button" aria-label="Entwurf sichern" onClick={() => onSave(getPuck().appState.data)}>{mobileOnly ? 'Sichern' : 'Entwurf sichern'}</button>
+        <button type="button" aria-expanded={designOpen} onClick={() => { setOpen(false); setDesignOpen(value => !value); }}>✦ Welten</button>
         <button type="button" onClick={() => {
+          try { setPreviewPage(currentPage()); setOpen(false); setDesignOpen(false); }
+          catch (error) { setStatus({ kind: 'error', message: formatError(error) }); }
+        }}>Vorschau</button>
+        <button className="blob-assistant-trigger" type="button" aria-expanded={open} aria-controls="blob-assistant-panel" onClick={() => setOpen(value => !value)}>◆ Blob</button>
+        {!mobileOnly && <button type="button" onClick={() => {
           try {
             downloadDocument(buildDocument(getPuck().appState.data));
             setStatus({ kind: 'success', message: 'Geprüftes Seitendokument wurde heruntergeladen.' });
@@ -339,11 +349,39 @@ function BlobHeaderActions({ children, buildDocument, setStatus, publicProfileHr
             setStatus({ kind: 'error', message: `Download blockiert: ${formatError(error)}` });
           }
         }}>
-          JSON laden
-        </button>
-        <a href={publicProfileHref} target="_blank" rel="noreferrer">Profilseite ↗</a>
+          Entwurf exportieren
+        </button>}
+        {!mobileOnly && <a href={publicProfileHref} target="_blank" rel="noreferrer">Profilseite ↗</a>}
       </div>
       {panel}
+      {designOpen && <DesignChooser onClose={() => setDesignOpen(false)} onAdd={type => {
+        try {
+          const puck = getPuck();
+          const manifest = catalog.modules.find(item => item.type === type);
+          const props = { id: `my-block-${crypto.randomUUID()}` };
+          manifest.editor.fields.forEach(field => {
+            const [group, key] = field.target.split('.');
+            props[field.id] = (group === 'props' ? manifest.editor.default_props : manifest.editor.default_appearance)[key];
+          });
+          const current = puck.appState.data;
+          const next = { ...current, content: [...current.content, { type: `${type}@${manifest.version}`, props }] };
+          buildDocument(next);
+          puck.dispatch({ type: 'setData', data: () => next });
+          puck.dispatch({ type: 'setUi', ui: { itemSelector: { index: current.content.length }, rightSideBarVisible: true, mobilePanelExpanded: window.innerWidth <= 1024 } });
+          setDesignOpen(false);
+          setStatus({ kind: 'success', message: 'Baustein hinzugefügt. In den Einstellungen kannst du ihn mit deinen eigenen Inhalten füllen.' });
+        } catch (error) { setStatus({ kind: 'error', message: formatError(error) }); }
+      }} onChoose={id => {
+        try {
+          const puck = getPuck();
+          const next = window.GemDenMemberDesign.applyDesign(puck.appState.data, id);
+          buildDocument(next);
+          puck.dispatch({ type: 'setData', data: () => next });
+          setDesignOpen(false);
+          setStatus({ kind: 'success', message: 'Gestaltungswelt übernommen. Du kannst sie weiter verändern oder rückgängig machen. Zum Speichern „Entwurf sichern“ wählen.' });
+        } catch (error) { setStatus({ kind: 'error', message: formatError(error) }); }
+      }} />}
+      {previewPage && <PagePreview document={previewPage} catalog={catalog} community={community} onClose={() => setPreviewPage(null)} />}
     </>
   );
 }
@@ -359,7 +397,7 @@ function EditorApp({ page, catalog, capabilities, community, revisionStore, init
     return document;
   }, [page, catalog, capabilities]);
 
-  async function saveDraft(data) {
+  const saveDraft = useCallback(async data => {
     setStatus({ kind: 'info', message: 'Entwurf wird geprüft und gesichert …' });
     try {
       const document = buildDocument(data);
@@ -368,11 +406,14 @@ function EditorApp({ page, catalog, capabilities, community, revisionStore, init
     } catch (error) {
       setStatus({ kind: 'error', message: `Nicht gespeichert: ${formatError(error)}` });
     }
-  }
+  }, [buildDocument, revisionStore]);
 
   const HeaderActions = useMemo(() => function HeaderActionsOverride({ children }) {
-    return <BlobHeaderActions buildDocument={buildDocument} setStatus={setStatus} publicProfileHref={publicProfileHref}>{children}</BlobHeaderActions>;
-  }, [buildDocument, publicProfileHref]);
+    return <BlobHeaderActions onSave={saveDraft} buildDocument={buildDocument} setStatus={setStatus} publicProfileHref={publicProfileHref} catalog={catalog} community={community} />;
+  }, [buildDocument, publicProfileHref, catalog, community, saveDraft]);
+  const Header = useMemo(() => function HeaderOverride({ children }) {
+    return <>{children}<BlobHeaderActions mobileOnly onSave={saveDraft} buildDocument={buildDocument} setStatus={setStatus} publicProfileHref={publicProfileHref} catalog={catalog} community={community} /></>;
+  }, [buildDocument, publicProfileHref, catalog, community, saveDraft]);
 
   return (
     <div className="editor-app">
@@ -381,7 +422,7 @@ function EditorApp({ page, catalog, capabilities, community, revisionStore, init
         config={config}
         data={initialData}
         onPublish={saveDraft}
-        overrides={{ headerActions: HeaderActions }}
+        overrides={{ headerActions: HeaderActions, header: Header }}
         headerTitle="GemDen-Seitenwerkstatt"
         headerPath={`${displayName} · privater Entwurf`}
         dictionary={GERMAN_DICTIONARY}
@@ -392,7 +433,7 @@ function EditorApp({ page, catalog, capabilities, community, revisionStore, init
           { width: 1280, height: 'auto', label: 'Desktop', icon: 'Monitor' },
           { width: '100%', height: 'auto', label: 'Volle Breite', icon: 'Monitor' }
         ]}
-        height="100dvh"
+        height="var(--workshop-height, 100dvh)"
       />
     </div>
   );
@@ -479,7 +520,8 @@ function FatalError({ error }) {
 
 async function start() {
   const params = new URLSearchParams(location.search);
-  const pageId = params.get('page') || 'PAGE-MEM-JULIUS';
+  const playground = params.get('vorschau') === '1';
+  const pageId = playground ? 'PAGE-MEM-VORSCHAU' : params.get('page') || 'PAGE-MEM-JULIUS';
   await waitForDeferredScripts();
   const memberTemplate = window.GemDenMemberPageTemplate;
   if (!memberTemplate) throw new Error('Die allgemeine Mitgliederseiten-Vorlage ist nicht verfügbar.');
@@ -493,15 +535,23 @@ async function start() {
     fetchJson('/assets/data/capabilities.v1.json'),
     fetchJson('/assets/data/community-v0.1.json')
   ]);
-  const client = window.FFE_SUPABASE_CLIENT || null;
+  const client = playground ? null : window.FFE_SUPABASE_CLIENT || null;
   const profile = await loadEditorProfile(client, memberId);
-  const displayName = profile?.display_name
+  const displayName = playground ? 'Deine kleine Welt' : profile?.display_name
     || baseCommunity.members?.find(member => member.id === memberId)?.name
     || 'Mitglied';
   const publishedPage = source === MEMBER_TEMPLATE_SOURCE
     ? memberTemplate.personalizeMemberPageTemplate(basePage, { stableId: memberId, displayName })
     : basePage;
   const community = withEditorMember(baseCommunity, memberId, displayName);
+  if (playground) {
+    const member = community.members.find(item => item.id === memberId);
+    member.tagline = 'Gestalte einen Ort für deine Ideen, Bilder und Projekte.';
+    publishedPage.regions.flatMap(region => region.modules).forEach(instance => {
+      if (instance.type === 'gemden.skill-grid') instance.props.title = 'Was ich einbringen kann.';
+      if (instance.type === 'gemden.project-grid') instance.props.title = 'Meine Vorhaben.';
+    });
+  }
   window.GemDenModules.validateCapabilityCatalog(capabilities);
   window.GemDenModules.validateModuleCatalog(catalog, capabilities);
   window.GemDenModules.validatePageDocument(publishedPage, catalog, capabilities);
@@ -521,7 +571,7 @@ async function start() {
       community={community}
       revisionStore={revisionStore}
       displayName={displayName}
-      publicProfileHref={memberTemplate.publicProfilePath(memberId)}
+      publicProfileHref={playground ? '/konto/' : memberTemplate.publicProfilePath(memberId)}
     />
   );
 }

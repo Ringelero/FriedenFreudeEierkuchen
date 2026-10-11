@@ -5,6 +5,7 @@ const RADIUS_PATTERN = /^\d{1,2}px$/;
 const ALLOWED_THEME_MOTIONS = new Set(['none', 'gentle', 'expressive']);
 
 function clone(value) {
+  if (value === undefined) return undefined;
   return JSON.parse(JSON.stringify(value));
 }
 
@@ -101,7 +102,8 @@ export function toPuckData(page, catalog) {
     assert(manifest?.editor, `${instance.type}@${instance.version} besitzt keinen Editor-Vertrag.`);
     const props = { id: instance.id };
     manifest.editor.fields.forEach(field => {
-      props[field.id] = clone(getAtTarget(instance, field.target));
+      const value = getAtTarget(instance, field.target);
+      if (value !== undefined) props[field.id] = clone(value);
     });
     return { type: moduleKey(instance.type, instance.version), props };
   });
@@ -110,6 +112,7 @@ export function toPuckData(page, catalog) {
     content,
     root: {
       props: {
+        preset: page.theme.preset,
         accent: page.theme.tokens.accent,
         accent_deep: page.theme.tokens.accent_deep,
         surface: page.theme.tokens.surface,
@@ -169,6 +172,8 @@ export function fromPuckData(puckData, originalPage, catalog) {
   page.theme.tokens.surface = root.surface ?? page.theme.tokens.surface;
   page.theme.tokens.radius = root.radius ?? page.theme.tokens.radius;
   page.theme.motion = root.motion ?? page.theme.motion;
+  page.theme.preset = root.preset ?? page.theme.preset;
+  assert(/^[a-z][a-z0-9-]*$/.test(page.theme.preset), 'Die Gestaltungswelt ist ungültig.');
   validateTheme(page.theme);
   return page;
 }

@@ -25,12 +25,17 @@
         "default_props": {
           "eyebrow": "Mitglied",
           "visual": "ruby-gem",
+          "image": "",
+          "frame": "soft",
           "visual_label": "Animiertes Profilzeichen",
           "breadcrumb": []
         },
         "default_appearance": { "tone": "ruby", "motion": "rise" },
         "fields": [
           { "id": "eyebrow", "target": "props.eyebrow", "label": "Kleine Überschrift", "control": "text" },
+          {"id": "visual", "target": "props.visual", "label": "Motiv", "control": "select", "options": [{"label": "Rubinkristall", "value": "ruby-gem"}, {"label": "Minzgarten", "value": "garden"}, {"label": "Sternenbahn", "value": "orbit"}, {"label": "Sonnenaufgang", "value": "sunrise"}]},
+          {"id": "image", "target": "props.image", "label": "Eigenes Profilmotiv", "control": "image"},
+          {"id": "frame", "target": "props.frame", "label": "Bildform", "control": "select", "options": [{"label": "Weich", "value": "soft"}, {"label": "Rund", "value": "round"}, {"label": "Kristall", "value": "gem"}]},
           { "id": "visual_label", "target": "props.visual_label", "label": "Beschreibung des Motivs", "control": "text" },
           {
             "id": "tone",
@@ -296,6 +301,255 @@
         ]
       },
       "ffe_refs": ["K10", "T06", "T10"]
+    },
+    {
+      "type": "gemden.story-block",
+      "version": 1,
+      "title": "Eigene Geschichte",
+      "description": "Ein persönlich gestalteter Baustein, der mit der Seite freigegeben wird.",
+      "status": "pilot",
+      "renderer": "storyBlock",
+      "data_inputs": [],
+      "capabilities": {
+        "requires": [],
+        "optional": [
+          "module:ui.motion.decorative"
+        ],
+        "emits": [
+          "page:module-ready"
+        ]
+      },
+      "editor": {
+        "category": "meine-welt",
+        "category_title": "Meine Welt",
+        "default_props": {
+          "eyebrow": "Meine Welt",
+          "title": "Was mich bewegt.",
+          "text": ""
+        },
+        "default_appearance": {
+          "tone": "neutral",
+          "motion": "fade"
+        },
+        "fields": [
+          {
+            "id": "eyebrow",
+            "target": "props.eyebrow",
+            "label": "Kleine Überschrift",
+            "control": "text"
+          },
+          {
+            "id": "title",
+            "target": "props.title",
+            "label": "Überschrift",
+            "control": "text"
+          },
+          {
+            "id": "text",
+            "target": "props.text",
+            "label": "Dein Text",
+            "control": "textarea"
+          },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Farbton",
+            "control": "select",
+            "options": [
+              {
+                "label": "Neutral",
+                "value": "neutral"
+              },
+              {
+                "label": "Rubin",
+                "value": "ruby"
+              },
+              {
+                "label": "Gold",
+                "value": "gold"
+              },
+              {
+                "label": "Minze",
+                "value": "mint"
+              }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Bewegung",
+            "control": "select",
+            "options": [
+              {
+                "label": "Keine",
+                "value": "none"
+              },
+              {
+                "label": "Einblenden",
+                "value": "fade"
+              },
+              {
+                "label": "Aufsteigen",
+                "value": "rise"
+              },
+              {
+                "label": "Schweben",
+                "value": "float"
+              },
+              {
+                "label": "Pulsieren",
+                "value": "pulse"
+              }
+            ]
+          }
+        ]
+      },
+      "ffe_refs": [
+        "K05",
+        "T05"
+      ]
+    },
+    {
+      "type": "gemden.image-block",
+      "version": 1,
+      "title": "Bild & Bildgeschichte",
+      "description": "Ein persönlich gestalteter Baustein, der mit der Seite freigegeben wird.",
+      "status": "pilot",
+      "renderer": "imageBlock",
+      "data_inputs": [],
+      "capabilities": {
+        "requires": [],
+        "optional": [
+          "module:ui.motion.decorative"
+        ],
+        "emits": [
+          "page:module-ready"
+        ]
+      },
+      "editor": {
+        "category": "meine-welt",
+        "category_title": "Meine Welt",
+        "default_props": {
+          "eyebrow": "Einblicke",
+          "title": "Ein Bild aus meiner Welt.",
+          "image": "",
+          "alt": "",
+          "caption": "",
+          "format": "original"
+        },
+        "default_appearance": {
+          "tone": "neutral",
+          "motion": "fade"
+        },
+        "fields": [
+          {
+            "id": "eyebrow",
+            "target": "props.eyebrow",
+            "label": "Kleine Überschrift",
+            "control": "text"
+          },
+          {
+            "id": "title",
+            "target": "props.title",
+            "label": "Überschrift",
+            "control": "text"
+          },
+          {
+            "id": "image",
+            "target": "props.image",
+            "label": "Dein Bild",
+            "control": "image"
+          },
+          {
+            "id": "alt",
+            "target": "props.alt",
+            "label": "Bildbeschreibung für alle",
+            "control": "text"
+          },
+          {
+            "id": "caption",
+            "target": "props.caption",
+            "label": "Bildunterschrift",
+            "control": "textarea"
+          },
+          {
+            "id": "format",
+            "target": "props.format",
+            "label": "Bildformat",
+            "control": "select",
+            "options": [
+              {
+                "label": "Ganzes Bild",
+                "value": "original"
+              },
+              {
+                "label": "Querformat",
+                "value": "landscape"
+              },
+              {
+                "label": "Quadratisch",
+                "value": "square"
+              }
+            ]
+          },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Farbton",
+            "control": "select",
+            "options": [
+              {
+                "label": "Neutral",
+                "value": "neutral"
+              },
+              {
+                "label": "Rubin",
+                "value": "ruby"
+              },
+              {
+                "label": "Gold",
+                "value": "gold"
+              },
+              {
+                "label": "Minze",
+                "value": "mint"
+              }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Bewegung",
+            "control": "select",
+            "options": [
+              {
+                "label": "Keine",
+                "value": "none"
+              },
+              {
+                "label": "Einblenden",
+                "value": "fade"
+              },
+              {
+                "label": "Aufsteigen",
+                "value": "rise"
+              },
+              {
+                "label": "Schweben",
+                "value": "float"
+              },
+              {
+                "label": "Pulsieren",
+                "value": "pulse"
+              }
+            ]
+          }
+        ]
+      },
+      "ffe_refs": [
+        "K05",
+        "T05"
+      ]
     }
   ]
 }

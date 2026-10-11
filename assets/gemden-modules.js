@@ -5,6 +5,10 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
+  const memberDesign = typeof module === 'object' && module.exports
+    ? require('./member-design.js') : rootDesign();
+  function rootDesign() { return typeof globalThis !== 'undefined' ? globalThis.GemDenMemberDesign : null; }
+
   const SCHEMA_VERSION = '1.0.0';
   const MODULE_PERMISSION_PREFIX = 'module:';
   const MOTIONS = new Set(['none', 'fade', 'rise', 'float', 'pulse']);
@@ -83,7 +87,7 @@
       module.editor.fields.forEach(field => {
         requireCondition(/^[a-z][a-z0-9_]*$/.test(field.id || ''), `${module.type}: ungültige Editor-Feld-ID.`);
         requireCondition(/^(props|appearance)\.[a-z][a-z0-9_]*$/.test(field.target || ''), `${module.type}: unsicheres Editor-Ziel ${field.target}.`);
-        requireCondition(['text', 'textarea', 'select', 'link-list'].includes(field.control), `${module.type}: unbekanntes Editor-Steuerelement.`);
+        requireCondition(['text', 'textarea', 'select', 'link-list', 'image'].includes(field.control), `${module.type}: unbekanntes Editor-Steuerelement.`);
         if (field.control === 'select') requireCondition(Array.isArray(field.options) && field.options.length, `${module.type}: Auswahloptionen fehlen.`);
       });
     });
@@ -107,6 +111,7 @@
 
   function validatePageDocument(page, modules, capabilities) {
     requireCondition(isRecord(page), 'Seitendokument fehlt oder ist ungültig.');
+    requireCondition(new TextEncoder().encode(JSON.stringify(page)).length <= 1800000, 'Der Seitenentwurf ist zu groß. Bitte weniger oder kleinere Bilder verwenden.');
     requireCondition(page.schema_version === SCHEMA_VERSION, `Seitenschema ${SCHEMA_VERSION} wird benötigt.`);
     requireCondition(/^PAGE-[A-Z0-9-]+$/.test(page.id || ''), 'Die Seite benötigt eine stabile PAGE-ID.');
     requireCondition(isRecord(page.subject) && typeof page.subject.id === 'string', 'Seitensubjekt fehlt.');
@@ -155,6 +160,13 @@
         requireCondition(manifest, `Modul ${instance.type}@${instance.version} ist nicht registriert.`);
         requireCondition(isRecord(instance.bindings), `${instance.id}: Bindings fehlen.`);
         requireCondition(isRecord(instance.props), `${instance.id}: Props fehlen.`);
+        if (instance.props.image) {
+          requireCondition(memberDesign, 'Der Bildprüfer ist nicht verfügbar.');
+          memberDesign.safeImageSource(instance.props.image);
+        }
+        if (instance.type === 'gemden.profile-hero') {
+          requireCondition((memberDesign?.MOTIFS || ['ruby-gem']).includes(instance.props.visual || 'ruby-gem'), 'Unbekanntes Profilmotiv.');
+        }
         requireCondition(isRecord(instance.appearance), `${instance.id}: Appearance fehlt.`);
         requireCondition(TONES.has(instance.appearance.tone), `${instance.id}: unbekannter Ton.`);
         requireCondition(MOTIONS.has(instance.appearance.motion), `${instance.id}: unbekannte Animation.`);
@@ -314,7 +326,14 @@
     }
 
     const visual = element('div', { className: 'gdm-profile-visual', attrs: { 'aria-label': props.visual_label || 'Profilmotiv' } });
-    if (props.visual === 'ruby-gem') visual.append(element('div', { className: 'gdm-gem' }));
+    if (props.image) {
+      visual.append(element('img', { className: `gdm-portrait gdm-portrait-${props.frame || 'soft'}`, attrs: { src: memberDesign.safeImageSource(props.image), alt: props.visual_label || 'Profilmotiv', decoding: 'async' } }));
+    } else if (!props.visual || props.visual === 'ruby-gem') visual.append(element('div', { className: 'gdm-gem' }));
+    else {
+      const motif = element('div', { className: `gdm-motif gdm-motif-${props.visual}`, attrs: { role: 'img' } });
+      for (let i = 0; i < 5; i++) motif.append(element('i', { attrs: { 'aria-hidden': 'true' } }));
+      visual.append(motif);
+    }
     const grid = element('div', { className: 'grid two gdm-profile-grid' }, [copy, visual]);
     return decorate(element('header', { className: 'hero compact' }, [breadcrumb, grid]), instance, context);
   }
@@ -425,7 +444,24 @@
     return decorate(element('section', { className: 'section', attrs: { 'aria-labelledby': headingId } }, [head, grid]), instance, context);
   }
 
-  const renderers = { profileHero, skillGrid, evidenceGrid, projectGrid, linkCards };
+  function storyBlock(instance, bindings, context) {
+    const { head, headingId } = headingBlock(instance, instance.props);
+    const body = element('div', { className: 'gdm-story-text' });
+    String(instance.props.text || '').split(/\n\s*\n/).filter(text => text.trim()).forEach(text => body.append(element('p', { text })));
+    return decorate(element('section', { className: 'section panel gdm-story', attrs: { 'aria-labelledby': headingId } }, [head, body]), instance, context);
+  }
+
+  function imageBlock(instance, bindings, context) {
+    const props = instance.props;
+    const { head, headingId } = headingBlock(instance, props);
+    const figure = element('figure', { className: `gdm-image-figure gdm-image-${props.format || 'original'}` });
+    if (props.image) figure.append(element('img', { attrs: { src: memberDesign.safeImageSource(props.image), alt: props.alt || '', loading: 'lazy', decoding: 'async' } }));
+    else figure.append(element('div', { className: 'gdm-image-placeholder', text: 'Hier ist Platz für dein Bild.' }));
+    if (props.caption) figure.append(element('figcaption', { text: props.caption }));
+    return decorate(element('section', { className: 'section gdm-image-block', attrs: { 'aria-labelledby': headingId } }, [head, figure]), instance, context);
+  }
+
+  const renderers = { profileHero, skillGrid, evidenceGrid, projectGrid, linkCards, storyBlock, imageBlock };
 
   function applyTheme(node, theme, canAnimate) {
     Object.entries(theme.tokens || {}).forEach(([name, value]) => {

@@ -101,10 +101,10 @@ test('module catalogs reject editor fields that can write outside declared props
   );
 });
 
-test('custom header actions keep Puck’s visible draft-save action', async () => {
+test('custom header actions keep the private draft-save action connected to the current editor data', async () => {
   const source = await readFile(new URL('../editor-src/src/main.jsx', import.meta.url), 'utf8');
-  assert.match(source, /overrides=\{\{ headerActions: HeaderActions \}\}/);
-  assert.match(source, /<div className="editor-header-actions">\s*\{children\}/);
+  assert.match(source, /onPublish=\{saveDraft\}/);
+  assert.match(source, /aria-label="Entwurf sichern" onClick=\{\(\) => onSave\(getPuck\(\).appState.data\)\}/);
   assert.doesNotMatch(source, /renderHeaderActions=/);
 });
 

@@ -139,11 +139,11 @@
 
       const [staticResponse, fields, profileSkills, catalog, evidence, projects] = await Promise.all([
         originalFetch(communityUrl, { credentials: 'same-origin', headers: { Accept: 'application/json' } }),
-        query(client.from('profile_fields').select('field_key,value_text,sort_order').eq('member_id', memberId).order('sort_order')),
-        query(client.from('profile_skills').select('skill_id,statement,boundaries,sort_order').eq('member_id', memberId).order('sort_order')),
+        query(client.from('profile_fields').select('field_key,value_text,sort_order').eq('member_id', memberId).eq('visibility', 'public').eq('publication_status', 'published').order('sort_order')),
+        query(client.from('profile_skills').select('skill_id,statement,boundaries,sort_order').eq('member_id', memberId).eq('visibility', 'public').eq('publication_status', 'published').order('sort_order')),
         query(client.from('skills').select('id,name,description,branch,safety_note').eq('lifecycle_status', 'active')),
-        query(client.from('skill_evidence').select('stable_id,member_id,evidence_type,verification_status,title,description,source_label,created_at').eq('member_id', memberId).order('created_at')),
-        query(client.from('projects').select('stable_id,owner_member_id,title,summary,role_summary,lifecycle_status,started_on,completed_on,sort_order').eq('owner_member_id', memberId).order('sort_order'))
+        query(client.from('skill_evidence').select('stable_id,member_id,evidence_type,verification_status,title,description,source_label,created_at').eq('member_id', memberId).eq('visibility', 'public').eq('publication_status', 'published').order('created_at')),
+        query(client.from('projects').select('stable_id,owner_member_id,title,summary,role_summary,lifecycle_status,started_on,completed_on,sort_order').eq('owner_member_id', memberId).eq('visibility', 'public').eq('publication_status', 'published').order('sort_order'))
       ]);
       if (!staticResponse.ok) throw new Error('Öffentlicher Rückfall-Datensatz konnte nicht geladen werden.');
       const staticSource = await staticResponse.json();
@@ -163,6 +163,24 @@
           displayName: profile.display_name
         });
       }
+
+      if (!livePage) {
+        const response = await originalFetch(pageDocumentUrl, { credentials: 'same-origin', headers: { Accept: 'application/json' } });
+        if (!response.ok) throw new Error('Die Seitengrundlage konnte nicht geladen werden.');
+        livePage = await response.json();
+      }
+      if (!window.GemDenPublishedMemberPage) throw new Error('Der Prüfer für veröffentlichte Seiten fehlt.');
+      const alternatives = [];
+      // Julius has both a retained legacy route and the shared member route.
+      // Both trusted repository templates can be the base of his saved page.
+      if (memberId === 'MEM-JULIUS') {
+        const alternateUrl = personalizeTemplate ? '/assets/data/pages/julius.v1.json' : '/assets/data/pages/member-profile.v1.json';
+        const response = await originalFetch(alternateUrl, { credentials: 'same-origin', headers: { Accept: 'application/json' } });
+        if (!response.ok) throw new Error('Die gemeinsame Seitenvorlage konnte nicht geprüft werden.');
+        const alternate = await response.json();
+        alternatives.push(personalizeTemplate ? alternate : memberTemplate.personalizeMemberPageTemplate(alternate, { stableId: memberId, displayName: profile.display_name }));
+      }
+      livePage = await window.GemDenPublishedMemberPage.loadPublishedPage(client, memberId, livePage, alternatives);
 
       const fetchPublishedSource = (url, options) => {
         const target = url instanceof URL ? url : new URL(url, document.baseURI);

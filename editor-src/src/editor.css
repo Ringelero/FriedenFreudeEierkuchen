@@ -366,3 +366,64 @@ button, input, textarea, select { font: inherit; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
 }
+
+.editor-app { color: #211922; }
+.gemden-editor-canvas { display: block; padding: 16px; min-height: 100%; background-image: none; }
+.member-module-preview { margin-bottom: 20px; min-width: 0; }
+.member-module-preview .gdm-page { padding: 0; background: transparent; }
+.member-module-preview .gdm-module { margin-block: 0; }
+.member-module-preview .gdm-page .hero, .member-module-preview .gdm-page .panel { padding: clamp(24px, 4vw, 48px); }
+.member-image-field { display: grid; gap: 10px; min-width: 0; }
+.member-image-field img { width: 100%; max-height: 180px; object-fit: contain; border-radius: 12px; background: #f4f1f4; }
+.member-image-field label, .member-image-field button { padding: 10px; border: 1px solid #c9004650; border-radius: 10px; background: #fff5f8; color: #810033; text-align: center; font-weight: 750; cursor: pointer; }
+.member-image-field input { width: 100%; font-size: 16px; }
+.member-image-field p { margin: 0; font-size: .8rem; color: #6d626b; line-height: 1.5; }
+.member-image-field [role="alert"] { color: #9d0039; }
+.member-design-layer { position: fixed; z-index: 1200; inset: 0; display: grid; align-items: start; justify-items: end; padding: 75px 18px 18px; pointer-events: none; }
+.member-design-panel { width: min(610px, 100%); max-height: calc(100dvh - 94px); overflow: auto; padding: 24px; border: 1px solid #d9ced3; border-radius: 24px; background: #fffaf6; box-shadow: 0 25px 90px #21192230; pointer-events: auto; }
+.member-design-panel header { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.member-design-panel h2 { margin: 0; font-size: 1.8rem; line-height: 1.08; letter-spacing: -.04em; }
+.member-design-panel header button { flex-shrink: 0; width: 36px; height: 36px; border: 1px solid #d9ced3; border-radius: 50%; background: #fff; font-size: 24px; cursor: pointer; }
+.member-design-panel > p { color: #6d626b; line-height: 1.55; font-size: .9rem; }
+.member-design-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.member-design-grid button { display: grid; gap: 7px; text-align: left; padding: 12px; border: 1px solid #d9ced3; border-radius: 18px; color: #211922; background: white; cursor: pointer; }
+.member-design-grid button:hover, .member-design-grid button:focus-visible { outline: 2px solid var(--design-accent); outline-offset: 2px; }
+.member-design-grid strong { font-size: 1.08rem; }
+.member-design-grid button > span:not(.member-design-swatch) { color: #6d626b; line-height: 1.45; font-size: .82rem; }
+.member-design-grid b { color: var(--design-accent); font-size: .8rem; margin-top: 5px; }
+.member-design-swatch { position: relative; display: grid; place-items: center; height: 115px; overflow: hidden; border-radius: var(--design-radius); background: var(--design-surface); }
+.member-design-swatch i { width: 54px; height: 68px; background: var(--design-accent); clip-path: polygon(50% 0, 100% 35%, 75% 100%, 25% 100%, 0 35%); }
+.member-design-swatch i:not(:first-child) { display: none; }
+.swatch-garden i { border-radius: 0 90% 0 90%; clip-path: none; transform: rotate(-20deg); }
+.swatch-orbit i { border-radius: 50%; background: transparent; border: 2px solid var(--design-accent); clip-path: none; transform: rotate(35deg) scaleX(1.4); }
+.swatch-sunrise i { width: 68px; border-radius: 50%; background: #edbc54; clip-path: none; box-shadow: 0 0 0 12px #edbc5424; }
+.member-design-note { padding: 12px; background: #f1f8f4; border-radius: 12px; }
+.member-design-add { display: grid; gap: 10px; margin-top: 20px; font-size: .9rem; }
+.member-design-add > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.member-design-add button { padding: 10px 14px; border: 1px solid #d9ced3; border-radius: 12px; background: white; color: #810033; font-weight: 750; cursor: pointer; }
+.member-design-panel > a { color: #810033; font-weight: 800; }
+.member-page-preview { position: fixed; z-index: 1500; inset: 0; overflow: auto; background: #fffaf6; }
+.member-page-preview > header { position: sticky; top: 0; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 22px; background: #fffaf6f5; border-bottom: 1px solid #d9ced3; }
+.member-page-preview > header span { font-size: .8rem; color: #6d626b; }
+.member-page-preview > header button { margin-left: auto; padding: 10px 14px; background: #c90046; color: white; border: 0; border-radius: 12px; cursor: pointer; font-weight: 800; }
+.member-page-preview > .site-shell { padding-block: 24px 64px; }
+.editor-header-actions { flex-wrap: wrap; }
+.editor-header-actions button:first-child { color: white; background: #c90046; border-color: #c90046; }
+.member-design-grid button { min-width: 0; }
+.member-design-grid strong { overflow-wrap: anywhere; hyphens: auto; }
+.member-mobile-actions { display: none; }
+@media (max-width: 1024px) {
+  .editor-app { --workshop-height: calc(100dvh - 58px); }
+  .editor-header-actions { display: none; }
+  .member-mobile-actions { position: fixed; z-index: 1100; bottom: 0; left: 0; right: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; padding: 8px 6px; min-height: 58px; background: #fffaf6; border-top: 1px solid #d9ced3; }
+  .member-mobile-actions button { padding: 10px 2px; border: 1px solid #d9ced3; border-radius: 10px; color: #810033; background: white; font-size: .78rem; font-weight: 800; cursor: pointer; }
+  .member-mobile-actions button:first-child { background: #c90046; color: white; border-color: #c90046; }
+  .editor-status { bottom: 67px; }
+  .member-design-layer { padding: 70px 10px 10px; }
+  .member-design-panel { padding: 18px; max-height: calc(100dvh - 80px); }
+  .member-design-panel h2 { font-size: 1.5rem; }
+  .member-design-grid { gap: 10px; }
+  .member-design-swatch { height: 80px; }
+  .member-page-preview > header { padding: 10px 14px; gap: 8px; }
+  .editor-app input, .editor-app textarea, .editor-app select { font-size: 16px; }
+}
