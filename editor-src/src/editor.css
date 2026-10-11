@@ -407,6 +407,21 @@ button, input, textarea, select { font: inherit; }
 .member-page-preview > header span { font-size: .8rem; color: #6d626b; }
 .member-page-preview > header button { margin-left: auto; padding: 10px 14px; background: #c90046; color: white; border: 0; border-radius: 12px; cursor: pointer; font-weight: 800; }
 .member-page-preview > .site-shell { padding-block: 24px 64px; }
+.member-portfolio-preview { max-width: 1100px; margin: 20px auto 0; padding: 18px 22px; background: #fff; border: 1px solid #e4d7dc; border-radius: 20px; }
+.member-portfolio-preview p { margin: 10px 0; font-size: .9rem; line-height: 1.5; }
+.member-preview-switch, .member-portfolio-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.member-preview-switch button, .member-portfolio-tools button { min-height: 44px; padding: 10px 14px; border: 1px solid #d9ced3; border-radius: 12px; background: white; color: #810033; cursor: pointer; font-weight: 750; }
+.member-preview-switch button[aria-pressed="true"] { background: #810033; color: white; border-color: #810033; }
+.member-portfolio-tools a { color: #810033; font-weight: 750; padding: 10px 0; }
+.member-portfolio-tools button:disabled { opacity: .6; cursor: wait; }
+.member-portfolio-counts { color: #6d626b; }
+.member-preview-message:empty { display: none; }
+.member-preview-closed { max-width: 650px; margin: 44px auto; padding: 24px; text-align: center; }
+.member-preview-closed > span { color: #c90046; font-size: 2rem; }
+.member-preview-closed h1 { font-size: clamp(1.6rem, 5vw, 2.5rem); line-height: 1.2; }
+.member-preview-closed p { line-height: 1.6; }
+.member-preview-closed a { color: #810033; font-weight: 750; }
+.editor-fatal a { display: block; margin-top: 14px; }
 .editor-header-actions { flex-wrap: wrap; }
 .editor-header-actions button:first-child { color: white; background: #c90046; border-color: #c90046; }
 .member-design-grid button { min-width: 0; }
@@ -425,5 +440,6 @@ button, input, textarea, select { font: inherit; }
   .member-design-grid { gap: 10px; }
   .member-design-swatch { height: 80px; }
   .member-page-preview > header { padding: 10px 14px; gap: 8px; }
+  .member-portfolio-preview { margin: 14px 10px 0; padding: 14px; }
   .editor-app input, .editor-app textarea, .editor-app select { font-size: 16px; }
 }

@@ -342,6 +342,7 @@
     const props = instance.props;
     const { head, headingId } = headingBlock(instance, props);
     const grid = element('div', { className: 'grid three' });
+    if (!bindings.skills.length) grid.append(element('p', { className: 'empty-state', text: 'Hier sind noch keine Fähigkeiten eingetragen.' }));
     bindings.skills.forEach((skill, index) => {
       const card = element('article', { className: 'card gdm-skill-card' });
       card.style.setProperty('--gdm-index', String(index));
@@ -367,6 +368,7 @@
     panel.append(element('p', { className: 'eyebrow', text: props.eyebrow }));
     panel.append(element('h2', { text: props.title, attrs: { id: headingId } }));
     const grid = element('div', { className: 'grid two' });
+    if (!bindings.evidence.length) grid.append(element('p', { className: 'empty-state', text: 'Hier sind noch keine Nachweise eingetragen.' }));
     bindings.evidence.forEach((evidence, index) => {
       const card = element('article', { className: 'card gdm-evidence-card' });
       card.style.setProperty('--gdm-index', String(index));

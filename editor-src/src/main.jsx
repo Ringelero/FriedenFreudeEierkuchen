@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import { Puck, useGetPuck } from '@puckeditor/core';
@@ -15,6 +15,9 @@ import { fromPuckData, toPuckData } from './gemden-adapter.mjs';
 import { createPageRevisionStore } from './page-revision-store.mjs';
 import { createPuckConfig } from './puck-config.jsx';
 import { DesignChooser, PagePreview } from './design-panels.jsx';
+import { emptyPortfolio, loadOwnPortfolio, portfolioCommunity } from './editor-portfolio.mjs';
+
+const PortfolioContext = createContext(null);
 
 const LEGACY_PAGE_SOURCES = Object.freeze({
   'PAGE-MEM-JULIUS': '/assets/data/pages/julius.v1.json'
@@ -136,45 +139,6 @@ function pageSource(pageId, memberTemplate) {
   return MEMBER_TEMPLATE_SOURCE;
 }
 
-async function loadEditorProfile(client, memberId) {
-  if (!client?.from) return null;
-  try {
-    const { data, error } = await client
-      .from('profiles')
-      .select('stable_id,display_name')
-      .eq('stable_id', memberId)
-      .maybeSingle();
-    if (error) return null;
-    return data || null;
-  } catch {
-    return null;
-  }
-}
-
-function withEditorMember(community, memberId, displayName) {
-  const source = structuredClone(community);
-  const existing = (source.members || []).find(member => member.id === memberId);
-  const member = {
-    id: memberId,
-    slug: memberId.slice(4).toLowerCase(),
-    name: displayName,
-    status: 'private-editor',
-    tagline: '',
-    bio: '',
-    dynasty_ids: [],
-    kiez_ids: [],
-    skill_ids: [],
-    boundaries: [],
-    evidence_ids: [],
-    project_ids: [],
-    ...(existing || {}),
-    name: displayName
-  };
-  source.members = (source.members || []).filter(item => item.id !== memberId);
-  source.members.push(member);
-  return source;
-}
-
 function StatusBar({ status }) {
   return (
     <div className={`editor-status editor-status-${status.kind}`} role="status" aria-live="polite">
@@ -184,7 +148,8 @@ function StatusBar({ status }) {
   );
 }
 
-function BlobHeaderActions({ children, buildDocument, setStatus, publicProfileHref, catalog, community, mobileOnly = false, onSave }) {
+function BlobHeaderActions({ children, buildDocument, setStatus, publicProfileHref, catalog, mobileOnly = false, onSave }) {
+  const { community, portfolio, baseCommunity, playground, refreshPortfolio } = useContext(PortfolioContext);
   const getPuck = useGetPuck();
   const [open, setOpen] = useState(false);
   const [designOpen, setDesignOpen] = useState(false);
@@ -381,13 +346,31 @@ function BlobHeaderActions({ children, buildDocument, setStatus, publicProfileHr
           setStatus({ kind: 'success', message: 'Gestaltungswelt übernommen. Du kannst sie weiter verändern oder rückgängig machen. Zum Speichern „Entwurf sichern“ wählen.' });
         } catch (error) { setStatus({ kind: 'error', message: formatError(error) }); }
       }} />}
-      {previewPage && <PagePreview document={previewPage} catalog={catalog} community={community} onClose={() => setPreviewPage(null)} />}
+      {previewPage && <PagePreview document={previewPage} catalog={catalog} community={community} portfolio={portfolio} baseCommunity={baseCommunity} playground={playground} onRefresh={refreshPortfolio} onClose={() => setPreviewPage(null)} />}
     </>
   );
 }
 
-function EditorApp({ page, catalog, capabilities, community, revisionStore, initialStatus, displayName, publicProfileHref }) {
+function EditorApp({ page, catalog, capabilities, initialPortfolio, baseCommunity, playground, client, revisionStore, initialStatus, displayName, publicProfileHref }) {
   const [status, setStatus] = useState(initialStatus);
+  const [portfolio, setPortfolio] = useState(initialPortfolio);
+  const [locked, setLocked] = useState(false);
+  const community = useMemo(() => {
+    const result = portfolioCommunity(baseCommunity, portfolio);
+    if (playground) result.members[0].tagline = 'Gestalte einen Ort für deine Ideen, Bilder und Projekte.';
+    return result;
+  }, [baseCommunity, portfolio, playground]);
+  useEffect(() => {
+    if (playground || !client?.auth?.onAuthStateChange) return;
+    const { data } = client.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT' || (session?.user && session.user.id !== initialPortfolio.profile.id)) setLocked(true);
+    });
+    return () => data?.subscription?.unsubscribe();
+  }, [client, playground, initialPortfolio]);
+  const refreshPortfolio = useCallback(async () => {
+    const next = await loadOwnPortfolio(client, initialPortfolio.profile.stable_id);
+    setPortfolio(next);
+  }, [client, initialPortfolio]);
   const config = useMemo(() => createPuckConfig(page, catalog, community), [page, catalog, community]);
   const initialData = useMemo(() => toPuckData(page, catalog), [page, catalog]);
 
@@ -409,14 +392,16 @@ function EditorApp({ page, catalog, capabilities, community, revisionStore, init
   }, [buildDocument, revisionStore]);
 
   const HeaderActions = useMemo(() => function HeaderActionsOverride({ children }) {
-    return <BlobHeaderActions onSave={saveDraft} buildDocument={buildDocument} setStatus={setStatus} publicProfileHref={publicProfileHref} catalog={catalog} community={community} />;
-  }, [buildDocument, publicProfileHref, catalog, community, saveDraft]);
+    return <BlobHeaderActions onSave={saveDraft} buildDocument={buildDocument} setStatus={setStatus} publicProfileHref={publicProfileHref} catalog={catalog} />;
+  }, [buildDocument, publicProfileHref, catalog, saveDraft]);
   const Header = useMemo(() => function HeaderOverride({ children }) {
-    return <>{children}<BlobHeaderActions mobileOnly onSave={saveDraft} buildDocument={buildDocument} setStatus={setStatus} publicProfileHref={publicProfileHref} catalog={catalog} community={community} /></>;
-  }, [buildDocument, publicProfileHref, catalog, community, saveDraft]);
+    return <>{children}<BlobHeaderActions mobileOnly onSave={saveDraft} buildDocument={buildDocument} setStatus={setStatus} publicProfileHref={publicProfileHref} catalog={catalog} /></>;
+  }, [buildDocument, publicProfileHref, catalog, saveDraft]);
+
+  if (locked) return <FatalError error={new Error('Du bist nicht mehr mit diesem Profil angemeldet. Melde dich erneut an, um deine eigenen Inhalte zu sehen.')} />;
 
   return (
-    <div className="editor-app">
+    <PortfolioContext.Provider value={{ community, portfolio, baseCommunity, playground, refreshPortfolio }}><div className="editor-app">
       <StatusBar status={status} />
       <Puck
         config={config}
@@ -435,7 +420,7 @@ function EditorApp({ page, catalog, capabilities, community, revisionStore, init
         ]}
         height="var(--workshop-height, 100dvh)"
       />
-    </div>
+    </div></PortfolioContext.Provider>
   );
 }
 
@@ -479,7 +464,7 @@ function DraftConflict({ conflict, onResolve }) {
   );
 }
 
-function WorkshopApp({ initialLoaded, catalog, capabilities, community, revisionStore, displayName, publicProfileHref }) {
+function WorkshopApp({ initialLoaded, catalog, capabilities, initialPortfolio, baseCommunity, playground, client, revisionStore, displayName, publicProfileHref }) {
   const [loaded, setLoaded] = useState(initialLoaded);
 
   function resolveConflict(choice) {
@@ -498,7 +483,10 @@ function WorkshopApp({ initialLoaded, catalog, capabilities, community, revision
       page={loaded.document}
       catalog={catalog}
       capabilities={capabilities}
-      community={community}
+      initialPortfolio={initialPortfolio}
+      baseCommunity={baseCommunity}
+      playground={playground}
+      client={client}
       revisionStore={revisionStore}
       initialStatus={loaded.status}
       displayName={displayName}
@@ -514,6 +502,7 @@ function FatalError({ error }) {
       <h1>Die Seitenwerkstatt konnte nicht starten.</h1>
       <p>{formatError(error)}</p>
       <a href="/konto/">Zum persönlichen Konto</a>
+      <a href="/gestalten/?vorschau=1">Gestaltung ohne Anmeldung ausprobieren</a>
     </main>
   );
 }
@@ -536,17 +525,12 @@ async function start() {
     fetchJson('/assets/data/community-v0.1.json')
   ]);
   const client = playground ? null : window.FFE_SUPABASE_CLIENT || null;
-  const profile = await loadEditorProfile(client, memberId);
-  const displayName = playground ? 'Deine kleine Welt' : profile?.display_name
-    || baseCommunity.members?.find(member => member.id === memberId)?.name
-    || 'Mitglied';
+  const portfolio = playground ? emptyPortfolio(memberId, 'Deine kleine Welt') : await loadOwnPortfolio(client, memberId);
+  const displayName = portfolio.profile.display_name;
   const publishedPage = source === MEMBER_TEMPLATE_SOURCE
     ? memberTemplate.personalizeMemberPageTemplate(basePage, { stableId: memberId, displayName })
     : basePage;
-  const community = withEditorMember(baseCommunity, memberId, displayName);
   if (playground) {
-    const member = community.members.find(item => item.id === memberId);
-    member.tagline = 'Gestalte einen Ort für deine Ideen, Bilder und Projekte.';
     publishedPage.regions.flatMap(region => region.modules).forEach(instance => {
       if (instance.type === 'gemden.skill-grid') instance.props.title = 'Was ich einbringen kann.';
       if (instance.type === 'gemden.project-grid') instance.props.title = 'Meine Vorhaben.';
@@ -568,7 +552,10 @@ async function start() {
       initialLoaded={loaded}
       catalog={catalog}
       capabilities={capabilities}
-      community={community}
+      initialPortfolio={portfolio}
+      baseCommunity={baseCommunity}
+      playground={playground}
+      client={client}
       revisionStore={revisionStore}
       displayName={displayName}
       publicProfileHref={playground ? '/konto/' : memberTemplate.publicProfilePath(memberId)}
