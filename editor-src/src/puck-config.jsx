@@ -1,269 +1,84 @@
-import React from 'react';
+import React, { createContext, useContext, useEffect, useRef } from 'react';
+import { ImageField } from './image-field.jsx';
 
-function clone(value) {
-  return JSON.parse(JSON.stringify(value));
-}
-
-function atTarget(instance, target) {
-  const [group, key] = target.split('.');
-  return instance[group]?.[key];
-}
-
-function moduleKey(manifest) {
-  return `${manifest.type}@${manifest.version}`;
-}
-
-function selectOptions(field) {
-  return (field.options || []).map(option => ({ label: option.label, value: option.value }));
-}
+const PreviewTheme = createContext(null);
+const clone = value => value === undefined ? '' : JSON.parse(JSON.stringify(value));
 
 function createField(field) {
-  if (field.control === 'text') return { type: 'text', label: field.label };
-  if (field.control === 'textarea') return { type: 'textarea', label: field.label };
-  if (field.control === 'select') return { type: 'select', label: field.label, options: selectOptions(field) };
-  if (field.control === 'link-list') {
-    return {
-      type: 'array',
-      label: field.label,
-      min: 0,
-      max: 8,
-      getItemSummary: item => item?.title || 'Neue Wegkarte',
-      defaultItemProps: {
-        icon: '✨',
-        title: 'Neue Wegkarte',
-        description: 'Beschreibe, wohin dieser Weg führt.',
-        label: 'Öffnen →',
-        href: '/community/',
-        tone: 'ruby'
-      },
-      arrayFields: {
-        icon: { type: 'text', label: 'Symbol' },
-        title: { type: 'text', label: 'Titel' },
-        description: { type: 'textarea', label: 'Beschreibung' },
-        label: { type: 'text', label: 'Linktext' },
-        href: { type: 'text', label: 'Interner Pfad' },
-        tone: {
-          type: 'select',
-          label: 'Farbton',
-          options: [
-            { label: 'Rubin', value: 'ruby' },
-            { label: 'Gold', value: 'gold' },
-            { label: 'Minze', value: 'mint' },
-            { label: 'Neutral', value: 'neutral' }
-          ]
-        }
-      }
-    };
-  }
+  if (['text', 'textarea'].includes(field.control)) return { type: field.control, label: field.label };
+  if (field.control === 'select') return { type: 'select', label: field.label, options: field.options };
+  if (field.control === 'image') return { type: 'custom', label: field.label, render: ImageField };
+  if (field.control === 'link-list') return {
+    type: 'array', label: field.label, min: 0, max: 8,
+    getItemSummary: item => item?.title || 'Neue Wegkarte',
+    defaultItemProps: { icon: '✨', title: 'Neue Wegkarte', description: '', label: 'Öffnen →', href: '/community/', tone: 'ruby' },
+    arrayFields: {
+      icon: { type: 'text', label: 'Symbol' }, title: { type: 'text', label: 'Titel' },
+      description: { type: 'textarea', label: 'Beschreibung' }, label: { type: 'text', label: 'Linktext' },
+      href: { type: 'text', label: 'Interner Pfad' },
+      tone: { type: 'select', label: 'Farbton', options: ['ruby', 'gold', 'mint', 'neutral'].map((value, i) => ({ value, label: ['Rubin', 'Gold', 'Minze', 'Neutral'][i] })) }
+    }
+  };
   throw new Error(`Unbekanntes Editor-Steuerelement ${field.control}.`);
 }
 
-function dataIndex(page, community) {
-  const collections = new Map(
-    Object.entries(community)
-      .filter(([, items]) => Array.isArray(items))
-      .map(([name, items]) => [name, new Map(items.map(item => [item.id, item]))])
-  );
-  const entity = bindingName => {
-    const binding = page.bindings[bindingName];
-    if (!binding || binding.kind !== 'entity') return null;
-    return collections.get(binding.collection)?.get(binding.id) || null;
-  };
-  const member = entity('member');
-  return {
-    member,
-    dynasty: entity('dynasty'),
-    skills: (member?.skill_ids || []).map(id => collections.get('skills')?.get(id)).filter(Boolean),
-    evidence: (member?.evidence_ids || []).map(id => collections.get('evidence')?.get(id)).filter(Boolean),
-    projects: (member?.project_ids || []).map(id => collections.get('projects')?.get(id)).filter(Boolean)
-  };
-}
-
-function ModuleShell({ type, tone, motion, children }) {
-  return (
-    <section className={`gemden-preview-module tone-${tone || 'neutral'} motion-${motion || 'none'}`} data-preview-type={type}>
-      {children}
-    </section>
-  );
-}
-
-function ProfileHero({ props, data, type }) {
-  return (
-    <ModuleShell type={type} tone={props.tone} motion={props.motion}>
-      <div className="preview-hero-copy">
-        <p className="preview-eyebrow">{props.eyebrow}</p>
-        <h1>{data.member?.name || 'Mitglied'}</h1>
-        <p className="preview-lead">{data.member?.tagline || data.member?.bio || 'Hier entsteht eine persönliche GemDen-Seite.'}</p>
-        <div className="preview-chips">
-          {data.member?.id && <span>{data.member.id}</span>}
-          {data.dynasty?.name && <span>{data.dynasty.name}</span>}
-        </div>
-      </div>
-      <div className="preview-gem" role="img" aria-label={props.visual_label || 'Profilmotiv'}>◆</div>
-    </ModuleShell>
-  );
-}
-
-function SkillGrid({ props, data, type }) {
-  return (
-    <ModuleShell type={type} tone={props.tone} motion={props.motion}>
-      <p className="preview-eyebrow">{props.eyebrow}</p>
-      <h2>{props.title}</h2>
-      <p className="preview-intro">{props.intro}</p>
-      <div className="preview-card-grid">
-        {data.skills.map(skill => (
-          <article className="preview-card" key={skill.id}>
-            <strong>{skill.name}</strong>
-            <p>{skill.description}</p>
-            <small>{skill.id}</small>
-          </article>
-        ))}
-      </div>
-    </ModuleShell>
-  );
-}
-
-function EvidenceGrid({ props, data, type }) {
-  return (
-    <ModuleShell type={type} tone={props.tone} motion={props.motion}>
-      <p className="preview-eyebrow">{props.eyebrow}</p>
-      <h2>{props.title}</h2>
-      <div className="preview-card-grid">
-        {data.evidence.map(item => (
-          <article className="preview-card" key={item.id}>
-            <strong>{item.title}</strong>
-            <p>{item.summary || item.description}</p>
-            <small>{item.id}</small>
-          </article>
-        ))}
-      </div>
-      <p className="preview-boundary"><strong>Grenze:</strong> {props.boundary}</p>
-    </ModuleShell>
-  );
-}
-
-function LinkCards({ props, type }) {
-  return (
-    <ModuleShell type={type} tone={props.tone} motion={props.motion}>
-      <p className="preview-eyebrow">{props.eyebrow}</p>
-      <h2>{props.title}</h2>
-      <div className="preview-card-grid">
-        {(props.items || []).map((item, index) => (
-          <article className={`preview-card link-tone-${item.tone || 'neutral'}`} key={`${item.href}-${index}`}>
-            <span className="preview-icon" aria-hidden="true">{item.icon}</span>
-            <strong>{item.title}</strong>
-            <p>{item.description}</p>
-            <span className="preview-link">{item.label}</span>
-          </article>
-        ))}
-      </div>
-    </ModuleShell>
-  );
-}
-
-function ProjectGrid({ props, data, type }) {
-  return (
-    <ModuleShell type={type} tone={props.tone} motion={props.motion}>
-      <p className="preview-eyebrow">{props.eyebrow}</p>
-      <h2>{props.title}</h2>
-      <p className="preview-intro">{props.intro}</p>
-      <div className="preview-card-grid">
-        {data.projects.map(project => (
-          <article className="preview-card" key={project.id}>
-            <strong>{project.title}</strong>
-            <p>{project.summary}</p>
-            {project.role_summary && <p>Meine Rolle: {project.role_summary}</p>}
-            <small>{project.id}</small>
-          </article>
-        ))}
-      </div>
-    </ModuleShell>
-  );
-}
-
-function renderModule(type, props, data) {
-  if (type === 'gemden.profile-hero') return <ProfileHero props={props} data={data} type={type} />;
-  if (type === 'gemden.skill-grid') return <SkillGrid props={props} data={data} type={type} />;
-  if (type === 'gemden.evidence-grid') return <EvidenceGrid props={props} data={data} type={type} />;
-  if (type === 'gemden.project-grid') return <ProjectGrid props={props} data={data} type={type} />;
-  if (type === 'gemden.link-cards') return <LinkCards props={props} type={type} />;
-  return <ModuleShell type={type} tone={props.tone} motion={props.motion}><p>Vorschau für {type}</p></ModuleShell>;
+function PublicModulePreview({ manifest, props, page, catalog, bindings }) {
+  const ref = useRef(null);
+  const theme = useContext(PreviewTheme);
+  useEffect(() => {
+    const instance = {
+      id: String(props.id || manifest.type).toLowerCase().replace(/[^a-z0-9-]+/g, '-'), type: manifest.type, version: manifest.version,
+      props: clone(manifest.editor.default_props), appearance: clone(manifest.editor.default_appearance),
+      bindings: Object.fromEntries(manifest.data_inputs.filter(input => page.bindings[input.name]).map(input => [input.name, input.name]))
+    };
+    const original = page.regions.flatMap(region => region.modules).find(item => item.type === manifest.type);
+    if (original) instance.props = { ...clone(original.props), ...instance.props };
+    manifest.editor.fields.forEach(field => {
+      const [group, key] = field.target.split('.');
+      if (props[field.id] !== undefined) instance[group][key] = clone(props[field.id]);
+    });
+    const snapshot = { ...page, theme: theme || page.theme, regions: [{ id: 'main', layout: 'flow', modules: [instance] }] };
+    try {
+      ref.current.replaceChildren(window.GemDenModules.renderPage(snapshot, catalog, bindings));
+    } catch (error) {
+      ref.current.textContent = `Vorschau: ${error.message}`;
+    }
+    const preventNavigation = event => { if (event.target.closest('a')) event.preventDefault(); };
+    ref.current.addEventListener('click', preventNavigation);
+    return () => ref.current?.removeEventListener('click', preventNavigation);
+  }, [manifest, props, page, catalog, bindings, theme]);
+  return <div ref={ref} className="member-module-preview" />;
 }
 
 export function createPuckConfig(page, catalog, community) {
-  const data = dataIndex(page, community);
+  const bindings = window.GemDenModules.resolveBindings(page.bindings, { community }, page.data_sources);
   const categories = {};
   const components = {};
-
   catalog.modules.forEach(manifest => {
-    const componentName = moduleKey(manifest);
+    const key = `${manifest.type}@${manifest.version}`;
     const fields = {};
-    const defaultInstance = {
-      props: clone(manifest.editor.default_props),
-      appearance: clone(manifest.editor.default_appearance)
-    };
     const defaultProps = {};
     manifest.editor.fields.forEach(field => {
       fields[field.id] = createField(field);
-      defaultProps[field.id] = clone(atTarget(defaultInstance, field.target));
+      const [group, name] = field.target.split('.');
+      defaultProps[field.id] = clone((group === 'props' ? manifest.editor.default_props : manifest.editor.default_appearance)[name]);
     });
-    components[componentName] = {
-      label: manifest.title,
-      fields,
-      defaultProps,
-      render: props => renderModule(manifest.type, props, data)
+    components[key] = {
+      label: manifest.title, fields, defaultProps,
+      render: props => <PublicModulePreview manifest={manifest} props={props} page={page} catalog={catalog} bindings={bindings} />
     };
-    const category = categories[manifest.editor.category] || {
-      title: manifest.editor.category_title,
-      components: [],
-      defaultExpanded: true
-    };
-    category.components.push(componentName);
-    categories[manifest.editor.category] = category;
+    categories[manifest.editor.category] ||= { title: manifest.editor.category_title, components: [], defaultExpanded: true };
+    categories[manifest.editor.category].components.push(key);
   });
-
-  return {
-    categories,
-    components,
-    root: {
-      label: 'Seitendesign',
-      fields: {
-        accent: { type: 'text', label: 'Akzentfarbe (Hex)' },
-        accent_deep: { type: 'text', label: 'Dunkle Akzentfarbe (Hex)' },
-        surface: { type: 'text', label: 'Flächenfarbe (Hex)' },
-        radius: {
-          type: 'select',
-          label: 'Ecken',
-          options: [
-            { label: 'Klar · 12 px', value: '12px' },
-            { label: 'Weich · 20 px', value: '20px' },
-            { label: 'Rund · 30 px', value: '30px' },
-            { label: 'Sehr rund · 40 px', value: '40px' }
-          ]
-        },
-        motion: {
-          type: 'select',
-          label: 'Bewegungsprofil',
-          options: [
-            { label: 'Keine Bewegung', value: 'none' },
-            { label: 'Sanft', value: 'gentle' },
-            { label: 'Ausdrucksstark', value: 'expressive' }
-          ]
-        }
-      },
-      render: ({ children, accent, accent_deep, surface, radius, motion }) => (
-        <main
-          className={`gemden-editor-canvas theme-motion-${motion || 'none'}`}
-          style={{
-            '--editor-accent': accent,
-            '--editor-accent-deep': accent_deep,
-            '--editor-surface': surface,
-            '--editor-radius': radius
-          }}
-        >
-          {children}
-        </main>
-      )
-    }
-  };
+  return { categories, components, root: {
+    label: 'Seitendesign', fields: {
+      accent: { type: 'text', label: 'Akzentfarbe (Hex)' }, accent_deep: { type: 'text', label: 'Dunkle Akzentfarbe (Hex)' },
+      surface: { type: 'text', label: 'Hintergrund (Hex)' },
+      radius: { type: 'select', label: 'Ecken', options: ['12px', '20px', '30px', '40px'].map((value, i) => ({ value, label: ['Klar', 'Weich', 'Rund', 'Sehr rund'][i] })) },
+      motion: { type: 'select', label: 'Bewegung', options: ['none', 'gentle', 'expressive'].map((value, i) => ({ value, label: ['Aus', 'Sanft', 'Lebendig'][i] })) }
+    },
+    render: ({ children, accent, accent_deep, surface, radius, motion, preset }) => <PreviewTheme.Provider value={{ ...page.theme, preset: preset || page.theme.preset, tokens: { accent, accent_deep, surface, radius }, motion }}>
+      <main className="gemden-editor-canvas" style={{ backgroundColor: surface }}>{children}</main>
+    </PreviewTheme.Provider>
+  } };
 }

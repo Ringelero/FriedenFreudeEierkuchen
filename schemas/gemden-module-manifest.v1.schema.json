@@ -90,7 +90,7 @@
                   "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
                   "target": { "type": "string", "pattern": "^(props|appearance)\\.[a-z][a-z0-9_]*$" },
                   "label": { "type": "string", "minLength": 1 },
-                  "control": { "enum": ["text", "textarea", "select", "link-list"] },
+                  "control": { "enum": ["text", "textarea", "select", "link-list", "image"] },
                   "options": {
                     "type": "array",
                     "items": {
