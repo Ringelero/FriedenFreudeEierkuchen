@@ -205,7 +205,9 @@
       const meta = state.data.meta;
       $('#source-details').innerHTML = `<div><dt>Aktuelle Buchquelle</dt><dd>${escapeHtml(meta.source_of_truth)} · ${escapeHtml(meta.book_version)}</dd></div><div><dt>Maschinenindex</dt><dd>Version ${escapeHtml(meta.version)} · ${escapeHtml(meta.date)}</dd></div><div><dt>Profilabdeckung</dt><dd>${escapeHtml(state.data.operational_profile_schema?.coverage)}</dd></div><div><dt>Normpriorität</dt><dd>${(state.data.norm_priority || []).map(escapeHtml).join(' → ')}</dd></div><div><dt>Politischer Status</dt><dd>Vor-Satzungsfassung; laut Index nicht politisch final.</dd></div>`;
       $('#source-footer').textContent = `${meta.book_version} · Systemindex v${meta.version} · ${meta.date}`;
-      wireFilters(); wireRouter(); openHashTarget();
+      wireFilters(); wireRouter();
+      window.dispatchEvent(new Event('gemden:system-ready'));
+      openHashTarget();
     } catch (error) {
       $('#institution-list').innerHTML = `<div class="notice archive"><strong>Fehler:</strong> ${escapeHtml(error.message)}</div>`;
       $('#system-stats').innerHTML = '<span>Quelle nicht geladen</span>';

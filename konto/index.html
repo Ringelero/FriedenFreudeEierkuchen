@@ -8,8 +8,9 @@
   <link rel="stylesheet" href="../assets/site.css?v=20261010-1">
   <link rel="stylesheet" href="../assets/blob.css?v=20261010-1">
   <link rel="stylesheet" href="./konto.css?v=20260925-1">
+  <link rel="stylesheet" href="../assets/worlds.css?v=20261011-1">
 </head>
-<body data-area="account" data-blob-mode="guide">
+<body class="world-desk" data-area="account" data-blob-mode="guide">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <div class="site-shell account-shell">
     <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation">
@@ -17,7 +18,7 @@
     </nav>
 
     <main id="inhalt">
-      <header class="hero compact account-hero work-hero">
+      <header class="hero compact account-hero work-hero area-hero">
         <div class="hero-copy">
           <p class="eyebrow">Persönlicher Zugang</p>
           <h1 class="display small">Dein Konto.</h1>
@@ -29,8 +30,8 @@
       <section class="section working-section account-grid" aria-labelledby="account-title">
         <div class="section-head">
           <p class="eyebrow">Pilotzugang</p>
-          <h2 id="account-title">Einladung annehmen oder anmelden.</h2>
-          <p>Mit einem selbst gesetzten Passwort kannst du dich in jedem Browser anmelden. Für den ersten Zugang bleibt der einmalige E-Mail-Link verfügbar.</p>
+          <h2 id="account-title">Dein persönlicher Arbeitsbereich.</h2>
+          <p>Hier beginnen dein Profil, deine Möglichkeiten und deine Zusammenarbeit.</p>
         </div>
 
         <article class="panel account-panel" id="signed-out-panel">
@@ -41,7 +42,8 @@
               <h3>Sicher anmelden</h3>
             </div>
           </div>
-          <p class="account-copy">Hast du bereits ein Passwort gesetzt, funktioniert die Anmeldung direkt. Andernfalls fordere den einmaligen Link an, öffne ihn auf deinem Handy und setze anschließend unten im Konto ein Passwort.</p>
+          <p class="account-copy">Melde dich mit deinem selbst gesetzten Passwort an. Für den ersten Zugang steht dir auch der einmalige E-Mail-Link zur Verfügung.</p>
+          <details class="source-fold"><summary>Erster Zugang mit einer Einladung?</summary><p>Fordere den einmaligen Link für die E-Mail-Adresse deiner Einladung an und öffne ihn auf deinem Gerät. Setze anschließend im Konto ein eigenes Passwort, damit du dich künftig direkt anmelden kannst.</p></details>
           <form class="form-grid" id="login-form">
             <div class="field">
               <label for="login-email">E-Mail-Adresse</label>
@@ -74,6 +76,7 @@
             <div><dt>Profilstatus</dt><dd id="account-profile-status">Wird geladen …</dd></div>
             <div><dt>Erweiterte Rechte</dt><dd id="account-permissions">Wird geladen …</dd></div>
           </dl>
+          <nav class="workspace-nav" aria-label="Deine Arbeitsbereiche"><a href="#profile-form">Profilrahmen</a><a href="#portfolio-workspace">Portfolio</a><a href="#publication-center">Veröffentlichen</a><a href="#opportunity-workspace">Möglichkeiten</a><a href="#resonance-center">Resonanz</a><a href="#page-setup-title">Eigene Seite</a></nav>
           <p class="form-status" id="account-data-status" role="status" aria-live="polite"></p>
 
           <form class="form-grid profile-form" id="profile-form" hidden>
@@ -527,9 +530,9 @@
     </footer>
   </div>
 
-  <script>window.BLOB_CONFIG={mode:"guide",root:"../"};</script>
+  <script>window.BLOB_CONFIG={autoGreet:false,mode:"guide",root:"../"};</script>
   <script src="../assets/site.js" defer></script>
-  <script src="../assets/blob.js" defer></script>
+  <script src="../assets/blob.js?v=20261011-1" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2" defer></script>
   <script src="../assets/supabase-config.js" defer></script>
   <script src="../assets/supabase-client.js" defer></script>

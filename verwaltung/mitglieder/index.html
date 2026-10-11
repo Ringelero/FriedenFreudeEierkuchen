@@ -7,8 +7,9 @@
   <title>Mitglieder verwalten · GemDen</title>
   <link rel="stylesheet" href="../../assets/site.css?v=20261010-1">
   <link rel="stylesheet" href="./mitglieder.css?v=20261005-1">
+  <link rel="stylesheet" href="../../assets/worlds.css?v=20261011-1">
 </head>
-<body data-area="account">
+<body class="world-desk" data-area="account">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <div class="site-shell admin-shell">
     <nav class="site-nav" data-site-nav data-root="../../" aria-label="Hauptnavigation">
@@ -16,7 +17,7 @@
     </nav>
 
     <main id="inhalt">
-      <header class="hero compact admin-hero work-hero">
+      <header class="hero compact admin-hero work-hero area-hero">
         <div class="hero-copy">
           <p class="eyebrow">Geschützter Arbeitsbereich</p>
           <h1 class="display small">Mitglieder verwalten.</h1>
@@ -24,7 +25,7 @@
         </div>
         <div class="status-row">
           <span class="status-chip open" id="admin-connection-chip">Berechtigung wird geprüft</span>
-          <span class="id-chip">manage_members · GemDen</span>
+          <span class="status-chip experiment">geschützt</span>
         </div>
       </header>
 
@@ -64,6 +65,7 @@
         </article>
 
         <div class="admin-workspace" id="admin-workspace" hidden>
+          <nav class="workspace-nav" aria-label="Verwaltungsbereiche"><a href="#invite-title">Einladen</a><a href="#directory-title">Konten &amp; Rechte</a><a href="#audit-title">Verlauf</a></nav>
           <div class="admin-toolbar">
             <div class="admin-metrics" aria-label="Mitgliederübersicht">
               <div><strong id="metric-total">0</strong><span>Konten</span></div>

@@ -13,29 +13,50 @@
     .match-person{border-color:rgba(0,168,150,.26);background:linear-gradient(145deg,#fff,rgba(0,168,150,.08))}.match-reasons{margin:10px 0 0;padding-left:20px;color:var(--muted);line-height:1.5}.match-score{color:var(--green);font-weight:900}.question-list{display:grid;gap:7px;margin:10px 0 0;padding:0;list-style:none}.question-list li::before{content:"?";display:inline-grid;place-items:center;width:21px;height:21px;margin-right:8px;border-radius:50%;color:white;background:var(--ruby);font-weight:900}
     .opportunity-stream-shell{display:grid;gap:18px}.opportunity-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.opportunity-stream{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.opportunity-public-card{display:grid;align-content:start;gap:13px}.opportunity-public-head{display:flex;align-items:start;justify-content:space-between;gap:14px}.opportunity-public-head h3{margin:2px 0 0;font-size:clamp(1.35rem,3vw,2rem);line-height:1}.opportunity-summary{margin:0;color:var(--muted);line-height:1.6}.opportunity-owner{margin:0;color:var(--mint);font-weight:900}.opportunity-facts{display:grid;gap:8px;margin:0}.opportunity-facts div{display:grid;grid-template-columns:minmax(78px,110px) 1fr;gap:10px}.opportunity-facts dt{color:var(--muted);font-size:.78rem;font-weight:900;text-transform:uppercase}.opportunity-facts dd{margin:0}.opportunity-skill-block h4{margin:0}.opportunity-boundary{margin:0;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;line-height:1.5}.opportunity-response-callout,.opportunity-response-state{display:grid;gap:8px;padding:14px;border:1px solid rgba(0,168,150,.22);border-radius:16px;background:rgba(255,255,255,.72)}.opportunity-response-callout p,.opportunity-response-state p{margin:0;color:var(--muted);line-height:1.5}.opportunity-response-state.response-accepted{border-color:rgba(0,168,150,.4);background:rgba(0,168,150,.1)}.opportunity-response-state.response-declined,.opportunity-response-state.response-withdrawn{border-color:var(--line);background:rgba(255,255,255,.5)}.opportunity-response-composer{overflow:hidden;border:1px solid rgba(201,0,70,.22);border-radius:16px;background:rgba(255,255,255,.76)}.opportunity-response-composer>summary{padding:13px 15px;color:var(--ruby);cursor:pointer;font-weight:900}.opportunity-response-form{display:grid;gap:12px;padding:0 15px 15px}.opportunity-response-form textarea{min-height:110px}.opportunity-response-boundary{margin:0;color:var(--muted);font-size:.86rem;line-height:1.5}.compact-public-button{width:fit-content;padding:9px 12px;font-size:.84rem;box-shadow:none}.opportunity-public-card.signal-have{background:linear-gradient(145deg,#fff,rgba(255,184,92,.12))}.opportunity-public-card.signal-can{background:linear-gradient(145deg,#fff,rgba(0,168,150,.11))}.opportunity-public-card.signal-need{background:linear-gradient(145deg,#fff,rgba(201,0,70,.08))}.opportunity-public-card.signal-time{background:linear-gradient(145deg,#fff,rgba(92,78,255,.08))}.opportunity-public-card.signal-chance{background:linear-gradient(145deg,#fff,rgba(255,226,92,.14))}.opportunity-empty{grid-column:1/-1}.opportunity-empty p{margin-bottom:0}@media(max-width:720px){.opportunity-filters,.opportunity-stream{grid-template-columns:1fr}.opportunity-public-head{flex-direction:column}.opportunity-facts div{grid-template-columns:1fr;gap:2px}.compact-public-button{width:100%}}
   </style>
+  <link rel="stylesheet" href="../assets/worlds.css?v=20261011-1">
 </head>
-<body data-area="matching" data-blob-mode="sales">
+<body class="world-workshop" data-area="matching" data-blob-mode="sales">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <div class="site-shell">
     <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation"><a class="site-mark" href="../">GemDen</a><div class="nav-links"><a href="../">Start</a><a href="../community/">Community</a><a href="../leistungen/" aria-current="page">Möglichkeiten</a><a href="../system/">FFE-System</a></div></nav>
     <main id="inhalt">
-      <header class="hero compact matching-hero work-hero">
+      <header class="hero compact matching-hero work-hero area-hero">
         <div class="hero-copy">
-          <p class="eyebrow">Möglichkeitenstrom</p>
+          <p class="eyebrow">Werkstatt der Möglichkeiten</p>
           <h1 class="display small">Was möchtest du möglich machen?</h1>
           <p class="lead">Teile, was du mitbringst oder gerade brauchst. Blob hilft anschließend, eine konkrete Situation in passende Fähigkeiten zu übersetzen.</p>
-          <nav class="signal-dock" aria-label="Fünf Möglichkeiten-Signale"><a href="#moeglichkeitenstrom">Ich habe</a><a href="#moeglichkeitenstrom">Ich kann</a><a href="#matching-title">Ich brauche</a><a href="#moeglichkeitenstrom">Ich habe Zeit</a><a href="#moeglichkeitenstrom">Es gibt eine Chance</a></nav>
         </div>
-        <div class="status-row"><span class="status-chip open">öffentlicher Strom</span><span class="status-chip experiment">regelbasiert</span></div>
+        <aside class="purpose-note"><strong>Ein Wunsch ist ein Anfang.</strong><span>Probier die Eingabe aus oder entdecke veröffentlichte Angebote. Die Auswertung deines Wunschtextes bleibt im Browser.</span></aside>
       </header>
 
-      <section class="section working-section" id="moeglichkeitenstrom" aria-labelledby="opportunity-stream-title">
+      <section class="section working-section" aria-labelledby="matching-title">
+        <div class="panel prompt-panel">
+          <div class="section-head"><p class="eyebrow">Erster Versuch</p><h2 id="matching-title">Beschreibe deinen Wunsch.</h2><p>Dieser Prototyp benutzt nachvollziehbare Regeln im Browser, noch keine freie KI und keine versteckte Bewertung.</p></div>
+          <form class="form-grid" id="matching-form">
+            <div class="field"><label for="request-text">Dein Wunsch, Problem oder Auftrag</label><textarea id="request-text" required placeholder="Zum Beispiel: Ich wünsche mir eine coole Lichterkette, die auf Musik reagiert."></textarea><small>Schreib ruhig natürlich. Es werden keine Daten gesendet oder gespeichert.</small></div>
+            <div class="examples" aria-label="Beispiele">
+              <button class="example" type="button" data-example="Ich wünsche mir eine coole Lichterkette, die auf Musik reagiert.">coole Lichterkette</button>
+              <button class="example" type="button" data-example="Unser Flurlicht flackert und wir möchten die Ursache sicher prüfen lassen.">flackerndes Licht</button>
+              <button class="example" type="button" data-example="Ich brauche Hilfe, um einen chaotischen Raum zu putzen und dauerhaft Ordnung zu schaffen.">putzen &amp; Ordnung</button>
+              <button class="example" type="button" data-example="Ich möchte ein selbstgemachtes Stofftier verschenken.">Stofftier</button>
+              <button class="example" type="button" data-example="Wir brauchen jemanden, der Belege sorgfältig sortiert und eine einfache Buchhaltung vorbereitet.">Belege sortieren</button>
+            </div>
+            <div class="button-row"><button class="button" type="submit">Fähigkeiten finden</button><button class="button secondary" id="reset-matching" type="button">Neu anfangen</button></div>
+            <p id="matching-status" class="form-status" role="status"></p>
+          </form>
+          <noscript><style>#matching-form{display:none!important}</style><div class="notice"><strong>Manueller Rückfallweg:</strong> Das automatische Zerlegen in Fähigkeiten braucht JavaScript. Ohne Automatik kannst du die Grenzen auf dieser Seite lesen und die <a href="../community/">öffentlichen Profile und Community-Bereiche</a> selbst vergleichen. Es wird nichts gesendet.</div></noscript>
+          <div class="result-box" id="matching-result" hidden aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section" id="moeglichkeitenstrom" aria-labelledby="opportunity-stream-title">
         <div class="section-head">
           <p class="eyebrow">Haben · Können · Brauchen · Zeit · Chance</p>
           <h2 id="opportunity-stream-title">Öffentliche Möglichkeiten.</h2>
           <p>Hier erscheinen nur bewusst veröffentlichte Einträge von ebenfalls veröffentlichten Profilen. Private Entwürfe und geschlossene Mitgliederbereiche bleiben unsichtbar.</p>
         </div>
         <div class="panel opportunity-stream-shell">
+          <nav class="signal-dock" aria-label="Möglichkeiten nach Signal ansehen"><a href="#moeglichkeitenstrom" data-signal-filter="have">Ich habe</a><a href="#moeglichkeitenstrom" data-signal-filter="can">Ich kann</a><a href="#moeglichkeitenstrom" data-signal-filter="need">Ich brauche</a><a href="#moeglichkeitenstrom" data-signal-filter="time">Ich habe Zeit</a><a href="#moeglichkeitenstrom" data-signal-filter="chance">Es gibt eine Chance</a></nav>
           <div class="opportunity-filters" aria-label="Möglichkeiten filtern">
             <div class="field">
               <label for="opportunity-filter-signal">Signal</label>
@@ -83,25 +104,7 @@
         </div>
       </section>
 
-      <section class="section" aria-labelledby="matching-title">
-        <div class="panel prompt-panel">
-          <div class="section-head"><p class="eyebrow">Erster Versuch</p><h2 id="matching-title">Erzähl Blob davon.</h2><p>Dieser Prototyp benutzt nachvollziehbare Regeln im Browser, noch keine freie KI und keine versteckte Bewertung.</p></div>
-          <form class="form-grid" id="matching-form">
-            <div class="field"><label for="request-text">Dein Wunsch, Problem oder Auftrag</label><textarea id="request-text" required placeholder="Zum Beispiel: Ich wünsche mir eine coole Lichterkette, die auf Musik reagiert."></textarea><small>Schreib ruhig natürlich. Es werden keine Daten gesendet oder gespeichert.</small></div>
-            <div class="examples" aria-label="Beispiele">
-              <button class="example" type="button" data-example="Ich wünsche mir eine coole Lichterkette, die auf Musik reagiert.">coole Lichterkette</button>
-              <button class="example" type="button" data-example="Unser Flurlicht flackert und wir möchten die Ursache sicher prüfen lassen.">flackerndes Licht</button>
-              <button class="example" type="button" data-example="Ich brauche Hilfe, um einen chaotischen Raum zu putzen und dauerhaft Ordnung zu schaffen.">putzen &amp; Ordnung</button>
-              <button class="example" type="button" data-example="Ich möchte ein selbstgemachtes Stofftier verschenken.">Stofftier</button>
-              <button class="example" type="button" data-example="Wir brauchen jemanden, der Belege sorgfältig sortiert und eine einfache Buchhaltung vorbereitet.">Belege sortieren</button>
-            </div>
-            <div class="button-row"><button class="button" type="submit">Fähigkeiten finden</button><button class="button secondary" id="reset-matching" type="button">Neu anfangen</button></div>
-            <p id="matching-status" class="form-status" role="status"></p>
-          </form>
-          <noscript><style>#matching-form{display:none!important}</style><div class="notice"><strong>Manueller Rückfallweg:</strong> Das automatische Zerlegen in Fähigkeiten braucht JavaScript. Ohne Automatik kannst du die Beispiele und Grenzen auf dieser Seite lesen und die <a href="../community/">öffentlichen Profile und Community-Bereiche</a> selbst vergleichen. Es wird nichts gesendet.</div></noscript>
-          <div class="result-box" id="matching-result" hidden aria-live="polite"></div>
-        </div>
-      </section>
+
 
       <section class="section" aria-labelledby="not-ranking-title">
         <div class="grid two">
@@ -131,13 +134,14 @@
     </main>
     <footer class="footer"><span>Matching-Prototyp · keine Buchung, kein Profilranking</span><a href="../system/#institution-W01">W01 im System ansehen</a></footer>
   </div>
-  <script>window.BLOB_CONFIG={mode:"sales",root:"../",context:"matching",actionLabel:"Wunsch starten",actionTarget:"#request-text"};</script>
+  <script>window.BLOB_CONFIG={autoGreet:false,mode:"sales",root:"../",context:"matching",actionLabel:"Wunsch starten",actionTarget:"#request-text"};</script>
   <script src="../assets/site.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="../assets/supabase-config.js" defer></script>
   <script src="../assets/supabase-client.js" defer></script>
   <script src="./opportunities.js?v=20260925-1" defer></script>
-  <script src="../assets/blob.js" defer></script>
+  <script src="./entry-points.js?v=20261011-1" defer></script>
+  <script src="../assets/blob.js?v=20261011-1" defer></script>
   <script src="./matching.js?v=20260925-1" defer></script>
 </body>
 </html>

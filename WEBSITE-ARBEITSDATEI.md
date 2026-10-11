@@ -1,7 +1,7 @@
 # GemDen / FriedenFreudeEierkuchen – Website-Arbeitsdatei
 
-Version: 0.6
-Stand: 5. Oktober 2026
+Version: 0.7
+Stand: 11. Oktober 2026
 Status: gemeinsame technische und inhaltliche Planungsgrundlage  
 Kein Ersatz für Satzung, Buch oder legitimierte FFE-Entscheidungen
 
@@ -22,6 +22,18 @@ Sie darf nicht:
 - kulturelle Namen, Rituale oder Ränge festlegen,
 - offene Rechtsfragen als geklärt darstellen,
 - Teil IV des Buches als aktuellen Regelstand behandeln.
+
+### Aktueller Oberflächenstand
+
+Die Handyansicht vom 10. Oktober zeigt alle fünf Hauptwege vollständig, kompakte Inhalte, gut bedienbare Formulare und direkte Einstiege vor dem Startportal. Die Designrunde vom 11. Oktober baut darauf auf:
+
+- Die Community zeigt P-Hain, Rubybubys und Julius als unterschiedlich gestaltete Räume. P-Hain verwendet eine mintfarbene Nachbarschaftsszene, Rubybubys einen Rubinraum. Die Illustrationen sind lokale SVG-Elemente.
+- Bei den Möglichkeiten steht die Wunsch-Eingabe vor dem öffentlichen Strom. Die fünf Signal-Einstiege wählen den passenden bestehenden Stromfilter aus.
+- Das FFE-System trennt Wegweiser, Institutionen, Methoden, Entwicklung und Quellen in einzeln sichtbare Ansichten. Bestehende Links zu Institutionen und Methoden, Zurück-Navigation und die Eingabehilfe von Blob bleiben erreichbar. Ohne JavaScript bleibt der direkte Quellenzugang verfügbar.
+- Konto und Verwaltung erhalten kompakte Köpfe und Sprungwege zu ihren Arbeitsbereichen. Geschützte Inhalte folgen weiterhin den bisherigen Lade- und Berechtigungszuständen.
+- Blob begrüßt in den überarbeiteten Bereichen ohne automatisch geöffneten Dialog. Antippen und Antworten auf Aktionen funktionieren weiter; die Startseite behält ihre bisherige Begrüßung.
+
+Neue gemeinsame Stile liegen in `assets/worlds.css`, Szenen in `assets/world-scenes.svg`. Die Systemansichten verwenden `system/views.js`; Signal-Einstiege verwenden `leistungen/entry-points.js`. CSS- und Skriptverweise dieser Runde tragen `20261011-1`. Datenverträge, Buchindex, Sichtbarkeitsregeln und Backend-Funktionen bleiben auf dem bisherigen Stand.
 
 ## 1. Verbindliche Lesereihenfolge
 
