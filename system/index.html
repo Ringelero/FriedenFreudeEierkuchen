@@ -8,13 +8,14 @@
   <link rel="stylesheet" href="../assets/site.css?v=20261010-1">
   <link rel="stylesheet" href="../assets/blob.css?v=20261010-1">
   <link rel="stylesheet" href="./system.css">
+  <link rel="stylesheet" href="../assets/worlds.css?v=20261011-1">
 </head>
-<body data-area="system" data-blob-mode="guide">
+<body class="world-atlas" data-area="system" data-blob-mode="guide">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <div class="site-shell system-shell">
     <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation"><a class="site-mark" href="../">GemDen</a><div class="nav-links"><a href="../">Start</a><a href="../community/">Community</a><a href="../leistungen/">Leistungen</a><a href="../system/" aria-current="page">FFE-System</a></div></nav>
     <main id="inhalt">
-      <header class="hero compact system-hero work-hero">
+      <header class="hero compact system-hero work-hero area-hero">
         <div class="hero-copy">
           <p class="eyebrow">Regeln, Methoden und Wege</p>
           <h1 class="display small">FFE-System</h1>
@@ -22,9 +23,10 @@
         </div>
         <div class="stats" id="system-stats" aria-live="polite"><span>Lade aktuelle Quelle …</span></div>
       </header>
-      <noscript><style>#system-stats,section[aria-labelledby="router-title"],section[aria-labelledby="institutions-title"],section[aria-labelledby="methods-title"],section[aria-labelledby="network-title"]{display:none!important}</style><div class="notice archive"><strong>Manueller Rückfallweg:</strong> Der interaktive Systembrowser braucht JavaScript. Die unveränderte maschinenlesbare Quelle bleibt direkt als <a href="../assets/data/ffe-systemindex-v0.6.json">FFE-Systemindex v0.6</a> erreichbar. Teil IV ist weiterhin nur historisches Archiv.</div></noscript>
+      <nav class="view-switcher" data-system-navigation aria-label="Bereiche im FFE-System"><a href="#wegweiser" data-system-target="wegweiser">Wegweiser</a><a href="#institutionen" data-system-target="institutionen">Institutionen</a><a href="#methoden" data-system-target="methoden">Methoden</a><a href="#entwicklung" data-system-target="entwicklung">Entwicklung</a><a href="#quellen" data-system-target="quellen">Quellen</a></nav>
+      <noscript><style>[data-system-navigation],#system-stats,section[aria-labelledby="router-title"],section[aria-labelledby="institutions-title"],section[aria-labelledby="methods-title"],section[aria-labelledby="network-title"]{display:none!important}</style><div class="notice archive"><strong>Manueller Rückfallweg:</strong> Der interaktive Systembrowser braucht JavaScript. Die unveränderte maschinenlesbare Quelle bleibt direkt als <a href="../assets/data/ffe-systemindex-v0.6.json">FFE-Systemindex v0.6</a> erreichbar. Teil IV ist weiterhin nur historisches Archiv.</div></noscript>
 
-      <section class="section working-section" aria-labelledby="router-title">
+      <section class="section working-section" id="wegweiser" data-system-view aria-labelledby="router-title">
         <div class="panel router-panel">
           <div class="section-head"><p class="eyebrow">Situation zuerst</p><h2 id="router-title">Was ist gerade los?</h2><p>Der Wegweiser nennt passende aktuelle Institutionen und operative Profile. Wenn die Situation unklar bleibt, fragt er nach — er erfindet keine Regel.</p></div>
           <form class="form-grid" id="router-form">
@@ -35,7 +37,7 @@
         </div>
       </section>
 
-      <section class="section" aria-labelledby="institutions-title">
+      <section class="section working-section" id="institutionen" data-system-view aria-labelledby="institutions-title">
         <div class="section-head"><p class="eyebrow">Aktueller Kern · Teil II</p><h2 id="institutions-title">Institutionen &amp; operative Profile</h2><p>Jede Karte folgt demselben Muster: Auslöser, Ziel, Prüffragen, harte Grenzen, empfohlener Weg, Werkzeuge, Eskalation und Ergebnis.</p></div>
         <div class="system-tools">
           <label class="sr-only" for="institution-search">Institutionen durchsuchen</label><input class="search-input" id="institution-search" type="search" placeholder="ID, Titel, Auslöser oder Werkzeug suchen …">
@@ -45,13 +47,13 @@
         <div class="system-list" id="institution-list"><div class="loading">Systemindex wird geladen …</div></div>
       </section>
 
-      <section class="section" aria-labelledby="methods-title">
+      <section class="section working-section" id="methoden" data-system-view aria-labelledby="methods-title">
         <div class="section-head"><p class="eyebrow">D02 · Methodenbibliothek</p><h2 id="methods-title">22 Entscheidungsmethoden</h2><p>Eine Methode ist kein automatisches Gesetz. Die passende Auswahl hängt von Situation, Rechten, Betroffenheit, Reversibilität und geltender Satzung ab.</p></div>
         <div class="system-tools"><label class="sr-only" for="method-search">Methoden durchsuchen</label><input class="search-input" id="method-search" type="search" placeholder="Methode, Einsatz oder Risiko suchen …"></div>
         <p class="result-count" id="method-count"></p><div class="method-grid" id="method-list"></div>
       </section>
 
-      <section class="section" aria-labelledby="network-title">
+      <section class="section working-section" id="entwicklung" data-system-view aria-labelledby="network-title">
         <div class="section-head"><p class="eyebrow">M05 · Entwicklungsnetz</p><h2 id="network-title">Entwicklung ist ein Netz, keine Menschenrangliste.</h2><p>Neun Zweige und fünf Verantwortungsringe beschreiben mögliche Lern- und Wirkungspfade. Ein höherer Ring bedeutet mehr Verantwortung im Kontext, nicht mehr menschlichen Wert.</p></div>
         <div class="ring-row" id="ring-list"></div>
         <div class="notice" id="node-status-summary">Quellenstatus der Entwicklungsknoten wird geladen …</div>
@@ -59,7 +61,7 @@
         <p class="result-count" id="node-count"></p><div class="node-grid" id="node-list"></div>
       </section>
 
-      <section class="section" aria-labelledby="source-title">
+      <section class="section working-section" id="quellen" data-system-view aria-labelledby="source-title">
         <div class="panel source-panel">
           <p class="eyebrow">Quellenstatus</p><h2 id="source-title">Was hier als aktuell gilt.</h2>
           <dl class="detail-list" id="source-details"></dl>
@@ -71,7 +73,7 @@
     </main>
     <footer class="footer"><span id="source-footer">FFE-Systemindex wird geladen</span><a href="../">Zur Startseite</a></footer>
   </div>
-  <script>window.BLOB_CONFIG={mode:"guide",root:"../",context:"system",actionLabel:"Situation prüfen",actionTarget:"#router-input"};</script>
-  <script src="../assets/site.js" defer></script><script src="../assets/blob.js" defer></script><script src="./system.js" defer></script>
+  <script>window.BLOB_CONFIG={autoGreet:false,mode:"guide",root:"../",context:"system",actionLabel:"Situation prüfen",actionTarget:"#router-input"};</script>
+  <script src="../assets/site.js" defer></script><script src="../assets/blob.js?v=20261011-1" defer></script><script src="./views.js?v=20261011-1" defer></script><script src="./system.js?v=20261011-1" defer></script>
 </body>
 </html>

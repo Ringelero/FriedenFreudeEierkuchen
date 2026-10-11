@@ -7,43 +7,54 @@
   <title>Community · GemDen</title>
   <link rel="stylesheet" href="../assets/site.css?v=20261010-1">
   <link rel="stylesheet" href="../assets/blob.css?v=20261010-1">
+  <link rel="stylesheet" href="../assets/worlds.css?v=20261011-1">
 </head>
-<body data-area="community" data-blob-mode="social">
+<body class="world-community" data-area="community" data-blob-mode="social">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <div class="site-shell">
     <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation"><a class="site-mark" href="../">GemDen</a><div class="nav-links"><a href="../">Start</a><a href="../community/" aria-current="page">Community</a><a href="../leistungen/">Leistungen</a><a href="../system/">FFE-System</a></div></nav>
     <main id="inhalt">
-      <header class="hero compact work-hero">
+      <header class="hero compact work-hero area-hero">
         <div class="hero-copy">
           <p class="eyebrow">FriedenFreudeEierkuchen · Community</p>
           <h1 class="display small">Orte, Verbindungen, Menschen.</h1>
           <p class="lead">Zugehörigkeit ist ein Netz, keine Schublade. Entdecke einen Ort, eine Dynastie oder einen Menschen und folge von dort den Verbindungen.</p>
         </div>
-        <div class="status-row"><span class="status-chip experiment">Öffentlicher Prototyp</span><span class="id-chip">R01</span></div>
+        <aside class="purpose-note"><strong>Eine Welt, mehrere Wege.</strong><span>Ein Ort verbindet den Alltag. Eine Dynastie verbindet Menschen. Dein Profil zeigt, was du einbringst.</span></aside>
       </header>
 
       <section class="section working-section" aria-labelledby="community-wege">
-        <div class="section-head"><p class="eyebrow">Wähle einen Einstieg</p><h2 id="community-wege">Die Community ist kein Verzeichnis.</h2><p>Diese drei Räume sind bereits begehbar. Später wachsen zwischen ihnen Projekte, Termine, Fähigkeiten und gemeinsame Ressourcen.</p></div>
-        <div class="community-map" aria-label="Verbundene Community-Räume">
-          <a class="community-place" href="./kieze/p-hain/"><span class="place-symbol" aria-hidden="true">🏘️</span><span class="id-chip">KIEZ-P-HAIN</span><h3>P‑Hain</h3><p>Der lokale Raum für Termine, Hinweise, Hilfe, Wissen und gemeinsame Vorhaben.</p><span class="place-go">Kiez betreten</span></a>
-          <a class="community-place" href="./dynastien/rubybubys/"><span class="place-symbol" aria-hidden="true">💎</span><span class="id-chip">DYN-RUBYBUBYS</span><h3>Rubybubys</h3><p>Eine Dynastie, die sich über Kultur, Projekte, Fähigkeiten und gemeinsame Dinge entwickelt.</p><span class="place-go">Dynastie entdecken</span></a>
-          <a class="community-place" href="./mitglieder/julius/"><span class="place-symbol" aria-hidden="true">🧑‍🔧</span><span class="id-chip">MEM-JULIUS</span><h3>Julius</h3><p>Ein Mitgliedsprofil mit Fähigkeiten, Projekten, Grenzen und bewusst sichtbaren Verbindungen.</p><span class="place-go">Profil ansehen</span></a>
+        <div class="section-head"><p class="eyebrow">Wähle deinen Weg</p><h2 id="community-wege">Wo möchtest du hin?</h2></div>
+        <div class="room-map" aria-label="Community-Räume">
+          <a class="world-room room-neighborhood" href="./kieze/p-hain/" aria-labelledby="room-p-hain">
+            <div class="room-art" aria-hidden="true"><svg viewBox="0 0 400 240"><use href="../assets/world-scenes.svg#neighborhood"></use></svg></div>
+            <div class="room-content"><span class="eyebrow">Ein Ort für den Alltag</span><h3 id="room-p-hain">P‑Hain</h3><p>Nachbarschaft, Termine, Hilfe und das Wissen, das wir miteinander teilen.</p><span class="room-enter">Kiez betreten</span></div>
+          </a>
+          <a class="world-room room-dynasty" href="./dynastien/rubybubys/" aria-labelledby="room-rubybubys">
+            <div class="room-art" aria-hidden="true"><svg viewBox="0 0 240 260"><use href="../assets/world-scenes.svg#ruby"></use></svg></div>
+            <div class="room-content"><span class="eyebrow">Eine Verbindung zwischen Menschen</span><h3 id="room-rubybubys">Rubybubys</h3><p>Freundschaft, Fähigkeiten und gemeinsame Vorhaben. Die eigene Kultur wächst mit den Menschen.</p><span class="room-enter">Dynastie entdecken</span></div>
+          </a>
+          <a class="world-room room-person" href="./mitglieder/julius/" aria-labelledby="room-julius">
+            <div class="room-art" aria-hidden="true"><svg viewBox="0 0 240 240"><use href="../assets/world-scenes.svg#member"></use></svg></div>
+            <div class="room-content"><span class="eyebrow">Ein Mensch mit eigenen Wegen</span><h3 id="room-julius">Julius</h3><p>Fähigkeiten, Projekte und Verbindungen — soweit sie bewusst veröffentlicht sind.</p><span class="room-enter">Profilseite ansehen</span></div>
+          </a>
         </div>
+        <div class="community-join"><p><strong>Dein eigener Einstieg.</strong>Im Konto pflegst du dein Profil und entscheidest selbst, was die anderen sehen dürfen.</p><a class="button" href="../konto/">Zum eigenen Konto</a></div>
       </section>
 
       <section class="section">
-        <div class="panel">
-          <p class="eyebrow">R01 · Dynastien &amp; polyzentrische Kreise</p>
-          <h2>Lokale Freiheit, gemeinsame Schnittstellen.</h2>
+        <details class="source-fold">
+          <summary>Wie Kieze, Dynastien und Rechte zusammenhängen</summary>
           <p>Kieze und Dynastien können eigene Arbeitsweisen und eine eigene Kultur entwickeln. Grundrechte, Datenschutz und gemeinsame technische Schnittstellen bleiben davon getrennt. Kulturelle Namen und Rituale werden nicht von Blob oder der Website erfunden.</p>
           <div class="notice"><strong>Noch offen:</strong> Geschichte, Rituale, Ränge und die Sprache von Meisterschaft bei den Rubybubys werden später von den dafür legitimierten Menschen entschieden.</div>
-        </div>
+          <p><a href="../system/#institution-R01">R01 · Dynastien &amp; polyzentrische Kreise im System ansehen</a></p>
+        </details>
       </section>
     </main>
     <footer class="footer"><span>Community-Struktur · Stand 16. September 2026</span><a href="../system/#institution-R01">R01 im System ansehen</a></footer>
   </div>
-  <script>window.BLOB_CONFIG={mode:"social",root:"../"};</script>
+  <script>window.BLOB_CONFIG={autoGreet:false,mode:"social",root:"../"};</script>
   <script src="../assets/site.js" defer></script>
-  <script src="../assets/blob.js" defer></script>
+  <script src="../assets/blob.js?v=20261011-1" defer></script>
 </body>
 </html>

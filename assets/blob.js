@@ -187,6 +187,6 @@
     }, 3900);
 
     setMode(pageMode);
-    setTimeout(nextLine, 750);
+    if (cfg.autoGreet !== false) setTimeout(nextLine, 750);
   });
 })();
