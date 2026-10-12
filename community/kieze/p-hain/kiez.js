@@ -1,5 +1,4 @@
 (function () {
-  const content = window.KIEZ_CONTENT || {};
   const tabs = [...document.querySelectorAll('.kiez-tab')];
   const panels = [...document.querySelectorAll('[data-panel]')];
 
@@ -12,13 +11,15 @@
       tab.setAttribute('aria-selected', String(active));
       tab.tabIndex = active ? 0 : -1;
     });
+    const selectedTab = tabs.find(tab => tab.dataset.section === id);
+    if (selectedTab) selectedTab.parentElement.scrollLeft = selectedTab.offsetLeft - (selectedTab.parentElement.clientWidth - selectedTab.offsetWidth) / 2;
     panels.forEach(item => {
       const active = item === panel;
       item.classList.toggle('active', active);
       item.hidden = !active;
     });
     if (focusPanel) {
-      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      panel.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
       panel.focus({ preventScroll: true });
     }
   }
@@ -56,37 +57,21 @@
   document.documentElement.classList.add('kiez-js');
   showSection(panels.some(panel => panel.id === initial) ? initial : 'overview', false);
 
-  const escapeHtml = value => String(value || '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]);
-  function renderList(targetId, items) {
-    const target = document.getElementById(targetId);
-    if (!target) return;
-    if (!items || !items.length) {
-      target.innerHTML = '<div class="empty-state">Noch ist hier nichts eingetragen. Das ist ein echter leerer Zustand — kein erfundener Beispieltermin.</div>';
-      return;
-    }
-    target.innerHTML = items.map(item => `<article class="entry" data-content-id="${escapeHtml(item.id)}">
-      <div class="entry-meta"><span>${escapeHtml(item.id)}</span><span>${escapeHtml(item.status)}</span></div>
-      <h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p>
-      ${item.review ? `<p class="entry-review">Prüfung: ${escapeHtml(item.review)}</p>` : ''}
-    </article>`).join('');
-  }
-  renderList('knowledge-list', content.knowledge);
-
   const repairForm = document.getElementById('repair-form');
-  repairForm?.addEventListener('submit', event => {
-    event.preventDefault();
+  document.getElementById('repair-assist')?.addEventListener('click', () => {
+    if (!repairForm.reportValidity()) return;
     const urgency = document.getElementById('repair-urgency').value;
-    const danger = urgency === 'mögliche Gefahr';
+    const danger = urgency === 'danger';
     const result = document.getElementById('repair-result');
     result.hidden = false;
     result.innerHTML = `<article class="result-block">
-      <span class="id-chip">SIT-PHAIN-REPAIR-DEMO</span>
+      <span class="id-chip">Deine Beobachtung</span>
       <h3>${danger ? 'Bitte zuerst Sicherheit klären.' : 'Die Situation ist lokal eingeordnet.'}</h3>
-      <p>${danger ? 'Bei akuter Gefahr Abstand halten und die passende Notfall-, Hausverwaltungs- oder Fachstelle kontaktieren. Blob trifft keine Ferndiagnose.' : 'Ein späteres System würde jetzt Rückfragen stellen, nötige Fähigkeiten bestimmen und nur passende Profile oder Zuständigkeiten vorschlagen.'}</p>
-      <p><strong>Noch nicht gesendet:</strong> Diese öffentliche Demo speichert keine Reparaturmeldung.</p>
+      <p>${danger ? 'Bei akuter Gefahr Abstand halten und die passende Notfall-, Hausverwaltungs- oder Fachstelle kontaktieren. Blob trifft keine Ferndiagnose.' : 'Halte fest, seit wann das Problem auftritt, wie oft es vorkommt und welcher Bereich betroffen ist. Die passende Hausverwaltungs- oder Fachstelle kann den nächsten Schritt mit dir klären.'}</p>
+      <p><strong>Noch nicht gesendet:</strong> „Privat sichern“ bewahrt deinen Entwurf für dich auf. An die Hausverwaltung wird nichts geschickt.</p>
     </article>`;
     document.getElementById('repair-status').textContent = 'Vorschau erstellt — es wurden keine Daten übertragen.';
-    window.dispatchEvent(new CustomEvent('blob:say', { detail: { text: danger ? 'Mögliche Gefahr? Dann bin ich nur der Wegweiser. Erst Menschen und Fachstellen, dann Datenbank.' : 'Ich habe die Situation sortiert. Speichern kann ich sie erst, wenn das geschützte Kiez-Backend steht.', meta: 'Blob · Navigator, keine Ferndiagnose' } }));
+    window.dispatchEvent(new CustomEvent('blob:say', { detail: { text: danger ? 'Mögliche Gefahr? Bitte kläre zuerst die Sicherheit mit der passenden Fachstelle.' : 'Du kannst deine Beobachtung jetzt privat sichern. Eine Nachricht an die Hausverwaltung musst du selbst senden.', meta: 'Blob · Navigator, keine Ferndiagnose' } }));
   });
 
   const signalForm = document.getElementById('signal-form');
