@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import { Puck, useGetPuck } from '@puckeditor/core';
@@ -139,11 +139,27 @@ function pageSource(pageId, memberTemplate) {
   return MEMBER_TEMPLATE_SOURCE;
 }
 
-function StatusBar({ status }) {
+function StatusBar({ status, playground }) {
+  const ref = useRef(null);
+  const [expanded, setExpanded] = useState(status.kind === 'error');
+  const summary = playground && status.message.startsWith('Werkstatt bereit.')
+    ? 'Probierwerkstatt · auf diesem Gerät'
+    : (status.message.match(/^.*?[.!?](?:\s|$)/)?.[0].trim() || status.message);
+  useEffect(() => setExpanded(status.kind === 'error'), [status]);
+  useEffect(() => {
+    const element = ref.current;
+    const resize = () => element.closest('.editor-app')?.style.setProperty('--workshop-status-height', `${Math.ceil(element.getBoundingClientRect().height)}px`);
+    const observer = new ResizeObserver(resize);
+    observer.observe(element);
+    resize();
+    return () => observer.disconnect();
+  }, []);
   return (
-    <div className={`editor-status editor-status-${status.kind}`} role="status" aria-live="polite">
+    <div ref={ref} className={`editor-status editor-status-${status.kind}`} role="status" aria-live="polite">
       <span aria-hidden="true">{status.kind === 'success' ? '✓' : status.kind === 'error' ? '!' : '◆'}</span>
-      <p>{status.message}</p>
+      <p className="editor-status-summary">{summary}</p>
+      <button type="button" aria-expanded={expanded} aria-controls="workshop-status-details" onClick={() => setExpanded(value => !value)}>Details {expanded ? '−' : '+'}</button>
+      <p id="workshop-status-details" className="editor-status-details" hidden={!expanded}>{status.message}</p>
     </div>
   );
 }
@@ -402,7 +418,7 @@ function EditorApp({ page, catalog, capabilities, initialPortfolio, baseCommunit
 
   return (
     <PortfolioContext.Provider value={{ community, portfolio, baseCommunity, playground, refreshPortfolio }}><div className="editor-app">
-      <StatusBar status={status} />
+      <StatusBar status={status} playground={playground} />
       <Puck
         config={config}
         data={initialData}
