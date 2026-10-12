@@ -20,6 +20,7 @@
 
     const chat = document.createElement('aside');
     chat.id = 'blob-chat';
+    character.setAttribute('aria-controls', chat.id);
     chat.setAttribute('aria-label', 'Blob-Navigation');
     chat.innerHTML = `<p id="blob-line">Ich sortiere Möglichkeiten. Menschen sortiere ich nicht.</p>
       <div id="blob-meta">Modus: ${pageMode}</div>
@@ -59,16 +60,18 @@
       catch (error) { return false; }
       return true;
     }
-    function say(text, label) {
+    function say(text, label, open = false) {
       line.textContent = text;
       meta.textContent = label || `Modus: ${pageMode}`;
-      chat.classList.add('open');
-      character.setAttribute('aria-expanded', 'true');
+      if (open) {
+        chat.classList.add('open');
+        character.setAttribute('aria-expanded', 'true');
+      }
     }
-    function close() {
+    function close(returnFocus = true) {
       chat.classList.remove('open');
       character.setAttribute('aria-expanded', 'false');
-      character.focus({ preventScroll: true });
+      if (returnFocus) character.focus({ preventScroll: true });
     }
     function emote() {
       character.classList.add('excited');
@@ -103,7 +106,7 @@
     };
     function nextLine() {
       const pool = lines[pageMode] || lines.guide;
-      say(named(pool[Math.floor(Math.random() * pool.length)]), `Blob · ${pageMode}`);
+      say(named(pool[Math.floor(Math.random() * pool.length)]), `Blob · ${pageMode}`, true);
       emote();
     }
 
@@ -127,6 +130,7 @@
         field?.focus({ preventScroll: true });
       }, 450);
       say(named('Hier geht es weiter. Ich zeige den Weg; du entscheidest und sendest.'), 'Blob · Seitenhilfe');
+      close(false);
     }
 
     let dragging = false;
@@ -134,6 +138,7 @@
     let offsetX = 0;
     let offsetY = 0;
     function setPosition(x, y, persist = true) {
+      if (window.matchMedia('(max-width: 760px)').matches) return;
       const safeX = Math.max(4, Math.min(window.innerWidth - character.offsetWidth - 4, x));
       const safeY = Math.max(4, Math.min(window.innerHeight - character.offsetHeight - 4, y));
       character.style.left = safeX + 'px';
@@ -145,6 +150,7 @@
     }
     if (Number.isFinite(state.x) && Number.isFinite(state.y)) setTimeout(() => setPosition(state.x, state.y, false), 80);
     character.addEventListener('pointerdown', event => {
+      if (window.matchMedia('(max-width: 760px)').matches) return;
       dragging = true; moved = false;
       character.setPointerCapture(event.pointerId);
       character.classList.add('dragging');
@@ -172,6 +178,13 @@
       if (Number.isFinite(state.x) && Number.isFinite(state.y)) setPosition(state.x, state.y);
     });
 
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && chat.classList.contains('open')) close();
+    });
+    document.addEventListener('pointerdown', event => {
+      if (chat.classList.contains('open') && !chat.contains(event.target) && !character.contains(event.target)) close(false);
+    });
+
     document.getElementById('blob-close').addEventListener('click', close);
     document.getElementById('blob-name').addEventListener('click', rename);
     document.getElementById('blob-next').addEventListener('click', nextLine);
@@ -187,6 +200,5 @@
     }, 3900);
 
     setMode(pageMode);
-    if (cfg.autoGreet !== false) setTimeout(nextLine, 750);
   });
 })();

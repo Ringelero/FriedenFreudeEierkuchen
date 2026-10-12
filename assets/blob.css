@@ -11,8 +11,9 @@
 #blob-character{
   position:fixed;
   right:18px;
-  top:56%;
-  transform:translateY(-50%);
+  top:auto;
+  bottom:20px;
+  transform:none;
   z-index:10000;
   width:72px;
   height:68px;
@@ -82,10 +83,13 @@
 }
 #blob-chat{
   position:fixed;
-  right:104px;
-  top:56%;
-  transform:translateY(-50%);
-  width:min(370px,calc(100vw - 132px));
+  right:108px;
+  top:auto;
+  bottom:20px;
+  transform:none;
+  width:min(370px,calc(100vw - 140px));
+  max-height:calc(100dvh - 40px);
+  overflow:auto;
   border:1px solid var(--blob-border);
   background:rgba(255,255,255,.96);
   border-radius:24px;
@@ -248,6 +252,26 @@
     transform:translateY(-46px);
   }
 }
+
+@media(max-width:760px){
+  #blob-character, #blob-character.blob-positioned {
+    left:auto!important; top:auto!important; right:12px!important;
+    bottom:calc(14px + env(safe-area-inset-bottom))!important;
+    touch-action:manipulation;
+  }
+  #blob-character.mode-social { width:58px; height:55px; animation:blobDockBreath 3.3s ease-in-out infinite; }
+  #blob-character.mode-sales, #blob-character.mode-sales.wiggle-sales { width:50px; height:62px; animation:blobDockWiggle 1.15s ease-in-out infinite!important; }
+  #blob-character.mode-sales .blob-face, #blob-character.mode-sales.wiggle-sales .blob-face { transform:translateY(-3px); }
+  #blob-character.mode-sales::before, #blob-character.mode-sales::after,
+  #blob-character.mode-sales.wiggle-sales::before, #blob-character.mode-sales.wiggle-sales::after { width:9px; height:30px; top:22px; }
+  #blob-character.mode-sales::before, #blob-character.mode-sales.wiggle-sales::before { left:-6px; }
+  #blob-character.mode-sales::after, #blob-character.mode-sales.wiggle-sales::after { right:-6px; }
+  #blob-character.excited { animation:blobDockPop .55s ease; }
+  .blob-chat-actions a, .blob-chat-actions button { padding:8px 10px; font-size:.85rem; }
+}
+@keyframes blobDockBreath { 50% { transform:scale(1.04); } }
+@keyframes blobDockWiggle { 0%,100% { transform:rotate(-5deg); } 50% { transform:rotate(5deg); } }
+@keyframes blobDockPop { 30% { transform:scale(1.1) rotate(3deg); } 65% { transform:scale(.96) rotate(-3deg); } }
 
 @media(prefers-reduced-motion:reduce){
   #blob-character,#blob-character::before,#blob-character::after{animation:none!important}
