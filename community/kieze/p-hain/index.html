@@ -7,7 +7,7 @@
   <title>P-Hain · Kiez · GemDen</title>
   <link rel="stylesheet" href="../../../assets/site.css?v=20261012-1">
   <link rel="stylesheet" href="../../../assets/blob.css?v=20261012-1">
-  <link rel="stylesheet" href="./kiez.css">
+  <link rel="stylesheet" href="./kiez.css?v=20261012-2">
   <link rel="stylesheet" href="../../../assets/worlds.css?v=20261011-1">
 </head>
 <body class="world-kiez" data-area="community" data-blob-mode="social">
@@ -35,10 +35,11 @@
         <button class="kiez-tab" type="button" data-section="board">Kiezbrett</button>
       </nav>
       <p class="tab-hint" aria-hidden="true">Seitlich wischen für weitere Bereiche →</p>
-      <noscript><div class="notice"><strong>Manueller Rückfallweg:</strong> Die Reiter brauchen JavaScript. Deshalb stehen alle P-Hain-Bereiche weiter unten vollständig untereinander.</div></noscript>
+      <div class="kiez-storage-actions"><button class="button secondary" type="button" data-kiez-reload>Einträge neu laden</button><span>Zeitangaben folgen der Zeitzone deines Geräts.</span></div>
+      <noscript><style>#event-feed-status,#board-feed-status{display:none}</style><div class="notice"><strong>Ohne JavaScript:</strong> Alle Bereiche stehen weiter unten untereinander. Die gespeicherten Termine und Aushänge werden mit JavaScript geladen; eigene Einträge verwaltest du mit deinem Konto.</div></noscript>
 
       <section class="kiez-section active" id="overview" data-panel data-content-id="p-hain.overview" role="tabpanel">
-        <div class="section-head"><p class="eyebrow">Was möchtest du tun?</p><h2>Der Kiez ist noch jung.</h2><p>Der persönliche Kontozugang ist jetzt vorbereitet. Die P-Hain-Inhalte bleiben in diesem Bauabschnitt noch statisch; Formulare speichern weiterhin keine echten Einträge.</p></div>
+        <div class="section-head"><p class="eyebrow">Was möchtest du tun?</p><h2>Der Kiez wächst mit euch.</h2><p>Termine und Kiezbrett-Einträge lassen sich jetzt im Konto als private Entwürfe sichern und gezielt freigeben. Reparatur, Hauswissen und die Signale bleiben zunächst Vorschauen.</p></div>
         <div class="tile-grid">
           <button class="tile" type="button" data-jump="events"><span class="icon">📅</span><strong>Termine entdecken</strong><span>Was passiert in der Nähe? Wer möchte mit?</span></button>
           <button class="tile" type="button" data-jump="repairs"><span class="icon">🔧</span><strong>Etwas reparieren</strong><span>Blob hilft, das Problem einzugrenzen und einen passenden Weg zu finden.</span></button>
@@ -52,7 +53,22 @@
       <section class="kiez-section" id="events" data-panel data-content-id="p-hain.events" role="tabpanel">
         <div class="section-head"><p class="eyebrow">Zusammen ist weniger allein</p><h2>Termine</h2><p>Veranstaltungen im Kiez und kleine Unternehmungen, bei denen man nicht alleine auftauchen muss.</p></div>
         <div id="event-list" class="content-list"></div>
-        <div class="future-action"><span class="status-chip open">Mit Konto geplant</span><p>Kiez-Verwaltende können Termine erstellen und Mitglieder ihr Interesse sichtbar machen. Bis Supabase angebunden ist, wird hier nichts gesendet.</p></div>
+        <p id="event-feed-status" class="form-status" role="status">Termine werden geladen …</p>
+        <section class="kiez-own-workspace" data-entry-workspace="event" aria-labelledby="own-event-title">
+          <h3 id="own-event-title">Deine Termine</h3>
+          <p data-access-note>Die Kiezverwaltung legt Termine an. <a href="../../../konto/">Zum Konto</a></p>
+          <button class="button kiez-button" type="button" data-entry-new hidden>Termin anlegen</button>
+          <form class="form-grid kiez-entry-form" data-entry-form="event" hidden>
+            <div class="field"><label for="event-title">Überschrift</label><input id="event-title" name="title" required maxlength="160"></div>
+            <div class="field"><label for="event-body">Beschreibung</label><textarea id="event-body" name="body" maxlength="4000"></textarea></div>
+            <div class="grid two"><div class="field"><label for="event-start">Beginn</label><input id="event-start" name="starts_at" type="datetime-local" required></div><div class="field"><label for="event-end">Ende (optional)</label><input id="event-end" name="ends_at" type="datetime-local"></div></div>
+            <div class="field"><label for="event-venue">Ort oder Treffpunkt</label><input id="event-venue" name="venue" maxlength="200"><small>Verwende für öffentliche Termine allgemeine Treffpunkte statt privater Wohnungsdetails.</small></div>
+            <p class="kiez-draft-note">Gespeichert wird als privater Entwurf. Die Freigabe entscheidest du anschließend bei deinem Eintrag.</p>
+            <div class="button-row"><button class="button kiez-button" type="submit">Entwurf sichern</button><button class="button secondary" type="button" data-entry-cancel>Abbrechen</button></div>
+          </form>
+          <p class="form-status" data-entry-status role="status" aria-live="polite"></p>
+          <div class="content-list" data-own-list></div>
+        </section>
       </section>
 
       <section class="kiez-section" id="repairs" data-panel data-content-id="p-hain.repairs" role="tabpanel">
@@ -95,6 +111,20 @@
       <section class="kiez-section" id="board" data-panel data-content-id="p-hain.board" role="tabpanel">
         <div class="section-head"><p class="eyebrow">Der digitale Aushang</p><h2>Kiezbrett</h2><p>Für Hinweise, Empfehlungen, Fundstücke und kleine Nachrichten, die in keine andere Schublade passen.</p></div>
         <div id="board-list" class="content-list"></div>
+        <p id="board-feed-status" class="form-status" role="status">Kiezbrett wird geladen …</p>
+        <section class="kiez-own-workspace" data-entry-workspace="board" aria-labelledby="own-board-title">
+          <h3 id="own-board-title">Deine Aushänge</h3>
+          <p data-access-note>Mit einem aktiven Mitgliedskonto kannst du eigene Einträge anlegen. <a href="../../../konto/">Zum Konto</a></p>
+          <button class="button kiez-button" type="button" data-entry-new hidden>Aushang anlegen</button>
+          <form class="form-grid kiez-entry-form" data-entry-form="board" hidden>
+            <div class="field"><label for="board-title">Überschrift</label><input id="board-title" name="title" required maxlength="160"></div>
+            <div class="field"><label for="board-body">Dein Hinweis</label><textarea id="board-body" name="body" maxlength="4000"></textarea></div>
+            <p class="kiez-draft-note">Dein Entwurf bleibt privat. Persönliche Kontaktdaten gehören nur in einen Eintrag, wenn du sie bewusst öffentlich zeigen möchtest.</p>
+            <div class="button-row"><button class="button kiez-button" type="submit">Entwurf sichern</button><button class="button secondary" type="button" data-entry-cancel>Abbrechen</button></div>
+          </form>
+          <p class="form-status" data-entry-status role="status" aria-live="polite"></p>
+          <div class="content-list" data-own-list></div>
+        </section>
       </section>
 
       <section class="section" aria-labelledby="p-chain-title" data-content-id="p-hain.system-context">
@@ -115,6 +145,9 @@
 
   <script>window.BLOB_CONFIG={autoGreet:false,mode:"social",root:"../../../",context:"p-hain",actionLabel:"Kiez helfen",actionTarget:"#repairs"};</script>
   <script src="../../../assets/site.js?v=20261012-1" defer></script><script src="../../../assets/blob.js?v=20261012-1" defer></script>
-  <script src="./kiez-content.js"></script><script src="./kiez.js"></script>
+  <script src="./kiez-content.js"></script><script src="./kiez.js?v=20261012-2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script>
+  <script src="../../../assets/supabase-config.js" defer></script><script src="../../../assets/supabase-client.js" defer></script>
+  <script src="./storage-model.js?v=20261012-2" defer></script><script src="./storage.js?v=20261012-2" defer></script>
 </body>
 </html>
