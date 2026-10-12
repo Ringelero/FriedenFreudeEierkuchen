@@ -74,20 +74,4 @@
     window.dispatchEvent(new CustomEvent('blob:say', { detail: { text: danger ? 'Mögliche Gefahr? Bitte kläre zuerst die Sicherheit mit der passenden Fachstelle.' : 'Du kannst deine Beobachtung jetzt privat sichern. Eine Nachricht an die Hausverwaltung musst du selbst senden.', meta: 'Blob · Navigator, keine Ferndiagnose' } }));
   });
 
-  const signalForm = document.getElementById('signal-form');
-  const signalLabel = document.getElementById('signal-label');
-  let activeSignal = '';
-  document.querySelectorAll('[data-signal]').forEach(button => button.addEventListener('click', () => {
-    activeSignal = button.dataset.signal;
-    signalLabel.textContent = activeSignal + ' …';
-    signalForm.hidden = false;
-    document.getElementById('signal-text').focus();
-  }));
-  document.getElementById('signal-cancel')?.addEventListener('click', () => { signalForm.hidden = true; activeSignal = ''; });
-  signalForm?.addEventListener('submit', event => {
-    event.preventDefault();
-    const text = document.getElementById('signal-text').value.trim();
-    const status = document.getElementById('signal-status');
-    status.textContent = text ? `Vorschau: „${activeSignal}: ${text}“ — noch nicht veröffentlicht.` : 'Bitte beschreibe dein Signal.';
-  });
 })();

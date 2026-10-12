@@ -7,7 +7,7 @@
   <title>P-Hain · Kiez · GemDen</title>
   <link rel="stylesheet" href="../../../assets/site.css?v=20261012-1">
   <link rel="stylesheet" href="../../../assets/blob.css?v=20261012-1">
-  <link rel="stylesheet" href="./kiez.css?v=20261012-3">
+  <link rel="stylesheet" href="./kiez.css?v=20261012-4">
   <link rel="stylesheet" href="../../../assets/worlds.css?v=20261011-1">
 </head>
 <body class="world-kiez" data-area="community" data-blob-mode="social">
@@ -39,7 +39,7 @@
       <noscript><style>#event-feed-status,#board-feed-status,#knowledge-feed-status{display:none}</style><div class="notice"><strong>Ohne JavaScript:</strong> Alle Bereiche stehen weiter unten untereinander. Gespeicherte Einträge werden mit JavaScript geladen; eigene Einträge verwaltest du mit deinem Konto.</div></noscript>
 
       <section class="kiez-section active" id="overview" data-panel data-content-id="p-hain.overview" role="tabpanel">
-        <div class="section-head"><p class="eyebrow">Was möchtest du tun?</p><h2>Der Kiez wächst mit euch.</h2><p>Sichere eigene Termine, Aushänge und Hauswissen als private Entwürfe und gib sie gezielt frei. Reparaturmeldungen bleiben nur für dich sichtbar. Die fünf Signale kannst du weiterhin als Vorschau ausprobieren.</p></div>
+        <div class="section-head"><p class="eyebrow">Was möchtest du tun?</p><h2>Der Kiez wächst mit euch.</h2><p>Sichere eigene Termine, Aushänge und Hauswissen als private Entwürfe und gib sie gezielt frei. Reparaturmeldungen bleiben nur für dich sichtbar. Die fünf Signale führen direkt zu deinen eigenen Möglichkeiten.</p></div>
         <div class="tile-grid">
           <button class="tile" type="button" data-jump="events"><span class="icon">📅</span><strong>Termine entdecken</strong><span>Was passiert in der Nähe? Wer möchte mit?</span></button>
           <button class="tile" type="button" data-jump="repairs"><span class="icon">🔧</span><strong>Etwas reparieren</strong><span>Blob hilft, das Problem einzugrenzen und einen passenden Weg zu finden.</span></button>
@@ -96,19 +96,16 @@
       </section>
 
       <section class="kiez-section" id="possibilities" data-panel data-content-id="p-hain.possibilities" role="tabpanel">
-        <div class="section-head"><p class="eyebrow">W01 · Möglichkeiten-Marktplatz</p><h2>Fünf einfache Signale.</h2><p>Hier entsteht kein Jobzwang und keine Menschenrangliste. Ein Signal macht nur sichtbar, was gerade da ist.</p></div>
+        <div class="section-head"><p class="eyebrow">W01 · Möglichkeiten-Marktplatz</p><h2>Fünf einfache Signale.</h2><p>Wähle, was du teilen oder möglich machen möchtest. Im Konto ist dein Signal vorausgewählt und P-Hain als Ort eingetragen. Du ergänzt den Rahmen und sicherst deinen privaten Entwurf.</p></div>
         <div class="signal-grid" id="signal-grid">
-          <button type="button" class="signal" data-signal="Ich habe"><span>📦</span><strong>Ich habe</strong><small>Material, Werkzeug oder etwas zum Teilen</small></button>
-          <button type="button" class="signal" data-signal="Ich kann"><span>🧠</span><strong>Ich kann</strong><small>eine Fähigkeit oder Erfahrung anbieten</small></button>
-          <button type="button" class="signal" data-signal="Ich brauche"><span>🙋</span><strong>Ich brauche</strong><small>Hilfe, Wissen oder eine Sache</small></button>
-          <button type="button" class="signal" data-signal="Ich habe Zeit"><span>⏳</span><strong>Ich habe Zeit</strong><small>und möchte irgendwo mitmachen</small></button>
-          <button type="button" class="signal" data-signal="Es gibt eine Chance"><span>✨</span><strong>Es gibt eine Chance</strong><small>Aufgabe, Projekt, Lernen oder bezahlte Arbeit</small></button>
+          <a class="signal" href="../../../konto/?signal=have&amp;from=p-hain#opportunity-workspace"><span>📦</span><strong>Ich habe</strong><small>Material, Werkzeug oder etwas zum Teilen</small></a>
+          <a class="signal" href="../../../konto/?signal=can&amp;from=p-hain#opportunity-workspace"><span>🧠</span><strong>Ich kann</strong><small>eine Fähigkeit oder Erfahrung anbieten</small></a>
+          <a class="signal" href="../../../konto/?signal=need&amp;from=p-hain#opportunity-workspace"><span>🙋</span><strong>Ich brauche</strong><small>Hilfe, Wissen oder eine Sache</small></a>
+          <a class="signal" href="../../../konto/?signal=time&amp;from=p-hain#opportunity-workspace"><span>⏳</span><strong>Ich habe Zeit</strong><small>und möchte irgendwo mitmachen</small></a>
+          <a class="signal" href="../../../konto/?signal=chance&amp;from=p-hain#opportunity-workspace"><span>✨</span><strong>Es gibt eine Chance</strong><small>Aufgabe, Projekt, Lernen oder bezahlte Arbeit</small></a>
         </div>
-        <form class="form-grid signal-form" id="signal-form" hidden>
-          <div class="field"><label id="signal-label" for="signal-text">Dein Signal</label><textarea id="signal-text" placeholder="Beschreibe es in deinen Worten."></textarea></div>
-          <div class="button-row"><button class="button kiez-button" type="submit">Vorschau erzeugen</button><button class="button secondary" type="button" id="signal-cancel">Abbrechen</button></div>
-          <p class="form-status" id="signal-status" role="status"></p>
-        </form>
+        <div class="notice"><strong>Du entscheidest:</strong> Ein Klick öffnet nur das Formular. Speichern und öffentliches Freigeben sind getrennte Schritte. Eine Möglichkeit ist noch keine Zusage oder Zuteilung.</div>
+        <div class="button-row"><a class="button secondary" href="../../../leistungen/#moeglichkeitenstrom">Öffentliche Möglichkeiten ansehen</a></div>
         <a class="card gold matching-link" href="../../../leistungen/"><span class="icon">🧩</span><h3>Du hast schon einen konkreten Wunsch?</h3><p>Das Fähigkeiten-Matching erklärt, welche Fähigkeiten helfen könnten und ob bereits ein öffentliches Profil passt.</p><span class="arrow">Wunsch mit Blob zerlegen →</span></a>
       </section>
 
@@ -170,7 +167,7 @@
 
   <script>window.BLOB_CONFIG={autoGreet:false,mode:"social",root:"../../../",context:"p-hain",actionLabel:"Kiez helfen",actionTarget:"#repairs"};</script>
   <script src="../../../assets/site.js?v=20261012-1" defer></script><script src="../../../assets/blob.js?v=20261012-1" defer></script>
-  <script src="./kiez.js?v=20261012-3"></script>
+  <script src="./kiez.js?v=20261012-4"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script>
   <script src="../../../assets/supabase-config.js" defer></script><script src="../../../assets/supabase-client.js" defer></script>
   <script src="./storage-model.js?v=20261012-3" defer></script><script src="./storage.js?v=20261012-3" defer></script>

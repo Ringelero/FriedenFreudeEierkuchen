@@ -1,4 +1,5 @@
 :root{--kiez:#008b7d;--kiez-deep:#00685f;--kiez-line:rgba(0,139,125,.2)}
+.signal{text-decoration:none}
 .kiez-own-workspace{display:grid;gap:16px;padding-top:24px;border-top:1px solid var(--kiez-line)}
 .kiez-storage-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:14px;font-size:.8rem;color:var(--muted)}.kiez-storage-actions button{min-height:44px;font-size:.85rem}
 .kiez-own-workspace h3{margin:0;font-size:1.5rem}.kiez-own-workspace [data-access-note]{margin:0;color:var(--muted);line-height:1.6}
