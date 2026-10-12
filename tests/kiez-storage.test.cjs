@@ -55,3 +55,33 @@ test('unexpected foreign private rows and server errors fail closed', async () =
   await assert.rejects(api.ownEntries(client, { member_id: 'MEM-OWN' }), /fremder/);
   await assert.rejects(api.saveDraft({ rpc: async () => ({ data: null, error: new Error('offline') }) }, 'board', { title: 'Test' }), /offline/);
 });
+
+test('repair notes validate urgency and send only whitelisted details', () => {
+  const payload = api.draftValues('repair', { title: 'Licht', body: 'Flackert', repair_area: ' Eingang ', repair_urgency: 'soon', owner_member_id: 'MEM-OTHER', visibility: 'public', knowledge_source: 'Injected' });
+  assert.deepEqual(payload.entry_details, { repair_area: 'Eingang', repair_urgency: 'soon' });
+  assert.equal('owner_member_id' in payload, false);
+  assert.equal('visibility' in payload, false);
+  assert.throws(() => api.draftValues('repair', { title: 'Licht', body: 'Flackert', repair_urgency: 'admin' }), /Dringlichkeit/);
+  assert.throws(() => api.draftValues('repair', { title: 'Licht', body: '', repair_urgency: 'normal' }), /beschreibe/);
+});
+
+test('knowledge needs a source and a real calendar date, and preserves unreviewed status', () => {
+  assert.throws(() => api.draftValues('knowledge', { title: 'Hinweis', body: 'Text' }), /Quelle/);
+  assert.throws(() => api.draftValues('knowledge', { title: 'Hinweis', body: 'Text', knowledge_source: 'Beobachtung', knowledge_checked_on: '2026-02-30' }), /Prüfdatum/);
+  const payload = api.draftValues('knowledge', { title: 'Hinweis', body: 'Text', knowledge_source: ' Beobachtung ' });
+  assert.deepEqual(payload.entry_details, { knowledge_source: 'Beobachtung', knowledge_responsible: null, knowledge_checked_on: null });
+  assert.equal(api.draftValues('knowledge', { title: 'Hinweis', body: 'Text', knowledge_source: 'Anleitung', knowledge_checked_on: '2024-02-29' }).entry_details.knowledge_checked_on, '2024-02-29');
+});
+
+test('new note command carries exact version and rejects repair publication before any request', async () => {
+  const calls = [];
+  const client = { rpc: async (name, args) => { calls.push({ name, args }); return { data: { id: 'own-note' }, error: null }; } };
+  await api.saveDraft(client, 'knowledge', { title: 'Hinweis', body: 'Text', knowledge_source: 'Anleitung' }, { id: 'own-note', version: 4 });
+  assert.equal(calls[0].name, 'save_kiez_note');
+  assert.equal(calls[0].args.expected_version, 4);
+  assert.equal(calls[0].args.entry_id, 'own-note');
+  await assert.rejects(api.changeEntry(client, { id: 'own-note', kind: 'repair', version: 4 }, 'publish'), /privat/);
+  assert.equal(calls.length, 1);
+  await api.changeEntry(client, { id: 'own-note', kind: 'repair', version: 4 }, 'delete');
+  assert.equal(calls[1].args.requested_action, 'delete');
+});

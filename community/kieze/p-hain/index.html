@@ -7,7 +7,7 @@
   <title>P-Hain · Kiez · GemDen</title>
   <link rel="stylesheet" href="../../../assets/site.css?v=20261012-1">
   <link rel="stylesheet" href="../../../assets/blob.css?v=20261012-1">
-  <link rel="stylesheet" href="./kiez.css?v=20261012-2">
+  <link rel="stylesheet" href="./kiez.css?v=20261012-3">
   <link rel="stylesheet" href="../../../assets/worlds.css?v=20261011-1">
 </head>
 <body class="world-kiez" data-area="community" data-blob-mode="social">
@@ -36,10 +36,10 @@
       </nav>
       <p class="tab-hint" aria-hidden="true">Seitlich wischen für weitere Bereiche →</p>
       <div class="kiez-storage-actions"><button class="button secondary" type="button" data-kiez-reload>Einträge neu laden</button><span>Zeitangaben folgen der Zeitzone deines Geräts.</span></div>
-      <noscript><style>#event-feed-status,#board-feed-status{display:none}</style><div class="notice"><strong>Ohne JavaScript:</strong> Alle Bereiche stehen weiter unten untereinander. Die gespeicherten Termine und Aushänge werden mit JavaScript geladen; eigene Einträge verwaltest du mit deinem Konto.</div></noscript>
+      <noscript><style>#event-feed-status,#board-feed-status,#knowledge-feed-status{display:none}</style><div class="notice"><strong>Ohne JavaScript:</strong> Alle Bereiche stehen weiter unten untereinander. Gespeicherte Einträge werden mit JavaScript geladen; eigene Einträge verwaltest du mit deinem Konto.</div></noscript>
 
       <section class="kiez-section active" id="overview" data-panel data-content-id="p-hain.overview" role="tabpanel">
-        <div class="section-head"><p class="eyebrow">Was möchtest du tun?</p><h2>Der Kiez wächst mit euch.</h2><p>Termine und Kiezbrett-Einträge lassen sich jetzt im Konto als private Entwürfe sichern und gezielt freigeben. Reparatur, Hauswissen und die Signale bleiben zunächst Vorschauen.</p></div>
+        <div class="section-head"><p class="eyebrow">Was möchtest du tun?</p><h2>Der Kiez wächst mit euch.</h2><p>Sichere eigene Termine, Aushänge und Hauswissen als private Entwürfe und gib sie gezielt frei. Reparaturmeldungen bleiben nur für dich sichtbar. Die fünf Signale kannst du weiterhin als Vorschau ausprobieren.</p></div>
         <div class="tile-grid">
           <button class="tile" type="button" data-jump="events"><span class="icon">📅</span><strong>Termine entdecken</strong><span>Was passiert in der Nähe? Wer möchte mit?</span></button>
           <button class="tile" type="button" data-jump="repairs"><span class="icon">🔧</span><strong>Etwas reparieren</strong><span>Blob hilft, das Problem einzugrenzen und einen passenden Weg zu finden.</span></button>
@@ -47,7 +47,7 @@
           <button class="tile" type="button" data-jump="knowledge"><span class="icon">💡</span><strong>Hauswissen</strong><span>Wartung, Ventile und Wissen, das nicht verloren gehen soll.</span></button>
           <button class="tile" type="button" data-jump="board"><span class="icon">📌</span><strong>Kiezbrett</strong><span>Lose Hinweise, Fundstücke und kleine Nachrichten.</span></button>
         </div>
-        <div class="notice"><strong>Öffentlich und geschützt:</strong> Allgemeine Termine und Hinweise dürfen später öffentlich sein. Wohnungsdetails, Kontaktdaten und interne Reparaturinformationen gehören hinter ein Konto mit passenden Rechten.</div>
+        <div class="notice"><strong>Öffentlich und geschützt:</strong> Allgemeine Termine, Hinweise und Hauswissen können bewusst öffentlich freigegeben werden. Reparaturmeldungen bleiben privat und werden hier noch nicht an die Hausverwaltung gesendet.</div>
       </section>
 
       <section class="kiez-section" id="events" data-panel data-content-id="p-hain.events" role="tabpanel">
@@ -72,18 +72,27 @@
       </section>
 
       <section class="kiez-section" id="repairs" data-panel data-content-id="p-hain.repairs" role="tabpanel">
-        <div class="section-head"><p class="eyebrow">Situation → Fähigkeiten → möglicher Weg</p><h2>Was ist kaputt?</h2><p>Blob fragt nach den nötigsten Details. Bei Gefahr oder einem Notfall ersetzt diese Seite niemals Notruf, Hausverwaltung oder Fachbetrieb.</p></div>
-        <form class="form-grid repair-form" id="repair-form" action="./#repairs" method="get" autocomplete="off">
-          <div class="field"><label for="repair-description">Was beobachtest du?</label><textarea id="repair-description" required placeholder="Zum Beispiel: Das Licht im Eingangsbereich flackert."></textarea></div>
-          <div class="grid two">
-            <div class="field"><label for="repair-area">Welcher Bereich?</label><input id="repair-area" placeholder="Zum Beispiel: Eingangsbereich"><small>Keine privaten Wohnungsdetails in dieser öffentlichen Demo.</small></div>
-            <div class="field"><label for="repair-urgency">Wie dringend wirkt es?</label><select id="repair-urgency"><option>unklar / normal</option><option>zeitnah prüfen</option><option>mögliche Gefahr</option></select></div>
-          </div>
-          <button class="button kiez-button" type="submit">Mit Blob einordnen</button>
-          <p class="form-status" id="repair-status" role="status"></p>
-          <noscript><p class="notice">Diese lokale Vorschau braucht JavaScript. Auch ohne JavaScript haben die Felder absichtlich keine Übertragungsnamen; ihre Inhalte werden nicht an die Website gesendet.</p></noscript>
-        </form>
-        <div class="result-box" id="repair-result" hidden></div>
+        <div class="section-head"><p class="eyebrow">Beobachtung festhalten, nächsten Schritt klären</p><h2>Was ist kaputt?</h2><p>Sammle deine Beobachtungen als private Reparaturmeldung. Bei Gefahr oder einem Notfall ersetzt diese Seite niemals Notruf, Hausverwaltung oder Fachbetrieb.</p></div>
+        <div class="notice"><strong>Nur für dich:</strong> Deine gespeicherte Meldung ist auch für andere Mitglieder und die Kiezverwaltung nicht sichtbar. An die Hausverwaltung wird nichts gesendet.</div>
+        <section class="kiez-own-workspace" data-entry-workspace="repair" aria-labelledby="own-repair-title">
+          <h3 id="own-repair-title">Deine Reparaturmeldungen</h3>
+          <p data-access-note>Mit deinem Mitgliedskonto kannst du Beobachtungen privat sichern. <a href="../../../konto/">Zum Konto</a></p>
+          <button class="button kiez-button" type="button" data-entry-new hidden>Reparaturmeldung anlegen</button>
+          <form class="form-grid kiez-entry-form repair-form" data-entry-form="repair" id="repair-form" hidden autocomplete="off">
+            <div class="field"><label for="repair-title">Überschrift</label><input id="repair-title" name="title" required maxlength="160" placeholder="Zum Beispiel: Licht im Eingang flackert"></div>
+            <div class="field"><label for="repair-description">Was beobachtest du?</label><textarea id="repair-description" name="body" required maxlength="4000" placeholder="Beschreibe, was passiert und seit wann."></textarea></div>
+            <div class="grid two">
+              <div class="field"><label for="repair-area">Welcher Bereich? (optional)</label><input id="repair-area" name="repair_area" maxlength="200" placeholder="Zum Beispiel: Eingangsbereich"></div>
+              <div class="field"><label for="repair-urgency">Wie dringend wirkt es?</label><select id="repair-urgency" name="repair_urgency"><option value="normal">unklar / normal</option><option value="soon">zeitnah prüfen</option><option value="danger">mögliche Gefahr</option></select><small>Deine Einschätzung, keine Ferndiagnose.</small></div>
+            </div>
+            <p class="kiez-draft-note">Der Entwurf wird nur für dich gespeichert. Die Blob-Einordnung wird auf deinem Gerät erstellt.</p>
+            <div class="button-row"><button class="button kiez-button" type="submit">Privat sichern</button><button class="button secondary" type="button" id="repair-assist">Mit Blob einordnen</button><button class="button secondary" type="button" data-entry-cancel>Abbrechen</button></div>
+            <p class="form-status" id="repair-status" role="status"></p>
+            <div class="result-box" id="repair-result" hidden></div>
+          </form>
+          <p class="form-status" data-entry-status role="status" aria-live="polite"></p>
+          <div class="content-list" data-own-list></div>
+        </section>
       </section>
 
       <section class="kiez-section" id="possibilities" data-panel data-content-id="p-hain.possibilities" role="tabpanel">
@@ -104,8 +113,24 @@
       </section>
 
       <section class="kiez-section" id="knowledge" data-panel data-content-id="p-hain.knowledge" role="tabpanel">
-        <div class="section-head"><p class="eyebrow">Kleine Dinge, große Wirkung</p><h2>Hauswissen</h2><p>Regelmäßige Aufgaben und hilfreiche Hinweise — mit Quelle, Zuständigkeit und Prüfdatum statt anonymer Wahrheit.</p></div>
+        <div class="section-head"><p class="eyebrow">Kleine Dinge, große Wirkung</p><h2>Hauswissen</h2><p>Hilfreiche Hinweise mit Quelle, Ansprechperson und Prüfdatum. Die Angaben stammen von der verfassenden Person und sind keine fachliche Bestätigung.</p></div>
         <div id="knowledge-list" class="content-list"></div>
+        <p id="knowledge-feed-status" class="form-status" role="status">Hauswissen wird geladen …</p>
+        <section class="kiez-own-workspace" data-entry-workspace="knowledge" aria-labelledby="own-knowledge-title">
+          <h3 id="own-knowledge-title">Dein Hauswissen</h3>
+          <p data-access-note>Mit einem aktiven Mitgliedskonto kannst du Wissen festhalten. <a href="../../../konto/">Zum Konto</a></p>
+          <button class="button kiez-button" type="button" data-entry-new hidden>Hauswissen anlegen</button>
+          <form class="form-grid kiez-entry-form" data-entry-form="knowledge" hidden>
+            <div class="field"><label for="knowledge-title">Überschrift</label><input id="knowledge-title" name="title" required maxlength="160"></div>
+            <div class="field"><label for="knowledge-body">Was hilft anderen?</label><textarea id="knowledge-body" name="body" required maxlength="4000"></textarea></div>
+            <div class="field"><label for="knowledge-source">Quelle</label><input id="knowledge-source" name="knowledge_source" required maxlength="500" placeholder="Zum Beispiel: Herstelleranleitung oder eigene Beobachtung"><small>Beschreibe, woher das Wissen stammt.</small></div>
+            <div class="grid two"><div class="field"><label for="knowledge-responsible">Ansprechperson (optional)</label><input id="knowledge-responsible" name="knowledge_responsible" maxlength="160"><small>Vor einer öffentlichen Namensnennung die Person fragen.</small></div><div class="field"><label for="knowledge-checked">Zuletzt geprüft am (optional)</label><input id="knowledge-checked" name="knowledge_checked_on" type="date"><small>Leer lassen, wenn noch nicht geprüft.</small></div></div>
+            <p class="kiez-draft-note">Speichern legt einen privaten Entwurf an. Gib allgemeines Wissen gezielt frei; Zugangscodes und private Wohnungsdetails gehören nicht in öffentliche Hinweise.</p>
+            <div class="button-row"><button class="button kiez-button" type="submit">Entwurf sichern</button><button class="button secondary" type="button" data-entry-cancel>Abbrechen</button></div>
+          </form>
+          <p class="form-status" data-entry-status role="status" aria-live="polite"></p>
+          <div class="content-list" data-own-list></div>
+        </section>
       </section>
 
       <section class="kiez-section" id="board" data-panel data-content-id="p-hain.board" role="tabpanel">
@@ -145,9 +170,9 @@
 
   <script>window.BLOB_CONFIG={autoGreet:false,mode:"social",root:"../../../",context:"p-hain",actionLabel:"Kiez helfen",actionTarget:"#repairs"};</script>
   <script src="../../../assets/site.js?v=20261012-1" defer></script><script src="../../../assets/blob.js?v=20261012-1" defer></script>
-  <script src="./kiez-content.js"></script><script src="./kiez.js?v=20261012-2"></script>
+  <script src="./kiez.js?v=20261012-3"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script>
   <script src="../../../assets/supabase-config.js" defer></script><script src="../../../assets/supabase-client.js" defer></script>
-  <script src="./storage-model.js?v=20261012-2" defer></script><script src="./storage.js?v=20261012-2" defer></script>
+  <script src="./storage-model.js?v=20261012-3" defer></script><script src="./storage.js?v=20261012-3" defer></script>
 </body>
 </html>
