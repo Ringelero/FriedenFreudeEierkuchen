@@ -1,5 +1,9 @@
 (function () {
   const publicationCenter = window.FFE_PUBLICATION_CENTER;
+  const entryHelper = window.FFE_OPPORTUNITY_ENTRY;
+  const requestedEntry = entryHelper?.readEntry(location.search);
+  let formOwner = null, entryConsumed = false, generation = 0;
+  entryHelper?.showHint(document.getElementById('opportunity-entry-note'), requestedEntry);
   const SIGNALS = [
     ['have', 'Ich habe', 'Ressource, Material oder Zugang'],
     ['can', 'Ich kann', 'Fähigkeit, Wissen oder Unterstützung'],
@@ -423,10 +427,13 @@
   async function loadOpportunities() {
     if (!state.client || !state.profile?.stable_id) return;
     const memberId = state.profile.stable_id;
+    const ticket = generation;
     const opportunities = await result(state.client.from('opportunities')
       .select('id,stable_id,owner_member_id,signal_type,relationship_mode,title,summary,location_mode,location_label,starts_at,ends_at,duration_note,compensation_type,compensation_note,risk_level,risk_note,visibility,lifecycle_status,publication_status,published_at,created_at,updated_at')
       .eq('owner_member_id', memberId)
       .order('updated_at', { ascending: false }));
+
+    if (ticket !== generation || state.profile?.stable_id !== memberId) return;
 
     let requirements = [];
     if (opportunities.length) {
@@ -434,6 +441,7 @@
         .select('id,opportunity_id,skill_id,requirement_level,note,evidence_expectation,hard_gate,created_at,updated_at')
         .in('opportunity_id', opportunities.map(item => item.id)));
     }
+    if (ticket !== generation || state.profile?.stable_id !== memberId) return;
     Object.assign(state, { opportunities, requirements });
     render();
   }
@@ -486,6 +494,7 @@
     byId('opportunity-form').addEventListener('submit', async event => {
       event.preventDefault();
       const form = event.currentTarget;
+      const ticket = generation;
       const submit = form.querySelector('button[type="submit"]');
       const editingId = form.dataset.editingId;
       const title = byId('opportunity-title').value.trim();
@@ -535,15 +544,18 @@
           opportunityId = inserted.id;
         }
 
+        if (ticket !== generation) return;
         await syncRequirements(opportunityId, selectedRequirements());
+        if (ticket !== generation) return;
         notifyChange();
         resetForm();
         await loadOpportunities();
         setMessage(byId('opportunity-form-status'), 'Möglichkeit als privater Entwurf gespeichert.', 'success');
       } catch (error) {
+        if (ticket !== generation) return;
         setMessage(byId('opportunity-form-status'), describeError(error, 'Die Möglichkeit konnte nicht gespeichert werden.'), 'error');
       } finally {
-        submit.disabled = false;
+        if (ticket === generation) submit.disabled = false;
       }
     });
 
@@ -575,6 +587,7 @@
   async function initialize({ client, profile }) {
     state.client = client;
     state.profile = profile;
+    const ticket = generation;
     const workspace = byId('opportunity-workspace');
     workspace.hidden = false;
     if (!profile?.stable_id) {
@@ -587,12 +600,21 @@
       return;
     }
 
-    state.catalog = await result(client.from('skills')
+    const sameOwner = formOwner === profile.stable_id;
+    const draftRequirements = sameOwner && wired ? selectedRequirements() : [];
+    const catalog = await result(client.from('skills')
       .select('id,name,description,branch,safety_note,lifecycle_status')
       .eq('lifecycle_status', 'active')
       .order('name'));
-    prepareControls();
-    renderRequirementChoices([]);
+    if (ticket !== generation || state.profile?.stable_id !== profile.stable_id) return;
+    state.catalog = catalog;
+    if (!sameOwner) {
+      byId('opportunity-form').reset();
+      byId('opportunity-form').dataset.editingId = '';
+      prepareControls();
+      formOwner = profile.stable_id;
+    }
+    renderRequirementChoices(draftRequirements);
     updateRiskNote();
     if (!wired) {
       wireForm();
@@ -601,6 +623,24 @@
     workspace.querySelectorAll('input, textarea, select, button').forEach(control => { control.disabled = false; });
     setMessage(byId('opportunity-status'), 'Möglichkeiten werden sicher geladen …');
     await loadOpportunities();
+    if (ticket !== generation || state.profile?.stable_id !== profile.stable_id) return;
+    if (requestedEntry && !entryConsumed) {
+      entryConsumed = true;
+      const applied = entryHelper.applyEntry(byId('opportunity-form'), requestedEntry);
+      const note = byId('opportunity-entry-note');
+      note.textContent = applied
+        ? `Auswahl übernommen: „${requestedEntry.label}“${requestedEntry.from === 'p-hain' ? ' mit P-Hain als Ort' : ''}. Prüfe deine Angaben; gespeichert wird erst mit „Möglichkeit als Entwurf speichern“.`
+        : 'Deine bereits vorhandene Eingabe bleibt erhalten. Du kannst das gewünschte Signal im Formular selbst wählen.';
+      const url = new URL(location.href);
+      url.searchParams.delete('signal'); url.searchParams.delete('from');
+      history.replaceState(null, '', url.pathname + url.search + url.hash);
+      if (applied) {
+        const form = byId('opportunity-form');
+        form.closest('details').open = true;
+        form.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+        byId('opportunity-title').focus({ preventScroll: true });
+      }
+    }
   }
 
   function setProfile(profile) {
@@ -608,7 +648,8 @@
     render();
   }
 
-  function reset() {
+  function reset({ clearDraft = false } = {}) {
+    generation++;
     Object.assign(state, {
       client: null,
       profile: null,
@@ -618,6 +659,16 @@
     });
     const workspace = byId('opportunity-workspace');
     if (workspace) workspace.hidden = true;
+    byId('opportunities-list')?.replaceChildren();
+    ['opportunity-count-all', 'opportunity-count-draft', 'opportunity-count-open', 'opportunity-count-closed'].forEach(id => { if (byId(id)) byId(id).textContent = '0'; });
+    if (clearDraft) {
+      formOwner = null;
+      byId('opportunity-form')?.reset();
+      if (byId('opportunity-form')) byId('opportunity-form').dataset.editingId = '';
+      byId('opportunity-requirements')?.replaceChildren();
+      setMessage(byId('opportunity-form-status'), '');
+      byId('opportunity-cancel-edit').hidden = true;
+    }
   }
 
   window.FFE_OPPORTUNITY_WORKSPACE = { initialize, refresh: loadOpportunities, setProfile, reset };

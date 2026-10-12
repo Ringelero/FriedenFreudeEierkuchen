@@ -198,7 +198,7 @@
     memberAdminLink.hidden = true;
     profileWorkspace?.reset();
     publicationCenter?.reset();
-    opportunityWorkspace?.reset();
+    opportunityWorkspace?.reset({ clearDraft: !currentUser });
     resonanceWorkspace?.reset();
     signedOutPanel.hidden = Boolean(currentUser);
     signedInPanel.hidden = !currentUser;
