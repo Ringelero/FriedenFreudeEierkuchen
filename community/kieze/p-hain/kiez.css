@@ -1,4 +1,11 @@
 :root{--kiez:#008b7d;--kiez-deep:#00685f;--kiez-line:rgba(0,139,125,.2)}
+.kiez-own-workspace{display:grid;gap:16px;padding-top:24px;border-top:1px solid var(--kiez-line)}
+.kiez-storage-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:14px;font-size:.8rem;color:var(--muted)}.kiez-storage-actions button{min-height:44px;font-size:.85rem}
+.kiez-own-workspace h3{margin:0;font-size:1.5rem}.kiez-own-workspace [data-access-note]{margin:0;color:var(--muted);line-height:1.6}
+.kiez-own-workspace [hidden]{display:none!important}.kiez-entry-form{padding:18px;border:1px solid var(--kiez-line);border-radius:18px;background:#fff}
+.kiez-draft-note{margin:0;line-height:1.5;color:var(--muted)}.kiez-entry-body{white-space:pre-wrap;overflow-wrap:anywhere}
+.kiez-entry-time,.kiez-entry-venue{margin-bottom:8px!important;color:var(--kiez-deep)!important}.kiez-entry-actions{margin-top:16px}.kiez-entry-actions button{min-height:44px;font-size:.85rem}
+.form-status.is-error{color:#b00036}.kiez-entry-form input,.kiez-entry-form textarea{font-size:16px;min-width:0}
 .kiez-hero{background:linear-gradient(145deg,rgba(255,255,255,.93),rgba(211,250,243,.74))}
 .kiez-hero .display,.kiez-hero .eyebrow{color:var(--kiez-deep)}
 .kiez-tabs{position:sticky;top:8px;z-index:40;display:flex;gap:8px;margin:18px 0 0;padding:8px;overflow-x:auto;border:1px solid var(--kiez-line);border-radius:999px;background:rgba(245,255,252,.9);box-shadow:0 14px 45px rgba(0,104,95,.12);backdrop-filter:blur(18px);scrollbar-width:none}

@@ -31,6 +31,7 @@
     document.getElementById(tab.dataset.section)?.setAttribute('aria-labelledby', tab.id);
     tab.addEventListener('click', () => {
       showSection(tab.dataset.section, false);
+      document.getElementById(tab.dataset.section)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
       history.replaceState(null, '', '#' + tab.dataset.section);
     });
     tab.addEventListener('keydown', event => {
@@ -69,9 +70,7 @@
       ${item.review ? `<p class="entry-review">Prüfung: ${escapeHtml(item.review)}</p>` : ''}
     </article>`).join('');
   }
-  renderList('event-list', content.events);
   renderList('knowledge-list', content.knowledge);
-  renderList('board-list', content.board);
 
   const repairForm = document.getElementById('repair-form');
   repairForm?.addEventListener('submit', event => {
