@@ -7,11 +7,12 @@
   <title>GemDen · FriedenFreudeEierkuchen</title>
   <link rel="stylesheet" href="./assets/site.css?v=20261012-1">
   <link rel="stylesheet" href="./assets/blob.css?v=20261012-1">
+  <link rel="stylesheet" href="./assets/home-garden.css?v=20261013-1">
 </head>
-<body data-area="start" data-blob-mode="guide">
+<body class="garden-home" data-area="start" data-blob-mode="guide">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <div class="site-shell">
-    <nav class="site-nav" data-site-nav data-root="./" aria-label="Hauptnavigation"><a class="site-mark" href="./">GemDen</a><div class="nav-links"><a href="./" aria-current="page">Start</a><a href="./community/">Community</a><a href="./leistungen/">Leistungen</a><a href="./system/">FFE-System</a></div></nav>
+    <nav class="site-nav" data-site-nav data-root="./" aria-label="Hauptnavigation"><a class="site-mark" href="./">GemDen</a><div class="nav-links"><a href="./" aria-current="page">Start</a><a href="./community/">Community</a><a href="./leistungen/">Möglichkeiten</a><a href="./system/">FFE-System</a><a href="./konto/">Konto</a></div></nav>
 
     <main id="inhalt">
       <header class="hero home-hero">
@@ -19,18 +20,34 @@
           <p class="eyebrow">GemDen baut · FriedenFreudeEierkuchen verbindet</p>
           <h1 class="display">Eine Welt, die wir gemeinsam bauen.</h1>
           <p class="lead">Hast du es nicht satt, dass die Konzerne uns alle abziehen? Lass uns eine Community gründen. Lass uns füreinander da sein. Nicht von den Reichen abhängig. Sondern unabhängig!</p>
-          <div class="status-row"><span class="status-chip experiment">Website im Experiment</span><span class="id-chip">FFE v2.30</span></div>
+          <a class="button garden-start" href="#wege">Jetzt loslegen <span aria-hidden="true">→</span></a>
         </div>
         <div class="world-portal" aria-label="Portal in die GemDen-Welt">
-          <div class="portal-gem" aria-hidden="true"></div>
+          <img class="garden-portal" src="./assets/art/garden/portal-20261013.png" alt="" width="1254" height="1254" fetchpriority="high" decoding="async">
           <span class="portal-label">Blob kennt die Wege. Entscheiden musst du trotzdem selbst.</span>
         </div>
-        <nav class="route-dock" aria-label="Direkte Einstiege">
-          <a class="route-link" href="./community/"><span aria-hidden="true">❤️</span><span><b>Menschen &amp; Orte</b><small>P‑Hain, Rubybubys und Mitglieder</small></span></a>
-          <a class="route-link" href="./leistungen/"><span aria-hidden="true">✨</span><span><b>Etwas möglich machen</b><small>anbieten, brauchen oder gemeinsam beginnen</small></span></a>
-          <a class="route-link" href="./gestalten/?vorschau=1"><span aria-hidden="true">💎</span><span><b>Deine eigene Welt</b><small>Gestaltung ausprobieren · ohne Anmeldung</small></span></a>
-        </nav>
       </header>
+
+      <nav class="route-dock garden-paths" id="wege" aria-label="Direkte Einstiege">
+        <a class="route-link garden-path" href="./community/">
+          <span class="garden-symbol sun" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="13" fill="currentColor" opacity=".8"/><path d="M32 3v9m0 40v9M3 32h9m40 0h9M11 11l7 7m28 28 7 7M11 53l7-7m28-28 7-7" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></span>
+          <b>Menschen &amp; Orte</b>
+          <small>P‑Hain, Rubybubys und Mitglieder</small>
+          <span class="garden-path-action">Entdecken <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="route-link garden-path" href="./leistungen/">
+          <span class="garden-symbol sprout" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><path d="M32 56V31C16 32 9 22 10 9c17 1 25 10 22 22 2-16 10-23 24-23 0 17-8 25-24 24" fill="currentColor" opacity=".9"/><path d="M32 32v24M16 15l16 17L50 14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span>
+          <b>Etwas möglich machen</b>
+          <small>anbieten, brauchen oder gemeinsam beginnen</small>
+          <span class="garden-path-action">Mitmachen <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="route-link garden-path" href="./gestalten/?vorschau=1">
+          <span class="garden-symbol gem" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><path d="m32 3 20 27-20 31L12 30Z" fill="currentColor"/><path d="m32 3-7 27 7 31 7-31ZM12 30h40" stroke="#faf4e3" stroke-width="2" opacity=".7"/></svg></span>
+          <b>Deine eigene Welt</b>
+          <small>Gestaltung ausprobieren · ohne Anmeldung</small>
+          <span class="garden-path-action">Los geht’s <span aria-hidden="true">→</span></span>
+        </a>
+      </nav>
 
       <section class="section" aria-labelledby="einstieg-title">
         <div class="section-head">
@@ -67,6 +84,7 @@
       <a href="./info/">Über GemDen &amp; FFE</a>
       <a href="./impressum/">Impressum</a>
       <a href="./system/">Quelle und Systemstatus ansehen</a>
+      <div class="status-row garden-status"><span class="status-chip experiment">Website im Experiment</span><span class="id-chip">FFE v2.30</span></div>
     </footer>
   </div>
 
