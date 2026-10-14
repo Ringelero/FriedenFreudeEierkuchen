@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schemas/gemden-services.v1.schema.json",
+  "schema_version": "1.0.0",
+  "updated": "2026-10-14",
+  "categories": [
+    { "id": "SOCIAL", "name": "Soziales", "public_path": "/leistungen/#soziales" }
+  ],
+  "services": [
+    {
+      "id": "SERVICE-RUBYBUBYS-HERZ-SCHNAUZE",
+      "name": "Rubybubys Herz und Schnauze",
+      "summary": "Gemeinsame Spaziergänge, Lernen mit Vertrauen und ein wachsendes Netz für gegenseitige Unterstützung und tierfreundliche Orte.",
+      "category_ids": ["SOCIAL"],
+      "provider_ids": ["DYN-RUBYBUBYS"],
+      "public_path": "/leistungen/rubybubys-herz-und-schnauze/",
+      "status": "building",
+      "location_note": "Ortsübergreifend · jeder Treff hat seinen eigenen Ort"
+    }
+  ]
+}
