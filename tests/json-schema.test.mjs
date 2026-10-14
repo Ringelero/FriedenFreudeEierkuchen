@@ -8,6 +8,7 @@ async function json(path) {
 }
 
 const fixtures = [
+  ['../schemas/gemden-services.v1.schema.json', '../assets/data/services.v1.json'],
   ['../schemas/gemden-capability.v1.schema.json', '../assets/data/capabilities.v1.json'],
   ['../schemas/gemden-module-manifest.v1.schema.json', '../assets/data/modules.v1.json'],
   ['../schemas/gemden-page-document.v1.schema.json', '../assets/data/pages/julius.v1.json'],

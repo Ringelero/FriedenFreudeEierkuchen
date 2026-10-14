@@ -14,6 +14,7 @@
     .opportunity-stream-shell{display:grid;gap:18px}.opportunity-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.opportunity-stream{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.opportunity-public-card{display:grid;align-content:start;gap:13px}.opportunity-public-head{display:flex;align-items:start;justify-content:space-between;gap:14px}.opportunity-public-head h3{margin:2px 0 0;font-size:clamp(1.35rem,3vw,2rem);line-height:1}.opportunity-summary{margin:0;color:var(--muted);line-height:1.6}.opportunity-owner{margin:0;color:var(--mint);font-weight:900}.opportunity-facts{display:grid;gap:8px;margin:0}.opportunity-facts div{display:grid;grid-template-columns:minmax(78px,110px) 1fr;gap:10px}.opportunity-facts dt{color:var(--muted);font-size:.78rem;font-weight:900;text-transform:uppercase}.opportunity-facts dd{margin:0}.opportunity-skill-block h4{margin:0}.opportunity-boundary{margin:0;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;line-height:1.5}.opportunity-response-callout,.opportunity-response-state{display:grid;gap:8px;padding:14px;border:1px solid rgba(0,168,150,.22);border-radius:16px;background:rgba(255,255,255,.72)}.opportunity-response-callout p,.opportunity-response-state p{margin:0;color:var(--muted);line-height:1.5}.opportunity-response-state.response-accepted{border-color:rgba(0,168,150,.4);background:rgba(0,168,150,.1)}.opportunity-response-state.response-declined,.opportunity-response-state.response-withdrawn{border-color:var(--line);background:rgba(255,255,255,.5)}.opportunity-response-composer{overflow:hidden;border:1px solid rgba(201,0,70,.22);border-radius:16px;background:rgba(255,255,255,.76)}.opportunity-response-composer>summary{padding:13px 15px;color:var(--ruby);cursor:pointer;font-weight:900}.opportunity-response-form{display:grid;gap:12px;padding:0 15px 15px}.opportunity-response-form textarea{min-height:110px}.opportunity-response-boundary{margin:0;color:var(--muted);font-size:.86rem;line-height:1.5}.compact-public-button{width:fit-content;padding:9px 12px;font-size:.84rem;box-shadow:none}.opportunity-public-card.signal-have{background:linear-gradient(145deg,#fff,rgba(255,184,92,.12))}.opportunity-public-card.signal-can{background:linear-gradient(145deg,#fff,rgba(0,168,150,.11))}.opportunity-public-card.signal-need{background:linear-gradient(145deg,#fff,rgba(201,0,70,.08))}.opportunity-public-card.signal-time{background:linear-gradient(145deg,#fff,rgba(92,78,255,.08))}.opportunity-public-card.signal-chance{background:linear-gradient(145deg,#fff,rgba(255,226,92,.14))}.opportunity-empty{grid-column:1/-1}.opportunity-empty p{margin-bottom:0}@media(max-width:720px){.opportunity-filters,.opportunity-stream{grid-template-columns:1fr}.opportunity-public-head{flex-direction:column}.opportunity-facts div{grid-template-columns:1fr;gap:2px}.compact-public-button{width:100%}}
   </style>
   <link rel="stylesheet" href="../assets/worlds.css?v=20261011-1">
+  <link rel="stylesheet" href="../assets/services.css?v=20261014-1">
 </head>
 <body class="world-workshop" data-area="matching" data-blob-mode="sales">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
@@ -28,6 +29,13 @@
         </div>
         <aside class="purpose-note"><strong>Ein Wunsch ist ein Anfang.</strong><span>Probier die Eingabe aus oder entdecke veröffentlichte Angebote. Die Auswertung deines Wunschtextes bleibt im Browser.</span></aside>
       </header>
+
+      <section class="section working-section" id="soziales" aria-labelledby="social-services-title">
+        <div class="section-head"><p class="eyebrow">Leistungen aus unseren Gemeinschaften</p><h2 id="social-services-title">Soziales</h2><p>Gemeinsam lernen, Beziehungen aufbauen und füreinander da sein. Entdecke die Angebote und die Gemeinschaften, die sie tragen.</p></div>
+        <div class="service-list" data-service-list data-service-category="SOCIAL">
+          <article class="service-card" data-service-id="SERVICE-RUBYBUBYS-HERZ-SCHNAUZE"><div class="service-card-head"><span class="service-category">Soziales</span><span class="status-chip">Im Aufbau</span></div><h3><a href="./rubybubys-herz-und-schnauze/">Rubybubys Herz und Schnauze</a></h3><p>Eine Leistung der <a href="../community/dynastien/rubybubys/">Rubybubys</a>.</p><a class="service-card-action" href="./rubybubys-herz-und-schnauze/">Vorhaben entdecken →</a></article>
+        </div>
+      </section>
 
       <section class="section working-section" aria-labelledby="matching-title">
         <div class="panel prompt-panel">
@@ -136,6 +144,7 @@
   </div>
   <script>window.BLOB_CONFIG={autoGreet:false,mode:"sales",root:"../",context:"matching",actionLabel:"Wunsch starten",actionTarget:"#request-text"};</script>
   <script src="../assets/site.js?v=20261012-1" defer></script>
+  <script src="../assets/services.js?v=20261014-1" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script>
   <script src="../assets/supabase-config.js" defer></script>
   <script src="../assets/supabase-client.js" defer></script>

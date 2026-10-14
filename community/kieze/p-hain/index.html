@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../../../assets/blob.css?v=20261012-1">
   <link rel="stylesheet" href="./kiez.css?v=20261012-4">
   <link rel="stylesheet" href="../../../assets/worlds.css?v=20261011-1">
+  <link rel="stylesheet" href="../../../assets/services.css?v=20261014-1">
 </head>
 <body class="world-kiez" data-area="community" data-blob-mode="social">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
@@ -31,6 +32,7 @@
         <button class="kiez-tab" type="button" data-section="events">Termine</button>
         <button class="kiez-tab" type="button" data-section="repairs">Reparatur</button>
         <button class="kiez-tab" type="button" data-section="possibilities">Möglichkeiten</button>
+        <button class="kiez-tab" type="button" data-section="leistungen">Leistungen</button>
         <button class="kiez-tab" type="button" data-section="knowledge">Hauswissen</button>
         <button class="kiez-tab" type="button" data-section="board">Kiezbrett</button>
       </nav>
@@ -149,6 +151,11 @@
         </section>
       </section>
 
+      <section class="kiez-section" id="leistungen" data-panel role="tabpanel">
+        <div class="section-head"><p class="eyebrow">Gemeinsame Angebote</p><h2>Leistungen aus P-Hain.</h2><p>Hier werden die eigenen Leistungen dieser Community sichtbar.</p></div>
+        <div class="service-list" data-service-list data-service-provider="KIEZ-P-HAIN"><div class="service-empty"><p>Hier sind noch keine eigenen Leistungen veröffentlicht.</p><a href="../../../leistungen/">Möglichkeiten entdecken →</a></div></div>
+      </section>
+
       <section class="section" aria-labelledby="p-chain-title" data-content-id="p-hain.system-context">
         <div class="panel">
           <p class="eyebrow">Wie dieser Kiez ins FFE-System passt</p><h2 id="p-chain-title">Nicht nur ein hübsches Formular.</h2>
@@ -167,6 +174,7 @@
 
   <script>window.BLOB_CONFIG={autoGreet:false,mode:"social",root:"../../../",context:"p-hain",actionLabel:"Kiez helfen",actionTarget:"#repairs"};</script>
   <script src="../../../assets/site.js?v=20261012-1" defer></script><script src="../../../assets/blob.js?v=20261012-1" defer></script>
+  <script src="../../../assets/services.js?v=20261014-1" defer></script>
   <script src="./kiez.js?v=20261012-4"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script>
   <script src="../../../assets/supabase-config.js" defer></script><script src="../../../assets/supabase-client.js" defer></script>

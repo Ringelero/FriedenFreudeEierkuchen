@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gemden.red/schemas/gemden-services.v1.schema.json",
+  "title": "Gemeinschaftliche Leistungen",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "updated", "categories", "services"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema_version": { "const": "1.0.0" },
+    "updated": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "name", "public_path"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Z][A-Z0-9-]*$" },
+          "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "public_path": { "type": "string", "pattern": "^/([a-z0-9-]+/)+(#[a-z0-9-]+)?$" }
+        }
+      }
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "name", "summary", "category_ids", "provider_ids", "public_path", "status", "location_note"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^SERVICE-[A-Z0-9-]+$" },
+          "name": { "type": "string", "minLength": 1, "maxLength": 160 },
+          "summary": { "type": "string", "minLength": 1, "maxLength": 800 },
+          "category_ids": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+          "provider_ids": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+          "public_path": { "type": "string", "pattern": "^/leistungen/[a-z0-9-]+/$" },
+          "status": { "enum": ["building", "open", "paused", "archived"] },
+          "location_note": { "type": "string", "minLength": 1, "maxLength": 200 }
+        }
+      }
+    }
+  }
+}
