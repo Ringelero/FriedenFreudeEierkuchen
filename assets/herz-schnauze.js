@@ -4,7 +4,8 @@
     let id;
     try { id = decodeURIComponent(hash.replace(/^#/, '')); } catch (_) { return; }
     const target = document.getElementById(id);
-    if (target?.matches('details[data-service-chapter]')) target.open = true;
+    const chapter = target?.closest('details[data-service-chapter]');
+    if (chapter) chapter.open = true;
   }
   document.addEventListener('click', event => {
     const link = event.target.closest('a[href^="#"]');
