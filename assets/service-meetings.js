@@ -118,6 +118,7 @@
     function clearPrivate() {
       access = null; editing = null; own.replaceChildren(); own.hidden = true; managed.replaceChildren();
       manager.hidden = true; form.reset(); form.hidden = true;
+      delete form.dataset.owner;
     }
     async function run(button, action, success) {
       if (busy) return;
@@ -224,6 +225,10 @@
       if (!form.hidden && !globalThis.confirm('Die ungesicherte Eingabe verwerfen und einen anderen Stand öffnen?')) return;
       editing = meeting; form.reset();
       const zone = meeting?.time_zone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+      // Other browsers may store a valid timezone alias absent from this browser's list.
+      if (![...form.elements.time_zone.options].some(option => option.value === zone)) {
+        const option = node('option', zone.replaceAll('_', ' ')); option.value = zone; form.elements.time_zone.append(option);
+      }
       form.elements.time_zone.value = zone;
       for (const key of ['title', 'body', 'venue', 'contact', 'cost_note', 'participation_note', 'capacity']) form.elements[key].value = meeting?.[key] ?? '';
       for (const key of ['starts_at', 'ends_at']) form.elements[key].value = localInput(meeting?.[key], zone);
