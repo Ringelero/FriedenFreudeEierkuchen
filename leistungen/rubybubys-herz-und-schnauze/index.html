@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../assets/site.css?v=20261012-1">
   <link rel="stylesheet" href="../../assets/blob.css?v=20261012-1">
   <link rel="stylesheet" href="../../assets/herz-schnauze.css?v=20261015-1">
+  <link rel="stylesheet" href="../../assets/service-meetings.css?v=20261015-1">
 </head>
 <body class="world-herz" data-area="matching" data-blob-mode="social" data-service-id="SERVICE-RUBYBUBYS-HERZ-SCHNAUZE">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
@@ -19,7 +20,7 @@
           <h1><span class="service-prefix">Rubybubys</span> Herz und Schnauze</h1>
           <p class="lead">Gemeinsam unterwegs. Füreinander da. Für ein gutes Leben mit Tieren.</p>
           <div class="service-meta"><span class="status-chip">Im Aufbau</span><span>Ortsübergreifend</span></div>
-          <div class="button-row"><a class="button" href="#vorhaben">Angebot entdecken <span aria-hidden="true">↓</span></a><a class="service-provider-link" href="../../community/dynastien/rubybubys/#leistungen">Die Rubybubys <span aria-hidden="true">↗</span></a></div>
+          <div class="button-row"><a class="button" href="#termine">Treffen ansehen <span aria-hidden="true">↓</span></a><a class="service-provider-link" href="../../community/dynastien/rubybubys/#leistungen">Die Rubybubys <span aria-hidden="true">↗</span></a></div>
         </div>
         <div class="service-hero-art" aria-hidden="true">
           <svg viewBox="0 0 320 340" xmlns="http://www.w3.org/2000/svg">
@@ -43,13 +44,41 @@
       </section>
 
       <details class="service-chapter" id="treffen" data-service-chapter>
-        <summary><h2 id="treffen-title"><span class="chapter-number" aria-hidden="true">01</span><span class="chapter-label"><span>Treffen & Spaziergänge</span><small>Freunde wiedersehen</small><span class="chapter-status">In Vorbereitung</span></span><span class="chapter-toggle" aria-hidden="true">+</span></h2></summary>
+        <summary><h2 id="treffen-title"><span class="chapter-number" aria-hidden="true">01</span><span class="chapter-label"><span>Treffen & Spaziergänge</span><small>Freunde wiedersehen</small><span class="chapter-status">Termine & Anmeldung</span></span><span class="chapter-toggle" aria-hidden="true">+</span></h2></summary>
         <div class="chapter-content">
           <p class="chapter-lead">Gemeinsame Spaziergänge und kleine Treffen sollen vertraute Beziehungen ermöglichen. Jeder Treff bekommt seinen eigenen Ort. Du musst dafür keinem bestimmten Kiez angehören.</p>
           <div class="service-two">
           <article class="service-surface"><h3>So stellen wir uns Treffen vor</h3><ul><li>Ein verständlicher Treffpunkt, eine Zeit und eine erreichbare Ansprechperson.</li><li>Passende Begegnungen mit Raum für Abstand, Ruhe und Rückzug.</li><li>Klare Absprachen darüber, wer dabei ist und wie der Spaziergang abläuft.</li></ul></article>
-          <article class="service-surface"><span class="status-chip">In Vorbereitung</span><h3>Die ersten Termine entstehen</h3><p>Noch steht kein gemeinsamer Treff fest. Hier werden die tatsächlichen Termine und Teilnahmebedingungen ergänzt, sobald sie vereinbart sind.</p><p>Auch die Anmeldung zu Treffen wird als nächster Schritt aufgebaut.</p></article>
+          <article class="service-surface"><h3>So bist du dabei</h3><p>Wähle einen veröffentlichten Treff und lies die Absprachen. Mit deinem Mitgliedskonto kannst du einen Platz für dich reservieren und dich wieder abmelden.</p><p>Prüfe den Termin vor dem Losgehen: Änderungen und Absagen stehen direkt am Treff.</p></article>
         </div>
+          <section class="service-meetings" id="termine" data-service-meetings="SERVICE-RUBYBUBYS-HERZ-SCHNAUZE" aria-labelledby="meeting-feed-title">
+            <div class="meeting-heading"><h3 id="meeting-feed-title">Die nächsten Treffen</h3><button type="button" class="meeting-refresh" data-meeting-refresh>Aktualisieren</button></div>
+            <p class="meeting-help" data-meeting-access></p>
+            <p class="meeting-feedback" data-meeting-status role="status" aria-live="polite">Treffen werden geladen …</p>
+            <noscript><style>.service-meetings [data-meeting-status],.service-meetings [data-meeting-refresh]{display:none}</style><p>Für aktuelle Treffen und die Anmeldung brauchst du JavaScript. Die Beschreibung des Vorhabens kannst du hier weiterlesen.</p></noscript>
+            <div class="meeting-feed" data-meeting-feed></div>
+            <section class="meeting-own" data-meeting-own hidden aria-label="Deine weiteren Anmeldungen"></section>
+            <section class="meeting-manager" data-meeting-manager hidden aria-labelledby="meeting-manager-title">
+              <h3 id="meeting-manager-title">Treffen verwalten</h3>
+              <p class="meeting-help">Dieser Bereich ist nur für die Treffverwaltung sichtbar. Ein neuer Treff beginnt als privater Entwurf.</p>
+              <button type="button" class="button secondary" data-meeting-new>Neuen Treff vorbereiten</button>
+              <form class="meeting-form" data-meeting-form hidden>
+                <p class="meeting-help">Die Treffangaben werden bei der Freigabe öffentlich. Trage eine dafür geeignete Ansprechperson und Kontaktmöglichkeit ein. Ein Platz steht für eine angemeldete Person.</p>
+                <label for="meeting-title">Titel<input id="meeting-title" name="title" maxlength="160" required></label>
+                <label for="meeting-body">Beschreibung<textarea id="meeting-body" name="body" rows="3" maxlength="4000"></textarea></label>
+                <div class="meeting-form-two"><label for="meeting-start">Beginn<input id="meeting-start" name="starts_at" type="datetime-local" required></label><label for="meeting-end">Ende · optional<input id="meeting-end" name="ends_at" type="datetime-local"></label></div>
+                <label for="meeting-zone">Zeitzone des Trefforts<select id="meeting-zone" name="time_zone" required></select></label>
+                <label for="meeting-venue">Ort und genauer Treffpunkt<input id="meeting-venue" name="venue" maxlength="300" required><small>Verwende einen öffentlichen Treffpunkt ohne private Wohnungsdetails.</small></label>
+                <label for="meeting-contact">Ansprechperson und Kontakt<textarea id="meeting-contact" name="contact" rows="2" maxlength="500" required></textarea></label>
+                <label for="meeting-cost">Kosten und mögliche Beiträge<input id="meeting-cost" name="cost_note" maxlength="500" required><small>Auch ein kostenfreier Treff braucht eine klare Angabe.</small></label>
+                <label for="meeting-conditions">Teilnahme und Absprachen<textarea id="meeting-conditions" name="participation_note" rows="3" maxlength="2000" required></textarea><small>Zum Beispiel: Für wen passt der Treff? Was gilt für Hunde, Abstand und Begleitung?</small></label>
+                <label for="meeting-capacity">Plätze für Personen · optional<input id="meeting-capacity" name="capacity" type="number" min="1" max="500" step="1" inputmode="numeric"><small>Leer lassen, wenn keine feste Platzzahl vereinbart ist.</small></label>
+                <label for="meeting-change" data-meeting-change-field hidden>Was hat sich geändert?<textarea id="meeting-change" name="change_note" rows="2" maxlength="1000"></textarea></label>
+                <div class="button-row"><button class="button" type="submit" data-meeting-save>Entwurf speichern</button><button class="button secondary" type="button" data-meeting-close-form>Schließen</button></div>
+              </form>
+              <div class="meeting-feed" data-meeting-managed></div>
+            </section>
+          </section>
         </div>
       </details>
 
@@ -91,13 +120,16 @@
       </details>
 
       <section class="service-next" id="mitmachen" aria-labelledby="mitmachen-title">
-        <div class="service-invitation"><p class="eyebrow">Schritt für Schritt</p><h2 id="mitmachen-title">Hier wächst ein Miteinander.</h2><p>Wir beginnen mit Hunden und ihren Menschen. Aus gemeinsamen Begegnungen soll ein verlässliches Netz wachsen, in dem später auch Menschen ohne eigenes Tier und weitere Haustiere ihren Platz finden.</p><p>Die Idee und die Haltung stehen. Als Nächstes werden erste Treffen, eine Ansprechperson und der Teilnahme- und Kostenrahmen festgelegt. Diese Angaben findest du dann hier.</p><div class="button-row"><a class="button" href="../../community/dynastien/rubybubys/#leistungen">Zu den Rubybubys</a><a class="button secondary" href="../#soziales">Weitere Möglichkeiten entdecken</a></div></div>
+        <div class="service-invitation"><p class="eyebrow">Schritt für Schritt</p><h2 id="mitmachen-title">Hier wächst ein Miteinander.</h2><p>Wir beginnen mit Hunden und ihren Menschen. Aus gemeinsamen Begegnungen soll ein verlässliches Netz wachsen, in dem später auch Menschen ohne eigenes Tier und weitere Haustiere ihren Platz finden.</p><p>Die Idee und die Haltung stehen. Die ersten Treffen werden mit Ort, Ansprechperson sowie Teilnahme- und Kostenrahmen vorbereitet. Sobald sie freigegeben sind, kannst du dich hier anmelden.</p><div class="button-row"><a class="button" href="#treffen">Zu den Treffen</a><a class="button secondary" href="../../community/dynastien/rubybubys/#leistungen">Zu den Rubybubys</a></div></div>
       </section>
     </main>
     <footer class="footer"><span>Rubybubys Herz und Schnauze · im Aufbau</span><a href="../../community/dynastien/rubybubys/#leistungen">Eine Leistung der Rubybubys</a><a href="../../impressum/">Impressum</a></footer>
   </div>
   <script>window.BLOB_CONFIG={autoGreet:false,mode:"social",root:"../../",actionLabel:"Vorhaben entdecken",actionTarget:"#vorhaben"};</script>
-  <script src="../../assets/herz-schnauze.js?v=20261015-1" defer></script>
+  <script src="../../assets/herz-schnauze.js?v=20261015-2" defer></script>
   <script src="../../assets/site.js?v=20261012-1" defer></script><script src="../../assets/blob.js?v=20261012-1" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script>
+  <script src="../../assets/supabase-config.js" defer></script><script src="../../assets/supabase-client.js" defer></script>
+  <script src="../../assets/service-meetings.js?v=20261015-1" defer></script>
 </body>
 </html>
