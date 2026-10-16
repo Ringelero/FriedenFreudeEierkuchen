@@ -262,6 +262,7 @@
         wrapper.append(node('dt', '', term), node('dd', '', value));
         facts.append(wrapper);
       };
+      if(record.support_kind)addFact('Unterstützung',({walk:'Gassirunde',day:'Tagesbetreuung',overnight:'Übernachtung',longer:'Mehrere Tage'})[record.support_kind]);
       addFact('Ort', `${LOCATIONS[record.location_mode] || record.location_mode}${record.location_label ? ` · ${record.location_label}` : ''}`);
       addFact('Beginn', readableDateTime(record.starts_at));
       addFact('Ende', readableDateTime(record.ends_at));
@@ -359,7 +360,7 @@
       try {
         await loadViewer();
         const opportunities = await result(client.from('opportunities')
-          .select('id,stable_id,owner_member_id,signal_type,relationship_mode,title,summary,location_mode,location_label,starts_at,ends_at,duration_note,compensation_type,compensation_note,risk_level,risk_note,lifecycle_status,created_at')
+          .select('id,stable_id,owner_member_id,signal_type,support_kind,relationship_mode,title,summary,location_mode,location_label,starts_at,ends_at,duration_note,compensation_type,compensation_note,risk_level,risk_note,lifecycle_status,created_at')
           .eq('visibility', 'public')
           .eq('publication_status', 'published')
           .neq('lifecycle_status', 'archived')

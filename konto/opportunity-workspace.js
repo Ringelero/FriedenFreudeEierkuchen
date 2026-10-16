@@ -236,6 +236,7 @@
     byId('opportunity-mode').value = record.relationship_mode;
     byId('opportunity-title').value = record.title;
     byId('opportunity-service').value = record.service_id || '';
+    byId('opportunity-support-kind').value = record.support_kind || '';
     byId('opportunity-summary').value = record.summary || '';
     byId('opportunity-location-mode').value = record.location_mode;
     byId('opportunity-location-label').value = record.location_label || '';
@@ -431,7 +432,7 @@
     const memberId = state.profile.stable_id;
     const ticket = generation;
     const opportunities = await result(state.client.from('opportunities')
-      .select('id,stable_id,owner_member_id,service_id,signal_type,relationship_mode,title,summary,location_mode,location_label,starts_at,ends_at,duration_note,compensation_type,compensation_note,risk_level,risk_note,visibility,lifecycle_status,publication_status,published_at,created_at,updated_at')
+      .select('id,stable_id,owner_member_id,service_id,support_kind,signal_type,relationship_mode,title,summary,location_mode,location_label,starts_at,ends_at,duration_note,compensation_type,compensation_note,risk_level,risk_note,visibility,lifecycle_status,publication_status,published_at,created_at,updated_at')
       .eq('owner_member_id', memberId)
       .order('updated_at', { ascending: false }));
 
@@ -516,6 +517,7 @@
       try {
         const values = {
           service_id: byId('opportunity-service').value || null,
+          support_kind: byId('opportunity-support-kind').value || null,
           signal_type: byId('opportunity-signal').value,
           relationship_mode: byId('opportunity-mode').value,
           title,

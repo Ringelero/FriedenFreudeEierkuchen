@@ -25,7 +25,8 @@
     responses: [],
     messages: new Map(),
     loadToken: 0,
-    mutating: false
+    mutating: false,
+    focusedResponse: null
   };
 
   const byId = id => typeof document === 'undefined' ? null : document.getElementById(id);
@@ -217,6 +218,7 @@
       ? response.responder_display_name
       : response.opportunity_owner_display_name;
     const card = node('article', 'resonance-card');
+    card.id = `resonance-${response.id}`;
     const head = node('div', 'resonance-card-head');
     const title = node('div');
     title.append(
@@ -271,6 +273,8 @@
     byId('resonance-count-rooms').textContent = String(state.responses.filter(item => item.status === 'accepted').length);
     renderList(byId('resonance-incoming'), incoming, 'incoming');
     renderList(byId('resonance-sent'), sent, 'sent');
+    const requested = new URLSearchParams(location.search).get('resonanz');
+    if(requested && /^[0-9a-f-]{36}$/i.test(requested)){const target=byId(`resonance-${requested}`);if(target&&state.focusedResponse!==requested){state.focusedResponse=requested;target.scrollIntoView({block:'start'});target.setAttribute('tabindex','-1');target.focus({preventScroll:true});}}
   }
 
   async function loadResponses() {
@@ -333,6 +337,7 @@
       profile: null,
       responses: [],
       messages: new Map(),
+      focusedResponse: null,
       mutating: false
     });
     const center = byId('resonance-center');
