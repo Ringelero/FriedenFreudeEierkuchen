@@ -235,6 +235,7 @@
     byId('opportunity-signal').value = record.signal_type;
     byId('opportunity-mode').value = record.relationship_mode;
     byId('opportunity-title').value = record.title;
+    byId('opportunity-service').value = record.service_id || '';
     byId('opportunity-summary').value = record.summary || '';
     byId('opportunity-location-mode').value = record.location_mode;
     byId('opportunity-location-label').value = record.location_label || '';
@@ -350,6 +351,7 @@
     appendText(card, record.summary);
 
     const context = [];
+    if(record.service_id==='SERVICE-RUBYBUBYS-HERZ-SCHNAUZE')context.push('Herz und Schnauze · Gassihilfe');
     if (record.location_label) context.push(`${optionLabel(LOCATIONS, record.location_mode)} · ${record.location_label}`);
     else context.push(optionLabel(LOCATIONS, record.location_mode));
     if (record.starts_at) context.push(`ab ${readableDateTime(record.starts_at)}`);
@@ -429,7 +431,7 @@
     const memberId = state.profile.stable_id;
     const ticket = generation;
     const opportunities = await result(state.client.from('opportunities')
-      .select('id,stable_id,owner_member_id,signal_type,relationship_mode,title,summary,location_mode,location_label,starts_at,ends_at,duration_note,compensation_type,compensation_note,risk_level,risk_note,visibility,lifecycle_status,publication_status,published_at,created_at,updated_at')
+      .select('id,stable_id,owner_member_id,service_id,signal_type,relationship_mode,title,summary,location_mode,location_label,starts_at,ends_at,duration_note,compensation_type,compensation_note,risk_level,risk_note,visibility,lifecycle_status,publication_status,published_at,created_at,updated_at')
       .eq('owner_member_id', memberId)
       .order('updated_at', { ascending: false }));
 
@@ -513,6 +515,7 @@
       setMessage(byId('opportunity-form-status'), editingId ? 'Änderungen werden gespeichert …' : 'Entwurf wird angelegt …');
       try {
         const values = {
+          service_id: byId('opportunity-service').value || null,
           signal_type: byId('opportunity-signal').value,
           relationship_mode: byId('opportunity-mode').value,
           title,
