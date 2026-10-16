@@ -38,6 +38,61 @@
 
     const line = document.getElementById('blob-line');
     const meta = document.getElementById('blob-meta');
+    // Only three known public destinations; no URLs, names or clickstream are saved.
+    const shortcutKey = 'gemden_blob_paths_v1';
+    const destinations = {
+      walks: { label: 'Meine Gassitreffpunkte', href: root + 'treffpunkte/?leistung=SERVICE-RUBYBUBYS-HERZ-SCHNAUZE' },
+      places: { label: 'Treffpunkte entdecken', href: root + 'treffpunkte/' },
+      herz: { label: 'Herz und Schnauze', href: root + 'leistungen/rubybubys-herz-und-schnauze/' }
+    };
+    function shortcutState() {
+      let raw; try { raw = JSON.parse(localStorage.getItem(shortcutKey) || '{}'); } catch { raw = {}; }
+      const clean = {};
+      for (const key of Object.keys(destinations)) {
+        const item = raw?.[key];
+        clean[key] = { count: Math.max(0, Math.min(100, Number(item?.count) || 0)), last: Number.isFinite(item?.last) ? item.last : 0, pinned: item?.pinned === true, hidden: item?.hidden === true };
+      }
+      return clean;
+    }
+    function persistPaths(paths) { try { localStorage.setItem(shortcutKey, JSON.stringify(paths)); } catch {} }
+    function shortcutsEnabled() { try { return localStorage.getItem('gemden_blob_shortcuts_enabled') !== 'false'; } catch { return true; } }
+    const shortcuts = document.createElement('div');
+    shortcuts.id = 'blob-shortcuts';
+    shortcuts.setAttribute('aria-label', 'Deine Schnellwege');
+    document.getElementById('blob-actions').before(shortcuts);
+    function renderShortcuts() {
+      shortcuts.replaceChildren();
+      if (!shortcutsEnabled()) return;
+      const paths = shortcutState();
+      const keys = Object.keys(paths).filter(key => !paths[key].hidden && (paths[key].count > 0 || paths[key].pinned))
+        .sort((a,b) => Number(paths[b].pinned) - Number(paths[a].pinned) || paths[b].count - paths[a].count || paths[b].last - paths[a].last).slice(0, 2);
+      if (!keys.length) {
+        if (Object.values(paths).some(item => item.hidden)) {
+          const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'blob-shortcut-reset'; reset.textContent = 'Schnellwege zurücksetzen';
+          reset.addEventListener('click', () => { persistPaths({}); renderShortcuts(); }); shortcuts.append(reset);
+        }
+        return;
+      }
+      const title = document.createElement('p'); title.textContent = 'Deine Wege auf diesem Gerät'; shortcuts.append(title);
+      for (const key of keys) {
+        const row = document.createElement('div'); row.className = 'blob-shortcut-row';
+        const link = document.createElement('a'); link.href = destinations[key].href; link.textContent = destinations[key].label;
+        const pin = document.createElement('button'); pin.type = 'button'; pin.textContent = paths[key].pinned ? '★' : '☆'; pin.setAttribute('aria-label', destinations[key].label + ': ' + (paths[key].pinned ? 'lösen' : 'anheften'));
+        pin.addEventListener('click', () => { paths[key].pinned = !paths[key].pinned; persistPaths(paths); renderShortcuts(); });
+        const hide = document.createElement('button'); hide.type = 'button'; hide.textContent = '×'; hide.setAttribute('aria-label', destinations[key].label + ': ausblenden');
+        hide.addEventListener('click', () => { paths[key].hidden = true; persistPaths(paths); renderShortcuts(); });
+        row.append(link, pin, hide); shortcuts.append(row);
+      }
+      const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'blob-shortcut-reset'; reset.textContent = 'Vorschläge zurücksetzen';
+      reset.addEventListener('click', () => { persistPaths({}); renderShortcuts(); }); shortcuts.append(reset);
+    }
+    if (shortcutsEnabled()) {
+      const path = location.pathname.replace(/index\.html$/, '');
+      const key = path.endsWith('/treffpunkte/') ? (new URLSearchParams(location.search).get('leistung') === 'SERVICE-RUBYBUBYS-HERZ-SCHNAUZE' ? 'walks' : 'places') : path.endsWith('/leistungen/rubybubys-herz-und-schnauze/') ? 'herz' : null;
+      if (key) { const paths = shortcutState(); paths[key].count = Math.min(100, paths[key].count + 1); paths[key].last = Date.now(); persistPaths(paths); }
+    }
+    renderShortcuts();
+    window.addEventListener('blob:shortcuts-changed', renderShortcuts);
     const emptyState = { name: '', visits: 0, x: null, y: null };
     let state;
     try {
@@ -121,6 +176,8 @@
     function activateContext() {
       const target = document.querySelector(cfg.actionTarget);
       if (!target) return;
+      let chapter = target.closest('details');
+      while (chapter) { chapter.open = true; chapter = chapter.parentElement?.closest('details'); }
       if (target.matches('[data-panel]') && target.hidden) {
         document.querySelector(`[data-section="${target.id}"]`)?.click();
       }

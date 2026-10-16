@@ -8,6 +8,14 @@
   --blob-social:#5b8f68;
   --blob-border:rgba(201,0,70,.18);
 }
+#blob-chat{max-height:calc(100dvh - 110px);overflow-y:auto;overscroll-behavior:contain}
+#blob-shortcuts{margin:10px 0 15px;padding:12px 0;border-block:1px solid var(--blob-border)}
+#blob-shortcuts:empty{display:none}
+#blob-shortcuts p{font-size:.72rem;color:var(--blob-muted);margin:0 0 8px}
+.blob-shortcut-row{display:grid;grid-template-columns:minmax(0,1fr) 34px 34px;align-items:center;gap:5px;margin:6px 0}
+.blob-shortcut-row a{font-size:.85rem;font-weight:700;overflow-wrap:anywhere}
+.blob-shortcut-row button,.blob-shortcut-reset{border:1px solid var(--blob-border);border-radius:8px;background:#fff9f4;color:var(--blob-ruby);min-height:40px;cursor:pointer}
+.blob-shortcut-reset{font-size:.72rem;padding:5px 8px;margin-top:5px}
 #blob-character{
   position:fixed;
   right:18px;

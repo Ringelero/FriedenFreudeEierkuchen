@@ -115,3 +115,5 @@
   .service-hero .button-row { gap: 3px; }
   .chapter-label small { font-size: .72rem; }
 }
+
+.service-quick-nav{display:flex;flex-wrap:wrap;gap:6px 20px;padding:8px 5px}.service-quick-nav a{display:inline-flex;align-items:center;min-height:44px;color:var(--herz-ruby);font-size:.83rem;font-weight:700;text-underline-offset:5px}
