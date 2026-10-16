@@ -24,3 +24,9 @@ test('normal entry page loads no mapping engine, tiles or location watcher',()=>
  assert.doesNotMatch(js,/watchPosition|\.channel\(/);
  assert.match(js,/get_place_map_points/);assert.match(js,/map\.remove\(\)/);assert.match(js,/keepBuffer:0/);
 });
+test('dog access uses explicit verified classification rather than guessing from walking availability',()=>{
+ assert.equal(api.dogAccess({services:[{id:api.RUBY,walks_enabled:false,description:'No walks configured'}]}),'unknown');
+ assert.equal(api.dogAccessLabel(api.dogAccess({services:[{id:api.RUBY,dog_access:'prohibited',walks_enabled:false}]})),'× Hunde nicht erlaubt');
+ assert.equal(api.dogAccessLabel(api.dogAccess({services:[{id:api.RUBY,dog_access:'designated_off_leash',walks_enabled:true}]})),'Ausgewiesener Hundeauslauf');
+ assert.equal(api.dogAccessLabel('unverified-value'),'');
+});
