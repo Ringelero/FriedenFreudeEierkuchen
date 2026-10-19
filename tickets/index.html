@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Melde ein Problem, teile eine Idee oder einen Wunsch mit Blob und verfolge den Bearbeitungsstand.">
+  <title>Deine Rückmeldung · GemDen</title>
+  <link rel="stylesheet" href="../assets/site.css?v=20261012-1"><link rel="stylesheet" href="../assets/worlds.css?v=20261011-1"><link rel="stylesheet" href="../assets/blob.css?v=20261016-1"><link rel="stylesheet" href="./tickets.css?v=20261019-1">
+</head>
+<body class="world-desk" data-blob-mode="guide">
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="site-shell feedback-shell">
+    <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation"><a class="site-mark" href="../">GemDen</a></nav>
+    <main id="inhalt">
+      <header class="feedback-hero"><div><p class="eyebrow">Blob hört zu · Rückmeldungen</p><h1>Was können wir<br>besser machen?</h1><p class="lead">Ein Fehler, eine Idee oder etwas, das dir noch fehlt? Gib deinem Gedanken einen Platz.</p></div><div class="feedback-art" aria-hidden="true"><span class="feedback-orbit orbit-one">✦</span><span class="feedback-orbit orbit-two">＋</span><div class="feedback-blob"><span>••</span><i></i></div><span class="feedback-sticker">Kleine Idee.<br>Neuer Anfang.</span></div></header>
+      <div class="feedback-layout">
+        <section class="feedback-panel" aria-labelledby="new-ticket-title">
+          <p class="eyebrow">01 · Aufschreiben</p><h2 id="new-ticket-title">Dein Ticket.</h2>
+          <p id="identity-note" class="quiet" role="status">Dein Zugang wird geprüft …</p>
+          <form id="ticket-form">
+            <fieldset class="ticket-types"><legend>Worum geht es?</legend>
+              <label><input type="radio" name="kind" value="problem" checked><span>↯ Problem</span></label>
+              <label><input type="radio" name="kind" value="improvement"><span>↗ Verbesserung</span></label>
+              <label><input type="radio" name="kind" value="idea"><span>✦ Idee</span></label>
+              <label><input type="radio" name="kind" value="wish"><span>♡ Wunsch</span></label>
+            </fieldset>
+            <label class="feedback-field" for="ticket-title">Kurz gesagt<input id="ticket-title" name="title" minlength="3" maxlength="160" placeholder="Was ist dir aufgefallen?" required></label>
+            <label class="feedback-field" for="ticket-body">Deine Beschreibung<textarea id="ticket-body" name="body" rows="6" minlength="10" maxlength="5000" placeholder="Was passiert gerade – und was wünschst du dir stattdessen?" required></textarea></label>
+            <p id="page-context" class="ticket-context" hidden></p>
+            <p class="quiet">Dein Ticket sehen nur du und die Ticketverwaltung. Bitte schreibe keine Passwörter oder vertraulichen Daten hinein.</p>
+            <button class="button" id="ticket-submit" type="submit" disabled>Ticket senden <span aria-hidden="true">↗</span></button>
+            <p id="submit-status" class="feedback-status" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+        <section class="feedback-panel feedback-inbox" aria-labelledby="ticket-list-title">
+          <div class="feedback-list-head"><div><p class="eyebrow">02 · Dranbleiben</p><h2 id="ticket-list-title">Deine Tickets.</h2></div><button id="ticket-refresh" class="button secondary" type="button">Neu laden</button></div>
+          <div class="feedback-tools"><label id="manage-wrap" hidden><input id="ticket-manage" type="checkbox"> Alle Tickets verwalten</label><label>Status <select id="ticket-filter"><option value="all">Alle</option><option value="open">Offen</option><option value="planned">Geplant</option><option value="working">In Arbeit</option><option value="done">Erledigt</option><option value="closed">Geschlossen</option></select></label></div>
+          <p id="list-status" role="status" class="quiet"></p><div id="ticket-list" class="ticket-list"></div>
+          <div class="feedback-pager"><button id="ticket-prev" class="button secondary" type="button" hidden>Zurück</button><button id="ticket-next" class="button secondary" type="button" hidden>Weitere Tickets</button></div>
+        </section>
+      </div>
+    </main><footer class="footer"><span>Gemeinsam wird GemDen besser.</span><a href="../konto/">Dein Konto</a></footer>
+  </div>
+  <script>window.BLOB_CONFIG={autoGreet:false,root:"../"};</script>
+  <script src="../assets/site.js?v=20261012-1" defer></script><script src="../assets/blob.js?v=20261019-1" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js" defer></script><script src="../assets/supabase-config.js?v=20261010-1" defer></script><script src="../assets/supabase-client.js?v=20260919-1" defer></script><script src="./tickets.js?v=20261019-1" defer></script>
+</body></html>
