@@ -162,14 +162,14 @@
     }).filter(item => item.coversRequired);
 
     const situationCards = analysis.selected.length ? analysis.selected.map(situation => `<article class="result-block">
-      <span class="id-chip">${escapeHtml(situation.id)}</span>
+      <details class="matching-reference"><summary>Erkennung nachvollziehen</summary><code>${escapeHtml(situation.id)}</code></details>
       <h3>Erkannte Situation</h3>
       <ul class="question-list">${situation.questions.map(question => `<li>${escapeHtml(question)}</li>`).join('')}</ul>
       ${situation.caution ? `<p class="notice"><strong>Grenze:</strong> ${escapeHtml(situation.caution)}</p>` : ''}
     </article>`).join('') : `<article class="result-block"><span class="status-chip open">unklar</span><h3>Das Regelwerk kennt diese Formulierung noch nicht.</h3><p>Blob erfindet keine sichere Deutung. Beschreibe das gewünschte Ergebnis, den Ort, den Zeitrahmen und wichtige Grenzen etwas genauer.</p></article>`;
 
     const matches = memberMap.length ? memberMap.map(({ member, requiredHits, helpfulHits, evidence }) => `<article class="result-block match-person">
-      <span class="id-chip">${escapeHtml(member.id)}</span>
+      <details class="matching-reference"><summary>Profilkennung ansehen</summary><code>${escapeHtml(member.id)}</code></details>
       <h3>${escapeHtml(member.name)} könnte passen</h3>
       <p class="match-score">Alle hier als notwendig markierten Fähigkeiten stehen im öffentlichen Profil — keine Rangliste und noch keine Qualifikationsprüfung.</p>
       <ul class="match-reasons">
@@ -177,15 +177,15 @@
         ${helpfulHits.map(id => `<li>hilfreiche Fähigkeit: ${escapeHtml(skillMap.get(id)?.name || id)}</li>`).join('')}
       </ul>
       ${evidence.length ? `<h4>Vorhandene Profilangaben</h4><ul class="match-reasons">${evidence.map(item => `<li>${escapeHtml(item.title)} · ${escapeHtml(item.verification)}</li>`).join('')}</ul>` : ''}
-      <p class="notice"><strong>Evidenzgrenze:</strong> Die bisherigen Nachweise sind dem Profil zugeordnet, noch nicht einzelnen Fähigkeiten, Niveaus, Zeiträumen oder Einsatzgrenzen. Der Treffer ist deshalb eine Einladung zur Prüfung, kein Belastbarkeits- oder Sicherheitsnachweis.</p>
+      <p class="notice"><strong>Wie belastbar sind diese Angaben?</strong> Die bisherigen Nachweise sind dem Profil zugeordnet, noch nicht einzelnen Fähigkeiten, Niveaus, Zeiträumen oder Einsatzgrenzen. Der Treffer ist deshalb eine Einladung zur Prüfung, kein Belastbarkeits- oder Sicherheitsnachweis.</p>
       <p>Eine Empfehlung ist noch keine Zusage. Verfügbarkeit, Grenzen und Sicherheitsfragen müssen konkret geklärt werden.</p>
       <a class="button secondary" href="../community/mitglieder/${escapeHtml(member.slug)}/">Profil und Evidenz ansehen</a>
-    </article>`).join('') : `<article class="result-block"><span class="status-chip open">kein vollständiger Profil-Match</span><h3>Niemand im öffentlichen Bestand deckt aktuell alle notwendigen Fähigkeiten ab.</h3><p>Ein Teiltreffer wird nicht als fertige Empfehlung ausgegeben. Später kann daraus ein Team, eine sichtbare Chance, ein Lernweg oder eine Anfrage an die Community werden.</p></article>`;
+    </article>`).join('') : `<article class="result-block"><span class="status-chip open">keine vollständige Passung</span><h3>Niemand im öffentlichen Bestand deckt aktuell alle notwendigen Fähigkeiten ab.</h3><p>Ein Teiltreffer wird nicht als fertige Empfehlung ausgegeben. Später kann daraus ein Team, eine sichtbare Chance, ein Lernweg oder eine Anfrage an die Community werden.</p></article>`;
 
     result.innerHTML = `${situationCards}
       <article class="result-block"><h3>Notwendige Fähigkeiten</h3>${renderSkills(analysis.required, skillMap)}<h3>Hilfreiche Fähigkeiten</h3>${renderSkills(analysis.helpful, skillMap)}</article>
       <section><p class="eyebrow">Erklärbare Profile</p><p>Profile werden nicht bewertet oder gerankt. Die Reihenfolge folgt dem öffentlichen Datenbestand.</p>${matches}</section>
-      <p class="notice"><strong>Quelle:</strong> W01 → Situation → OP-W01; Fähigkeitsdarstellung nach K05; Evidenzgrenze wie oben ausgewiesen; Blob-Verhalten nach K10. Diese Demo speichert nichts und vergibt keinen Auftrag.</p>`;
+      <details class="matching-reference"><summary>Quellen und Verfahren ansehen</summary><p class="notice">W01 → Situation → OP-W01; Fähigkeitsdarstellung nach K05; Evidenzgrenze wie oben ausgewiesen; Blob-Verhalten nach K10. Diese Demo speichert nichts und vergibt keinen Auftrag.</p></details>`;
     result.hidden = false;
     status.textContent = 'Analyse fertig. Alle Treffer und Grenzen stehen sichtbar im Ergebnis.';
     result.scrollIntoView({ behavior: 'smooth', block: 'start' });
