@@ -31,10 +31,13 @@
         <a class="secondary" href="${links.community}">Community</a>
         <a class="secondary" href="${links.services}">Leistungen</a>
         <a class="secondary" href="${links.system}">FFE-System</a>
+        <a class="secondary" id="blob-feedback" href="${root}tickets/">Problem, Idee oder Wunsch</a>
         <button id="blob-name" class="secondary" type="button">Name</button>
         <button id="blob-close" class="secondary" type="button">Ruhe</button>
       </div>`;
     document.body.append(character, chat);
+    // Send only the public path as context, never account query strings or fragments.
+    document.getElementById('blob-feedback').href = root + 'tickets/?seite=' + encodeURIComponent(location.pathname);
 
     const line = document.getElementById('blob-line');
     const meta = document.getElementById('blob-meta');
