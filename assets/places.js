@@ -35,7 +35,7 @@
   }
   presentService();
   let generation=0,listEpoch=0,detailEpoch=0,mapEpoch=0,authUser=null,authReady=false,access=null;
-  let view='favorites',display='list',search='',page=0,list=[],hasMore=false,detail=null,entryPage=0,activeSlot=null,detailDirty=false;
+  let view=url.searchParams.get('ansicht')==='entdecken'?'discover':'favorites',display='list',search='',page=0,list=[],hasMore=false,detail=null,entryPage=0,activeSlot=null,detailDirty=false;
   let map=null,mapGroup=null,mapLoading=null,mapDebounce=null,nearBounds=null,refreshing=false,busy=false,disposed=false,picking=null;
   const guestPrefsKey='gemden_places_guest_v1',guestKeyName='gemden_places_guest_key_v1';
   let guestKey=read(guestKeyName,null),guestStorage=true;
@@ -193,6 +193,7 @@
   async function refreshVisible(){if(refreshing||busy||disposed||document.hidden)return;refreshing=true;try{if(detail&&!detailDirty&&!$('[data-place-detail] details[open]'))await openPlace(detail.place.id,activeSlot&&new Date(activeSlot).getTime()+HOURS>Date.now()?activeSlot:null,false,false,true);if(display!=='map'&&page===0)await loadList(false);if(map)await mapPoints();}finally{refreshing=false;}}
   const timer=setInterval(refreshVisible,60000);window.addEventListener('pagehide',()=>{disposed=true;generation++;clearInterval(timer);destroyMap();});window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});
   client?.auth?.onAuthStateChange((event)=>{if(['SIGNED_IN','SIGNED_OUT','USER_UPDATED'].includes(event))setTimeout(identity,0);});
+  $('[data-discovery]').hidden=view!=='discover';el.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===view)));document.querySelectorAll('[data-mobile-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mobileView===view)));
   identity();return {refresh:refreshVisible,destroy:()=>{disposed=true;generation++;clearInterval(timer);destroyMap();}};
  }
  return {RUBY,dogNames,participationNames,attendanceLabel,slotStart,slotLabel,dateKey,mapsLink,ids,boundedBounds,dogAccess,dogAccessLabel,mount};
