@@ -8,6 +8,8 @@
     ['start', 'Start', root],
     ['community', 'Community', root + 'community/'],
     ['matching', 'Möglichkeiten', root + 'leistungen/'],
+    ['map', 'Karte', root + 'treffpunkte/?ansicht=entdecken&amp;darstellung=karte'],
+    ['calendar', 'Kalender', root + 'kalender/'],
     ['system', 'FFE-System', root + 'system/'],
     ['account', 'Konto', root + 'konto/']
   ];
@@ -35,5 +37,5 @@
   document.addEventListener('pointerdown', event => {
     if (!slot.contains(event.target)) setExpanded(false);
   });
-  window.matchMedia('(max-width: 650px)').addEventListener('change', () => setExpanded(false));
+  window.matchMedia('(max-width: 860px)').addEventListener('change', () => setExpanded(false));
 })();

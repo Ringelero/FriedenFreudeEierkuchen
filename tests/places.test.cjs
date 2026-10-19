@@ -2,6 +2,12 @@ const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const api=require('../assets/places.js');
+test('walking entry discovers places without favorites and respects an explicit view',()=>{
+ const favorite='c1111111-1111-4111-8111-111111111111';
+ assert.equal(api.entryView([]),'discover');assert.equal(api.entryView([favorite]),'favorites');
+ assert.equal(api.entryView([favorite],'discover'),'discover');assert.equal(api.entryView([],'favorites'),'favorites');
+ assert.equal(api.entryView(['invalid']),'discover');assert.equal(api.entryView(null,'untrusted'),'discover');
+});
 test('two-hour windows are contiguous even across a daylight-saving change',()=>{
  assert.equal(api.slotStart('2026-10-25T01:55Z'),'2026-10-25T00:00:00.000Z');
  assert.equal(api.slotStart('2026-10-25T02:05Z'),'2026-10-25T02:00:00.000Z');
