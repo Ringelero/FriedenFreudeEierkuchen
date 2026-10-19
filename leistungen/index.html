@@ -3,74 +3,52 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="description" content="Beschreibe einen Wunsch. Blob zerlegt ihn nachvollziehbar in Fähigkeiten und findet passende öffentliche Profile.">
-  <title>Möglichkeiten &amp; Fähigkeiten · GemDen</title>
+  <meta name="description" content="Entdecke Leistungen und Möglichkeiten aus der Community, kläre deinen Wunsch oder biete etwas an.">
+  <title>Möglichkeiten · GemDen</title>
   <link rel="stylesheet" href="../assets/site.css?v=20261020-1">
   <link rel="stylesheet" href="../assets/blob.css?v=20261016-1">
-  <style>
-    .matching-hero{background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(255,232,188,.65))}
-    .prompt-panel{display:grid;gap:20px}.examples{display:flex;flex-wrap:wrap;gap:8px}.example{border:1px solid var(--line);border-radius:999px;padding:9px 12px;color:var(--ruby);background:white;font-weight:800;cursor:pointer}
-    .match-person{border-color:rgba(0,168,150,.26);background:linear-gradient(145deg,#fff,rgba(0,168,150,.08))}.match-reasons{margin:10px 0 0;padding-left:20px;color:var(--muted);line-height:1.5}.match-score{color:var(--green);font-weight:900}.question-list{display:grid;gap:7px;margin:10px 0 0;padding:0;list-style:none}.question-list li::before{content:"?";display:inline-grid;place-items:center;width:21px;height:21px;margin-right:8px;border-radius:50%;color:white;background:var(--ruby);font-weight:900}
-    .opportunity-stream-shell{display:grid;gap:18px}.opportunity-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.opportunity-stream{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.opportunity-public-card{display:grid;align-content:start;gap:13px}.opportunity-public-head{display:flex;align-items:start;justify-content:space-between;gap:14px}.opportunity-public-head h3{margin:2px 0 0;font-size:clamp(1.35rem,3vw,2rem);line-height:1}.opportunity-summary{margin:0;color:var(--muted);line-height:1.6}.opportunity-owner{margin:0;color:var(--mint);font-weight:900}.opportunity-facts{display:grid;gap:8px;margin:0}.opportunity-facts div{display:grid;grid-template-columns:minmax(78px,110px) 1fr;gap:10px}.opportunity-facts dt{color:var(--muted);font-size:.78rem;font-weight:900;text-transform:uppercase}.opportunity-facts dd{margin:0}.opportunity-skill-block h4{margin:0}.opportunity-boundary{margin:0;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;line-height:1.5}.opportunity-response-callout,.opportunity-response-state{display:grid;gap:8px;padding:14px;border:1px solid rgba(0,168,150,.22);border-radius:16px;background:rgba(255,255,255,.72)}.opportunity-response-callout p,.opportunity-response-state p{margin:0;color:var(--muted);line-height:1.5}.opportunity-response-state.response-accepted{border-color:rgba(0,168,150,.4);background:rgba(0,168,150,.1)}.opportunity-response-state.response-declined,.opportunity-response-state.response-withdrawn{border-color:var(--line);background:rgba(255,255,255,.5)}.opportunity-response-composer{overflow:hidden;border:1px solid rgba(201,0,70,.22);border-radius:16px;background:rgba(255,255,255,.76)}.opportunity-response-composer>summary{padding:13px 15px;color:var(--ruby);cursor:pointer;font-weight:900}.opportunity-response-form{display:grid;gap:12px;padding:0 15px 15px}.opportunity-response-form textarea{min-height:110px}.opportunity-response-boundary{margin:0;color:var(--muted);font-size:.86rem;line-height:1.5}.compact-public-button{width:fit-content;padding:9px 12px;font-size:.84rem;box-shadow:none}.opportunity-public-card.signal-have{background:linear-gradient(145deg,#fff,rgba(255,184,92,.12))}.opportunity-public-card.signal-can{background:linear-gradient(145deg,#fff,rgba(0,168,150,.11))}.opportunity-public-card.signal-need{background:linear-gradient(145deg,#fff,rgba(201,0,70,.08))}.opportunity-public-card.signal-time{background:linear-gradient(145deg,#fff,rgba(92,78,255,.08))}.opportunity-public-card.signal-chance{background:linear-gradient(145deg,#fff,rgba(255,226,92,.14))}.opportunity-empty{grid-column:1/-1}.opportunity-empty p{margin-bottom:0}@media(max-width:720px){.opportunity-filters,.opportunity-stream{grid-template-columns:1fr}.opportunity-public-head{flex-direction:column}.opportunity-facts div{grid-template-columns:1fr;gap:2px}.compact-public-button{width:100%}}
-  </style>
+
   <link rel="stylesheet" href="../assets/worlds.css?v=20261011-1">
   <link rel="stylesheet" href="../assets/services.css?v=20261014-1">
+  <link rel="stylesheet" href="./moeglichkeiten.css?v=20261020-1">
 </head>
-<body class="world-workshop" data-area="matching" data-blob-mode="sales">
+<body class="world-workshop possibilities-page" data-area="matching" data-blob-mode="sales">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <div class="site-shell">
     <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation"><a class="site-mark" href="../">GemDen</a><div class="nav-links"><a href="../">Start</a><a href="../community/">Community</a><a href="../leistungen/" aria-current="page">Möglichkeiten</a><a href="../system/">FFE-System</a></div></nav>
     <main id="inhalt">
-      <header class="hero compact matching-hero work-hero area-hero">
-        <div class="hero-copy">
-          <p class="eyebrow">Werkstatt der Möglichkeiten</p>
-          <h1 class="display small">Was möchtest du möglich machen?</h1>
-          <p class="lead">Teile, was du mitbringst oder gerade brauchst. Blob hilft anschließend, eine konkrete Situation in passende Fähigkeiten zu übersetzen.</p>
-          <p><a class="button secondary" href="../treffpunkte/">Treffpunkte &amp; Karte entdecken</a></p>
-        </div>
-        <aside class="purpose-note"><strong>Ein Wunsch ist ein Anfang.</strong><span>Probier die Eingabe aus oder entdecke veröffentlichte Angebote. Die Auswertung deines Wunschtextes bleibt im Browser.</span></aside>
+      <header class="possibility-hero">
+        <p class="eyebrow">Kleine Ideen. Gemeinsame Möglichkeiten.</p>
+        <h1>Was möchtest du<br>möglich machen?</h1>
+        <p>Finde ein Angebot, bring deinen Wunsch mit oder teile, was du kannst.</p>
       </header>
+      <nav class="possibility-paths" aria-label="Dein Weg zu einer Möglichkeit">
+        <a href="#entdecken" data-section="entdecken" aria-controls="entdecken"><span class="possibility-path-icon" aria-hidden="true">↗</span><span><strong>Entdecken</strong><small>Leistungen &amp; offene Möglichkeiten</small></span></a>
+        <a href="#wunsch" data-section="wunsch" aria-controls="wunsch"><span class="possibility-path-icon" aria-hidden="true">✦</span><span><strong>Wunsch klären</strong><small>Mit Blob den Anfang finden</small></span></a>
+        <a href="#anbieten" data-section="anbieten" aria-controls="anbieten"><span class="possibility-path-icon" aria-hidden="true">＋</span><span><strong>Etwas anbieten</strong><small>Dinge, Fähigkeiten oder Zeit teilen</small></span></a>
+      </nav>
 
-      <section class="section working-section" id="soziales" aria-labelledby="social-services-title">
-        <div class="section-head"><p class="eyebrow">Leistungen aus unseren Gemeinschaften</p><h2 id="social-services-title">Soziales</h2><p>Gemeinsam lernen, Beziehungen aufbauen und füreinander da sein. Entdecke die Angebote und die Gemeinschaften, die sie tragen.</p></div>
+<div id="entdecken" data-panel data-possibility-view="discover" aria-labelledby="social-services-title">
+<section class="section working-section" id="soziales" aria-labelledby="social-services-title">
+        <div class="section-head"><p class="eyebrow">Aus unseren Gemeinschaften · Soziales</p><h2 id="social-services-title" tabindex="-1">Leistungen entdecken.</h2><p>Gemeinsam lernen, Beziehungen aufbauen und füreinander da sein.</p></div>
         <div class="service-list" data-service-list data-service-category="SOCIAL">
           <article class="service-card" data-service-id="SERVICE-RUBYBUBYS-HERZ-SCHNAUZE"><div class="service-card-head"><span class="service-category">Soziales</span><span class="status-chip">Im Aufbau</span></div><h3><a href="./rubybubys-herz-und-schnauze/">Rubybubys Herz und Schnauze</a></h3><p>Eine Leistung der <a href="../community/dynastien/rubybubys/">Rubybubys</a>.</p><a class="service-card-action" href="./rubybubys-herz-und-schnauze/">Vorhaben entdecken →</a></article>
         </div>
+      <div class="possibility-shortcuts"><a href="../treffpunkte/?leistung=SERVICE-RUBYBUBYS-HERZ-SCHNAUZE">Direkt zu den Gassitreffpunkten →</a><a href="../kalender/">Gemeinsame Kalender →</a></div>
       </section>
-
-      <section class="section working-section" aria-labelledby="matching-title">
-        <div class="panel prompt-panel">
-          <div class="section-head"><p class="eyebrow">Erster Versuch</p><h2 id="matching-title">Beschreibe deinen Wunsch.</h2><p>Dieser Prototyp benutzt nachvollziehbare Regeln im Browser, noch keine freie KI und keine versteckte Bewertung.</p></div>
-          <form class="form-grid" id="matching-form">
-            <div class="field"><label for="request-text">Dein Wunsch, Problem oder Auftrag</label><textarea id="request-text" required placeholder="Zum Beispiel: Ich wünsche mir eine coole Lichterkette, die auf Musik reagiert."></textarea><small>Schreib ruhig natürlich. Es werden keine Daten gesendet oder gespeichert.</small></div>
-            <div class="examples" aria-label="Beispiele">
-              <button class="example" type="button" data-example="Ich wünsche mir eine coole Lichterkette, die auf Musik reagiert.">coole Lichterkette</button>
-              <button class="example" type="button" data-example="Unser Flurlicht flackert und wir möchten die Ursache sicher prüfen lassen.">flackerndes Licht</button>
-              <button class="example" type="button" data-example="Ich brauche Hilfe, um einen chaotischen Raum zu putzen und dauerhaft Ordnung zu schaffen.">putzen &amp; Ordnung</button>
-              <button class="example" type="button" data-example="Ich möchte ein selbstgemachtes Stofftier verschenken.">Stofftier</button>
-              <button class="example" type="button" data-example="Wir brauchen jemanden, der Belege sorgfältig sortiert und eine einfache Buchhaltung vorbereitet.">Belege sortieren</button>
-            </div>
-            <div class="button-row"><button class="button" type="submit">Fähigkeiten finden</button><button class="button secondary" id="reset-matching" type="button">Neu anfangen</button></div>
-            <p id="matching-status" class="form-status" role="status"></p>
-          </form>
-          <noscript><style>#matching-form{display:none!important}</style><div class="notice"><strong>Manueller Rückfallweg:</strong> Das automatische Zerlegen in Fähigkeiten braucht JavaScript. Ohne Automatik kannst du die Grenzen auf dieser Seite lesen und die <a href="../community/">öffentlichen Profile und Community-Bereiche</a> selbst vergleichen. Es wird nichts gesendet.</div></noscript>
-          <div class="result-box" id="matching-result" hidden aria-live="polite"></div>
-        </div>
-      </section>
-
-      <section class="section" id="moeglichkeitenstrom" aria-labelledby="opportunity-stream-title">
+<section class="section" id="moeglichkeitenstrom" aria-labelledby="opportunity-stream-title">
         <div class="section-head">
-          <p class="eyebrow">Haben · Können · Brauchen · Zeit · Chance</p>
-          <h2 id="opportunity-stream-title">Öffentliche Möglichkeiten.</h2>
-          <p>Hier erscheinen nur bewusst veröffentlichte Einträge von ebenfalls veröffentlichten Profilen. Private Entwürfe und geschlossene Mitgliederbereiche bleiben unsichtbar.</p>
+          <p class="eyebrow">Von Menschen aus der Community</p>
+          <h2 id="opportunity-stream-title">Offene Möglichkeiten.</h2>
+          <p>Hier teilen Menschen, was sie haben, können oder brauchen. Du siehst ausschließlich bewusst veröffentlichte Einträge und Profile.</p>
         </div>
         <div class="panel opportunity-stream-shell">
-          <nav class="signal-dock" aria-label="Möglichkeiten nach Signal ansehen"><a href="#moeglichkeitenstrom" data-signal-filter="have">Ich habe</a><a href="#moeglichkeitenstrom" data-signal-filter="can">Ich kann</a><a href="#moeglichkeitenstrom" data-signal-filter="need">Ich brauche</a><a href="#moeglichkeitenstrom" data-signal-filter="time">Ich habe Zeit</a><a href="#moeglichkeitenstrom" data-signal-filter="chance">Es gibt eine Chance</a></nav>
+          <details class="possibility-filters" id="moeglichkeiten-filter"><summary>Möglichkeiten filtern</summary><nav class="signal-dock" aria-label="Möglichkeiten nach Signal ansehen"><a href="#moeglichkeitenstrom" data-signal-filter="have">Ich habe</a><a href="#moeglichkeitenstrom" data-signal-filter="can">Ich kann</a><a href="#moeglichkeitenstrom" data-signal-filter="need">Ich brauche</a><a href="#moeglichkeitenstrom" data-signal-filter="time">Ich habe Zeit</a><a href="#moeglichkeitenstrom" data-signal-filter="chance">Es gibt eine Chance</a></nav>
           <div class="opportunity-filters" aria-label="Möglichkeiten filtern">
             <div class="field">
-              <label for="opportunity-filter-signal">Signal</label>
+              <label for="opportunity-filter-signal">Was wird geteilt?</label>
               <select id="opportunity-filter-signal">
-                <option value="">alle fünf Signale</option>
+                <option value="">Alles anzeigen</option>
                 <option value="have">Ich habe</option>
                 <option value="can">Ich kann</option>
                 <option value="need">Ich brauche</option>
@@ -79,9 +57,9 @@
               </select>
             </div>
             <div class="field">
-              <label for="opportunity-filter-mode">Rahmen</label>
+              <label for="opportunity-filter-mode">Zusammenarbeit</label>
               <select id="opportunity-filter-mode">
-                <option value="">alle Rahmen</option>
+                <option value="">Alle Formen</option>
                 <option value="commission">Auftrag</option>
                 <option value="job">Job</option>
                 <option value="learning">Lernen</option>
@@ -94,9 +72,9 @@
               </select>
             </div>
             <div class="field">
-              <label for="opportunity-filter-location">Ortsmodus</label>
+              <label for="opportunity-filter-location">Wo?</label>
               <select id="opportunity-filter-location">
-                <option value="">alle Ortsmodi</option>
+                <option value="">Überall</option>
                 <option value="local">vor Ort</option>
                 <option value="remote">remote</option>
                 <option value="hybrid">hybrid</option>
@@ -104,18 +82,49 @@
               </select>
             </div>
           </div>
+          </details>
+          <div class="possibility-filter-state" id="possibility-active-filters" hidden><span id="possibility-filter-label"></span><button type="button" class="button secondary" id="possibility-clear-filters">Filter zurücksetzen</button></div>
           <p class="form-status" id="opportunity-stream-status" role="status" aria-live="polite">Öffentliche Möglichkeiten werden geladen …</p>
           <div class="opportunity-stream" id="opportunity-stream" aria-live="polite"></div>
           <div class="button-row">
-            <a class="button" id="opportunity-create-link" href="../konto/#opportunity-workspace">Eigene Möglichkeit anlegen</a>
+            <a class="button" id="opportunity-create-link" href="../konto/#opportunity-workspace">Eigene Möglichkeit im Konto anlegen</a>
             <span class="notice"><strong>Grenze:</strong> Sichtbarkeit ist keine Zusage, Buchung oder Qualifikationsprüfung.</span>
           </div>
         </div>
       </section>
+</div>
+<section class="section working-section" id="wunsch" data-panel data-possibility-view="wish" aria-labelledby="matching-title">
+        <div class="panel prompt-panel">
+          <div class="section-head"><p class="eyebrow">Ein Wunsch ist ein Anfang</p><h2 id="matching-title" tabindex="-1">Beschreibe deinen Wunsch.</h2><p>Was soll möglich werden? Blob hilft dir, die nächsten Fragen und passende Fähigkeiten zu finden.</p></div>
+          <form class="form-grid" id="matching-form">
+            <div class="field"><label for="request-text">Dein Wunsch, Problem oder Auftrag</label><textarea id="request-text" required placeholder="Zum Beispiel: Ich wünsche mir eine coole Lichterkette, die auf Musik reagiert."></textarea><small>Dein Text bleibt hier im Browser und wird weder gesendet noch gespeichert. Die Hilfe erkennt einige Themen mit festen Regeln; sie nutzt noch keine freie KI.</small></div>
+            <details class="possibility-examples"><summary>Eine Idee zum Ausprobieren?</summary><div class="examples" aria-label="Beispiele">
+              <button class="example" type="button" data-example="Ich wünsche mir eine coole Lichterkette, die auf Musik reagiert.">coole Lichterkette</button>
+              <button class="example" type="button" data-example="Unser Flurlicht flackert und wir möchten die Ursache sicher prüfen lassen.">flackerndes Licht</button>
+              <button class="example" type="button" data-example="Ich brauche Hilfe, um einen chaotischen Raum zu putzen und dauerhaft Ordnung zu schaffen.">putzen &amp; Ordnung</button>
+              <button class="example" type="button" data-example="Ich möchte ein selbstgemachtes Stofftier verschenken.">Stofftier</button>
+              <button class="example" type="button" data-example="Wir brauchen jemanden, der Belege sorgfältig sortiert und eine einfache Buchhaltung vorbereitet.">Belege sortieren</button>
+            </div></details>
+            <div class="button-row"><button class="button" type="submit">Fähigkeiten finden</button><button class="button secondary" id="reset-matching" type="button">Neu anfangen</button></div>
+            <p id="matching-status" class="form-status" role="status"></p>
+          </form>
+          <noscript><style>#matching-form{display:none!important}</style><div class="notice"><strong>Manueller Rückfallweg:</strong> Das automatische Zerlegen in Fähigkeiten braucht JavaScript. Ohne Automatik kannst du die Grenzen auf dieser Seite lesen und die <a href="../community/">öffentlichen Profile und Community-Bereiche</a> selbst vergleichen. Es wird nichts gesendet.</div></noscript>
+          <div class="result-box" id="matching-result" hidden aria-live="polite"></div>
+        </div>
+      <p class="possibility-next-step">Möchtest du daraus einen eigenen Eintrag machen? <a href="../konto/?signal=need#opportunity-workspace" data-offer-signal="need">Wunsch im Konto als Entwurf anlegen →</a></p>
+      </section>
+<section class="section" id="anbieten" data-panel data-possibility-view="offer" aria-labelledby="offer-title">
+        <div class="section-head"><p class="eyebrow">Was bringst du mit?</p><h2 id="offer-title" tabindex="-1">Teile deine Möglichkeiten.</h2><p>Eine Fähigkeit, ein freies Zeitfenster oder etwas zum Ausleihen: Wähle einen Anfang. Die Einzelheiten ergänzt du in deinem Konto.</p></div>
+        <div class="possibility-offers">
+          <a href="../konto/?signal=have#opportunity-workspace" data-offer-signal="have"><span aria-hidden="true">◇</span><strong>Ich habe etwas</strong><p>Dinge teilen, Material weitergeben oder etwas verleihen.</p><b>Mit Dingen anfangen →</b></a>
+          <a href="../konto/?signal=can#opportunity-workspace" data-offer-signal="can"><span aria-hidden="true">✦</span><strong>Ich kann etwas</strong><p>Fähigkeiten einbringen und andere unterstützen.</p><b>Eine Fähigkeit anbieten →</b></a>
+          <a href="../konto/?signal=time#opportunity-workspace" data-offer-signal="time"><span aria-hidden="true">◷</span><strong>Ich habe Zeit</strong><p>Mit anpacken, begleiten oder gemeinsam etwas beginnen.</p><b>Zeit anbieten →</b></a>
+          <a href="../konto/?signal=chance#opportunity-workspace" data-offer-signal="chance"><span aria-hidden="true">↗</span><strong>Ich sehe eine Chance</strong><p>Ein Projekt, eine Idee oder eine Gelegenheit weitertragen.</p><b>Eine Chance teilen →</b></a>
+        </div>
+        <div class="possibility-draft-note"><strong>Du entscheidest, was sichtbar wird.</strong><p>Im Konto beginnt dein Eintrag als privater Entwurf. Erst mit deiner bewussten Veröffentlichung wird daraus eine öffentliche Möglichkeit. Ein Angebot ist noch keine Zusage.</p><a href="../konto/?signal=need#opportunity-workspace" data-offer-signal="need">Du suchst selbst etwas? Einen Bedarf anlegen →</a></div>
+      </section>
 
-
-
-      <section class="section" aria-labelledby="not-ranking-title">
+      <details class="possibility-background" id="hintergrund"><summary>Wie Blob Vorschläge findet &amp; was dabei wichtig ist</summary><div class="possibility-background-content">      <section class="section" aria-labelledby="not-ranking-title">
         <div class="grid two">
           <div class="panel">
             <p class="eyebrow">Passung ist keine Menschenwertung</p><h2 id="not-ranking-title">Eine Aufgabe, ein Kontext.</h2>
@@ -140,19 +149,21 @@
           </div>
         </div>
       </section>
+</div></details>
     </main>
-    <footer class="footer"><span>Matching-Prototyp · keine Buchung, kein Profilranking</span><a href="../system/#institution-W01">W01 im System ansehen</a></footer>
+    <footer class="footer"><span>Gemeinsam etwas möglich machen.</span><a href="../tickets/">Idee oder Problem melden</a><a href="../system/#institution-W01">Hintergrund im FFE-System</a><a href="../impressum/">Impressum</a></footer>
   </div>
-  <script>window.BLOB_CONFIG={autoGreet:false,mode:"sales",root:"../",context:"matching",actionLabel:"Wunsch starten",actionTarget:"#request-text"};</script>
+  <script>window.BLOB_CONFIG={autoGreet:false,mode:"sales",root:"../",context:"matching",actionLabel:"Wunsch starten",actionTarget:"#wunsch"};</script>
   <script src="../assets/site.js?v=20261020-1" defer></script>
   <script src="../assets/services.js?v=20261014-1" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script>
   <script src="../assets/supabase-config.js" defer></script>
   <script src="../assets/supabase-client.js" defer></script>
-  <script src="./opportunities.js?v=20261016-1" defer></script>
+  <script src="./opportunities.js?v=20261020-1" defer></script>
   <script src="../assets/opportunity-entry.js?v=20261019-1" defer></script>
   <script src="./entry-points.js?v=20261012-4" defer></script>
+  <script src="./possibility-views.js?v=20261020-1" defer></script>
   <script src="../assets/blob.js?v=20261020-1" defer></script>
-  <script src="./matching.js?v=20260925-1" defer></script>
+  <script src="./matching.js?v=20261020-1" defer></script>
 </body>
 </html>

@@ -248,7 +248,7 @@
       const head = node('div', 'opportunity-public-head');
       const title = node('div');
       title.append(node('p', 'eyebrow', SIGNALS[record.signal_type] || record.signal_type), node('h3', '', record.title));
-      head.append(title, node('span', 'id-chip', record.stable_id));
+      head.append(title);
       card.append(head);
 
       if (record.summary) card.append(node('p', 'opportunity-summary', record.summary));
@@ -294,6 +294,9 @@
         SIGNALS[record.signal_type]
       ]);
       card.append(node('p', 'opportunity-boundary', 'Eine sichtbare Möglichkeit ist noch keine Zusage. Interesse, Zuständigkeit, Sicherheit und konkrete Bedingungen werden gemeinsam geklärt.'));
+      const reference = node('details', 'opportunity-record-source');
+      reference.append(node('summary', '', 'Eintragskennung'), node('code', '', record.stable_id));
+      card.append(reference);
       card.append(responseComposer(record));
       return card;
     }
