@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="description" content="Sicherer Zugang zum persönlichen GemDen- und FFE-Pilotkonto.">
+  <meta name="description" content="Deine persönliche Übersicht für Kalender, Treffpunkte, Kontakte, Tickets und deine eigene GemDen-Seite.">
   <title>Konto · GemDen</title>
   <link rel="stylesheet" href="../assets/site.css?v=20261012-1">
   <link rel="stylesheet" href="../assets/blob.css?v=20261016-1">
-  <link rel="stylesheet" href="./konto.css?v=20260925-1">
+  <link rel="stylesheet" href="./konto.css?v=20261020-1">
   <link rel="stylesheet" href="../assets/worlds.css?v=20261011-1">
 </head>
-<body class="world-desk" data-area="account" data-blob-mode="guide">
+<body class="world-desk account-home" data-area="account" data-blob-mode="guide">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <div class="site-shell account-shell">
     <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation">
@@ -21,18 +21,17 @@
       <header class="hero compact account-hero work-hero area-hero">
         <div class="hero-copy">
           <p class="eyebrow">Persönlicher Zugang</p>
-          <h1 class="display small">Dein Konto.</h1>
-          <p class="lead">Anmelden, Profil pflegen und selbst bestimmen, was privat bleibt oder veröffentlicht wird.</p>
+          <h1 class="display small">Dein Platz<br> in GemDen.</h1>
+          <p class="lead">Deine Zeit. Deine Menschen. Deine Möglichkeiten. Alles beginnt an einem Ort.</p>
         </div>
         <div class="status-row"><span class="status-chip open" id="connection-chip">Verbindung wird geprüft</span><span class="id-chip">geschützt</span></div>
       </header>
 
       <p class="notice" id="opportunity-entry-note" role="status" hidden></p>
-      <p class="notice"><a href="../kalender/?kalender=PERSONAL">Dein Kalender</a> · <a href="../tickets/">Deine Tickets</a> – Termine verwalten, Probleme melden und Ideen teilen.</p>
 
       <section class="section working-section account-grid" aria-labelledby="account-title">
         <div class="section-head">
-          <p class="eyebrow">Pilotzugang</p>
+          <p class="eyebrow">Dein Bereich</p>
           <h2 id="account-title">Dein persönlicher Arbeitsbereich.</h2>
           <p>Hier beginnen dein Profil, deine Möglichkeiten und deine Zusammenarbeit.</p>
         </div>
@@ -65,24 +64,26 @@
         </article>
 
         <article class="panel account-panel" id="signed-in-panel" hidden>
-          <div class="account-panel-head">
-            <span class="account-icon" aria-hidden="true">✓</span>
-            <div>
-              <p class="eyebrow">Sicher angemeldet</p>
-              <h3 id="profile-heading">Dein Profil</h3>
-            </div>
-          </div>
+          <header class="account-welcome"><div><p class="eyebrow">Schön, dass du da bist</p><h2>Hallo, <span id="profile-heading">du</span>.</h2><p>Dein Alltag, deine Ideen, deine Verbindungen.</p></div><span class="account-welcome-mark" aria-hidden="true">✦</span></header>
+          <p class="form-status account-load-status" id="account-data-status" role="status" aria-live="polite"></p>
+          <nav class="account-view-nav" aria-label="Dein Kontobereich"><a href="#konto-uebersicht" aria-current="page">Übersicht</a><a href="#konto-profil">Profil &amp; Seite</a><a href="#konto-zusammenarbeit">Zusammenarbeit</a><a href="#konto-einstellungen">Einstellungen</a></nav>
 
-          <dl class="detail-list account-details">
-            <div><dt>E-Mail</dt><dd id="account-email">–</dd></div>
-            <div><dt>Mitglieds-ID</dt><dd id="account-stable-id">Noch nicht vergeben</dd></div>
-            <div><dt>Profilstatus</dt><dd id="account-profile-status">Wird geladen …</dd></div>
-            <div><dt>Erweiterte Rechte</dt><dd id="account-permissions">Wird geladen …</dd></div>
-          </dl>
-          <nav class="workspace-nav" aria-label="Deine Arbeitsbereiche"><a href="#profile-form">Profilrahmen</a><a href="#portfolio-workspace">Portfolio</a><a href="#publication-center">Veröffentlichen</a><a href="#opportunity-workspace">Möglichkeiten</a><a href="#resonance-center">Resonanz</a><a href="#page-setup-title">Eigene Seite</a></nav>
-          <p class="form-status" id="account-data-status" role="status" aria-live="polite"></p>
+          <section id="konto-uebersicht" class="account-view" data-account-view aria-labelledby="overview-title">
+            <header class="account-view-heading"><p class="eyebrow">Deine kurzen Wege</p><h3 id="overview-title">Was steht bei dir an?</h3><p>Hier kommst du direkt zu dem, was du gerade brauchst.</p></header>
+            <div class="account-routes"><a class="account-route is-mint" href="../kalender/?kalender=PERSONAL"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="4"/><path d="M8 3v4m8-4v4M4 11h16m-12 4h3m3 0h2"/></svg></span><span class="account-route-copy"><strong>Mein Kalender</strong><span>Termine und eigene Anfragen</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a>
+<a class="account-route is-gold" href="../treffpunkte/?leistung=SERVICE-RUBYBUBYS-HERZ-SCHNAUZE"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17c-3-5 0-11 5-11s8 6 5 11c-2 4-8 4-10 0Z"/><path d="M9 15c0-4 6-4 6 0m-9-7L4 4m14 4 2-4"/></svg></span><span class="account-route-copy"><strong>Meine Treffpunkte</strong><span>Lieblingsorte und Gassifenster</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a>
+<a class="account-route is-rose" href="../leistungen/rubybubys-herz-und-schnauze/betreuung/"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6c-4-4-8 1-8 1S8 2 4 6c-4 5 8 13 8 13S24 11 20 6Z"/></svg></span><span class="account-route-copy"><strong>Kontakte &amp; Betreuung</strong><span>Vertraute Menschen und Unterstützung</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a>
+<a class="account-route is-lavender" href="../tickets/#ticket-list-title"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H10l-5 4v-4H4Z"/><path d="M8 9h8m-8 3h5"/></svg></span><span class="account-route-copy"><strong>Meine Tickets</strong><span>Rückmeldungen, Ideen und Wünsche</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a>
+<a class="account-route is-cream" href="#konto-profil"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-9 16-9 16 0"/></svg></span><span class="account-route-copy"><strong>Profil &amp; eigene Seite</strong><span>Deine Fähigkeiten und deine Gestaltung</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a>
+<a class="account-route is-blue" href="#konto-zusammenarbeit"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5-5 5 5-5 5Zm7-5 4-3 5 5-3 4m-3 5 3 3 4-4-3-3"/></svg></span><span class="account-route-copy"><strong>Zusammenarbeit</strong><span>Wünsche, Angebote und Antworten</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a></div>
+            <aside class="account-blob-note"><span aria-hidden="true">✦</span><div><strong>Ein passender nächster Schritt?</strong><p>Blob zeigt dir Wege für Gassi, Kalender und Rückmeldungen. Eigene Kontohinweise kannst du dort freiwillig einschalten.</p><button type="button" class="button secondary" id="account-blob-open">Blob um Vorschläge bitten <span aria-hidden="true">→</span></button></div></aside>
+            <p class="account-discover">Lust auf Begegnungen? <a href="../community/">Kieze, Rubybubys und Menschen entdecken →</a></p>
+          </section>
 
-          <form class="form-grid profile-form" id="profile-form" hidden>
+          <section id="konto-profil" class="account-view" data-account-view aria-labelledby="account-profile-title">
+            <header class="account-view-heading"><p class="eyebrow">Dein Auftritt</p><h3 id="account-profile-title">So zeigst du dich.</h3><p>Bearbeite dein Profil, gestalte deine Seite und entscheide selbst, was du teilst.</p></header>
+            <nav class="account-section-links" aria-label="Profilwerkzeuge"><a href="#profile-form">Profilrahmen</a><a href="#portfolio-workspace">Fähigkeiten &amp; Portfolio</a><a href="#page-setup-title">Eigene Seite</a><a href="#publication-center">Veröffentlichen</a></nav>
+            <details class="account-fold"><summary><span><b>Dein Profilrahmen</b><small>Anzeigename und Sichtbarkeit</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><form class="form-grid profile-form" id="profile-form" hidden>
             <div class="field">
               <label for="profile-display-name">Anzeigename</label>
               <input id="profile-display-name" maxlength="120" required autocomplete="name">
@@ -91,64 +92,15 @@
               <label for="profile-visibility">Rahmen des Gesamtprofils</label>
               <select id="profile-visibility">
                 <option value="private">Privat – nur für mich</option>
-                <option value="members">Mitglieder – technisch noch gesperrt</option>
+                <option value="members">Für Mitglieder – derzeit noch nicht verfügbar</option>
                 <option value="public">Öffentlich – erst nach Veröffentlichung sichtbar</option>
               </select>
               <small>Texte und Portfolio-Einträge steuerst du darunter einzeln. Eine Sichtbarkeit allein veröffentlicht nichts.</small>
             </div>
             <button class="button" id="profile-submit" type="submit">Profilrahmen speichern</button>
             <p class="form-status" id="profile-status" role="status" aria-live="polite"></p>
-          </form>
-
-          <section class="publication-center" id="publication-center" aria-labelledby="publication-title" hidden>
-            <header class="portfolio-head publication-head">
-              <div>
-                <p class="eyebrow">Veröffentlichungszentrale</p>
-                <h4 id="publication-title">Du bestimmst, was live geht.</h4>
-                <p class="account-copy">Sichtbarkeit ist nur die Auswahl. Erst eine bestätigte Einzelfreigabe und das geöffnete Gesamtprofil machen einen Inhalt öffentlich. Beides kannst du jederzeit zurücknehmen.</p>
-              </div>
-              <a class="button secondary" id="profile-publication-link" href="../community/mitglieder/julius/" hidden>Profilseite ansehen</a>
-            </header>
-
-            <div class="publication-gate">
-              <div>
-                <p class="entry-kicker">Sicherheitsschalter</p>
-                <div class="publication-gate-title">
-                  <h5>Gesamtprofil</h5>
-                  <span class="publication-badge state-staged" id="profile-publication-badge">Gesamtprofil ist geschlossen</span>
-                </div>
-                <p class="entry-description" id="profile-publication-copy">Der aktuelle Stand wird geladen.</p>
-              </div>
-              <button class="button" id="profile-publication-action" type="button" disabled>Gesamtprofil veröffentlichen</button>
-            </div>
-
-            <div class="portfolio-meter publication-meter" role="group" aria-label="Veröffentlichungsübersicht">
-              <div><strong id="publication-count-live">0</strong><span>jetzt öffentlich</span></div>
-              <div><strong id="publication-count-staged">0</strong><span>freigegeben, offline</span></div>
-              <div><strong id="publication-count-ready">0</strong><span>zur Freigabe bereit</span></div>
-              <div><strong id="publication-count-excluded">0</strong><span>nicht ausgewählt</span></div>
-            </div>
-
-            <p class="form-status" id="publication-status" role="status" aria-live="polite"></p>
-
-            <details class="workspace-block publication-block" open>
-              <summary>
-                <span><b>Öffentliche Vorschau</b><small>Was außen sichtbar wäre – ohne private Einträge</small></span>
-                <span aria-hidden="true">＋</span>
-              </summary>
-              <div class="workspace-body" id="publication-preview"></div>
-            </details>
-
-            <details class="workspace-block publication-block" open>
-              <summary>
-                <span><b>Einzelfreigaben</b><small>Profilfelder, Fähigkeiten, Nachweise und Projekte</small></span>
-                <span aria-hidden="true">＋</span>
-              </summary>
-              <div class="workspace-body publication-list" id="publication-items"></div>
-            </details>
-          </section>
-
-          <section class="portfolio-workspace" id="portfolio-workspace" aria-labelledby="portfolio-title" hidden>
+          </form></div></details>
+            <details class="account-fold"><summary><span><b>Fähigkeiten &amp; Portfolio</b><small>Was du einbringst, gelernt hast und vorhast</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><section class="portfolio-workspace" id="portfolio-workspace" aria-labelledby="portfolio-title" hidden>
             <header class="portfolio-head">
               <div>
                 <p class="eyebrow">Mein Portfolio</p>
@@ -314,9 +266,71 @@
                 </details>
               </div>
             </details>
+          </section></div></details>
+            <details class="account-fold"><summary><span><b>Deine eigene Seite</b><small>Mit Bildern, Texten und deiner Gestaltung</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><section class="form-grid page-setup" aria-labelledby="page-setup-title">
+            <div>
+              <p class="eyebrow">Persönliche Seitenwerkstatt</p>
+              <h4 id="page-setup-title">Eigene Mitgliedsseite</h4>
+              <p class="account-copy">Gestalte deine eigene kleine Welt: mit vier Vorlagen, eigenen Bildern, Texten und frei angeordneten Bausteinen. Deine Mitgliedsseite beginnt als privater Entwurf; veröffentlicht wird dabei nichts. Die Freigabe entscheidest du später.</p>
+              <p class="account-copy"><a href="../gestalten/?vorschau=1">Die Gestaltung erst einmal lokal ausprobieren →</a></p>
+            </div>
+            <button class="button" id="page-create-button" type="button" disabled>Private Mitgliedsseite anlegen</button>
+            <a class="button secondary" id="page-workshop-link" href="../gestalten/" hidden>Seitenwerkstatt öffnen</a>
+            <p class="form-status" id="page-status" role="status" aria-live="polite">Seitenstatus wird geprüft …</p>
+          </section></div></details>
+            <details class="account-fold"><summary><span><b>Sichtbarkeit &amp; Veröffentlichung</b><small>Prüfen und bewusst freigeben</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><section class="publication-center" id="publication-center" aria-labelledby="publication-title" hidden>
+            <header class="portfolio-head publication-head">
+              <div>
+                <p class="eyebrow">Veröffentlichungszentrale</p>
+                <h4 id="publication-title">Du bestimmst, was live geht.</h4>
+                <p class="account-copy">Sichtbarkeit ist nur die Auswahl. Erst eine bestätigte Einzelfreigabe und das geöffnete Gesamtprofil machen einen Inhalt öffentlich. Beides kannst du jederzeit zurücknehmen.</p>
+              </div>
+              <a class="button secondary" id="profile-publication-link" href="../community/mitglieder/julius/" hidden>Profilseite ansehen</a>
+            </header>
+
+            <div class="publication-gate">
+              <div>
+                <p class="entry-kicker">Sicherheitsschalter</p>
+                <div class="publication-gate-title">
+                  <h5>Gesamtprofil</h5>
+                  <span class="publication-badge state-staged" id="profile-publication-badge">Gesamtprofil ist geschlossen</span>
+                </div>
+                <p class="entry-description" id="profile-publication-copy">Der aktuelle Stand wird geladen.</p>
+              </div>
+              <button class="button" id="profile-publication-action" type="button" disabled>Gesamtprofil veröffentlichen</button>
+            </div>
+
+            <div class="portfolio-meter publication-meter" role="group" aria-label="Veröffentlichungsübersicht">
+              <div><strong id="publication-count-live">0</strong><span>jetzt öffentlich</span></div>
+              <div><strong id="publication-count-staged">0</strong><span>freigegeben, offline</span></div>
+              <div><strong id="publication-count-ready">0</strong><span>zur Freigabe bereit</span></div>
+              <div><strong id="publication-count-excluded">0</strong><span>nicht ausgewählt</span></div>
+            </div>
+
+            <p class="form-status" id="publication-status" role="status" aria-live="polite"></p>
+
+            <details class="workspace-block publication-block" open>
+              <summary>
+                <span><b>Öffentliche Vorschau</b><small>Was außen sichtbar wäre – ohne private Einträge</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body" id="publication-preview"></div>
+            </details>
+
+            <details class="workspace-block publication-block" open>
+              <summary>
+                <span><b>Einzelfreigaben</b><small>Profilfelder, Fähigkeiten, Nachweise und Projekte</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body publication-list" id="publication-items"></div>
+            </details>
+          </section></div></details>
           </section>
 
-          <section class="portfolio-workspace opportunity-workspace" id="opportunity-workspace" aria-labelledby="opportunity-workspace-title" hidden>
+          <section id="konto-zusammenarbeit" class="account-view" data-account-view aria-labelledby="account-together-title">
+            <header class="account-view-heading"><p class="eyebrow">Gemeinsam weiterkommen</p><h3 id="account-together-title">Aus Ideen wird Verbindung.</h3><p>Teile einen Wunsch oder ein Angebot und kläre die Antworten in deinem eigenen Tempo.</p></header>
+            <nav class="account-section-links" aria-label="Zusammenarbeit öffnen"><a href="#opportunity-workspace">Meine Möglichkeiten</a><a href="#resonance-center">Antworten &amp; Gespräche</a></nav>
+            <details class="account-fold"><summary><span><b>Meine Möglichkeiten</b><small>Wünsche, Angebote, Zeit und gemeinsame Vorhaben</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><section class="portfolio-workspace opportunity-workspace" id="opportunity-workspace" aria-labelledby="opportunity-workspace-title" hidden>
             <header class="portfolio-head">
               <div>
                 <p class="eyebrow">Meine Möglichkeiten</p>
@@ -448,9 +462,8 @@
                 <p class="form-status" id="opportunity-form-status" role="status" aria-live="polite"></p>
               </form>
             </details>
-          </section>
-
-          <section class="portfolio-workspace resonance-center" id="resonance-center" aria-labelledby="resonance-center-title" hidden>
+          </section></div></details>
+            <details class="account-fold"><summary><span><b>Antworten &amp; Gespräche</b><small>Eingegangene und eigene Interessenbekundungen</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><section class="portfolio-workspace resonance-center" id="resonance-center" aria-labelledby="resonance-center-title" hidden>
             <header class="portfolio-head">
               <div>
                 <p class="eyebrow">Private Resonanz</p>
@@ -488,25 +501,22 @@
             <div class="notice compact-notice">
               <strong>Klare Grenze:</strong> Eine Annahme ist nur die Zustimmung zur gemeinsamen Klärung – kein Auftrag, Vertrag oder automatischer Austausch von E-Mail-Adressen.
             </div>
+          </section></div></details>
           </section>
 
-          <section class="form-grid page-setup" aria-labelledby="page-setup-title">
-            <div>
-              <p class="eyebrow">Persönliche Seitenwerkstatt</p>
-              <h4 id="page-setup-title">Eigene Mitgliedsseite</h4>
-              <p class="account-copy">Gestalte deine eigene kleine Welt: mit vier Vorlagen, eigenen Bildern, Texten und frei angeordneten Bausteinen. Deine Mitgliedsseite beginnt als privater Entwurf; veröffentlicht wird dabei nichts. Die Freigabe entscheidest du später.</p>
-              <p class="account-copy"><a href="../gestalten/?vorschau=1">Die Gestaltung erst einmal lokal ausprobieren →</a></p>
-            </div>
-            <button class="button" id="page-create-button" type="button" disabled>Private Mitgliedsseite anlegen</button>
-            <a class="button secondary" id="page-workshop-link" href="../gestalten/" hidden>Seitenwerkstatt öffnen</a>
-            <p class="form-status" id="page-status" role="status" aria-live="polite">Seitenstatus wird geprüft …</p>
-          </section>
-
-          <form class="form-grid password-form" id="password-form">
+          <section id="konto-einstellungen" class="account-view" data-account-view aria-labelledby="account-settings-title">
+            <header class="account-view-heading"><p class="eyebrow">Dein Zugang</p><h3 id="account-settings-title">Gut aufgehoben.</h3><p>Hier findest du deine Kontoangaben und kannst dein Passwort ändern.</p></header>
+            <details class="account-fold" open><summary><span><b>Kontoangaben &amp; Zugänge</b><small>E-Mail-Adresse, Profilstatus und Bereichsrechte</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><dl class="detail-list account-details">
+            <div><dt>E-Mail</dt><dd id="account-email">–</dd></div>
+            <div><dt>Mitglieds-ID</dt><dd id="account-stable-id">Noch nicht vergeben</dd></div>
+            <div><dt>Profilstatus</dt><dd id="account-profile-status">Wird geladen …</dd></div>
+            <div><dt>Erweiterte Rechte</dt><dd id="account-permissions">Wird geladen …</dd></div>
+          </dl></div></details>
+            <details class="account-fold"><summary><span><b>Passwort setzen oder ändern</b><small>Für die Anmeldung auf deinen Geräten</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><form class="form-grid password-form" id="password-form">
             <div>
               <p class="eyebrow">Browserübergreifender Zugang</p>
               <h4>Passwort setzen oder ändern</h4>
-              <p class="account-copy">Das Passwort wird direkt an Supabase übertragen und nie von GemDen gespeichert oder angezeigt. Danach kannst du dich auf anderen Geräten ohne Linkübertragung anmelden.</p>
+              <p class="account-copy">Mit einem eigenen Passwort kannst du dich auch auf deinen anderen Geräten direkt anmelden. Dein Passwort wird hier nie angezeigt.</p>
             </div>
             <div class="field">
               <label for="new-password">Neues Passwort</label>
@@ -519,23 +529,21 @@
             </div>
             <button class="button secondary" id="password-submit" type="submit">Passwort sicher speichern</button>
             <p class="form-status" id="password-status" role="status" aria-live="polite"></p>
-          </form>
+          </form></div></details>
+            <div class="account-management"><a class="button secondary" id="member-admin-link" href="../verwaltung/mitglieder/" hidden>Mitglieder verwalten</a><a href="../kalender/verbinden/">Kalender auf dem Handy · in Vorbereitung →</a></div>
+          </section>
 
-          <div class="button-row account-actions">
-            <a class="button" id="member-admin-link" href="../verwaltung/mitglieder/" hidden>Mitglieder verwalten</a>
-            <a class="button secondary" href="../community/kieze/p-hain/">Zu P-Hain</a>
-            <button class="button dark" id="logout-button" type="button">Auf diesem Gerät abmelden</button>
-          </div>
+          <footer class="account-session-footer"><span>Dein Bereich. Du entscheidest, was du teilst.</span><button class="button secondary" id="logout-button" type="button">Auf diesem Gerät abmelden</button></footer>
         </article>
 
         <article class="notice account-notice">
-          <strong>Sicherheitsgrenze:</strong> Diese Seite kennt keinen geheimen Administrationsschlüssel. Supabase prüft jede Profilabfrage und jede Änderung zusätzlich über Row Level Security. Ein versteckter Button allein gilt nie als Berechtigung.
+          <strong>Du behältst die Wahl.</strong> Persönliche Termine und Rückmeldungen bleiben privat. Dein Profil und deine Inhalte werden erst durch deine bewusste Freigabe öffentlich.
         </article>
       </section>
     </main>
 
     <footer class="footer">
-      <span>GemDen · persönlicher Pilotzugang</span>
+      <span>GemDen · dein persönlicher Bereich</span>
       <a href="../system/">System und Grenzen ansehen</a>
     </footer>
   </div>
@@ -554,6 +562,7 @@
   <script src="../assets/opportunity-entry.js?v=20261019-1" defer></script>
   <script src="./opportunity-workspace.js?v=20261016-2" defer></script>
   <script src="./resonance-workspace.js?v=20261016-1" defer></script>
+  <script src="./account-views.js?v=20261020-1" defer></script>
   <script src="./konto.js?v=20261019-1" defer></script>
 </body>
 </html>
