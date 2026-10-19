@@ -28,6 +28,7 @@
   let authErrorFromUrl = authFlow?.authErrorFromLocation(location) || '';
   let currentUser = null;
   let currentProfile = null;
+  let renderedAccountId = null;
 
   function setMessage(target, message, state) {
     target.textContent = message;
@@ -193,7 +194,15 @@
   }
 
   async function renderSession(session) {
-    currentUser = session?.user || null;
+    const nextUser = session?.user || null;
+    // A fresh document discards every workspace, form and pending request of the previous account.
+    if (renderedAccountId && renderedAccountId !== nextUser?.id) {
+      signedInPanel.hidden = true;
+      location.reload();
+      return;
+    }
+    renderedAccountId = nextUser?.id || null;
+    currentUser = nextUser;
     currentProfile = null;
     memberAdminLink.hidden = true;
     profileWorkspace?.reset();
@@ -380,6 +389,10 @@
     } finally {
       logoutButton.disabled = false;
     }
+  });
+
+  window.addEventListener('pageshow', event => {
+    if (event.persisted) location.reload();
   });
 
   client.auth.onAuthStateChange((_event, session) => {
