@@ -1,9 +1,9 @@
 (function (root, factory) {
-  const api = factory();
+  const api = factory(root.document?.body?.dataset?.kiezId);
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.GemDenKiezStorage = api;
-})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
-  const KIEZ_ID = 'KIEZ-P-HAIN';
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (requestedKiez) {
+  const KIEZ_ID = /^KIEZ-[A-Z0-9][A-Z0-9-]*$/.test(requestedKiez || '') ? requestedKiez : 'KIEZ-P-HAIN';
   const PUBLIC_KINDS = ['event', 'board', 'knowledge'];
   const READ_FIELDS = 'id,kiez_id,kind,title,body,starts_at,ends_at,venue,repair_area,repair_urgency,knowledge_source,knowledge_responsible,knowledge_checked_on,visibility,publication_status,version,created_at,updated_at,author:profiles(display_name)';
   function required(condition, message) { if (!condition) throw new Error(message); }
@@ -67,7 +67,7 @@
     return { ...access, user_id: data.user.id };
   }
   async function publicEntries(client) {
-    required(client?.from, 'Die Verbindung zu P-Hain ist nicht verfügbar.');
+    required(client?.from, 'Die Verbindung zum Kiez ist nicht verfügbar.');
     return (await result(client.from('kiez_entries').select(READ_FIELDS).eq('kiez_id', KIEZ_ID).eq('visibility', 'public').eq('publication_status', 'published').order('created_at', { ascending: false }).limit(100))) || [];
   }
   async function ownEntries(client, access) {

@@ -7,6 +7,17 @@
 .world-workshop { background: radial-gradient(ellipse at 95% 5%, #ffe3ac, transparent 52%), #fff9f0; }
 .world-atlas { background: radial-gradient(ellipse at 95% 5%, #dee6fa, transparent 50%), #f6f8fc; }
 .world-desk { background: radial-gradient(ellipse at 5% 10%, #e3eee9, transparent 55%), #fbf9f5; }
+.world-threeden { background:radial-gradient(ellipse at 90% 10%,#f3d3b5,transparent 55%),radial-gradient(ellipse at 5% 65%,#d6e8dd,transparent 50%),#fff8ee; }
+.community-room-grid .room-neighborhood { grid-row:auto; }
+.community-room-grid .room-travel { background:#f4dec6;color:#714c31; }
+.community-room-grid .room-travel .room-art { background:linear-gradient(180deg,#ebcba9,#f4dec6); }
+.community-room-grid .room-neighborhood .room-art { max-height:210px;overflow:hidden; }
+.threeden-hero { background:#ffffff70;grid-template-columns:minmax(0,1.1fr) minmax(220px,.8fr); }
+.threeden-hero .display { color:#6a3c41; }
+.threeden-hero img { display:block;width:100%;height:auto; }
+.threeden-note { padding:clamp(24px,4vw,42px);border-radius:26px;background:#e2eddf;border:1px solid #254d3d15; }
+.threeden-note p { max-width:760px;line-height:1.7; }
+@media(max-width:760px){.community-room-grid .room-neighborhood{grid-column:auto;grid-template-columns:1fr}.threeden-hero{grid-template-columns:1fr}.threeden-hero .room-art{max-width:280px;justify-self:center}.community-room-grid .room-neighborhood .room-art{height:160px}.community-room-grid .room-neighborhood .room-art svg{width:230px}}
 
 .area-hero { padding: clamp(25px, 4vw, 44px); min-height: auto; }
 .area-hero .display { font-size: clamp(2.5rem, 5.5vw, 4.8rem); line-height: 1; letter-spacing: -.065em; text-wrap: balance; }
