@@ -65,5 +65,5 @@ test('one failed source yields partial status rather than an invented result',as
 test('shared bootstrap stays lazy and existing discover mode opens without map infrastructure',()=>{
  const blob=fs.readFileSync('assets/blob.js','utf8');assert.match(blob,/if \(!open \|\| suggestionsLoading\) return/);assert.doesNotMatch(blob,/gemden_blob_paths_v1|shortcutState/);
  const source=fs.readFileSync('assets/blob-suggestions.js','utf8');assert.doesNotMatch(source,/setInterval|watchPosition|\.channel\(/);assert.match(source,/if\(!visible\(\)\|\|!isEnabled\(\)\|\|!owner\|\|!pref.personal/);
- assert.match(fs.readFileSync('assets/places.js','utf8'),/view=url.searchParams.get\('ansicht'\)==='entdecken'\?'discover':'favorites'/);
+ assert.match(fs.readFileSync('assets/places.js','utf8'),/requestedView=url.searchParams.get\('ansicht'\)==='entdecken'\?'discover':null/);
 });

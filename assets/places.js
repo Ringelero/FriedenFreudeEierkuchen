@@ -13,6 +13,7 @@
  function dateKey(start,zone){return new Intl.DateTimeFormat('sv-SE',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(start));}
  function mapsLink(p){const lat=Number(p.latitude),lon=Number(p.longitude);if(!Number.isFinite(lat)||!Number.isFinite(lon)||Math.abs(lat)>85||Math.abs(lon)>180)throw new Error('Dieser Ort hat keine gültigen Koordinaten.');return `https://www.google.com/maps/search/?api=1&query=${lat}%2C${lon}`;}
  function ids(value){return Array.isArray(value)?[...new Set(value.filter(x=>typeof x==='string'&&/^[0-9a-f-]{36}$/i.test(x)))].slice(0,40):[];}
+ function entryView(favorites,requested){return requested==='discover'||requested==='favorites'?requested:ids(favorites).length?'favorites':'discover';}
  function boundedBounds(b){return {south:Math.max(-85,b.south),north:Math.min(85,b.north),west:Math.max(-180,b.west),east:Math.min(180,b.east)};}
  function dogAccess(place){return place?.services?.find(s=>s.id===RUBY)?.dog_access||'unknown';}
  function dogAccessLabel(access){return access==='prohibited'?'× Hunde nicht erlaubt':access==='designated_off_leash'?'Ausgewiesener Hundeauslauf':'';}
@@ -35,7 +36,8 @@
   }
   presentService();
   let generation=0,listEpoch=0,detailEpoch=0,mapEpoch=0,authUser=null,authReady=false,access=null;
-  let view=url.searchParams.get('ansicht')==='entdecken'?'discover':'favorites',display='list',search='',page=0,list=[],hasMore=false,detail=null,entryPage=0,activeSlot=null,detailDirty=false;
+  const requestedView=url.searchParams.get('ansicht')==='entdecken'?'discover':null;
+  let chosenView=null,view='discover',display=requestedView==='discover'&&url.searchParams.get('darstellung')==='karte'?'map':'list',search='',page=0,list=[],hasMore=false,detail=null,entryPage=0,activeSlot=null,detailDirty=false;
   let map=null,mapGroup=null,mapLoading=null,mapDebounce=null,nearBounds=null,refreshing=false,busy=false,disposed=false,picking=null;
   const guestPrefsKey='gemden_places_guest_v1',guestKeyName='gemden_places_guest_key_v1';
   let guestKey=read(guestKeyName,null),guestStorage=true;
@@ -70,9 +72,9 @@
     const r=await client.auth.getUser();if(g!==generation)return;
     if(r.error&&r.error.name!=='AuthSessionMissingError')throw r.error;
     if(r.data?.user){authUser=r.data.user;access=await rpc(client,'get_place_workspace',{service});if(g!==generation)return;}
-    authReady=true;fillPrefs();await loadList();if(g!==generation)return;if(display==='map'&&view==='discover')await showMap();
+    authReady=true;fillPrefs();applyView(entryView(prefs().favorites,chosenView||requestedView));await loadList();if(g!==generation)return;if(display==='map'&&view==='discover')await showMap();
     const place=url.searchParams.get('ort');if(place&&/^[a-f0-9-]{36}$/i.test(place))await openPlace(place,null,false);
-   }catch(e){if(g===generation){authReady=false;status('Dein Kontostatus konnte nicht geprüft werden. Öffentliche Orte kannst du ansehen; versuche es vor dem Eintragen erneut.',true);await loadList(false);}}
+   }catch(e){if(g===generation){authReady=false;applyView('discover');status('Dein Kontostatus konnte nicht geprüft werden. Öffentliche Orte kannst du ansehen; versuche es vor dem Eintragen erneut.',true);await loadList(false);}}
   }
   function card(p,index){const c=node('article',undefined,'place-card');
    const open=button(p.name,()=>openPlace(p.id), 'place-open');c.append(open,node('p',p.locality));
@@ -95,7 +97,8 @@
     if(view==='favorites')list.sort((a,b)=>favoriteIds.indexOf(a.id)-favoriteIds.indexOf(b.id));renderList();if(showStatus)status(view==='favorites'?'Deine Lieblingsorte · unverbindlich vorbeischauen.':`${list.length} Treffpunkt${list.length===1?'':'e'}${hasMore?' · weitere verfügbar':''}`);
    }catch(err){if(g===generation&&e===listEpoch)status(err.message||'Die Treffpunkte konnten nicht geladen werden.',true);}
   }
-  async function setView(next){view=next;page=0;document.querySelectorAll('[data-mobile-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mobileView===view)));el.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===view)));$('[data-discovery]').hidden=view!=='discover';if(view==='favorites'){display='list';destroyMap();$('[data-map-wrap]').hidden=true;el.querySelectorAll('[data-display]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.display==='list')));}await loadList();}
+  function applyView(next){view=next;page=0;document.querySelectorAll('[data-mobile-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mobileView===view)));el.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===view)));$('[data-discovery]').hidden=view!=='discover';if(view==='favorites'){display='list';destroyMap();$('[data-map-wrap]').hidden=true;el.querySelectorAll('[data-display]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.display==='list')));}}
+  async function setView(next){chosenView=next;applyView(next);await loadList();}
   async function openPlace(id,slot=null,scroll=true,append=false,background=false){const g=generation,e=++detailEpoch;try{const data=await rpc(client,'get_place_walks',{place:id,service,chosen_slot:slot,guest_key:authUser?null:guestKey,page:append?entryPage:0});
    if(g!==generation||e!==detailEpoch||background&&(detailDirty||$('[data-place-detail] details[open]')))return;if(append&&detail)data.entries=[...detail.entries,...data.entries];if(!append)entryPage=0;detail=data;activeSlot=data.slot_start;detailDirty=false;renderDetail();updateUrl();if(scroll)$('[data-place-detail]').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
    }catch(err){if(g===generation&&e===detailEpoch)status(err.message||'Dieser Treffpunkt konnte nicht geöffnet werden.',true);}}
@@ -193,8 +196,8 @@
   async function refreshVisible(){if(refreshing||busy||disposed||document.hidden)return;refreshing=true;try{if(detail&&!detailDirty&&!$('[data-place-detail] details[open]'))await openPlace(detail.place.id,activeSlot&&new Date(activeSlot).getTime()+HOURS>Date.now()?activeSlot:null,false,false,true);if(display!=='map'&&page===0)await loadList(false);if(map)await mapPoints();}finally{refreshing=false;}}
   const timer=setInterval(refreshVisible,60000);window.addEventListener('pagehide',()=>{disposed=true;generation++;clearInterval(timer);destroyMap();});window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});
   client?.auth?.onAuthStateChange((event)=>{if(['SIGNED_IN','SIGNED_OUT','USER_UPDATED'].includes(event))setTimeout(identity,0);});
-  $('[data-discovery]').hidden=view!=='discover';el.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===view)));document.querySelectorAll('[data-mobile-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mobileView===view)));
+  $('[data-discovery]').hidden=view!=='discover';el.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===view)));document.querySelectorAll('[data-mobile-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mobileView===view)));el.querySelectorAll('[data-display]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.display===display)));
   identity();return {refresh:refreshVisible,destroy:()=>{disposed=true;generation++;clearInterval(timer);destroyMap();}};
  }
- return {RUBY,dogNames,participationNames,attendanceLabel,slotStart,slotLabel,dateKey,mapsLink,ids,boundedBounds,dogAccess,dogAccessLabel,mount};
+ return {RUBY,dogNames,participationNames,attendanceLabel,slotStart,slotLabel,dateKey,mapsLink,ids,entryView,boundedBounds,dogAccess,dogAccessLabel,mount};
 });
