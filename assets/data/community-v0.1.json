@@ -1,9 +1,9 @@
 {
   "meta": {
     "schema_version": "0.1",
-    "updated": "2026-09-16",
-    "status": "public-static-prototype",
-    "note": "Öffentliche Testdaten. Konten, geschützte Inhalte und Live-Bearbeitung folgen über Supabase."
+    "updated": "2026-10-19",
+    "status": "public-community-catalog",
+    "note": "Öffentlicher Katalog der Community-Räume. Private Inhalte und Zugriffsrechte werden getrennt über das Konto verwaltet."
   },
   "kieze": [
     {
@@ -13,7 +13,26 @@
       "status": "experiment",
       "description": "Ein Kiezraum an der Verbindung von Prenzlauer Berg und Friedrichshain, rund um Straßmannstraße und Richard-Sorge-Straße.",
       "public_path": "/community/kieze/p-hain/",
-      "ffe_refs": ["R01", "W01", "OP-R01", "OP-W01"]
+      "ffe_refs": [
+        "R01",
+        "W01",
+        "OP-R01",
+        "OP-W01"
+      ]
+    },
+    {
+      "id": "KIEZ-TRAVELKIEZ",
+      "slug": "travelkiez",
+      "name": "Travelkiez",
+      "status": "experiment",
+      "description": "Nachbarschaft, gemeinsame Termine und ThreeDen in Friedrichshain.",
+      "public_path": "/community/kieze/travelkiez/",
+      "ffe_refs": [
+        "R01",
+        "W01",
+        "OP-R01",
+        "OP-W01"
+      ]
     }
   ],
   "dynasties": [
@@ -24,8 +43,16 @@
       "status": "active-first-dynasty",
       "description": "Die erste Dynastie innerhalb von FriedenFreudeEierkuchen.",
       "public_path": "/community/dynastien/rubybubys/",
-      "open_fields": ["history", "rituals", "ranks", "mastery_language"],
-      "ffe_refs": ["R01", "OP-R01"]
+      "open_fields": [
+        "history",
+        "rituals",
+        "ranks",
+        "mastery_language"
+      ],
+      "ffe_refs": [
+        "R01",
+        "OP-R01"
+      ]
     }
   ],
   "skills": [
