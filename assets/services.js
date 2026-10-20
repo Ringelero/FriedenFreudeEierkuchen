@@ -81,9 +81,10 @@
     }
     lists.forEach(list => {
       const selected = selectServices(catalog, { categoryId: list.dataset.serviceCategory, providerId: list.dataset.serviceProvider });
+      const compact = list.dataset.servicePresentation === 'compact';
       const contents = document.createDocumentFragment();
       selected.forEach(service => {
-        const card = node('article', 'service-card');
+        const card = node(compact ? 'li' : 'article', compact ? 'service-list-item' : 'service-card');
         card.dataset.serviceId = service.id;
         const head = node('div', 'service-card-head');
         head.append(node('span', 'service-category', service.category_ids.map(id => categories.get(id).name).join(' · ')), node('span', 'status-chip', availabilityLabel(service)));
@@ -95,6 +96,16 @@
           if (index) owners.append(document.createTextNode(' · '));
           owners.append(link(providers.get(id).name, providers.get(id).public_path));
         });
+        if (compact) {
+          const identity = node('div', 'service-list-identity');
+          identity.append(title, owners);
+          const more = link('Details in Möglichkeiten →', service.public_path);
+          more.className = 'service-list-action';
+          more.setAttribute('aria-label', service.name + ': Details in Möglichkeiten');
+          card.append(identity, head, more);
+          contents.append(card);
+          return;
+        }
         const more = link('Angebot öffnen →', service.public_path);
         more.className = 'service-card-action';
         card.append(head, title, node('p', 'service-summary', service.summary));
@@ -106,7 +117,7 @@
         contents.append(card);
       });
       if (!selected.length) {
-        const empty = node('div', 'service-empty');
+        const empty = node(compact ? 'li' : 'div', 'service-empty');
         empty.append(node('p', '', 'Hier sind noch keine eigenen Leistungen veröffentlicht.'), link('Möglichkeiten entdecken →', '/leistungen/'));
         contents.append(empty);
       }

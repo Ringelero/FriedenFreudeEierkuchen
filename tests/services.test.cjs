@@ -89,3 +89,56 @@ test('unavailable catalog data preserves the usable HTML fallback', async () => 
     assert.equal(replaced, false);
   }
 });
+
+// A small DOM model lets us check the actual output and links without a browser session.
+function catalogDocument(presentation, filters = {}) {
+  class Element {
+    constructor(tag) { this.tagName = tag; this.children = []; this.dataset = {}; this.attributes = {}; this.textContent = ''; }
+    append(...nodes) { this.children.push(...nodes); }
+    replaceChildren(...nodes) { this.children = nodes; }
+    setAttribute(name, value) { this.attributes[name] = value; }
+  }
+  const list = new Element(presentation === 'compact' ? 'ul' : 'div');
+  list.dataset = { servicePresentation: presentation, ...filters };
+  const document = { querySelectorAll: () => [list], createElement: tag => new Element(tag), createDocumentFragment: () => new Element('fragment'), createTextNode: text => ({ textContent: text, children: [] }) };
+  const flatten = element => [element, ...element.children.flatMap(flatten)];
+  return { document, list, nodes: () => flatten(list) };
+}
+
+test('compact community lists keep identity, providers and status while details stay in Möglichkeiten', async () => {
+  for (const presentation of ['compact', undefined]) {
+    const view = catalogDocument(presentation);
+    const fetch = async url => ({ ok: true, json: async () => url.pathname.endsWith('/services.v1.json') ? catalog : community });
+    await api.mount(view.document, fetch, new URL('https://gemden.red/assets/'));
+    const nodes = view.nodes();
+    const text = nodes.map(node => node.textContent).join(' ');
+    const classes = nodes.map(node => node.className);
+    assert.equal(view.list.dataset.serviceReady, 'true');
+    assert.ok(text.includes(catalog.services[0].name));
+    assert.ok(text.includes('Rubybubys'));
+    assert.ok(text.includes('Teilweise nutzbar'));
+    assert.ok(nodes.some(node => node.href === 'https://gemden.red/leistungen/rubybubys-herz-und-schnauze/'));
+    assert.ok(nodes.some(node => node.href === 'https://gemden.red/community/dynastien/rubybubys/'));
+    if (presentation === 'compact') {
+      assert.equal(nodes.find(node => node.dataset?.serviceId)?.tagName, 'li');
+      assert.ok(text.includes('Details in Möglichkeiten'));
+      assert.ok(!text.includes(catalog.services[0].summary));
+      assert.ok(!text.includes(catalog.services[0].availability.usable));
+      assert.ok(!text.includes(catalog.services[0].location_note));
+      assert.ok(!classes.includes('service-availability'));
+    } else {
+      assert.equal(nodes.find(node => node.dataset?.serviceId)?.tagName, 'article');
+      assert.ok(text.includes(catalog.services[0].summary));
+      assert.ok(text.includes(catalog.services[0].availability.usable));
+      assert.ok(text.includes(catalog.services[0].location_note));
+    }
+  }
+});
+
+test('an empty compact catalog retains valid list markup and a route to Möglichkeiten', async () => {
+  const view = catalogDocument('compact', { serviceProvider: 'KIEZ-P-HAIN' });
+  const fetch = async url => ({ ok: true, json: async () => url.pathname.endsWith('/services.v1.json') ? catalog : community });
+  await api.mount(view.document, fetch, new URL('https://gemden.red/assets/'));
+  assert.equal(view.nodes().find(node => node.className === 'service-empty').tagName, 'li');
+  assert.ok(view.nodes().some(node => node.href === 'https://gemden.red/leistungen/'));
+});
