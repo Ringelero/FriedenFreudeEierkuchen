@@ -25,10 +25,13 @@
 .community-portal:hover {transform:translateY(-3px);border-color:#6f8b69}
 .community-portal-art {display:block;position:relative;width:100%;height:180px;overflow:hidden;background:#d6e2d0}
 .community-portal-art img {display:block;width:100%;height:100%;object-fit:cover}
-.portal-kieze .community-portal-art img {object-position:right center}
+.portal-kieze .community-portal-art img {object-position:center 62%}
 .portal-dynastien .community-portal-art img {object-position:center 55%}
-.portal-leistungen .community-portal-art img {object-position:center 72%}
-.portal-menschen .community-portal-art img {object-position:center 14%}
+.portal-leistungen .community-portal-art img {object-position:center 52%}
+.portal-leistungen {background:#f5e9cb;border-color:#b69a65;color:#27494c}
+.portal-leistungen .community-portal-copy strong {font-size:clamp(1.45rem,2.2vw,1.95rem)}
+.portal-leistungen .community-portal-copy small {color:#6d6147}
+.portal-menschen .community-portal-art img {object-position:center 58%}
 .community-portal-copy {display:grid;align-content:start;gap:9px;min-width:0;padding:21px 22px 26px}
 .community-portal-copy strong {font:500 clamp(1.6rem,2.5vw,2.15rem)/1.12 Georgia,serif;letter-spacing:-.035em}
 .community-portal-copy>span {font-size:.88rem;line-height:1.55;padding-right:5px}
@@ -46,8 +49,8 @@
 .community-kiez-card {grid-template-columns:minmax(0,.9fr) minmax(0,1.2fr);gap:0;padding:0;min-height:238px;border-radius:26px;border-color:#bfceaf;background:#e2ebd8;overflow:hidden}
 .community-kiez-card-travel {background:#f2e4c9;border-color:#d7c098;color:#675135}
 .community-kiez-card .community-card-art {display:block;position:relative;align-self:stretch;width:100%;height:auto;min-height:238px}
-.community-kiez-card .community-card-art img {position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:right center}
-.community-kiez-card-travel .community-card-art img {object-position:center 53%}
+.community-kiez-card .community-card-art img {position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center 62%}
+.community-kiez-card-travel .community-card-art img {object-position:42% center}
 .community-kiez-card .community-card-copy {padding:27px 25px;gap:12px}
 .community-kiez-card .community-card-copy h3 {font-size:2rem}
 .community-kiez-card .community-card-copy>span {font-size:.91rem}
@@ -70,6 +73,18 @@
 .community-overview #leistungen {margin-top:38px;padding:32px;border:1px solid #c6d3b8;border-radius:29px;background:linear-gradient(125deg,#e3eddb,#fbf4e5)}
 .community-overview .service-card {background:#fffaf0;border-color:#d1d2b9;border-radius:23px}
 .community-overview .service-category {background:#e1ead7;color:#456540}
+/* Compact catalog: details live in Möglichkeiten, provider links stay discoverable. */
+.community-service-list {list-style:none;padding:0;margin:0;display:grid;gap:0;background:#fffaf0;border:1px solid #c9d1b8;border-radius:19px;overflow:hidden}
+.service-list-item {display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:10px 22px;padding:22px 25px;min-width:0}
+.service-list-item+.service-list-item {border-top:1px solid #d7dcc8}
+.service-list-identity {min-width:0}
+.service-list-identity h3 {font:500 clamp(1.2rem,2vw,1.5rem)/1.3 Georgia,serif;letter-spacing:-.02em;margin:0 0 6px}
+.service-list-identity h3 a {color:#254e48;text-underline-offset:4px;text-decoration-thickness:1px}
+.service-list-item .service-providers {font-size:.8rem;color:#526b62;margin:0;line-height:1.65}
+.service-list-item .service-providers a {color:inherit;text-underline-offset:3px}
+.service-list-item .service-card-head {justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.service-list-item .status-chip {font-size:.72rem}
+.service-list-action {justify-self:start;display:inline-flex;align-items:center;min-height:44px;font-size:.82rem;font-weight:700;color:#315c4e;text-underline-offset:4px}
 .community-service-routes {gap:9px}
 .community-service-routes a {background:#fff9ec;border-color:#bbc8ab;min-height:46px;font-size:.84rem}
 .community-member {background:#fffaf0;border-color:#c7d1b5;padding:26px;border-radius:24px}
@@ -85,6 +100,8 @@
 @media(min-width:761px) {.community-hero{overflow:clip}}
 @media(min-width:1450px) {.community-hero{min-height:690px}}
 @media(max-width:1100px) and (min-width:761px) {
+  .service-list-item{grid-template-columns:minmax(0,1fr) auto}
+  .service-list-action{grid-column:1/-1}
   .community-overview .site-shell{padding-inline:22px}
   .community-hero{min-height:570px;padding:52px 27px 78px;margin-inline:-12px}
   .community-hero-copy{max-width:390px}
@@ -143,6 +160,9 @@
   .community-dynasty-service>span{font-size:.78rem}
   .community-overview #leistungen{margin-top:29px;padding:25px 19px;border-radius:24px}
   .community-overview .service-card{padding:21px}
+  .service-list-item{grid-template-columns:minmax(0,1fr);padding:18px 17px;gap:12px}
+  .service-list-item .service-card-head{justify-content:flex-start}
+  .service-list-action{font-size:.8rem}
   .community-service-routes a{font-size:.79rem}
   .community-member{padding:21px;gap:16px}
   .community-own-page{padding:24px;margin-top:14px}
@@ -161,6 +181,7 @@
   .community-portal-art{height:119px}
   .community-portal-copy{padding:15px 13px 20px;gap:7px}
   .community-portal-copy strong{font-size:1.43rem}
+  .portal-leistungen .community-portal-copy strong{font-size:1.19rem}
   .community-portal-copy>span{font-size:.8rem}
   .community-portal-copy small{font-size:.71rem}
 }
@@ -176,6 +197,7 @@
   .community-portal-art{height:105px}
   .community-portal-copy{padding:13px 11px 18px}
   .community-portal-copy strong{font-size:1.28rem}
+  .portal-leistungen .community-portal-copy strong{font-size:1.04rem}
   .community-portal-copy>span{font-size:.76rem}
   .community-portal-copy small{font-size:.68rem}
   .community-sections a{font-size:.7rem}
