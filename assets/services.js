@@ -9,7 +9,7 @@
   }
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
-  const statuses = { building: 'Im Aufbau', open: 'Offen', paused: 'Pausiert', archived: 'Archiviert' };
+  const statuses = { building: 'In Vorbereitung', open: 'Nutzbar', paused: 'Pausiert', archived: 'Archiviert' };
   const internalPath = /^\/(?:[a-z0-9-]+\/)+(?:#[a-z0-9-]+)?$/;
 
   function providerMap(community) {
@@ -33,6 +33,7 @@
       require(/^SERVICE-[A-Z0-9-]+$/.test(service.id) && !ids.has(service.id), 'Leistungs-ID fehlt oder ist doppelt.');
       require(/^\/leistungen\/[a-z0-9-]+\/$/.test(service.public_path) && !paths.has(service.public_path), 'Ungültige oder doppelte Leistungsseite.');
       require(Object.hasOwn(statuses, service.status), 'Unbekannter Angebotsstand.');
+      if(service.availability) ['usable','growing'].forEach(key=>require(typeof service.availability[key]==='string'&&service.availability[key].trim()&&service.availability[key].length<=400,'Nutzungsstand fehlt.'));
       ['name', 'summary', 'location_note'].forEach(key => require(typeof service[key] === 'string' && service[key].trim(), 'Leistungsangaben fehlen.'));
       require(Array.isArray(service.category_ids) && service.category_ids.length && new Set(service.category_ids).size === service.category_ids.length && service.category_ids.every(id => categories.has(id)), 'Unbekannte oder doppelte Themenzuordnung.');
       require(Array.isArray(service.provider_ids) && service.provider_ids.length && new Set(service.provider_ids).size === service.provider_ids.length && service.provider_ids.every(id => providers.has(id) && internalPath.test(providers.get(id).public_path)), 'Unbekannte oder doppelte Anbieterzuordnung.');
@@ -46,6 +47,10 @@
     return catalog.services.filter(service => service.status !== 'archived'
       && (!filters.categoryId || service.category_ids.includes(filters.categoryId))
       && (!filters.providerId || service.provider_ids.includes(filters.providerId)));
+  }
+
+  function availabilityLabel(service) {
+    return service.status==='building'&&service.availability?'Teilweise nutzbar':statuses[service.status];
   }
 
   async function mount(document, fetch, assetRoot) {
@@ -81,7 +86,7 @@
         const card = node('article', 'service-card');
         card.dataset.serviceId = service.id;
         const head = node('div', 'service-card-head');
-        head.append(node('span', 'service-category', service.category_ids.map(id => categories.get(id).name).join(' · ')), node('span', 'status-chip', statuses[service.status]));
+        head.append(node('span', 'service-category', service.category_ids.map(id => categories.get(id).name).join(' · ')), node('span', 'status-chip', availabilityLabel(service)));
         const title = node('h3');
         title.append(link(service.name, service.public_path));
         const owners = node('p', 'service-providers');
@@ -90,9 +95,14 @@
           if (index) owners.append(document.createTextNode(' · '));
           owners.append(link(providers.get(id).name, providers.get(id).public_path));
         });
-        const more = link('Vorhaben entdecken →', service.public_path);
+        const more = link('Angebot öffnen →', service.public_path);
         more.className = 'service-card-action';
-        card.append(head, title, node('p', 'service-summary', service.summary), owners, node('p', 'service-location', service.location_note), more);
+        card.append(head, title, node('p', 'service-summary', service.summary));
+        if(service.availability&&['building','open'].includes(service.status)){
+          const availability=node('div','service-availability');
+          availability.append(node('p','','Nutzbar: '+service.availability.usable),node('p','','Wächst noch: '+service.availability.growing));card.append(availability);
+        }
+        card.append(owners, node('p', 'service-location', service.location_note), more);
         contents.append(card);
       });
       if (!selected.length) {
@@ -105,5 +115,5 @@
     });
   }
 
-  return { validateCatalog, selectServices, providerMap, mount };
+  return { validateCatalog, selectServices, availabilityLabel, providerMap, mount };
 });
