@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../assets/worlds.css?v=20261019-1">
   <link rel="stylesheet" href="../assets/services.css?v=20261014-1">
   <link rel="stylesheet" href="./overview.css?v=20261020-1">
+  <link rel="stylesheet" href="./therme.css?v=20261020-1">
 </head>
 <body class="world-community community-overview" data-area="community" data-blob-mode="social">
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
@@ -17,10 +18,35 @@
     <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation"><a class="site-mark" href="../">GemDen</a><div class="nav-links"><a href="../">Start</a><a href="../community/" aria-current="page">Community</a><a href="../leistungen/">Leistungen</a><a href="../system/">FFE-System</a></div></nav>
     <main id="inhalt">
       <header class="community-hero">
-        <p class="eyebrow">Unsere Community</p>
-        <h1>Orte, Verbindungen,<br>Menschen.</h1>
-        <p>Finde deinen Kiez, lerne Gemeinschaften kennen und entdecke, was wir zusammen möglich machen.</p>
+        <picture class="community-hero-art" aria-hidden="true">
+          <source media="(max-width:760px)" srcset="../assets/community/floating-garden-mobile-480.webp 480w, ../assets/community/floating-garden-mobile-800.webp 800w" sizes="100vw" width="800" height="1000">
+          <img src="../assets/community/floating-garden-desktop-1200.webp" srcset="../assets/community/floating-garden-desktop-1200.webp 1200w, ../assets/community/floating-garden-desktop-1860.webp 1860w" sizes="(max-width:1200px) 100vw, 1200px" width="1860" height="845" alt="" fetchpriority="high">
+        </picture>
+        <div class="community-hero-copy">
+          <p class="eyebrow">Unsere Community</p>
+          <h1>Orte,<br>Verbindungen,<br>Menschen.</h1>
+          <p>Finde deinen Kiez, lerne Gemeinschaften kennen und entdecke, was wir zusammen möglich machen.</p>
+          <div class="button-row"><a class="button" href="#community-entdecken">Community entdecken <span aria-hidden="true">↓</span></a><a class="button secondary" href="../kalender/">Zum Kalender <span aria-hidden="true">↗</span></a></div>
+        </div>
       </header>
+      <nav class="community-portals" id="community-entdecken" aria-label="Dein Weg in die Community">
+        <a class="community-portal portal-kieze" href="#kieze">
+          <span class="community-portal-art" aria-hidden="true"><img src="../assets/community/floating-garden-desktop-1200.webp" alt="" width="1200" height="545" loading="lazy"></span>
+          <span class="community-portal-copy"><strong>Kieze</strong><span>Nachbarschaft, die verbindet.</span><small>P‑Hain · Travelkiez</small></span><span class="community-portal-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="community-portal portal-dynastien" href="#dynastien">
+          <span class="community-portal-art" aria-hidden="true"><img src="../assets/rubybubys/tea-garden-mobile-480.webp" alt="" width="480" height="320" loading="lazy"></span>
+          <span class="community-portal-copy"><strong>Dynastien</strong><span>Gemeinsam eigene Wege gehen.</span><small>Die Rubybubys entdecken</small></span><span class="community-portal-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="community-portal portal-leistungen" href="#leistungen">
+          <span class="community-portal-art" aria-hidden="true"><img src="../assets/community/floating-garden-mobile-480.webp" alt="" width="480" height="600" loading="lazy"></span>
+          <span class="community-portal-copy"><strong>Leistungen</strong><span>Was wir zusammen möglich machen.</span><small>Herz und Schnauze</small></span><span class="community-portal-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="community-portal portal-menschen" href="#menschen">
+          <span class="community-portal-art" aria-hidden="true"><img src="../assets/community/floating-garden-mobile-480.webp" alt="" width="480" height="600" loading="lazy"></span>
+          <span class="community-portal-copy"><strong>Menschen</strong><span>Begegnen, teilen, zusammen wachsen.</span><small>Persönliche Welten kennenlernen</small></span><span class="community-portal-arrow" aria-hidden="true">↗</span>
+        </a>
+      </nav>
       <nav class="community-sections" aria-label="Community im Überblick"><a href="#kieze">Kieze</a><a href="#dynastien">Dynastien</a><a href="#leistungen">Leistungen</a><a href="#menschen">Menschen</a></nav>
 
       <section class="section" id="kieze" aria-labelledby="community-wege">
