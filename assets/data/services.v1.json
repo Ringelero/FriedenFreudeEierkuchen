@@ -1,7 +1,7 @@
 {
   "$schema": "../../schemas/gemden-services.v1.schema.json",
   "schema_version": "1.0.0",
-  "updated": "2026-10-14",
+  "updated": "2026-10-20",
   "categories": [
     { "id": "SOCIAL", "name": "Soziales", "public_path": "/leistungen/#soziales" }
   ],
@@ -14,6 +14,10 @@
       "provider_ids": ["DYN-RUBYBUBYS"],
       "public_path": "/leistungen/rubybubys-herz-und-schnauze/",
       "status": "building",
+      "availability": {
+        "usable": "Treffpunkte, Gassifenster, Kalender sowie private Anfragen und Betreuungsabsprachen auf der Website.",
+        "growing": "Das Gastgebernetz und weitere gemeinsame Angebote vor Ort entstehen durch echte Absprachen."
+      },
       "location_note": "Ortsübergreifend · jeder Treff hat seinen eigenen Ort"
     }
   ]

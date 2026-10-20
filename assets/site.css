@@ -95,6 +95,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .nav-links a:hover,
 .nav-links a[aria-current="page"] { color: white; background: var(--ruby); }
 
+.site-state{display:inline-flex;align-items:center;min-height:29px;max-width:100%;padding:6px 10px;border:1px solid #cfdcca;border-radius:10px;font:750 .75rem/1.45 ui-sans-serif,system-ui,sans-serif;overflow-wrap:anywhere}.site-state.is-ready{color:#315b3a;background:#e8f0e2;border-color:#cbdcc4}.site-state.is-planned{color:#7b5931;background:#fbefd8;border-color:#e6d2ae}.site-state.is-growing{color:#765166;background:#f2e8ee;border-color:#dfccd8}.site-availability{font-size:.84rem;line-height:1.65;color:var(--muted);margin:10px 0}.service-availability{display:grid;gap:7px;padding:13px 15px;border:1px solid #d9e0d0;border-radius:13px;background:#f0f4e9}.service-availability p{font-size:.82rem!important;line-height:1.6!important;margin:0!important}
+.footer .site-help-links{display:flex;flex:1 0 100%;align-items:center;flex-wrap:wrap;gap:8px;margin-top:6px;padding-top:14px;border-top:1px solid var(--line)}.footer .site-help-links a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 13px;border:1px solid var(--line);border-radius:12px;background:#ffffffa6;color:var(--ink);font:750 .79rem/1.45 ui-sans-serif,system-ui,sans-serif;text-decoration:none}.footer .site-help-links a:hover{background:#fff}.footer .site-help-links a:focus-visible{outline:3px solid var(--ruby);outline-offset:3px}@media(max-width:550px){.footer .site-help-links{gap:6px}.footer .site-help-links a{padding:9px 11px;font-size:.74rem}}
+
 .hero,
 .panel {
   position: relative;

@@ -52,13 +52,16 @@ button,a{font:inherit}
   box-shadow:0 14px 40px rgba(201,0,70,.28)
 }
 .btn.secondary{color:#c90046;background:rgba(255,255,255,.86);border:1px solid rgba(201,0,70,.20);box-shadow:none}
+.demo-support{position:fixed;top:8px;left:12px;right:12px;z-index:8;display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap;font-size:.72rem}.demo-support span,.demo-support a{padding:7px 9px;background:#fff7f0;color:#682b42;border-radius:8px;line-height:1.4}.demo-support a{display:inline-flex;align-items:center;min-height:44px;text-underline-offset:3px}.demo-support a:focus-visible{outline:3px solid #ff9cb9;outline-offset:3px}
 @media(max-width:760px){
   .controls{bottom:18px}
+  .title{top:19vh}
   .btn{width:100%;text-align:center}
 }
 </style>
 </head>
 <body data-blob-mode="sales">
+<nav class="demo-support" aria-label="Hilfe und Tickets"><span>Gestaltungsdemo · keine Gerätesteuerung</span><a href="../../hilfe/">Hilfe &amp; Stand</a><a href="../../tickets/?seite=%2Fleistungen%2Fsmart-home%2F#new-ticket-title">Ticket schreiben</a><a href="../../tickets/#ticket-list-title">Meine Tickets</a></nav>
 <section class="stage" id="stage">
   <div class="full-image">
     <div class="full-image-inner">
@@ -81,7 +84,7 @@ button,a{font:inherit}
 <script>
 window.BLOB_CONFIG={mode:"sales",root:"../../",context:"smart-home"};
 </script>
-<script src="../../assets/blob.js?v=20261020-1" defer></script>
+<script src="../../assets/blob.js?v=20261020-2" defer></script>
 <script>
 const stage=document.getElementById("stage");
 document.getElementById("openCurtain").onclick=()=>stage.classList.add("open");

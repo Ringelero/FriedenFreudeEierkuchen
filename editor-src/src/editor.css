@@ -51,6 +51,7 @@ button, input, textarea, select { font: inherit; }
 .editor-status-success { border-color: rgba(19, 142, 111, .32); }
 .editor-status-success > span { color: #138e6f; }
 .editor-status-error { border-color: rgba(201, 0, 70, .42); }
+.editor-support{grid-column:1/-1;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;border-top:1px solid #e4dadb;padding-top:5px}.editor-support a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 11px;border:1px solid #ded3d7;border-radius:9px;color:#603946;background:#fff;font-size:.75rem;font-weight:750;text-decoration:none}.editor-support a:focus-visible{outline:3px solid #c90046;outline-offset:3px}
 
 .editor-header-actions { display: flex; align-items: center; gap: 8px; }
 .editor-header-actions button,

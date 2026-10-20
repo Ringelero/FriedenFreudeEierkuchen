@@ -7,6 +7,12 @@ const root = path.resolve(__dirname, '..');
 const catalog = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/services.v1.json'), 'utf8'));
 const community = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/community-v0.1.json'), 'utf8'));
 const clone = value => JSON.parse(JSON.stringify(value));
+test('availability distinguishes usable tools from a growing network and respects pauses',()=>{
+ const service=clone(catalog.services[0]);assert.equal(api.availabilityLabel(service),'Teilweise nutzbar');
+ service.status='paused';assert.equal(api.availabilityLabel(service),'Pausiert');
+ delete service.availability;service.status='building';assert.equal(api.availabilityLabel(service),'In Vorbereitung');
+ const invalid=clone(catalog);invalid.services[0].availability.usable='';assert.throws(()=>api.validateCatalog(invalid,community));
+});
 
 test('a shared service retains its identity across topic and community views', () => {
   const fixture = clone(catalog);

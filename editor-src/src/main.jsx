@@ -139,6 +139,10 @@ function pageSource(pageId, memberTemplate) {
   return MEMBER_TEMPLATE_SOURCE;
 }
 
+function SupportLinks() {
+  return <nav className="editor-support" aria-label="Hilfe und Tickets (öffnet in neuem Tab)"><a href="/hilfe/" target="_blank" rel="noopener noreferrer">Hilfe &amp; Stand</a><a href="/tickets/?seite=%2Fgestalten%2F#new-ticket-title" target="_blank" rel="noopener noreferrer">Ticket schreiben</a><a href="/tickets/#ticket-list-title" target="_blank" rel="noopener noreferrer">Meine Tickets</a></nav>;
+}
+
 function StatusBar({ status, playground }) {
   const ref = useRef(null);
   const [expanded, setExpanded] = useState(status.kind === 'error');
@@ -160,6 +164,7 @@ function StatusBar({ status, playground }) {
       <p className="editor-status-summary">{summary}</p>
       <button type="button" aria-expanded={expanded} aria-controls="workshop-status-details" onClick={() => setExpanded(value => !value)}>Details {expanded ? '−' : '+'}</button>
       <p id="workshop-status-details" className="editor-status-details" hidden={!expanded}>{status.message}</p>
+      <SupportLinks />
     </div>
   );
 }
@@ -519,6 +524,7 @@ function FatalError({ error }) {
       <p>{formatError(error)}</p>
       <a href="/konto/">Zum persönlichen Konto</a>
       <a href="/gestalten/?vorschau=1">Gestaltung ohne Anmeldung ausprobieren</a>
+      <SupportLinks />
     </main>
   );
 }
