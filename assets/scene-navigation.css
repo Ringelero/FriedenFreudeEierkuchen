@@ -1,0 +1,25 @@
+/* Gemeinsame Bedienung, passende Materialien für die beiden Bildwelten. */
+.community-overview{--scene-nav-paper:#fff9e9;--scene-nav-border:#b5b48b;--scene-nav-ink:#28584b;--scene-nav-active:#2c6052;--scene-nav-hover:#e6eddc;--scene-nav-gem:#5d8c6b;--scene-nav-radius:23px;--scene-nav-highlight:#faf5dd}
+.possibilities-page{--scene-nav-paper:#fff5e1;--scene-nav-border:#b89b62;--scene-nav-ink:#224c56;--scene-nav-active:#1c4c55;--scene-nav-hover:#f1e2c3;--scene-nav-gem:#a33846;--scene-nav-radius:13px;--scene-nav-highlight:#fffdf3}
+:is(.community-overview,.possibilities-page) .site-nav{position:relative;z-index:40;padding:9px 15px;gap:15px;border:1px solid var(--scene-nav-border);border-radius:var(--scene-nav-radius);background:linear-gradient(180deg,var(--scene-nav-highlight),var(--scene-nav-paper));box-shadow:inset 0 0 0 4px #ffffff55,0 5px 20px #5641250a;backdrop-filter:none}
+:is(.community-overview,.possibilities-page) .site-mark{gap:11px;padding:7px 12px;font:600 1.65rem/1.1 Georgia,serif;letter-spacing:-.05em;color:var(--scene-nav-ink);min-height:44px}
+:is(.community-overview,.possibilities-page) .site-mark:before{content:"";display:block;width:13px;height:13px;flex:none;transform:rotate(45deg);border:1px solid #bfa36a;background:linear-gradient(135deg,#fff4c0,var(--scene-nav-gem) 53%,var(--scene-nav-ink));box-shadow:inset 2px 2px 0 #fff6c980;border-radius:2px}
+:is(.community-overview,.possibilities-page) .site-nav .nav-links{gap:5px;align-items:center}
+:is(.community-overview,.possibilities-page) .site-nav .nav-links a{padding:11px 13px;min-height:44px;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--scene-nav-ink);font:550 .86rem/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.005em}
+:is(.community-overview,.possibilities-page) .site-nav .nav-links a:hover{background:var(--scene-nav-hover);border-color:var(--scene-nav-border);color:var(--scene-nav-ink)}
+:is(.community-overview,.possibilities-page) .site-nav .nav-links a[aria-current=page]{background:var(--scene-nav-active);border-color:var(--scene-nav-active);color:#fff9e9;box-shadow:inset 0 0 0 1px #ffefb52e}
+.community-overview .site-nav .nav-links a{border-radius:12px}
+.possibilities-page .site-nav:before,.possibilities-page .site-nav:after{content:"";position:absolute;width:4px;height:4px;border-radius:50%;background:#a8874b;box-shadow:inset 0 1px 1px #6a4f2a77;pointer-events:none}
+.possibilities-page .site-nav:before{top:7px;left:7px}.possibilities-page .site-nav:after{bottom:7px;right:7px}
+:is(.community-overview,.possibilities-page) .nav-toggle{padding:9px 13px;border:1px solid var(--scene-nav-border);border-radius:10px;background:var(--scene-nav-paper);color:var(--scene-nav-ink);box-shadow:inset 0 1px 0 #fff;font:650 .85rem/1.3 ui-sans-serif,system-ui,sans-serif}
+:is(.community-overview,.possibilities-page) .nav-toggle[aria-expanded=true]{background:var(--scene-nav-active);border-color:var(--scene-nav-active);color:#fff9e9}
+:is(.community-overview,.possibilities-page) .site-nav :focus-visible{outline:3px solid #9d773d;outline-offset:3px}
+@media(max-width:1100px) and (min-width:861px){:is(.community-overview,.possibilities-page) .site-nav{padding-inline:11px;gap:8px}:is(.community-overview,.possibilities-page) .site-mark{font-size:1.5rem;padding-inline:7px}:is(.community-overview,.possibilities-page) .site-nav .nav-links{gap:2px}:is(.community-overview,.possibilities-page) .site-nav .nav-links a{padding:10px 9px;font-size:.8rem}}
+@media(max-width:860px){
+  :is(.community-overview,.possibilities-page) .site-nav{padding:8px 10px;gap:8px;margin-bottom:0}
+  :is(.community-overview,.possibilities-page) .site-mark{font-size:1.5rem;padding:6px 7px;gap:9px}
+  :is(.community-overview,.possibilities-page) .site-nav .nav-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:10px 1px 2px;border-top:1px solid var(--scene-nav-border);margin-top:3px}
+  :is(.community-overview,.possibilities-page) .site-nav .nav-links a{grid-column:auto;display:flex;justify-content:center;align-items:center;min-height:46px;padding:11px 9px;border-color:#b5ad8b55;background:#ffffff60;font-size:.86rem;line-height:1.35}
+  :is(.community-overview,.possibilities-page) .site-nav .nav-links a:last-child{grid-column:1/-1}
+}
+@media(prefers-reduced-motion:reduce){:is(.community-overview,.possibilities-page) .site-nav *{transition:none}}
