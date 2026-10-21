@@ -1,7 +1,7 @@
 {
   "meta": {
     "schema_version": "0.1",
-    "updated": "2026-10-19",
+    "updated": "2026-10-21",
     "status": "public-community-catalog",
     "note": "Public catalogue of Community spaces. Private content and access permissions are managed separately through the account."
   },
@@ -41,17 +41,33 @@
       "slug": "rubybubys",
       "name": "Rubybubys",
       "status": "active-first-dynasty",
-      "description": "The first dynasty within FriedenFreudeEierkuchen.",
+      "description": "The Rubybubys are the dynasty founded by Julius Rubybubius, growing out of his circle of friends. We share a wish to make the world a little better. A community of Omnikünstler: we make, repair, organise, care for one another and give creativity room to grow. Many worlds of our own – and the joy of making things possible together.",
       "public_path": "/community/dynastien/rubybubys/",
       "open_fields": [
         "history",
-        "rituals",
+        "further_rituals",
         "ranks",
         "mastery_language"
       ],
       "ffe_refs": [
         "R01",
         "OP-R01"
+      ],
+      "founder_member_id": "MEM-JULIUS",
+      "founder_display_name": "Julius Rubybubius",
+      "place_paths": [
+        "/community/orte/threeden/"
+      ],
+      "rituals": [
+        {
+          "name": "Annual Bierball tournament",
+          "cadence": "annual"
+        },
+        {
+          "name": "Shared New Year’s Eve party at ThreeDen",
+          "cadence": "annual",
+          "location_path": "/community/orte/threeden/"
+        }
       ]
     }
   ],

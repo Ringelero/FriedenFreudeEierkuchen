@@ -1,7 +1,7 @@
 {
   "meta": {
     "schema_version": "0.1",
-    "updated": "2026-10-19",
+    "updated": "2026-10-21",
     "status": "public-community-catalog",
     "note": "Öffentlicher Katalog der Community-Räume. Private Inhalte und Zugriffsrechte werden getrennt über das Konto verwaltet."
   },
@@ -41,17 +41,33 @@
       "slug": "rubybubys",
       "name": "Rubybubys",
       "status": "active-first-dynasty",
-      "description": "Die erste Dynastie innerhalb von FriedenFreudeEierkuchen.",
+      "description": "Die Rubybubys sind die von Julius Rubybubius gegründete Dynastie, gewachsen aus seinem Freundeskreis. Uns verbindet der Wunsch, die Welt ein Stück besser zu machen. Eine Gemeinschaft von Omnikünstlern: Wir basteln, reparieren, organisieren, sorgen füreinander und geben Kreativität Raum. Viele eigene Welten – und die Freude daran, gemeinsam etwas möglich zu machen.",
       "public_path": "/community/dynastien/rubybubys/",
       "open_fields": [
         "history",
-        "rituals",
+        "further_rituals",
         "ranks",
         "mastery_language"
       ],
       "ffe_refs": [
         "R01",
         "OP-R01"
+      ],
+      "founder_member_id": "MEM-JULIUS",
+      "founder_display_name": "Julius Rubybubius",
+      "place_paths": [
+        "/community/orte/threeden/"
+      ],
+      "rituals": [
+        {
+          "name": "Jährliches Bierball-Turnier",
+          "cadence": "annual"
+        },
+        {
+          "name": "Gemeinsame Silvesterparty in ThreeDen",
+          "cadence": "annual",
+          "location_path": "/community/orte/threeden/"
+        }
       ]
     }
   ],
