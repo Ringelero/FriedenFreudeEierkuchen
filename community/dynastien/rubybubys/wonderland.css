@@ -68,9 +68,9 @@
 .ruby-chapters{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:20px 0 0}
 .ruby-chapters a{display:flex;align-items:center;justify-content:center;min-height:44px;padding:9px 15px;background:#fff8e8;border:1px solid #c6b487;border-radius:999px;color:#284e40;font-size:.8rem;font-weight:700;text-decoration:none}
 .ruby-chapters a:hover{background:#f9e2b5}
-.ruby-place{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);align-items:center;border:1px solid #b58947;border-radius:26px;overflow:hidden;background:#fff3d9}
-.ruby-place-art{display:grid;place-items:center;align-self:stretch;background:radial-gradient(ellipse at center,#f5dcaf,#e7edcf);padding:27px}
-.ruby-place-art img{display:block;max-width:440px;width:100%;height:auto}
+.ruby-place{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:center;border:1px solid #b58947;border-radius:26px;overflow:hidden;background:#fff3d9}
+.ruby-place-art{position:relative;align-self:stretch;min-height:320px;overflow:hidden;background:#dce5bf}
+.ruby-place-art img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center}
 .ruby-place-copy{padding:30px clamp(22px,4vw,45px)}
 .ruby-place h3,.ruby-ritual h3,.ruby-friendship h3{font:500 clamp(1.6rem,2.8vw,2.2rem)/1.16 Georgia,serif;letter-spacing:-.025em;margin:11px 0 14px;color:var(--ink)}
 .ruby-place-copy>p:not(.ruby-eyebrow),.ruby-ritual>p:not(.ruby-eyebrow),.ruby-friendship-intro>p:not(.ruby-eyebrow),.ruby-projects>p:not(.ruby-eyebrow){color:#42604f;font-size:.9rem;line-height:1.8}
@@ -93,7 +93,7 @@
 .ruby-projects{padding:29px clamp(22px,5vw,64px);border:1px dashed #947c4c;border-radius:25px;background:#fff4df;text-align:center}
 .ruby-projects>p{max-width:720px;margin-inline:auto}
 @media(max-width:760px){
-.ruby-place{grid-template-columns:1fr}.ruby-place-art{padding:12px 28px}.ruby-place-art img{max-width:330px}
+.ruby-place{grid-template-columns:1fr}.ruby-place-art{min-height:0;aspect-ratio:16/9}
 .ruby-place-copy{padding:25px}.ruby-ritual-grid{grid-template-columns:1fr}
 .ruby-friendship-branches{margin-top:18px;padding:0 0 0 18px;gap:16px}
 .ruby-friendship-branches:before{left:0;right:auto;top:24px;bottom:24px;width:2px;height:auto;border:0;border-left:2px solid #a7884d;border-radius:0}
@@ -104,7 +104,7 @@
 .ruby-about{margin-top:21px;padding:24px 20px;border-radius:23px}.ruby-about-copy{font-size:.87rem;line-height:1.85}
 .ruby-about h2,.ruby-projects h2{font-size:1.85rem}.ruby-talents{gap:7px;margin-top:19px}.ruby-talents li{font-size:.7rem;padding:7px 11px}
 .ruby-chapters{gap:7px;margin-top:16px}.ruby-chapters a{font-size:.73rem;padding:8px 12px}
-.ruby-place-art{padding:9px 25px}.ruby-place-art img{max-width:275px}.ruby-place-copy{padding:23px}
+.ruby-place-copy{padding:23px}
 .ruby-place h3,.ruby-ritual h3{font-size:1.8rem}.ruby-place-copy>p:not(.ruby-eyebrow),.ruby-ritual>p:not(.ruby-eyebrow),.ruby-friendship-intro>p:not(.ruby-eyebrow),.ruby-projects>p:not(.ruby-eyebrow){font-size:.83rem}
 .ruby-place-copy .button-row{align-items:stretch;flex-direction:column}.ruby-place-copy .button{width:100%}
 .ruby-ritual{padding:24px}.ruby-section-note{font-size:.75rem}
