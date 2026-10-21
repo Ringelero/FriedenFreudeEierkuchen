@@ -1,0 +1,901 @@
+{
+  "$schema": "../../schemas/gemden-module-manifest.v1.schema.json",
+  "schema_version": "1.0.0",
+  "catalog_version": "1.0.0",
+  "modules": [
+    {
+      "type": "gemden.profile-hero",
+      "version": 1,
+      "title": "Profile introduction",
+      "description": "Shows a member, their public short description and an optional dynasty.",
+      "status": "pilot",
+      "renderer": "profileHero",
+      "data_inputs": [
+        {
+          "name": "member",
+          "entity": "community.member",
+          "cardinality": "one",
+          "required": true
+        },
+        {
+          "name": "dynasty",
+          "entity": "community.dynasty",
+          "cardinality": "one",
+          "required": false
+        }
+      ],
+      "capabilities": {
+        "requires": [
+          "module:data.public.community.read",
+          "module:navigation.internal"
+        ],
+        "optional": [
+          "module:ui.motion.decorative"
+        ],
+        "emits": [
+          "page:module-ready"
+        ]
+      },
+      "editor": {
+        "category": "profil",
+        "category_title": "Profile",
+        "default_props": {
+          "eyebrow": "Member",
+          "visual": "ruby-gem",
+          "image": "",
+          "frame": "soft",
+          "visual_label": "Animated profile symbol",
+          "breadcrumb": []
+        },
+        "default_appearance": {
+          "tone": "ruby",
+          "motion": "rise"
+        },
+        "fields": [
+          {
+            "id": "eyebrow",
+            "target": "props.eyebrow",
+            "label": "Small heading",
+            "control": "text"
+          },
+          {
+            "id": "visual",
+            "target": "props.visual",
+            "label": "Theme",
+            "control": "select",
+            "options": [
+              {
+                "label": "Ruby crystal",
+                "value": "ruby-gem"
+              },
+              {
+                "label": "Mint garden",
+                "value": "garden"
+              },
+              {
+                "label": "Star orbit",
+                "value": "orbit"
+              },
+              {
+                "label": "Sunrise",
+                "value": "sunrise"
+              }
+            ]
+          },
+          {
+            "id": "image",
+            "target": "props.image",
+            "label": "Your own profile motif",
+            "control": "image"
+          },
+          {
+            "id": "frame",
+            "target": "props.frame",
+            "label": "Image shape",
+            "control": "select",
+            "options": [
+              {
+                "label": "Soft",
+                "value": "soft"
+              },
+              {
+                "label": "Round",
+                "value": "round"
+              },
+              {
+                "label": "Crystal",
+                "value": "gem"
+              }
+            ]
+          },
+          {
+            "id": "visual_label",
+            "target": "props.visual_label",
+            "label": "Description of the motif",
+            "control": "text"
+          },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Colour",
+            "control": "select",
+            "options": [
+              {
+                "label": "Rubin",
+                "value": "ruby"
+              },
+              {
+                "label": "Gold",
+                "value": "gold"
+              },
+              {
+                "label": "Mint",
+                "value": "mint"
+              },
+              {
+                "label": "Neutral",
+                "value": "neutral"
+              }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Motion",
+            "control": "select",
+            "options": [
+              {
+                "label": "None",
+                "value": "none"
+              },
+              {
+                "label": "Fade in",
+                "value": "fade"
+              },
+              {
+                "label": "Rise",
+                "value": "rise"
+              },
+              {
+                "label": "Float",
+                "value": "float"
+              },
+              {
+                "label": "Pulse",
+                "value": "pulse"
+              }
+            ]
+          }
+        ]
+      },
+      "ffe_refs": [
+        "K05",
+        "R01",
+        "F04",
+        "T05",
+        "T10"
+      ]
+    },
+    {
+      "type": "gemden.skill-grid",
+      "version": 1,
+      "title": "Skills grid",
+      "description": "Shows context-specific skills without a global ranking of people.",
+      "status": "pilot",
+      "renderer": "skillGrid",
+      "data_inputs": [
+        {
+          "name": "skills",
+          "entity": "community.skill",
+          "cardinality": "many",
+          "required": true
+        }
+      ],
+      "capabilities": {
+        "requires": [
+          "module:data.public.community.read"
+        ],
+        "optional": [
+          "module:ui.motion.decorative"
+        ],
+        "emits": [
+          "page:module-ready"
+        ]
+      },
+      "editor": {
+        "category": "faehigkeiten",
+        "category_title": "Skills",
+        "default_props": {
+          "eyebrow": "Skills portfolio",
+          "title": "What I can contribute.",
+          "intro": "Skills apply in their respective contexts and are not a global ranking.",
+          "icons": {}
+        },
+        "default_appearance": {
+          "tone": "neutral",
+          "motion": "rise"
+        },
+        "fields": [
+          {
+            "id": "eyebrow",
+            "target": "props.eyebrow",
+            "label": "Small heading",
+            "control": "text"
+          },
+          {
+            "id": "title",
+            "target": "props.title",
+            "label": "Title",
+            "control": "text"
+          },
+          {
+            "id": "intro",
+            "target": "props.intro",
+            "label": "Introduction",
+            "control": "textarea"
+          },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Colour",
+            "control": "select",
+            "options": [
+              {
+                "label": "Neutral",
+                "value": "neutral"
+              },
+              {
+                "label": "Rubin",
+                "value": "ruby"
+              },
+              {
+                "label": "Gold",
+                "value": "gold"
+              },
+              {
+                "label": "Mint",
+                "value": "mint"
+              }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Motion",
+            "control": "select",
+            "options": [
+              {
+                "label": "None",
+                "value": "none"
+              },
+              {
+                "label": "Fade in",
+                "value": "fade"
+              },
+              {
+                "label": "Rise",
+                "value": "rise"
+              },
+              {
+                "label": "Float",
+                "value": "float"
+              },
+              {
+                "label": "Pulse",
+                "value": "pulse"
+              }
+            ]
+          }
+        ]
+      },
+      "ffe_refs": [
+        "K05",
+        "W01",
+        "T05"
+      ]
+    },
+    {
+      "type": "gemden.evidence-grid",
+      "version": 1,
+      "title": "Evidence grid",
+      "description": "Shows evidence with its provenance status and a visible limit on its use.",
+      "status": "pilot",
+      "renderer": "evidenceGrid",
+      "data_inputs": [
+        {
+          "name": "evidence",
+          "entity": "community.evidence",
+          "cardinality": "many",
+          "required": true
+        }
+      ],
+      "capabilities": {
+        "requires": [
+          "module:data.public.community.read"
+        ],
+        "optional": [
+          "module:ui.motion.decorative"
+        ],
+        "emits": [
+          "page:module-ready"
+        ]
+      },
+      "editor": {
+        "category": "nachweise",
+        "category_title": "Evidence",
+        "default_props": {
+          "eyebrow": "Evidence",
+          "title": "Where the experience comes from.",
+          "boundary": "Evidence applies only in the described context and does not replace any required authorisation."
+        },
+        "default_appearance": {
+          "tone": "gold",
+          "motion": "fade"
+        },
+        "fields": [
+          {
+            "id": "eyebrow",
+            "target": "props.eyebrow",
+            "label": "Small heading",
+            "control": "text"
+          },
+          {
+            "id": "title",
+            "target": "props.title",
+            "label": "Title",
+            "control": "text"
+          },
+          {
+            "id": "boundary",
+            "target": "props.boundary",
+            "label": "Visible boundary",
+            "control": "textarea"
+          },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Colour",
+            "control": "select",
+            "options": [
+              {
+                "label": "Gold",
+                "value": "gold"
+              },
+              {
+                "label": "Rubin",
+                "value": "ruby"
+              },
+              {
+                "label": "Mint",
+                "value": "mint"
+              },
+              {
+                "label": "Neutral",
+                "value": "neutral"
+              }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Motion",
+            "control": "select",
+            "options": [
+              {
+                "label": "None",
+                "value": "none"
+              },
+              {
+                "label": "Fade in",
+                "value": "fade"
+              },
+              {
+                "label": "Rise",
+                "value": "rise"
+              },
+              {
+                "label": "Float",
+                "value": "float"
+              },
+              {
+                "label": "Pulse",
+                "value": "pulse"
+              }
+            ]
+          }
+        ]
+      },
+      "ffe_refs": [
+        "K05",
+        "F04",
+        "T05"
+      ]
+    },
+    {
+      "type": "gemden.project-grid",
+      "version": 1,
+      "title": "Project grid",
+      "description": "Shows explicitly published projects with role and lifecycle.",
+      "status": "pilot",
+      "renderer": "projectGrid",
+      "data_inputs": [
+        {
+          "name": "projects",
+          "entity": "community.project",
+          "cardinality": "many",
+          "required": true
+        }
+      ],
+      "capabilities": {
+        "requires": [
+          "module:data.public.community.read"
+        ],
+        "optional": [
+          "module:ui.motion.decorative"
+        ],
+        "emits": [
+          "page:module-ready"
+        ]
+      },
+      "editor": {
+        "category": "projekte",
+        "category_title": "Projects",
+        "default_props": {
+          "eyebrow": "Projects",
+          "title": "What I'm working on.",
+          "intro": "Published projects show context and the person's own role, not an automatic commitment to new commissions."
+        },
+        "default_appearance": {
+          "tone": "mint",
+          "motion": "rise"
+        },
+        "fields": [
+          {
+            "id": "eyebrow",
+            "target": "props.eyebrow",
+            "label": "Small heading",
+            "control": "text"
+          },
+          {
+            "id": "title",
+            "target": "props.title",
+            "label": "Title",
+            "control": "text"
+          },
+          {
+            "id": "intro",
+            "target": "props.intro",
+            "label": "Introduction",
+            "control": "textarea"
+          },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Colour",
+            "control": "select",
+            "options": [
+              {
+                "label": "Mint",
+                "value": "mint"
+              },
+              {
+                "label": "Rubin",
+                "value": "ruby"
+              },
+              {
+                "label": "Gold",
+                "value": "gold"
+              },
+              {
+                "label": "Neutral",
+                "value": "neutral"
+              }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Motion",
+            "control": "select",
+            "options": [
+              {
+                "label": "None",
+                "value": "none"
+              },
+              {
+                "label": "Fade in",
+                "value": "fade"
+              },
+              {
+                "label": "Rise",
+                "value": "rise"
+              },
+              {
+                "label": "Float",
+                "value": "float"
+              },
+              {
+                "label": "Pulse",
+                "value": "pulse"
+              }
+            ]
+          }
+        ]
+      },
+      "ffe_refs": [
+        "K05",
+        "W01",
+        "T05"
+      ]
+    },
+    {
+      "type": "gemden.link-cards",
+      "version": 1,
+      "title": "Path cards",
+      "description": "Connects a page to projects, tools or situations through curated internal links.",
+      "status": "pilot",
+      "renderer": "linkCards",
+      "data_inputs": [],
+      "capabilities": {
+        "requires": [
+          "module:navigation.internal"
+        ],
+        "optional": [
+          "module:ui.motion.decorative"
+        ],
+        "emits": [
+          "navigation:open",
+          "page:module-ready"
+        ]
+      },
+      "editor": {
+        "category": "wege",
+        "category_title": "Pathways & projects",
+        "default_props": {
+          "eyebrow": "Paths",
+          "title": "Where things go next.",
+          "items": [
+            {
+              "icon": "✨",
+              "title": "New pathway card",
+              "description": "Describe where this route leads.",
+              "label": "Open →",
+              "href": "/community/",
+              "tone": "ruby"
+            }
+          ]
+        },
+        "default_appearance": {
+          "tone": "neutral",
+          "motion": "rise"
+        },
+        "fields": [
+          {
+            "id": "eyebrow",
+            "target": "props.eyebrow",
+            "label": "Small heading",
+            "control": "text"
+          },
+          {
+            "id": "title",
+            "target": "props.title",
+            "label": "Title",
+            "control": "text"
+          },
+          {
+            "id": "items",
+            "target": "props.items",
+            "label": "Path cards",
+            "control": "link-list"
+          },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Colour",
+            "control": "select",
+            "options": [
+              {
+                "label": "Neutral",
+                "value": "neutral"
+              },
+              {
+                "label": "Rubin",
+                "value": "ruby"
+              },
+              {
+                "label": "Gold",
+                "value": "gold"
+              },
+              {
+                "label": "Mint",
+                "value": "mint"
+              }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Motion",
+            "control": "select",
+            "options": [
+              {
+                "label": "None",
+                "value": "none"
+              },
+              {
+                "label": "Fade in",
+                "value": "fade"
+              },
+              {
+                "label": "Rise",
+                "value": "rise"
+              },
+              {
+                "label": "Float",
+                "value": "float"
+              },
+              {
+                "label": "Pulse",
+                "value": "pulse"
+              }
+            ]
+          }
+        ]
+      },
+      "ffe_refs": [
+        "K10",
+        "T06",
+        "T10"
+      ]
+    },
+    {
+      "type": "gemden.story-block",
+      "version": 1,
+      "title": "Your own story",
+      "description": "A personally designed building block that is released with the page.",
+      "status": "pilot",
+      "renderer": "storyBlock",
+      "data_inputs": [],
+      "capabilities": {
+        "requires": [],
+        "optional": [
+          "module:ui.motion.decorative"
+        ],
+        "emits": [
+          "page:module-ready"
+        ]
+      },
+      "editor": {
+        "category": "meine-welt",
+        "category_title": "My world",
+        "default_props": {
+          "eyebrow": "My world",
+          "title": "What matters to me.",
+          "text": ""
+        },
+        "default_appearance": {
+          "tone": "neutral",
+          "motion": "fade"
+        },
+        "fields": [
+          {
+            "id": "eyebrow",
+            "target": "props.eyebrow",
+            "label": "Small heading",
+            "control": "text"
+          },
+          {
+            "id": "title",
+            "target": "props.title",
+            "label": "Title",
+            "control": "text"
+          },
+          {
+            "id": "text",
+            "target": "props.text",
+            "label": "Your text",
+            "control": "textarea"
+          },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Colour",
+            "control": "select",
+            "options": [
+              {
+                "label": "Neutral",
+                "value": "neutral"
+              },
+              {
+                "label": "Rubin",
+                "value": "ruby"
+              },
+              {
+                "label": "Gold",
+                "value": "gold"
+              },
+              {
+                "label": "Mint",
+                "value": "mint"
+              }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Motion",
+            "control": "select",
+            "options": [
+              {
+                "label": "None",
+                "value": "none"
+              },
+              {
+                "label": "Fade in",
+                "value": "fade"
+              },
+              {
+                "label": "Rise",
+                "value": "rise"
+              },
+              {
+                "label": "Float",
+                "value": "float"
+              },
+              {
+                "label": "Pulse",
+                "value": "pulse"
+              }
+            ]
+          }
+        ]
+      },
+      "ffe_refs": [
+        "K05",
+        "T05"
+      ]
+    },
+    {
+      "type": "gemden.image-block",
+      "version": 1,
+      "title": "Image & image story",
+      "description": "A personally designed building block that is released with the page.",
+      "status": "pilot",
+      "renderer": "imageBlock",
+      "data_inputs": [],
+      "capabilities": {
+        "requires": [],
+        "optional": [
+          "module:ui.motion.decorative"
+        ],
+        "emits": [
+          "page:module-ready"
+        ]
+      },
+      "editor": {
+        "category": "meine-welt",
+        "category_title": "My world",
+        "default_props": {
+          "eyebrow": "Insights",
+          "title": "An image from my world.",
+          "image": "",
+          "alt": "",
+          "caption": "",
+          "format": "original"
+        },
+        "default_appearance": {
+          "tone": "neutral",
+          "motion": "fade"
+        },
+        "fields": [
+          {
+            "id": "eyebrow",
+            "target": "props.eyebrow",
+            "label": "Small heading",
+            "control": "text"
+          },
+          {
+            "id": "title",
+            "target": "props.title",
+            "label": "Title",
+            "control": "text"
+          },
+          {
+            "id": "image",
+            "target": "props.image",
+            "label": "Your picture",
+            "control": "image"
+          },
+          {
+            "id": "alt",
+            "target": "props.alt",
+            "label": "Image description for everyone",
+            "control": "text"
+          },
+          {
+            "id": "caption",
+            "target": "props.caption",
+            "label": "Caption",
+            "control": "textarea"
+          },
+          {
+            "id": "format",
+            "target": "props.format",
+            "label": "Image format",
+            "control": "select",
+            "options": [
+              {
+                "label": "Full image",
+                "value": "original"
+              },
+              {
+                "label": "Landscape",
+                "value": "landscape"
+              },
+              {
+                "label": "Square",
+                "value": "square"
+              }
+            ]
+          },
+          {
+            "id": "tone",
+            "target": "appearance.tone",
+            "label": "Colour",
+            "control": "select",
+            "options": [
+              {
+                "label": "Neutral",
+                "value": "neutral"
+              },
+              {
+                "label": "Rubin",
+                "value": "ruby"
+              },
+              {
+                "label": "Gold",
+                "value": "gold"
+              },
+              {
+                "label": "Mint",
+                "value": "mint"
+              }
+            ]
+          },
+          {
+            "id": "motion",
+            "target": "appearance.motion",
+            "label": "Motion",
+            "control": "select",
+            "options": [
+              {
+                "label": "None",
+                "value": "none"
+              },
+              {
+                "label": "Fade in",
+                "value": "fade"
+              },
+              {
+                "label": "Rise",
+                "value": "rise"
+              },
+              {
+                "label": "Float",
+                "value": "float"
+              },
+              {
+                "label": "Pulse",
+                "value": "pulse"
+              }
+            ]
+          }
+        ]
+      },
+      "ffe_refs": [
+        "K05",
+        "T05"
+      ]
+    }
+  ]
+}

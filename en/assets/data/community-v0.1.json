@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "schema_version": "0.1",
+    "updated": "2026-10-19",
+    "status": "public-community-catalog",
+    "note": "Public catalogue of Community spaces. Private content and access permissions are managed separately through the account."
+  },
+  "kieze": [
+    {
+      "id": "KIEZ-P-HAIN",
+      "slug": "p-hain",
+      "name": "P-Hain",
+      "status": "experiment",
+      "description": "A neighbourhood space where Prenzlauer Berg and Friedrichshain meet, around Straßmannstraße and Richard-Sorge-Straße.",
+      "public_path": "/community/kieze/p-hain/",
+      "ffe_refs": [
+        "R01",
+        "W01",
+        "OP-R01",
+        "OP-W01"
+      ]
+    },
+    {
+      "id": "KIEZ-TRAVELKIEZ",
+      "slug": "travelkiez",
+      "name": "Travelkiez",
+      "status": "experiment",
+      "description": "Neighbourhood life, shared events and ThreeDen in Friedrichshain.",
+      "public_path": "/community/kieze/travelkiez/",
+      "ffe_refs": [
+        "R01",
+        "W01",
+        "OP-R01",
+        "OP-W01"
+      ]
+    }
+  ],
+  "dynasties": [
+    {
+      "id": "DYN-RUBYBUBYS",
+      "slug": "rubybubys",
+      "name": "Rubybubys",
+      "status": "active-first-dynasty",
+      "description": "The first dynasty within FriedenFreudeEierkuchen.",
+      "public_path": "/community/dynastien/rubybubys/",
+      "open_fields": [
+        "history",
+        "rituals",
+        "ranks",
+        "mastery_language"
+      ],
+      "ffe_refs": [
+        "R01",
+        "OP-R01"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "SKILL-SMART-HOME",
+      "name": "Connect smart-home systems",
+      "description": "Think through sensors, actuators and digital controls together as an understandable system.",
+      "branch": "CRAFT",
+      "safety": "Installation and mains electricity work only within the qualifications and legal requirements applicable to the task."
+    },
+    {
+      "id": "SKILL-ELECTRICAL-UNDERSTANDING",
+      "name": "understand electrical principles",
+      "description": "Analyse electrical functions and assess them safely for a project.",
+      "branch": "CRAFT",
+      "safety": "This skill is not blanket proof of qualification for regulated electrical work."
+    },
+    {
+      "id": "SKILL-TINKERING",
+      "name": "tinker and build prototypes",
+      "description": "Turn ideas into technical or material solutions that can be tested.",
+      "branch": "CRAFT"
+    },
+    {
+      "id": "SKILL-TROUBLESHOOTING",
+      "name": "find faults systematically",
+      "description": "Observe, narrow down causes, test and document the next steps.",
+      "branch": "CRAFT"
+    },
+    {
+      "id": "SKILL-TECH-COMMUNICATION",
+      "name": "explain technology clearly",
+      "description": "Enable people to understand and operate a system themselves.",
+      "branch": "KNOW"
+    },
+    {
+      "id": "SKILL-ORGANIZATION",
+      "name": "organise and prioritise",
+      "description": "Arrange tasks, time and dependencies clearly.",
+      "branch": "SOCIAL"
+    },
+    {
+      "id": "SKILL-FOCUSED-WORK",
+      "name": "work with focus and care",
+      "description": "Stay attentive even with repetitive or detailed tasks.",
+      "branch": "SELF"
+    },
+    {
+      "id": "SKILL-ORDER",
+      "name": "create and maintain order",
+      "description": "Organise materials, spaces or information into a usable structure.",
+      "branch": "CRAFT"
+    },
+    {
+      "id": "SKILL-CLEANING",
+      "name": "clean spaces carefully",
+      "description": "Carry out cleaning tasks methodically, reliably and in ways suitable for the materials.",
+      "branch": "CRAFT"
+    },
+    {
+      "id": "SKILL-LOGISTICS",
+      "name": "assign and move things reliably",
+      "description": "Sort shipments, materials or tasks traceably and get them to the right place.",
+      "branch": "CRAFT"
+    },
+    {
+      "id": "SKILL-TEXTILE-CRAFT",
+      "name": "create with textiles",
+      "description": "Sew, shape and make textile objects.",
+      "branch": "CRAFT"
+    },
+    {
+      "id": "SKILL-NUMBER-CARE",
+      "name": "handle figures and records carefully",
+      "description": "Check figures, records and allocations traceably.",
+      "branch": "KNOW",
+      "safety": "General care does not replace a professional tax or legal qualification."
+    }
+  ],
+  "members": [
+    {
+      "id": "MEM-JULIUS",
+      "slug": "julius",
+      "name": "Julius",
+      "status": "publication-gated",
+      "tagline": "",
+      "bio": "",
+      "dynasty_ids": [],
+      "kiez_ids": [],
+      "skill_ids": [],
+      "public_path": "/community/mitglieder/julius/",
+      "boundaries": [],
+      "evidence_ids": [],
+      "project_ids": []
+    }
+  ],
+  "evidence": [],
+  "projects": []
+}

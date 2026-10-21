@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Your personal overview of calendars, meeting places, contacts, tickets and your own GemDen page.">
+  <title>Account · GemDen</title>
+  <link rel="stylesheet" href="/en/assets/site.css?v=20261020-2">
+  <link rel="stylesheet" href="/en/assets/blob.css?v=20261016-1">
+  <link rel="stylesheet" href="/en/konto/konto.css?v=20261020-1">
+  <link rel="stylesheet" href="/en/assets/worlds.css?v=20261011-1">
+<!-- gemden-language:start -->
+<meta name="gemden-languages" content="/ /404.html /community/ /community/dynastien/rubybubys/ /community/kieze/p-hain/ /community/kieze/travelkiez/ /community/mitglieder/julius/ /community/mitglieder/profil/ /community/orte/threeden/ /entwuerfe/moeglichkeiten/ /gestalten/ /hilfe/ /impressum/ /info/ /julius/ /kalender/ /kalender/verbinden/ /konto/ /leistungen/ /leistungen/rubybubys-herz-und-schnauze/ /leistungen/rubybubys-herz-und-schnauze/betreuung/ /leistungen/rubybubys-herz-und-schnauze/gassihilfe/ /leistungen/rubybubys-herz-und-schnauze/gastgeber/ /leistungen/rubybubys-herz-und-schnauze/lernen/ /leistungen/smart-home/ /system/ /tickets/ /treffpunkte/ /verwaltung/mitglieder/">
+<link rel="alternate" hreflang="de" href="https://gemden.red/konto/">
+<link rel="alternate" hreflang="en" href="https://gemden.red/en/konto/">
+<link rel="canonical" href="https://gemden.red/en/konto/">
+<link rel="stylesheet" href="/assets/language.css?v=20261020-1">
+<script src="/assets/language.js?v=20261020-1" defer></script>
+<!-- gemden-language:end -->
+</head>
+<body class="world-desk account-home" data-area="account" data-blob-mode="guide">
+  <a class="skip-link" href="#inhalt">Skip to content</a>
+  <div class="site-shell account-shell">
+    <nav class="site-nav" data-site-nav data-root="../" aria-label="Main navigation">
+      <a class="site-mark" href="/en/">GemDen</a><!-- gemden-language-switcher:start --><nav class="language-switcher" data-language-switcher aria-label="Website language"><a href="/konto/" lang="de" hreflang="de" aria-label="Deutsch">DE</a><a href="/en/konto/" lang="en" hreflang="en" aria-label="English" aria-current="true">EN</a></nav><!-- gemden-language-switcher:end -->
+    </nav>
+
+    <main id="inhalt">
+      <header class="hero compact account-hero work-hero area-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Personal access</p>
+          <h1 class="display small">Your place<br> in GemDen.</h1>
+          <p class="lead">Your time. Your people. Your opportunities. It all starts in one place.</p>
+        </div>
+        <div class="status-row"><span class="status-chip open" id="connection-chip">Checking connection</span><span class="id-chip">protected</span></div>
+      </header>
+
+      <p class="notice" id="opportunity-entry-note" role="status" hidden></p>
+
+      <section class="section working-section account-grid" aria-labelledby="account-title">
+        <div class="section-head">
+          <p class="eyebrow">Your space</p>
+          <h2 id="account-title">Your personal workspace.</h2>
+          <p>Your profile, opportunities and collaboration start here.</p>
+        </div>
+
+        <article class="panel account-panel" id="signed-out-panel">
+          <div class="account-panel-head">
+            <span class="account-icon" aria-hidden="true">✉️</span>
+            <div>
+              <p class="eyebrow">Not signed in yet</p>
+              <h3>Sign in securely</h3>
+            </div>
+          </div>
+          <p class="account-copy">Sign in with the password you set yourself. You can also use a one-time email link for your first sign-in.</p>
+          <details class="source-fold"><summary>First sign-in with an invitation?</summary><p>Request a one-time link for the email address on your invitation and open it on your device. Then set your own password in your account so you can sign in directly next time.</p></details>
+          <form class="form-grid" id="login-form">
+            <div class="field">
+              <label for="login-email">Email address</label>
+              <input id="login-email" name="email" type="email" autocomplete="email" inputmode="email" required placeholder="name@beispiel.de">
+            </div>
+            <div class="field">
+              <label for="login-password">Password</label>
+              <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+            </div>
+            <div class="button-row account-login-actions">
+              <button class="button" id="login-submit" type="submit">Sign in with password</button>
+              <button class="button secondary" id="login-link-submit" type="button">Send one-time link</button>
+            </div>
+            <p class="form-status" id="login-status" role="status" aria-live="polite"></p>
+          </form>
+        </article>
+
+        <article class="panel account-panel" id="signed-in-panel" hidden>
+          <header class="account-welcome"><div><p class="eyebrow">Good to have you here</p><h2>Hello, <span id="profile-heading">you</span>.</h2><p>Your everyday life, your ideas, your connections.</p></div><span class="account-welcome-mark" aria-hidden="true">✦</span></header>
+          <p class="form-status account-load-status" id="account-data-status" role="status" aria-live="polite"></p>
+          <nav class="account-view-nav" aria-label="Your account area"><a href="#konto-uebersicht" aria-current="page">Overview</a><a href="#konto-profil">Profile &amp; page</a><a href="#konto-zusammenarbeit">Collaboration</a><a href="#konto-einstellungen">Settings</a></nav>
+
+          <section id="konto-uebersicht" class="account-view" data-account-view aria-labelledby="overview-title">
+            <header class="account-view-heading"><p class="eyebrow">Your shortcuts</p><h3 id="overview-title">What&#39;s coming up for you?</h3><p>Go straight to what you need right now.</p></header>
+            <div class="account-routes"><a class="account-route is-mint" href="/en/kalender/?kalender=PERSONAL"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="4"/><path d="M8 3v4m8-4v4M4 11h16m-12 4h3m3 0h2"/></svg></span><span class="account-route-copy"><strong>My calendar</strong><span>Appointments and your own requests</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a>
+<a class="account-route is-gold" href="/en/treffpunkte/?leistung=SERVICE-RUBYBUBYS-HERZ-SCHNAUZE"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17c-3-5 0-11 5-11s8 6 5 11c-2 4-8 4-10 0Z"/><path d="M9 15c0-4 6-4 6 0m-9-7L4 4m14 4 2-4"/></svg></span><span class="account-route-copy"><strong>My meeting places</strong><span>Favourite places and dog-walking time slots</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a>
+<a class="account-route is-rose" href="/en/leistungen/rubybubys-herz-und-schnauze/betreuung/"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6c-4-4-8 1-8 1S8 2 4 6c-4 5 8 13 8 13S24 11 20 6Z"/></svg></span><span class="account-route-copy"><strong>Contacts &amp; care</strong><span>Trusted people and support</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a>
+<a class="account-route is-lavender" href="/en/tickets/#ticket-list-title"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H10l-5 4v-4H4Z"/><path d="M8 9h8m-8 3h5"/></svg></span><span class="account-route-copy"><strong>My Tickets</strong><span>Feedback, ideas and wishes</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a>
+<a class="account-route is-cream" href="#konto-profil"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-9 16-9 16 0"/></svg></span><span class="account-route-copy"><strong>Profile &amp; personal page</strong><span>Your skills and your design</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a>
+<a class="account-route is-blue" href="#konto-zusammenarbeit"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5-5 5 5-5 5Zm7-5 4-3 5 5-3 4m-3 5 3 3 4-4-3-3"/></svg></span><span class="account-route-copy"><strong>Collaboration</strong><span>Wishes, offers and replies</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a></div>
+            <aside class="account-blob-note"><span aria-hidden="true">✦</span><div><strong>A useful next step?</strong><p>Blob can help with dog walks, calendars and feedback. You can choose to enable suggestions based on your own account there.</p><button type="button" class="button secondary" id="account-blob-open">Ask Blob for suggestions <span aria-hidden="true">→</span></button></div></aside>
+            <p class="account-discover">Feel like meeting people? <a href="/en/community/">Discover neighbourhoods, Rubybubys and people →</a></p>
+          </section>
+
+          <section id="konto-profil" class="account-view" data-account-view aria-labelledby="account-profile-title">
+            <header class="account-view-heading"><p class="eyebrow">Your presence</p><h3 id="account-profile-title">How you show up.</h3><p>Edit your profile, design your page and decide what you share.</p></header>
+            <nav class="account-section-links" aria-label="Profile tools"><a href="#profile-form">Profile settings</a><a href="#portfolio-workspace">Skills &amp; portfolio</a><a href="#page-setup-title">Personal page</a><a href="#publication-center">Publish</a></nav>
+            <details class="account-fold"><summary><span><b>Your profile settings</b><small>Display name and visibility</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><form class="form-grid profile-form" id="profile-form" hidden>
+            <div class="field">
+              <label for="profile-display-name">Display name</label>
+              <input id="profile-display-name" maxlength="120" required autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="profile-visibility">Overall profile settings</label>
+              <select id="profile-visibility">
+                <option value="private">Private – only me</option>
+                <option value="members">Members only – not yet available</option>
+                <option value="public">Public – only visible after publication</option>
+              </select>
+              <small>Manage individual texts and portfolio entries below. Choosing visibility alone does not publish anything.</small>
+            </div>
+            <button class="button" id="profile-submit" type="submit">Save profile settings</button>
+            <p class="form-status" id="profile-status" role="status" aria-live="polite"></p>
+          </form></div></details>
+            <details class="account-fold"><summary><span><b>Skills &amp; portfolio</b><small>What you contribute, have learned and plan to do</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><section class="portfolio-workspace" id="portfolio-workspace" aria-labelledby="portfolio-title" hidden>
+            <header class="portfolio-head">
+              <div>
+                <p class="eyebrow">My portfolio</p>
+                <h4 id="portfolio-title">Show what you bring.</h4>
+                <p class="account-copy">Choose the future visibility of each field yourself. Everything saved here is a draft only.</p>
+              </div>
+              <button class="button secondary" id="portfolio-export" type="button">Export my data as JSON</button>
+            </header>
+
+            <div class="portfolio-meter" role="group" aria-label="Portfolio overview">
+              <div><strong id="portfolio-field-count">0</strong><span>Profile fields</span></div>
+              <div><strong id="portfolio-skill-count">0</strong><span>Skills</span></div>
+              <div><strong id="portfolio-evidence-count">0</strong><span>Evidence</span></div>
+              <div><strong id="portfolio-project-count">0</strong><span>Projects</span></div>
+            </div>
+            <p class="form-status" id="portfolio-status" role="status" aria-live="polite"></p>
+
+            <details class="workspace-block" open>
+              <summary>
+                <span><b>About me</b><small>Each field has its own visibility</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <form class="form-grid workspace-body" id="profile-fields-form">
+                <div class="field-row">
+                  <div class="field">
+                    <label for="field-tagline">One-line introduction</label>
+                    <input id="field-tagline" maxlength="240" placeholder="What would you like people to find you for?">
+                  </div>
+                  <div class="field compact-field">
+                    <label for="field-tagline-visibility">Visibility</label>
+                    <select id="field-tagline-visibility" data-visibility-select></select>
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="field-bio">About me</label>
+                    <textarea id="field-bio" maxlength="4000" placeholder="What would you like to share about yourself?"></textarea>
+                  </div>
+                  <div class="field compact-field">
+                    <label for="field-bio-visibility">Visibility</label>
+                    <select id="field-bio-visibility" data-visibility-select></select>
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="field-location">Location or area of activity</label>
+                    <input id="field-location" maxlength="240" placeholder="e.g. Berlin or remote">
+                  </div>
+                  <div class="field compact-field">
+                    <label for="field-location-visibility">Visibility</label>
+                    <select id="field-location-visibility" data-visibility-select></select>
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="field-availability_note">Availability</label>
+                    <textarea id="field-availability_note" maxlength="2000" placeholder="When and in what capacity can people reach out to you?"></textarea>
+                  </div>
+                  <div class="field compact-field">
+                    <label for="field-availability_note-visibility">Visibility</label>
+                    <select id="field-availability_note-visibility" data-visibility-select></select>
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="field-boundaries">Boundaries</label>
+                    <textarea id="field-boundaries" maxlength="4000" placeholder="What matters to you in requests and collaboration?"></textarea>
+                  </div>
+                  <div class="field compact-field">
+                    <label for="field-boundaries-visibility">Visibility</label>
+                    <select id="field-boundaries-visibility" data-visibility-select></select>
+                  </div>
+                </div>
+                <button class="button" id="profile-fields-submit" type="submit">Save profile fields as a draft</button>
+                <p class="form-status" id="profile-fields-status" role="status" aria-live="polite"></p>
+              </form>
+            </details>
+
+            <details class="workspace-block" open>
+              <summary>
+                <span><b>Skills</b><small>Context instead of rankings</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body">
+                <div class="portfolio-list" id="profile-skills-list"></div>
+                <details class="entry-composer">
+                  <summary>Add a skill</summary>
+                  <form class="form-grid" id="profile-skill-create-form">
+                    <div class="field">
+                      <label for="profile-skill-id">Skill</label>
+                      <select id="profile-skill-id" required></select>
+                    </div>
+                    <div class="field">
+                      <label for="profile-skill-statement">How I use it</label>
+                      <textarea id="profile-skill-statement" maxlength="4000"></textarea>
+                    </div>
+                    <div class="field">
+                      <label for="profile-skill-boundaries">Scope and boundaries</label>
+                      <textarea id="profile-skill-boundaries" maxlength="4000"></textarea>
+                    </div>
+                    <div class="form-columns">
+                      <div class="field"><label for="profile-skill-intent">What for?</label><select id="profile-skill-intent" data-intent-select></select></div>
+                      <div class="field"><label for="profile-skill-stage">Self-assessment (optional)</label><select id="profile-skill-stage" data-stage-select></select></div>
+                      <div class="field"><label for="profile-skill-visibility">Visibility</label><select id="profile-skill-visibility" data-visibility-select></select></div>
+                    </div>
+                    <button class="button" type="submit">Add skill as a draft</button>
+                    <p class="form-status" id="profile-skill-create-status" role="status" aria-live="polite"></p>
+                  </form>
+                </details>
+              </div>
+            </details>
+
+            <details class="workspace-block">
+              <summary>
+                <span><b>Evidence</b><small>Keep the source and verification status visible</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body">
+                <div class="portfolio-list" id="skill-evidence-list"></div>
+                <details class="entry-composer">
+                  <summary>Add evidence</summary>
+                  <form class="form-grid" id="skill-evidence-create-form">
+                    <div class="field"><label for="evidence-title">Title</label><input id="evidence-title" maxlength="200" required></div>
+                    <div class="field"><label for="evidence-description">Description</label><textarea id="evidence-description" maxlength="8000"></textarea></div>
+                    <div class="form-columns">
+                      <div class="field"><label for="evidence-type">Type</label><select id="evidence-type" data-evidence-type-select></select></div>
+                      <div class="field"><label for="evidence-visibility">Visibility</label><select id="evidence-visibility" data-visibility-select></select></div>
+                    </div>
+                    <div class="form-columns">
+                      <div class="field"><label for="evidence-source-label">Source or organisation</label><input id="evidence-source-label" maxlength="200"></div>
+                      <div class="field"><label for="evidence-source-url">Link (optional)</label><input id="evidence-source-url" type="url" maxlength="2048" inputmode="url"></div>
+                    </div>
+                    <fieldset class="choice-fieldset"><legend>Related skills</legend><div class="choice-grid" id="evidence-skill-choices"></div></fieldset>
+                    <p class="account-copy small-copy">New evidence is always marked “self-reported”. You cannot give yourself confirmation from others.</p>
+                    <button class="button" type="submit">Add evidence as a draft</button>
+                    <p class="form-status" id="skill-evidence-create-status" role="status" aria-live="polite"></p>
+                  </form>
+                </details>
+              </div>
+            </details>
+
+            <details class="workspace-block">
+              <summary>
+                <span><b>Projects</b><small>Work, role and skills used</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body">
+                <div class="portfolio-list" id="projects-list"></div>
+                <details class="entry-composer">
+                  <summary>Add a project</summary>
+                  <form class="form-grid" id="project-create-form">
+                    <div class="field"><label for="project-title">Title</label><input id="project-title" maxlength="200" required></div>
+                    <div class="field"><label for="project-summary">What is it about?</label><textarea id="project-summary" maxlength="8000"></textarea></div>
+                    <div class="field"><label for="project-role-summary">My role</label><textarea id="project-role-summary" maxlength="4000"></textarea></div>
+                    <div class="form-columns">
+                      <div class="field"><label for="project-lifecycle-status">Status</label><select id="project-lifecycle-status" data-project-status-select></select></div>
+                      <div class="field"><label for="project-visibility">Visibility</label><select id="project-visibility" data-visibility-select></select></div>
+                    </div>
+                    <fieldset class="choice-fieldset"><legend>Skills used</legend><div class="choice-grid" id="project-skill-choices"></div></fieldset>
+                    <button class="button" type="submit">Add project as a draft</button>
+                    <p class="form-status" id="project-create-status" role="status" aria-live="polite"></p>
+                  </form>
+                </details>
+              </div>
+            </details>
+          </section></div></details>
+            <details class="account-fold"><summary><span><b>Your personal page</b><small>With images, text and your own design</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><section class="form-grid page-setup" aria-labelledby="page-setup-title">
+            <div>
+              <p class="eyebrow">Personal page workshop</p>
+              <h4 id="page-setup-title">Personal member page</h4>
+              <p class="account-copy">Design your own little world with four templates, your own images and text, and freely arranged building blocks. Your member page starts as a private draft; nothing is published in the process. You decide later whether to release it.</p>
+              <p class="account-copy"><a href="/en/gestalten/?vorschau=1">Try the design locally first →</a></p>
+            </div>
+            <button class="button" id="page-create-button" type="button" disabled>Create a private member page</button>
+            <a class="button secondary" id="page-workshop-link" href="/en/gestalten/" hidden>Open page workshop</a>
+            <p class="form-status" id="page-status" role="status" aria-live="polite">Checking page status …</p>
+          </section></div></details>
+            <details class="account-fold"><summary><span><b>Visibility &amp; publication</b><small>Review and deliberately release</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><section class="publication-center" id="publication-center" aria-labelledby="publication-title" hidden>
+            <header class="portfolio-head publication-head">
+              <div>
+                <p class="eyebrow">Publishing centre</p>
+                <h4 id="publication-title">You decide what goes live.</h4>
+                <p class="account-copy">Visibility is only a choice. A piece of content becomes public only after its individual release is confirmed and the overall profile is opened. You can reverse both at any time.</p>
+              </div>
+              <a class="button secondary" id="profile-publication-link" href="/en/community/mitglieder/julius/" hidden>View profile page</a>
+            </header>
+
+            <div class="publication-gate">
+              <div>
+                <p class="entry-kicker">Safety switch</p>
+                <div class="publication-gate-title">
+                  <h5>Overall profile</h5>
+                  <span class="publication-badge state-staged" id="profile-publication-badge">Overall profile is closed</span>
+                </div>
+                <p class="entry-description" id="profile-publication-copy">Loading current status.</p>
+              </div>
+              <button class="button" id="profile-publication-action" type="button" disabled>Publish overall profile</button>
+            </div>
+
+            <div class="portfolio-meter publication-meter" role="group" aria-label="Publication overview">
+              <div><strong id="publication-count-live">0</strong><span>public now</span></div>
+              <div><strong id="publication-count-staged">0</strong><span>released, offline</span></div>
+              <div><strong id="publication-count-ready">0</strong><span>ready for release</span></div>
+              <div><strong id="publication-count-excluded">0</strong><span>not selected</span></div>
+            </div>
+
+            <p class="form-status" id="publication-status" role="status" aria-live="polite"></p>
+
+            <details class="workspace-block publication-block" open>
+              <summary>
+                <span><b>Public preview</b><small>What would be visible to others – without private entries</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body" id="publication-preview"></div>
+            </details>
+
+            <details class="workspace-block publication-block" open>
+              <summary>
+                <span><b>Individual releases</b><small>Profile fields, skills, evidence and projects</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body publication-list" id="publication-items"></div>
+            </details>
+          </section></div></details>
+          </section>
+
+          <section id="konto-zusammenarbeit" class="account-view" data-account-view aria-labelledby="account-together-title">
+            <header class="account-view-heading"><p class="eyebrow">Moving forward together</p><h3 id="account-together-title">Ideas become connections.</h3><p>Share a wish or an offer and work through replies at your own pace.</p></header>
+            <nav class="account-section-links" aria-label="Open collaboration"><a href="#opportunity-workspace">My opportunities</a><a href="#resonance-center">Replies &amp; conversations</a></nav>
+            <details class="account-fold"><summary><span><b>My opportunities</b><small>Wishes, offers, time and shared plans</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><section class="portfolio-workspace opportunity-workspace" id="opportunity-workspace" aria-labelledby="opportunity-workspace-title" hidden>
+            <header class="portfolio-head">
+              <div>
+                <p class="eyebrow">My opportunities</p>
+                <h4 id="opportunity-workspace-title">Signals can lead to collaboration.</h4>
+                <p class="account-copy">An opportunity is an invitation to discuss details – not an automatic assignment or commitment. Location, time, compensation and boundaries stay visible.</p>
+              </div>
+              <div class="button-row">
+                <a class="button secondary" href="/en/leistungen/#moeglichkeitenstrom">View public feed</a>
+                <button class="button secondary" id="opportunities-export" type="button">Export my opportunities as JSON</button>
+              </div>
+            </header>
+
+            <div class="portfolio-meter" role="group" aria-label="Opportunities overview">
+              <div><strong id="opportunity-count-all">0</strong><span>total</span></div>
+              <div><strong id="opportunity-count-draft">0</strong><span>Drafts</span></div>
+              <div><strong id="opportunity-count-open">0</strong><span>public and open</span></div>
+              <div><strong id="opportunity-count-closed">0</strong><span>completed</span></div>
+            </div>
+            <p class="form-status" id="opportunity-status" role="status" aria-live="polite"></p>
+
+            <details class="workspace-block" open>
+              <summary>
+                <span><b>My entries</b><small>Draft, open and completed opportunities</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <div class="workspace-body">
+                <div class="portfolio-list" id="opportunities-list"></div>
+              </div>
+            </details>
+
+            <details class="workspace-block opportunity-composer" open>
+              <summary>
+                <span><b>Create an opportunity</b><small>One shared form for all five signals</small></span>
+                <span aria-hidden="true">＋</span>
+              </summary>
+              <form class="form-grid workspace-body" id="opportunity-form">
+                <div class="form-columns">
+                  <div class="field">
+                    <label for="opportunity-signal">What would you like to say?</label>
+                    <select id="opportunity-signal" required></select>
+                  </div>
+                  <div class="field">
+                    <label for="opportunity-mode">In what capacity?</label>
+                    <select id="opportunity-mode" required></select>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="opportunity-service">Related service (optional)</label>
+                  <select id="opportunity-service"><option value="">General opportunity</option><option value="SERVICE-RUBYBUBYS-HERZ-SCHNAUZE">Herz und Schnauze · Dog-walking support</option></select>
+                  <label for="opportunity-support-kind">Type of support</label><select id="opportunity-support-kind"><option value="">General / unassigned</option><option value="walk">Dog walk</option><option value="day">Day care</option><option value="overnight">Overnight stay</option><option value="longer">Several days</option></select>
+                  <p class="hint">Your own listing related to the service. It does not mean you are speaking on behalf of Rubybubys.</p>
+                </div>
+                <div class="field">
+                  <label for="opportunity-title">Short title</label>
+                  <input id="opportunity-title" maxlength="200" required placeholder="For example: Looking for help with interactive fairy lights">
+                </div>
+                <div class="field">
+                  <label for="opportunity-summary">What exactly is it about?</label>
+                  <textarea id="opportunity-summary" maxlength="8000" placeholder="Desired outcome, things you already have, open questions and important boundaries"></textarea>
+                </div>
+
+                <div class="form-columns">
+                  <div class="field">
+                    <label for="opportunity-location-mode">Location type</label>
+                    <select id="opportunity-location-mode"></select>
+                  </div>
+                  <div class="field">
+                    <label for="opportunity-location-label">Location or area of activity</label>
+                    <input id="opportunity-location-label" maxlength="240" placeholder="e.g. Berlin-Friedrichshain">
+                  </div>
+                </div>
+
+                <div class="form-columns three-columns">
+                  <div class="field">
+                    <label for="opportunity-starts-at">Start (optional)</label>
+                    <input id="opportunity-starts-at" type="datetime-local">
+                  </div>
+                  <div class="field">
+                    <label for="opportunity-ends-at">End (optional)</label>
+                    <input id="opportunity-ends-at" type="datetime-local">
+                  </div>
+                  <div class="field">
+                    <label for="opportunity-duration-note">Duration or frequency</label>
+                    <input id="opportunity-duration-note" maxlength="1000" placeholder="e.g. a one-off 3-hour session">
+                  </div>
+                </div>
+
+                <div class="form-columns">
+                  <div class="field">
+                    <label for="opportunity-compensation">Compensation arrangement</label>
+                    <select id="opportunity-compensation"></select>
+                  </div>
+                  <div class="field">
+                    <label for="opportunity-compensation-note">Details</label>
+                    <input id="opportunity-compensation-note" maxlength="2000" placeholder="Amount, exchange idea or a question still to be clarified">
+                  </div>
+                </div>
+
+                <div class="form-columns">
+                  <div class="field">
+                    <label for="opportunity-risk">Safety and legal considerations</label>
+                    <select id="opportunity-risk"></select>
+                  </div>
+                  <div class="field" id="opportunity-risk-note-field" hidden>
+                    <label for="opportunity-risk-note">What needs to be clarified beforehand?</label>
+                    <textarea id="opportunity-risk-note" maxlength="3000"></textarea>
+                  </div>
+                  <div class="field">
+                    <label for="opportunity-visibility">Desired visibility</label>
+                    <select id="opportunity-visibility"></select>
+                    <small>Even “public” starts as a draft. Releasing it is a separate, deliberate step.</small>
+                  </div>
+                </div>
+
+                <fieldset class="choice-fieldset">
+                  <legend>Related skills</legend>
+                  <p class="account-copy small-copy">Mark skills as required, helpful or something that can be learned in this context.</p>
+                  <div class="requirement-grid" id="opportunity-requirements"></div>
+                </fieldset>
+
+                <div class="notice compact-notice">
+                  <strong>No hidden ranking:</strong> These details only describe the specific context. They do not create an overall score or award a job.
+                </div>
+                <div class="button-row">
+                  <button class="button" type="submit">Save opportunity as a draft</button>
+                  <button class="button secondary" id="opportunity-cancel-edit" type="button" hidden>Cancel editing</button>
+                </div>
+                <p class="form-status" id="opportunity-form-status" role="status" aria-live="polite"></p>
+              </form>
+            </details>
+          </section></div></details>
+            <details class="account-fold"><summary><span><b>Replies &amp; conversations</b><small>Received and sent expressions of interest</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><section class="portfolio-workspace resonance-center" id="resonance-center" aria-labelledby="resonance-center-title" hidden>
+            <header class="portfolio-head">
+              <div>
+                <p class="eyebrow">Private responses</p>
+                <p><a href="/en/leistungen/rubybubys-herz-und-schnauze/betreuung/">♡ Trusted contacts &amp; care arrangements</a></p><h4 id="resonance-center-title">Explore mutual interest without sharing contact details.</h4>
+                <p class="account-copy">You only see replies in which you are personally involved. A private discussion space opens for both people only once the person behind an opportunity accepts a response.</p>
+              </div>
+              <a class="button secondary" href="/en/leistungen/#moeglichkeitenstrom">Respond to an opportunity</a>
+            </header>
+
+            <div class="portfolio-meter resonance-meter" role="group" aria-label="Response overview">
+              <div><strong id="resonance-count-incoming">0</strong><span>received</span></div>
+              <div><strong id="resonance-count-pending">0</strong><span>still open</span></div>
+              <div><strong id="resonance-count-sent">0</strong><span>sent</span></div>
+              <div><strong id="resonance-count-rooms">0</strong><span>Discussion spaces</span></div>
+            </div>
+            <p class="form-status" id="resonance-status" role="status" aria-live="polite"></p>
+
+            <div class="resonance-columns">
+              <section class="resonance-column" aria-labelledby="resonance-incoming-title">
+                <div>
+                  <p class="entry-kicker">To my opportunities</p>
+                  <h5 id="resonance-incoming-title">Received</h5>
+                </div>
+                <div class="resonance-list" id="resonance-incoming"></div>
+              </section>
+              <section class="resonance-column" aria-labelledby="resonance-sent-title">
+                <div>
+                  <p class="entry-kicker">My expressions of interest</p>
+                  <h5 id="resonance-sent-title">Sent</h5>
+                </div>
+                <div class="resonance-list" id="resonance-sent"></div>
+              </section>
+            </div>
+
+            <div class="notice compact-notice">
+              <strong>A clear boundary:</strong> Accepting means agreeing to discuss details together – not a job, contract or automatic exchange of email addresses.
+            </div>
+          </section></div></details>
+          </section>
+
+          <section id="konto-einstellungen" class="account-view" data-account-view aria-labelledby="account-settings-title">
+            <header class="account-view-heading"><p class="eyebrow">Your access</p><h3 id="account-settings-title">In good hands.</h3><p>Find your account details and change your password here.</p></header>
+            <details class="account-fold" open><summary><span><b>Account details &amp; access</b><small>Email address, profile status and area permissions</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><dl class="detail-list account-details">
+            <div><dt>Email</dt><dd id="account-email">–</dd></div>
+            <div><dt>Member ID</dt><dd id="account-stable-id">Not assigned yet</dd></div>
+            <div><dt>Profile status</dt><dd id="account-profile-status">Loading …</dd></div>
+            <div><dt>Additional permissions</dt><dd id="account-permissions">Loading …</dd></div>
+          </dl></div></details>
+            <details class="account-fold"><summary><span><b>Set or change password</b><small>For signing in on your devices</small></span><i aria-hidden="true">＋</i></summary><div class="account-fold-body"><form class="form-grid password-form" id="password-form">
+            <div>
+              <p class="eyebrow">Access across browsers</p>
+              <h4>Set or change password</h4>
+              <p class="account-copy">With your own password, you can sign in directly on your other devices too. Your password is never displayed here.</p>
+            </div>
+            <div class="field">
+              <label for="new-password">New password</label>
+              <input id="new-password" name="new-password" type="password" autocomplete="new-password" minlength="12" required>
+              <small>At least twelve characters.</small>
+            </div>
+            <div class="field">
+              <label for="confirm-password">Repeat new password</label>
+              <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" minlength="12" required>
+            </div>
+            <button class="button secondary" id="password-submit" type="submit">Save password securely</button>
+            <p class="form-status" id="password-status" role="status" aria-live="polite"></p>
+          </form></div></details>
+            <div class="account-management"><a class="button secondary" id="member-admin-link" href="/en/verwaltung/mitglieder/" hidden>Manage members</a><a href="/en/kalender/verbinden/">Calendar on your phone · in preparation →</a></div>
+          </section>
+
+          <footer class="account-session-footer"><span>Your space. You decide what to share.</span><button class="button secondary" id="logout-button" type="button">Sign out on this device</button></footer>
+        </article>
+
+        <article class="notice account-notice">
+          <strong>The choice stays yours.</strong> Personal appointments and feedback stay private. Your profile and content only become public when you deliberately release them.
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>GemDen · your personal space</span>
+      <a href="/en/system/">View the system and its boundaries</a>
+    <nav class="site-help-links" aria-label="Help and Tickets"><a href="/en/hilfe/">Help &amp; status</a><a href="/en/tickets/?seite=%2Fkonto%2F#new-ticket-title">Write a ticket</a><a href="/en/tickets/#ticket-list-title">My Tickets</a></nav></footer>
+  </div>
+
+  <script>window.BLOB_CONFIG={autoGreet:false,mode:"guide",root:"../"};</script>
+  <script src="/en/assets/site.js?v=20261020-1" defer></script>
+  <script src="/en/assets/blob.js?v=20261020-2" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2" defer></script>
+  <script src="/en/assets/supabase-config.js" defer></script>
+  <script src="/en/assets/supabase-client.js" defer></script>
+  <script src="/en/assets/member-page-template.js?v=20260926-1" defer></script>
+  <script src="/en/konto/auth-flow.js" defer></script>
+  <script src="/en/konto/page-bootstrap.js?v=20260926-1" defer></script>
+  <script src="/en/konto/profile-workspace.js?v=20260925-1" defer></script>
+  <script src="/en/konto/publication-center.js?v=20260925-2" defer></script>
+  <script src="/en/assets/opportunity-entry.js?v=20261019-1" defer></script>
+  <script src="/en/konto/opportunity-workspace.js?v=20261016-2" defer></script>
+  <script src="/en/konto/resonance-workspace.js?v=20261016-1" defer></script>
+  <script src="/en/konto/account-views.js?v=20261020-1" defer></script>
+  <script src="/en/konto/konto.js?v=20261019-1" defer></script>
+</body>
+</html>

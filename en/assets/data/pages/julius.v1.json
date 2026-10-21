@@ -1,0 +1,237 @@
+{
+  "$schema": "../../../schemas/gemden-page-document.v1.schema.json",
+  "schema_version": "1.0.0",
+  "id": "PAGE-MEM-JULIUS",
+  "subject": {
+    "kind": "member",
+    "id": "MEM-JULIUS"
+  },
+  "status": "pilot",
+  "visibility": "public",
+  "ffe_refs": [
+    "K05",
+    "W01",
+    "R01",
+    "F04",
+    "K10",
+    "T05",
+    "T06",
+    "T10"
+  ],
+  "capability_context": {
+    "human_skill_refs": [
+      "SKILL-SMART-HOME",
+      "SKILL-ELECTRICAL-UNDERSTANDING",
+      "SKILL-TINKERING",
+      "SKILL-TROUBLESHOOTING",
+      "SKILL-TECH-COMMUNICATION"
+    ],
+    "ai_operation_refs": [
+      "OP-K05",
+      "OP-K10",
+      "OP-F04",
+      "OP-T05",
+      "OP-T06",
+      "OP-T10"
+    ],
+    "module_permission_grants": [
+      "module:data.public.community.read",
+      "module:navigation.internal",
+      "module:ui.motion.decorative"
+    ]
+  },
+  "data_sources": [
+    {
+      "id": "community",
+      "type": "json",
+      "url": "../community-v0.1.json",
+      "classification": "public",
+      "collections": [
+        "members",
+        "dynasties",
+        "skills",
+        "evidence",
+        "projects"
+      ]
+    }
+  ],
+  "bindings": {
+    "member": {
+      "kind": "entity",
+      "source": "community",
+      "collection": "members",
+      "id": "MEM-JULIUS"
+    },
+    "dynasty": {
+      "kind": "entity",
+      "source": "community",
+      "collection": "dynasties",
+      "id": "DYN-RUBYBUBYS"
+    },
+    "skills": {
+      "kind": "related",
+      "source": "community",
+      "collection": "skills",
+      "ids_from": {
+        "binding": "member",
+        "field": "skill_ids"
+      }
+    },
+    "evidence": {
+      "kind": "related",
+      "source": "community",
+      "collection": "evidence",
+      "ids_from": {
+        "binding": "member",
+        "field": "evidence_ids"
+      }
+    },
+    "projects": {
+      "kind": "related",
+      "source": "community",
+      "collection": "projects",
+      "ids_from": {
+        "binding": "member",
+        "field": "project_ids"
+      }
+    }
+  },
+  "theme": {
+    "preset": "ruby",
+    "tokens": {
+      "accent": "#c90046",
+      "accent_deep": "#8d0033",
+      "surface": "#fffaf6",
+      "radius": "30px"
+    },
+    "motion": "expressive"
+  },
+  "regions": [
+    {
+      "id": "main",
+      "layout": "flow",
+      "modules": [
+        {
+          "id": "julius-hero",
+          "type": "gemden.profile-hero",
+          "version": 1,
+          "bindings": {
+            "member": "member",
+            "dynasty": "dynasty"
+          },
+          "props": {
+            "eyebrow": "Member · Rubybubys",
+            "visual": "ruby-gem",
+            "visual_label": "Animated ruby",
+            "breadcrumb": [
+              {
+                "label": "Community",
+                "href": "/community/"
+              },
+              {
+                "label": "Members"
+              },
+              {
+                "label": "Julius"
+              }
+            ]
+          },
+          "appearance": {
+            "tone": "ruby",
+            "motion": "rise"
+          }
+        },
+        {
+          "id": "julius-skills",
+          "type": "gemden.skill-grid",
+          "version": 1,
+          "bindings": {
+            "skills": "skills"
+          },
+          "props": {
+            "eyebrow": "Skills portfolio",
+            "title": "What Julius can contribute.",
+            "intro": "Skills are generic and applicable to specific situations. They are not a global ranking or an automatic commitment to every commission.",
+            "icons": {
+              "SKILL-SMART-HOME": "🏠",
+              "SKILL-ELECTRICAL-UNDERSTANDING": "⚡",
+              "SKILL-TINKERING": "🛠️",
+              "SKILL-TROUBLESHOOTING": "🔎",
+              "SKILL-TECH-COMMUNICATION": "🧠"
+            }
+          },
+          "appearance": {
+            "tone": "neutral",
+            "motion": "rise"
+          }
+        },
+        {
+          "id": "julius-evidence",
+          "type": "gemden.evidence-grid",
+          "version": 1,
+          "bindings": {
+            "evidence": "evidence"
+          },
+          "props": {
+            "eyebrow": "Evidence instead of vague claims",
+            "title": "Where the experience comes from.",
+            "boundary": "General electrical knowledge is not blanket evidence for every job requiring authorisation. Safety, legal requirements, qualifications and the commission are always assessed specifically."
+          },
+          "appearance": {
+            "tone": "gold",
+            "motion": "fade"
+          }
+        },
+        {
+          "id": "julius-projects",
+          "type": "gemden.project-grid",
+          "version": 1,
+          "bindings": {
+            "projects": "projects"
+          },
+          "props": {
+            "eyebrow": "Published projects",
+            "title": "What Julius is working on.",
+            "intro": "Projects show the described status and the person's own role. They are not an automatic commitment to new commissions."
+          },
+          "appearance": {
+            "tone": "mint",
+            "motion": "rise"
+          }
+        },
+        {
+          "id": "julius-paths",
+          "type": "gemden.link-cards",
+          "version": 1,
+          "bindings": {},
+          "props": {
+            "eyebrow": "Projects & pathways",
+            "title": "Technology can be an experience.",
+            "items": [
+              {
+                "icon": "🎭",
+                "title": "Smart-home painting",
+                "description": "A curtain, a painted world and, later, interactive technology in the browser.",
+                "label": "Open experiment →",
+                "href": "/leistungen/smart-home/",
+                "tone": "ruby"
+              },
+              {
+                "icon": "✨",
+                "title": "Wish: cool string lights",
+                "description": "See how a wish is translated into skills and matched with an explanation.",
+                "label": "Start matching →",
+                "href": "/leistungen/?beispiel=lichterkette",
+                "tone": "gold"
+              }
+            ]
+          },
+          "appearance": {
+            "tone": "neutral",
+            "motion": "rise"
+          }
+        }
+      ]
+    }
+  ]
+}

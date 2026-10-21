@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Protected GemDen member management for invitations, account access, stable member IDs, limited neighbourhood permissions and a traceable history.">
+  <title>Manage members · GemDen</title>
+  <link rel="stylesheet" href="/en/assets/site.css?v=20261010-1">
+  <link rel="stylesheet" href="/en/verwaltung/mitglieder/mitglieder.css?v=20261005-1">
+  <link rel="stylesheet" href="/en/assets/worlds.css?v=20261011-1">
+<!-- gemden-language:start -->
+<meta name="gemden-languages" content="/ /404.html /community/ /community/dynastien/rubybubys/ /community/kieze/p-hain/ /community/kieze/travelkiez/ /community/mitglieder/julius/ /community/mitglieder/profil/ /community/orte/threeden/ /entwuerfe/moeglichkeiten/ /gestalten/ /hilfe/ /impressum/ /info/ /julius/ /kalender/ /kalender/verbinden/ /konto/ /leistungen/ /leistungen/rubybubys-herz-und-schnauze/ /leistungen/rubybubys-herz-und-schnauze/betreuung/ /leistungen/rubybubys-herz-und-schnauze/gassihilfe/ /leistungen/rubybubys-herz-und-schnauze/gastgeber/ /leistungen/rubybubys-herz-und-schnauze/lernen/ /leistungen/smart-home/ /system/ /tickets/ /treffpunkte/ /verwaltung/mitglieder/">
+<link rel="alternate" hreflang="de" href="https://gemden.red/verwaltung/mitglieder/">
+<link rel="alternate" hreflang="en" href="https://gemden.red/en/verwaltung/mitglieder/">
+<link rel="canonical" href="https://gemden.red/en/verwaltung/mitglieder/">
+<link rel="stylesheet" href="/assets/language.css?v=20261020-1">
+<script src="/assets/language.js?v=20261020-1" defer></script>
+<!-- gemden-language:end -->
+</head>
+<body class="world-desk" data-area="account">
+  <a class="skip-link" href="#inhalt">Skip to content</a>
+  <div class="site-shell admin-shell">
+    <nav class="site-nav" data-site-nav data-root="../../" aria-label="Main navigation">
+      <a class="site-mark" href="/en/">GemDen</a><!-- gemden-language-switcher:start --><nav class="language-switcher" data-language-switcher aria-label="Website language"><a href="/verwaltung/mitglieder/" lang="de" hreflang="de" aria-label="Deutsch">DE</a><a href="/en/verwaltung/mitglieder/" lang="en" hreflang="en" aria-label="English" aria-current="true">EN</a></nav><!-- gemden-language-switcher:end -->
+    </nav>
+
+    <main id="inhalt">
+      <header class="hero compact admin-hero work-hero area-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Protected workspace</p>
+          <h1 class="display small">Manage members.</h1>
+          <p class="lead">Invite people, manage accounts and trace every decision.</p>
+        </div>
+        <div class="status-row">
+          <span class="status-chip open" id="admin-connection-chip">Checking permission</span>
+          <span class="status-chip experiment">protected</span>
+        </div>
+      </header>
+
+      <section class="section working-section admin-access" aria-labelledby="workspace-title">
+        <div class="section-head compact-head">
+          <p class="eyebrow">Member management</p>
+          <h2 id="workspace-title">The workspace.</h2>
+          <p>Email addresses and management actions are loaded only after sign-in and a server-side permission check.</p>
+        </div>
+
+        <article class="panel access-panel" id="access-loading">
+          <div class="access-symbol" aria-hidden="true">◆</div>
+          <div>
+            <h3>Checking access …</h3>
+            <p>Your session and narrowly scoped management permission are being checked.</p>
+          </div>
+        </article>
+
+        <article class="panel access-panel" id="access-signed-out" hidden>
+          <div class="access-symbol" aria-hidden="true">↗</div>
+          <div>
+            <p class="eyebrow">Sign-in required</p>
+            <h3>Sign in securely first.</h3>
+            <p>Open your account and sign in. You can then return here; your session remains active on this website.</p>
+            <a class="button" href="/en/konto/">Go to your account</a>
+          </div>
+        </article>
+
+        <article class="panel access-panel" id="access-forbidden" hidden>
+          <div class="access-symbol" aria-hidden="true">🔒</div>
+          <div>
+            <p class="eyebrow">Not authorised</p>
+            <h3>Member management isn&#39;t available for this account.</h3>
+            <p>Sign-in works, but the permission <code>manage_members:GemDen</code> is missing. That&#39;s why no members or email addresses are shown.</p>
+            <a class="button secondary" href="/en/konto/">Back to account</a>
+          </div>
+        </article>
+
+        <div class="admin-workspace" id="admin-workspace" hidden>
+          <nav class="workspace-nav" aria-label="Management areas"><a href="#invite-title">Invite</a><a href="#directory-title">Accounts &amp; permissions</a><a href="#audit-title">History</a></nav>
+          <div class="admin-toolbar">
+            <div class="admin-metrics" aria-label="Member overview">
+              <div><strong id="metric-total">0</strong><span>Accounts</span></div>
+              <div><strong id="metric-active">0</strong><span>active accounts</span></div>
+              <div><strong id="metric-paused">0</strong><span>disabled</span></div>
+              <div><strong id="metric-without-id">0</strong><span>without a MEM-ID</span></div>
+            </div>
+            <button class="button secondary" id="refresh-members" type="button">Refresh list</button>
+          </div>
+
+          <div class="admin-columns">
+            <section class="panel invite-panel" aria-labelledby="invite-title">
+              <div>
+                <p class="eyebrow">Step 1</p>
+                <h3 id="invite-title">Invite a member</h3>
+                <p>Submitting immediately sends a real invitation email through Supabase. The new profile remains private and does not yet receive any additional permissions.</p>
+              </div>
+              <form class="form-grid" id="invite-form">
+                <div class="field">
+                  <label for="invite-name">Display name</label>
+                  <input id="invite-name" name="display-name" maxlength="120" autocomplete="off" required placeholder="e.g. Leni">
+                </div>
+                <div class="field">
+                  <label for="invite-email">Email address</label>
+                  <input id="invite-email" name="email" type="email" maxlength="254" autocomplete="off" inputmode="email" required placeholder="name@beispiel.de">
+                </div>
+                <div class="field">
+                  <label for="invite-reason">Reason for the invitation</label>
+                  <textarea id="invite-reason" name="reason" minlength="12" maxlength="2000" rows="3" required placeholder="Who approved the invitation, and in what context?"></textarea>
+                </div>
+                <button class="button" id="invite-submit" type="submit">Send email invitation</button>
+                <p class="form-status" id="invite-status" role="status" aria-live="polite"></p>
+              </form>
+            </section>
+
+            <aside class="panel safety-panel" aria-labelledby="safety-title">
+              <p class="eyebrow">Fixed limits</p>
+              <h3 id="safety-title">What is intentionally unavailable here</h3>
+              <ul>
+                <li>viewing or setting passwords</li>
+                <li>deleting accounts</li>
+                <li>changing email addresses</li>
+                <li>granting global admin permissions</li>
+                <li>renaming a confirmed <code>MEM-*</code>-ID</li>
+              </ul>
+              <p>Accounts can be temporarily disabled and reactivated. Deletion and email changes still need their own reviewed process.</p>
+            </aside>
+          </div>
+
+          <section class="panel member-directory" aria-labelledby="directory-title">
+            <header class="directory-head">
+              <div>
+                <p class="eyebrow">Edit accounts</p>
+                <h3 id="directory-title">Members, access and permissions</h3>
+                <p>You can manage names, sign-in access and status here. Every change needs a reason; the fixed ID remains separate and unchangeable.</p>
+              </div>
+            </header>
+            <div class="directory-tools" aria-label="Filter members">
+              <div class="field search-field">
+                <label for="member-search">Find a member</label>
+                <input id="member-search" type="search" autocomplete="off" placeholder="Name, email or MEM-ID">
+              </div>
+              <div class="field status-filter-field">
+                <label for="member-status-filter">Status</label>
+                <select id="member-status-filter">
+                  <option value="all">All accounts</option>
+                  <option value="active">Active</option>
+                  <option value="paused">Disabled</option>
+                  <option value="invited">Invitation pending</option>
+                  <option value="pending_profile">Profile being created</option>
+                </select>
+              </div>
+              <span class="filter-count" id="visible-member-count">0 of 0</span>
+            </div>
+            <p class="form-status" id="directory-status" role="status" aria-live="polite"></p>
+            <div class="member-list" id="member-list"></div>
+          </section>
+
+          <section class="panel audit-panel" aria-labelledby="audit-title">
+            <header class="directory-head">
+              <div>
+                <p class="eyebrow">Traceable history</p>
+                <h3 id="audit-title">Who decided what?</h3>
+                <p>Invitations, name changes, sign-in links, account status, IDs and neighbourhood permissions are logged without passwords or email contents.</p>
+              </div>
+            </header>
+            <p class="form-status" id="audit-status" role="status" aria-live="polite"></p>
+            <div class="audit-list" id="audit-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="guide-title">
+        <div class="section-head">
+          <p class="eyebrow">How to use it</p>
+          <h2 id="guide-title">How to manage the entire account lifecycle.</h2>
+          <p>Account access, member identity and additional permissions remain separate decisions. This allows each step to be checked individually and reversed if necessary.</p>
+        </div>
+        <ol class="guide-steps">
+          <li>
+            <span>1</span>
+            <div><h3>Invite</h3><p>Enter a name and email address and send the invitation. Supabase creates the account with a private profile draft and sends the link.</p></div>
+          </li>
+          <li>
+            <span>2</span>
+            <div><h3>Confirm member ID</h3><p>For the new account, check the suggested <code>MEM-*</code>-ID and assign it permanently. This ID remains stable.</p></div>
+          </li>
+          <li>
+            <span>3</span>
+            <div><h3>Accept invitation</h3><p>The member opens the email link, arrives in their personal account and sets their own password with at least twelve characters.</p></div>
+          </li>
+          <li>
+            <span>4</span>
+            <div><h3>Manage the account later</h3><p>The display name can be corrected with a reason, and a new one-time link can be sent if the previous link has expired. Disabling an account blocks sign-in and database permissions; reactivating it restores both.</p></div>
+          </li>
+          <li>
+            <span>5</span>
+            <div><h3>Optional neighbourhood permission</h3><p>Only if separately authorised: select a neighbourhood, document the reason and grant the limited permission. It can later be revoked with a new reason.</p></div>
+          </li>
+          <li>
+            <span>6</span>
+            <div><h3>Review history</h3><p>At the bottom of the workspace, you&#39;ll see the time, the management account that acted, the member concerned, the decision and the reason.</p></div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section">
+        <div class="notice archive"><strong>If an invitation link expires:</strong> The member opens <a href="/en/konto/">their account</a>, enters the same email address and requests a new one-time link there. There&#39;s no need to create a second account.</div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>GemDen · protected member management</span>
+      <a href="/en/konto/">Go to personal account</a>
+    <nav class="site-help-links" aria-label="Help and Tickets"><a href="/en/hilfe/">Help &amp; status</a><a href="/en/tickets/?seite=%2Fverwaltung%2Fmitglieder%2F#new-ticket-title">Write a ticket</a><a href="/en/tickets/#ticket-list-title">My Tickets</a></nav></footer>
+  </div>
+
+  <script src="/en/assets/site.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2" defer></script>
+  <script src="/en/assets/supabase-config.js" defer></script>
+  <script src="/en/assets/supabase-client.js" defer></script>
+  <script src="/en/verwaltung/mitglieder/member-admin.js?v=20261005-1" defer></script>
+  <script src="/en/verwaltung/mitglieder/verwaltung.js?v=20261005-1" defer></script>
+</body>
+</html>

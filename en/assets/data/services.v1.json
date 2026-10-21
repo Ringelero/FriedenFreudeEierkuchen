@@ -1,0 +1,32 @@
+{
+  "$schema": "../../schemas/gemden-services.v1.schema.json",
+  "schema_version": "1.0.0",
+  "updated": "2026-10-20",
+  "categories": [
+    {
+      "id": "SOCIAL",
+      "name": "Social",
+      "public_path": "/leistungen/#soziales"
+    }
+  ],
+  "services": [
+    {
+      "id": "SERVICE-RUBYBUBYS-HERZ-SCHNAUZE",
+      "name": "Rubybubys Herz und Schnauze",
+      "summary": "Shared walks, learning through trust and a growing network for mutual support and animal-friendly places.",
+      "category_ids": [
+        "SOCIAL"
+      ],
+      "provider_ids": [
+        "DYN-RUBYBUBYS"
+      ],
+      "public_path": "/leistungen/rubybubys-herz-und-schnauze/",
+      "status": "building",
+      "availability": {
+        "usable": "Meeting places, dog-walking time slots, calendars, private requests and care arrangements on the website.",
+        "growing": "The host network and further shared local services grow through real agreements."
+      },
+      "location_note": "Across locations · each meetup has its own place"
+    }
+  ]
+}
