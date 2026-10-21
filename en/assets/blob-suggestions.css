@@ -1,0 +1,31 @@
+#blob-chat{width:min(410px,calc(100vw - 140px));padding:20px;gap:10px;background:#fffaf5}
+#blob-line{font-size:.9rem}#blob-meta{font-size:.72rem}
+#blob-suggestions{min-width:0;border-top:1px solid var(--blob-border);padding-top:15px}
+.blob-suggestion-heading{display:flex;gap:11px;align-items:center;margin-bottom:14px}
+.blob-suggestion-heading>span{display:grid;place-items:center;flex:0 0 38px;height:38px;border-radius:14px;background:#f4e4c7;color:#895528;font-size:1.4rem}
+#blob-suggestions h2{font:750 1.15rem/1.25 system-ui,sans-serif;letter-spacing:-.03em;margin:0;color:var(--blob-ink)}
+.blob-suggestion-heading p{font-size:.76rem;margin:4px 0 0;color:#72515f}
+.blob-intents{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}.blob-intents[hidden]{display:none}
+#blob-suggestions button{font:inherit;cursor:pointer}
+.blob-intents button{border:1px solid #dbc5cd;border-radius:999px;min-height:44px;padding:8px 12px;background:#fff;color:#69354b;font-size:.8rem!important;font-weight:700!important}
+.blob-intents button[aria-pressed=true]{color:#fff;background:#861e43;border-color:#861e43}
+#blob-suggestion-cards{display:grid;gap:9px}
+.blob-suggestion-card{position:relative;border:1px solid #e6d9cf;border-radius:16px;padding:12px 49px 12px 13px;background:#fff;min-width:0;box-shadow:0 3px 9px #48231504}
+.blob-suggestion-reason{font:600 .65rem/1.4 system-ui,sans-serif;color:#826456;margin:0 0 5px}
+.blob-suggestion-card a{display:block;text-decoration:none;color:#45162b;min-height:50px;overflow-wrap:anywhere}
+.blob-suggestion-card strong{display:block;font-size:.9rem;line-height:1.3}.blob-suggestion-card a span{display:block;font-size:.76rem;line-height:1.45;color:#6b5660;margin-top:4px}
+.blob-suggestion-controls{position:absolute;right:4px;top:6px;display:grid;gap:0}
+.blob-suggestion-controls button{width:40px;min-height:40px;border:0;background:transparent;color:#861e43;font-size:1.15rem!important;border-radius:10px}
+.blob-suggestion-controls button:hover{background:#f7edf0}.blob-suggestion-controls button:disabled{opacity:.35;cursor:default}
+#blob-personal-status{font-size:.72rem;line-height:1.5;color:#72515f;margin:12px 0 0}
+#blob-personal-status button{display:block;background:#f5e5eb;border:0;border-radius:10px;padding:9px 11px;min-height:44px;color:#861e43;font-size:.76rem;margin-top:8px}
+.blob-suggestion-settings{margin-top:12px;border-top:1px solid #e6d9cf;padding-top:4px;font-size:.75rem;color:#654955}
+.blob-suggestion-settings summary{cursor:pointer;min-height:44px;align-content:center;font-weight:650}
+.blob-suggestion-settings label{display:flex;align-items:center;gap:9px;min-height:44px;line-height:1.4}
+.blob-suggestion-settings input{width:18px;height:18px;flex-shrink:0;accent-color:#861e43}
+.blob-suggestion-settings p{font-size:.7rem;line-height:1.5}
+.blob-suggestion-settings button{display:block;min-height:44px;text-align:left;color:#861e43;background:none;border:0;text-decoration:underline;font-size:.75rem!important;padding:6px 0}
+#blob-chat .blob-other-ways{border-top:1px solid var(--blob-border);padding-top:5px;color:#72515f;font-size:.76rem}
+.blob-other-ways summary{min-height:44px;align-content:center;cursor:pointer}
+#blob-chat :is(a,button,summary,input):focus-visible{outline:3px solid #895528;outline-offset:3px}
+@media(max-width:760px){#blob-chat{width:auto;padding:16px;max-height:calc(100svh - 105px - env(safe-area-inset-bottom));max-height:min(78svh,690px)}.blob-intents{gap:5px}.blob-intents button{flex:1;padding-inline:8px}.blob-suggestion-controls button{width:44px;min-height:44px}.blob-suggestion-card{padding-right:51px;min-height:97px}}

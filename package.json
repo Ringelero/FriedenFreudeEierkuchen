@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "scripts": {
     "build:editor": "vite build --config editor-src/vite.config.mjs",
+    "build:languages": "node scripts/build-languages.mjs",
+    "check:languages": "node scripts/build-languages.mjs --check",
     "test": "node --test tests/*.test.cjs tests/*.test.mjs"
   },
   "dependencies": {

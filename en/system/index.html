@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="The current machine-readable FFE system index: institutions, operational profiles, decision-making methods and development network.">
+  <title>FFE system · GemDen</title>
+  <link rel="stylesheet" href="/en/assets/site.css?v=20261020-2">
+  <link rel="stylesheet" href="/en/assets/blob.css?v=20261012-1">
+  <link rel="stylesheet" href="/en/system/system.css">
+  <link rel="stylesheet" href="/en/assets/worlds.css?v=20261011-1">
+<!-- gemden-language:start -->
+<meta name="gemden-languages" content="/ /404.html /community/ /community/dynastien/rubybubys/ /community/kieze/p-hain/ /community/kieze/travelkiez/ /community/mitglieder/julius/ /community/mitglieder/profil/ /community/orte/threeden/ /entwuerfe/moeglichkeiten/ /gestalten/ /hilfe/ /impressum/ /info/ /julius/ /kalender/ /kalender/verbinden/ /konto/ /leistungen/ /leistungen/rubybubys-herz-und-schnauze/ /leistungen/rubybubys-herz-und-schnauze/betreuung/ /leistungen/rubybubys-herz-und-schnauze/gassihilfe/ /leistungen/rubybubys-herz-und-schnauze/gastgeber/ /leistungen/rubybubys-herz-und-schnauze/lernen/ /leistungen/smart-home/ /system/ /tickets/ /treffpunkte/ /verwaltung/mitglieder/">
+<link rel="alternate" hreflang="de" href="https://gemden.red/system/">
+<link rel="alternate" hreflang="en" href="https://gemden.red/en/system/">
+<link rel="canonical" href="https://gemden.red/en/system/">
+<link rel="stylesheet" href="/assets/language.css?v=20261020-1">
+<script src="/assets/language.js?v=20261020-1" defer></script>
+<!-- gemden-language:end -->
+</head>
+<body class="world-atlas" data-area="system" data-blob-mode="guide">
+  <a class="skip-link" href="#inhalt">Skip to content</a>
+  <div class="site-shell system-shell">
+    <nav class="site-nav" data-site-nav data-root="../" aria-label="Main navigation"><a class="site-mark" href="/en/">GemDen</a><!-- gemden-language-switcher:start --><nav class="language-switcher" data-language-switcher aria-label="Website language"><a href="/system/" lang="de" hreflang="de" aria-label="Deutsch">DE</a><a href="/en/system/" lang="en" hreflang="en" aria-label="English" aria-current="true">EN</a></nav><!-- gemden-language-switcher:end --><div class="nav-links"><a href="/en/">Home</a><a href="/en/community/">Community</a><a href="/en/leistungen/">Services</a><a href="/en/system/" aria-current="page">FFE system</a></div></nav>
+    <main id="inhalt"><p class="language-source-note" lang="en">This is an English translation for orientation. The <a href="/assets/data/ffe-systemindex-v0.6.json" lang="de" hreflang="de">original German FFE source</a> remains the reference.</p>
+      <header class="hero compact system-hero work-hero area-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Rules, methods and pathways</p>
+          <h1 class="display small">FFE system</h1>
+          <p class="lead">Start with a specific situation. The sources and full index remain accessible afterwards so you can trace the information.</p>
+        </div>
+        <div class="stats" id="system-stats" aria-live="polite"><span>Loading current source …</span></div>
+      </header>
+      <nav class="view-switcher" data-system-navigation aria-label="Areas in the FFE system"><a href="#wegweiser" data-system-target="wegweiser">Guide</a><a href="#institutionen" data-system-target="institutionen">Institutions</a><a href="#methoden" data-system-target="methoden">Methods</a><a href="#entwicklung" data-system-target="entwicklung">Development</a><a href="#quellen" data-system-target="quellen">Sources</a></nav>
+      <noscript><style>[data-system-navigation],#system-stats,section[aria-labelledby="router-title"],section[aria-labelledby="institutions-title"],section[aria-labelledby="methods-title"],section[aria-labelledby="network-title"]{display:none!important}</style><div class="notice archive"><strong>Manual fallback:</strong> The interactive system browser needs JavaScript. The unchanged machine-readable source remains directly accessible as the <a href="/en/assets/data/ffe-systemindex-v0.6.json">FFE system index v0.6</a> . Part IV remains a historical archive only.</div></noscript>
+
+      <section class="section working-section" id="wegweiser" data-system-view aria-labelledby="router-title">
+        <div class="panel router-panel">
+          <div class="section-head"><p class="eyebrow">Situation first</p><h2 id="router-title">What&#39;s happening right now?</h2><p>The guide identifies suitable current institutions and operational profiles. If the situation remains unclear, it asks questions — it doesn&#39;t invent a rule.</p></div>
+          <form class="form-grid" id="router-form">
+            <div class="field"><label for="router-input">Describe the situation</label><textarea id="router-input" required placeholder="For example: we want to organise a neighbourhood and don&#39;t know who may see which data."></textarea></div>
+            <button class="button" type="submit">Find its place in the system</button>
+          </form>
+          <div class="result-box" id="router-result" hidden aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section working-section" id="institutionen" data-system-view aria-labelledby="institutions-title">
+        <div class="section-head"><p class="eyebrow">Current core · Part II</p><h2 id="institutions-title">Institutions &amp; operational profiles</h2><p>Every card follows the same pattern: trigger, goal, questions to check, hard limits, recommended pathway, tools, escalation and outcome.</p></div>
+        <div class="system-tools">
+          <label class="sr-only" for="institution-search">Search institutions</label><input class="search-input" id="institution-search" type="search" placeholder="Search for an ID, title, trigger or tool …">
+          <label class="sr-only" for="house-filter">Filter by house</label><select id="house-filter"><option value="">All houses</option></select>
+        </div>
+        <p class="result-count" id="institution-count"></p>
+        <div class="system-list" id="institution-list"><div class="loading">Loading system index …</div></div>
+      </section>
+
+      <section class="section working-section" id="methoden" data-system-view aria-labelledby="methods-title">
+        <div class="section-head"><p class="eyebrow">D02 · Methods library</p><h2 id="methods-title">22 decision-making methods</h2><p>A method is not an automatic law. The right choice depends on the situation, rights, who is affected, reversibility and the applicable statutes.</p></div>
+        <div class="system-tools"><label class="sr-only" for="method-search">Search methods</label><input class="search-input" id="method-search" type="search" placeholder="Search for a method, use or risk …"></div>
+        <p class="result-count" id="method-count"></p><div class="method-grid" id="method-list"></div>
+      </section>
+
+      <section class="section working-section" id="entwicklung" data-system-view aria-labelledby="network-title">
+        <div class="section-head"><p class="eyebrow">M05 · Development network</p><h2 id="network-title">Development is a network, not a ranking of people.</h2><p>Nine branches and five rings of responsibility describe possible pathways for learning and impact. A higher ring means greater responsibility in context, not greater human worth.</p></div>
+        <div class="ring-row" id="ring-list"></div>
+        <div class="notice" id="node-status-summary">Loading source status for development nodes …</div>
+        <div class="system-tools network-tools"><label class="sr-only" for="node-search">Search development nodes</label><input class="search-input" id="node-search" type="search" placeholder="Search for development nodes …"><label class="sr-only" for="branch-filter">Filter by branch</label><select id="branch-filter"><option value="">All branches</option></select><label class="sr-only" for="evidence-filter">Filter by source status</label><select id="evidence-filter"><option value="">All source statuses</option></select></div>
+        <p class="result-count" id="node-count"></p><div class="node-grid" id="node-list"></div>
+      </section>
+
+      <section class="section working-section" id="quellen" data-system-view aria-labelledby="source-title">
+        <div class="panel source-panel">
+          <p class="eyebrow">Source status</p><h2 id="source-title">What counts as current here.</h2>
+          <dl class="detail-list" id="source-details"></dl>
+          <p><a class="button secondary" href="/en/assets/data/ffe-systemindex-v0.6.json">Open the unchanged system index v0.6</a></p>
+          <div class="notice archive"><strong>Archive boundary:</strong> Part IV is <code>historical_only</code>. This guide never routes it as the current set of rules. If there is a conflict, Part II takes precedence, followed by the current Part III.</div>
+          <div class="notice" style="margin-top:12px"><strong>Pre-statutes status:</strong> The architecture is usable, but not yet fully finalised politically or legally. Open points remain open.</div>
+          <details style="margin-top:24px">
+            <summary>Background: the shared data pattern</summary>
+            <h3>From the system to verifiable experience.</h3>
+            <div class="chain" aria-label="FFE structure chain">
+              <div class="chain-item"><b>Institution</b><span>stable core ID</span></div>
+              <div class="chain-item"><b>Situation</b><span>specific trigger</span></div>
+              <div class="chain-item"><b>Operational profile</b><span>questions, limits, pathway</span></div>
+              <div class="chain-item"><b>method · tool · ritual</b><span>suitable implementation</span></div>
+              <div class="chain-item"><b>Evidence</b><span>evidence, result, review</span></div>
+            </div>
+          </details>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><span id="source-footer">Loading FFE system index</span><a href="/en/">Go to the home page</a><nav class="site-help-links" aria-label="Help and Tickets"><a href="/en/hilfe/">Help &amp; status</a><a href="/en/tickets/?seite=%2Fsystem%2F#new-ticket-title">Write a ticket</a><a href="/en/tickets/#ticket-list-title">My Tickets</a></nav></footer>
+  </div>
+  <script>window.BLOB_CONFIG={autoGreet:false,mode:"guide",root:"../",context:"system",actionLabel:"Review the situation",actionTarget:"#router-input"};</script>
+  <script src="/en/assets/site.js?v=20261020-1" defer></script><script src="/en/assets/blob.js?v=20261020-2" defer></script><script src="/en/system/views.js?v=20261011-1" defer></script><script src="/en/system/system.js?v=20261011-1" defer></script>
+</body>
+</html>
