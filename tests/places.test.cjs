@@ -2,6 +2,16 @@ const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const api=require('../assets/places.js');
+
+test('Berlin overview uses a bounded named region and rejects arbitrary URL region values',()=>{
+ const b=api.regionBounds('berlin');
+ for(const [lat,lon] of [[52.42,13.14],[52.64,13.24],[52.40,13.65],[52.55,13.40]]){
+  assert.ok(lat>=b.south&&lat<=b.north&&lon>=b.west&&lon<=b.east);
+ }
+ assert.ok(b.north-b.south<.5&&b.east-b.west<1);
+ assert.equal(api.regionBounds('world'),null);assert.equal(api.regionBounds('berlin&private=true'),null);assert.equal(api.regionBounds(null),null);
+ b.south=0;assert.notEqual(api.regionBounds('berlin').south,0);
+});
 test('walking entry discovers places without favorites and respects an explicit view',()=>{
  const favorite='c1111111-1111-4111-8111-111111111111';
  assert.equal(api.entryView([]),'discover');assert.equal(api.entryView([favorite]),'favorites');
@@ -34,5 +44,6 @@ test('dog access uses explicit verified classification rather than guessing from
  assert.equal(api.dogAccess({services:[{id:api.RUBY,walks_enabled:false,description:'No walks configured'}]}),'unknown');
  assert.equal(api.dogAccessLabel(api.dogAccess({services:[{id:api.RUBY,dog_access:'prohibited',walks_enabled:false}]})),'× Hunde nicht erlaubt');
  assert.equal(api.dogAccessLabel(api.dogAccess({services:[{id:api.RUBY,dog_access:'designated_off_leash',walks_enabled:true}]})),'Ausgewiesener Hundeauslauf');
+ assert.equal(api.dogAccessLabel(api.dogAccess({services:[{id:api.RUBY,dog_access:'unknown',walks_enabled:false}]})),'Hunde-Zugang ungeklärt');
  assert.equal(api.dogAccessLabel('unverified-value'),'');
 });

@@ -8,7 +8,7 @@
   <script>if(new URLSearchParams(location.search).get('leistung')==='SERVICE-RUBYBUBYS-HERZ-SCHNAUZE')document.querySelector('link[rel="manifest"]').href='herz-schnauze.webmanifest';</script>
   <link rel="apple-touch-icon" href="../assets/places-icon-192.png">
   <link rel="stylesheet" href="../assets/site.css?v=20261020-2"><link rel="stylesheet" href="../assets/blob.css?v=20261016-1">
-  <link rel="stylesheet" href="../assets/places.css?v=20261020-1">
+  <link rel="stylesheet" href="../assets/places.css?v=20261024-1">
 <!-- gemden-language:start -->
 <meta name="gemden-languages" content="/ /404.html /community/ /community/dynastien/rubybubys/ /community/kieze/p-hain/ /community/kieze/travelkiez/ /community/mitglieder/julius/ /community/mitglieder/profil/ /community/orte/threeden/ /entwuerfe/moeglichkeiten/ /gestalten/ /hilfe/ /impressum/ /info/ /julius/ /kalender/ /kalender/verbinden/ /konto/ /leistungen/ /leistungen/rubybubys-herz-und-schnauze/ /leistungen/rubybubys-herz-und-schnauze/betreuung/ /leistungen/rubybubys-herz-und-schnauze/gassihilfe/ /leistungen/rubybubys-herz-und-schnauze/gastgeber/ /leistungen/rubybubys-herz-und-schnauze/lernen/ /leistungen/smart-home/ /system/ /tickets/ /treffpunkte/ /verwaltung/mitglieder/">
 <link rel="alternate" hreflang="de" href="https://gemden.red/treffpunkte/">
@@ -31,9 +31,10 @@
       <nav class="places-tabs" aria-label="Treffpunkte auswählen"><button type="button" data-view="favorites" aria-pressed="true">♡ Meine Treffpunkte</button><button type="button" data-view="discover" aria-pressed="false">Entdecken</button></nav>
       <p class="places-feedback" data-status role="status" aria-live="polite">Treffpunkte werden geladen …</p>
       <section data-discovery hidden aria-label="Andere Treffpunkte finden">
-        <form class="places-search" data-search-form><label>Ort oder Kiez<input name="search" type="search" maxlength="120" placeholder="Wo möchtest du rausgehen?"></label><button type="submit">Suchen</button><button type="button" data-nearby>In meiner Nähe</button></form>
-        <div class="places-map-switch"><button type="button" data-display="list" aria-pressed="true">Liste</button><button type="button" data-display="map" aria-pressed="false">Karte</button></div>
+        <form class="places-search" data-search-form><label>Ort, Kiez oder Bezirk<input name="search" type="search" maxlength="120" placeholder="Wo möchtest du rausgehen?"></label><button type="submit">Suchen</button><button type="button" data-nearby>In meiner Nähe</button></form>
+        <div class="places-map-switch"><button type="button" data-berlin-view>Ganz Berlin ansehen</button><button type="button" data-display="list" aria-pressed="true">Liste</button><button type="button" data-display="map" aria-pressed="false">Karte</button></div>
         <div class="places-map-wrap" data-map-wrap hidden><p class="places-hint">Beim Öffnen werden Kartenbilder von OpenStreetMap geladen. <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">Datenschutz</a></p><div class="places-map" data-map aria-label="Karte der Treffpunkte"></div><p class="places-hint" data-map-status aria-live="polite"></p></div>
+<details class="places-source-note" id="berlin-quellen"><summary>Berliner Orte · Quellen &amp; Stand</summary><p>Die Berliner Auswahl enthält jetzt Orte in allen zwölf Bezirken. Sie ist noch kein vollständiges Verzeichnis aller Parks und Gassiwege. Fehlt ein Ort, ist damit keine Aussage über den Hunde-Zugang verbunden.</p><p>Ausgewiesener Freilauf gilt nur für die benannte Teilfläche. Kein Freilauf bedeutet kein Hundeverbot. Beachte die Beschilderung vor Ort; Flächenpunkte sind keine geprüften Eingänge.</p><ul><li><a href="https://daten.berlin.de/datensaetze/hundefreilauf-wfs-63c580c9" target="_blank" rel="noopener">Berlin Open Data · Hundefreilaufflächen</a> · <a href="https://www.govdata.de/dl-de/zero-2-0" target="_blank" rel="noopener">DL-DE-Zero 2.0</a></li><li><a href="https://www.berlin.de/forsten/walderlebnis/hundeauslauf-im-wald/" target="_blank" rel="noopener">Berliner Forsten · Hundeauslauf im Wald</a></li><li><a href="https://pardok.parlament-berlin.de/starweb/adis/citat/VT/19/SchrAnfr/S19-24937.pdf" target="_blank" rel="noopener">Senatsauskunft · Hundeauslaufflächen in Berlin</a></li></ul><p>Weitere Bezirksquellen findest du direkt am jeweiligen Ort. Danke an die veröffentlichenden Stellen. Die Quellen und der Datenstand gehören zur Ortsbeschreibung.</p><p class="places-hint">Auswahl erweitert am 24. Oktober 2026.</p></details>
       </section>
       <section class="places-list" data-place-list aria-label="Treffpunktliste"></section>
       <nav class="places-pager" aria-label="Ergebnis-Seiten"><button class="places-more" type="button" data-previous hidden>Vorherige Orte</button><button class="places-more" type="button" data-more hidden>Nächste Orte</button></nav>
@@ -57,6 +58,6 @@
   <script>window.BLOB_CONFIG={autoGreet:false,mode:"social",root:"../"};</script>
   <script src="../assets/site.js?v=20261020-1" defer></script><script src="../assets/blob.js?v=20261020-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script><script src="../assets/supabase-config.js" defer></script><script src="../assets/supabase-client.js" defer></script>
-  <script src="../assets/places.js?v=20261020-2" defer></script>
+  <script src="../assets/places.js?v=20261024-1" defer></script>
 </body>
 </html>

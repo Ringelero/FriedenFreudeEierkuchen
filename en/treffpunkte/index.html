@@ -8,7 +8,7 @@
   <script>if(new URLSearchParams(location.search).get('leistung')==='SERVICE-RUBYBUBYS-HERZ-SCHNAUZE')document.querySelector('link[rel="manifest"]').href='herz-schnauze.webmanifest';</script>
   <link rel="apple-touch-icon" href="/assets/places-icon-192.png">
   <link rel="stylesheet" href="/en/assets/site.css?v=20261020-2"><link rel="stylesheet" href="/en/assets/blob.css?v=20261016-1">
-  <link rel="stylesheet" href="/en/assets/places.css?v=20261020-1">
+  <link rel="stylesheet" href="/en/assets/places.css?v=20261024-1">
 <!-- gemden-language:start -->
 <meta name="gemden-languages" content="/ /404.html /community/ /community/dynastien/rubybubys/ /community/kieze/p-hain/ /community/kieze/travelkiez/ /community/mitglieder/julius/ /community/mitglieder/profil/ /community/orte/threeden/ /entwuerfe/moeglichkeiten/ /gestalten/ /hilfe/ /impressum/ /info/ /julius/ /kalender/ /kalender/verbinden/ /konto/ /leistungen/ /leistungen/rubybubys-herz-und-schnauze/ /leistungen/rubybubys-herz-und-schnauze/betreuung/ /leistungen/rubybubys-herz-und-schnauze/gassihilfe/ /leistungen/rubybubys-herz-und-schnauze/gastgeber/ /leistungen/rubybubys-herz-und-schnauze/lernen/ /leistungen/smart-home/ /system/ /tickets/ /treffpunkte/ /verwaltung/mitglieder/">
 <link rel="alternate" hreflang="de" href="https://gemden.red/treffpunkte/">
@@ -31,9 +31,10 @@
       <nav class="places-tabs" aria-label="Choose meeting points"><button type="button" data-view="favorites" aria-pressed="true">♡ My meeting points</button><button type="button" data-view="discover" aria-pressed="false">Discover</button></nav>
       <p class="places-feedback" data-status role="status" aria-live="polite">Loading meeting points …</p>
       <section data-discovery hidden aria-label="Find other meeting points">
-        <form class="places-search" data-search-form><label>Place or neighbourhood<input name="search" type="search" maxlength="120" placeholder="Where would you like to go?"></label><button type="submit">Search</button><button type="button" data-nearby>Near me</button></form>
-        <div class="places-map-switch"><button type="button" data-display="list" aria-pressed="true">List</button><button type="button" data-display="map" aria-pressed="false">Map</button></div>
+        <form class="places-search" data-search-form><label>Place, neighbourhood or borough<input name="search" type="search" maxlength="120" placeholder="Where would you like to go?"></label><button type="submit">Search</button><button type="button" data-nearby>Near me</button></form>
+        <div class="places-map-switch"><button type="button" data-berlin-view>View all of Berlin</button><button type="button" data-display="list" aria-pressed="true">List</button><button type="button" data-display="map" aria-pressed="false">Map</button></div>
         <div class="places-map-wrap" data-map-wrap hidden><p class="places-hint">Opening the map loads map images from OpenStreetMap. <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">Privacy</a></p><div class="places-map" data-map aria-label="Map of meeting points"></div><p class="places-hint" data-map-status aria-live="polite"></p></div>
+<details class="places-source-note" id="berlin-quellen"><summary>Berlin places · sources &amp; coverage</summary><p>The Berlin selection now includes places in all twelve boroughs. It is not yet a complete directory of every park and walking route. A missing place says nothing about whether dogs are allowed.</p><p>Designated off-lead access applies only to the named area. No off-lead access does not mean dogs are prohibited. Follow signs on site; area markers are not verified entrances.</p><ul><li><a href="https://daten.berlin.de/datensaetze/hundefreilauf-wfs-63c580c9" target="_blank" rel="noopener">Berlin Open Data · dog exercise areas</a> · <a href="https://www.govdata.de/dl-de/zero-2-0" target="_blank" rel="noopener">DL-DE-Zero 2.0</a></li><li><a href="https://www.berlin.de/forsten/walderlebnis/hundeauslauf-im-wald/" target="_blank" rel="noopener">Berliner Forsten · forest dog exercise areas</a></li><li><a href="https://pardok.parlament-berlin.de/starweb/adis/citat/VT/19/SchrAnfr/S19-24937.pdf" target="_blank" rel="noopener">Senate response · dog exercise areas in Berlin</a></li></ul><p>Additional borough sources are linked directly under each place. Thank you to the publishing authorities. Sources and data dates are part of the place descriptions.</p><p class="places-hint">Selection expanded on 24 October 2026.</p></details>
       </section>
       <section class="places-list" data-place-list aria-label="Meeting point list"></section>
       <nav class="places-pager" aria-label="Results pages"><button class="places-more" type="button" data-previous hidden>Previous places</button><button class="places-more" type="button" data-more hidden>Next places</button></nav>
@@ -57,6 +58,6 @@
   <script>window.BLOB_CONFIG={autoGreet:false,mode:"social",root:"../"};</script>
   <script src="/en/assets/site.js?v=20261020-1" defer></script><script src="/en/assets/blob.js?v=20261020-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3" defer></script><script src="/en/assets/supabase-config.js" defer></script><script src="/en/assets/supabase-client.js" defer></script>
-  <script src="/en/assets/places.js?v=20261020-2" defer></script>
+  <script src="/en/assets/places.js?v=20261024-1" defer></script>
 </body>
 </html>
