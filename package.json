@@ -3,6 +3,8 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
+    "build:learning": "node scripts/build-learning.mjs",
+    "check:learning": "node scripts/build-learning.mjs --check",
     "build:editor": "vite build --config editor-src/vite.config.mjs",
     "build:languages": "node scripts/build-languages.mjs",
     "check:languages": "node scripts/build-languages.mjs --check",
