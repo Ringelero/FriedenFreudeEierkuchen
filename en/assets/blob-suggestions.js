@@ -5,7 +5,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
   const RUBY='SERVICE-RUBYBUBYS-HERZ-SCHNAUZE';
-  const keys=['walks','discover','care','personal','community','travelkiez','threeden','cicek','tickets','requests','report'];
+  const keys=['walks','discover','care','learning','hygiene','playvideo','personal','community','travelkiez','threeden','cicek','tickets','requests','report'];
   const uuid=value=>typeof value==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(value);
   const text=(value,max=160)=>typeof value==='string'?value.slice(0,max):'';
   function cleanPreferences(raw){
@@ -15,6 +15,7 @@
   function context(path,search=''){
     const p=String(path).replace(/index\.html$/,'');
     if(p.endsWith('/tickets/'))return 'feedback';
+    if(p.includes('/leistungen/rubybubys-herz-und-schnauze/lernen/'))return 'learn';
     if(p.endsWith('/kalender/')||p.endsWith('/kalender/verbinden/')||p.endsWith('/community/orte/threeden/'))return 'calendar';
     if(p.includes('/leistungen/rubybubys-herz-und-schnauze/')||p.endsWith('/treffpunkte/')&&new URLSearchParams(search).get('leistung')===RUBY)return 'walk';
     return 'all';
@@ -25,6 +26,9 @@
       walks:{key:'walks',group:'walk',title:"My dog-walking meeting points",detail:"Favourite places and non-binding two-hour slots.",href:url('treffpunkte/?leistung='+RUBY)},
       discover:{key:'discover',group:'walk',title:"Discover new meeting points",detail:"Other places, descriptions and current dog-walking slots.",href:url('treffpunkte/?leistung='+RUBY+'&ansicht=entdecken')},
       care:{key:'care',group:'walk',title:"Dog-walking help & care",detail:"Get to know people and arrange support.",href:url('leistungen/rubybubys-herz-und-schnauze/betreuung/')},
+      learning:{key:'learning',group:'learn',title:"The learning house",detail:"Find a relevant guide to behaviour, everyday life and care.",href:url('leistungen/rubybubys-herz-und-schnauze/lernen/')},
+      hygiene:{key:'hygiene',group:'learn',title:"Care & hygiene",detail:"Nails, ears, teeth, coat and paws.",href:url('leistungen/rubybubys-herz-und-schnauze/lernen/#pflege')},
+      playvideo:{key:'playvideo',group:'learn',title:"Observe dog play in a video",detail:"A real clip with questions and explanations.",href:url('leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel-video/')},
       personal:{key:'personal',group:'calendar',title:"My calendar",detail:"Your private events and confirmed requests. With an account.",href:url('kalender/?kalender=PERSONAL')},
       community:{key:'community',group:'calendar',title:'Rubybubys-Kalender',detail:"Shared events and get-togethers.",href:url('kalender/?kalender=RUBYBUBYS')},
       travelkiez:{key:'travelkiez',group:'calendar',title:"Travelkiez calendar",detail:"Events and get-togethers in the neighbourhood.",href:url('kalender/?kalender=TRAVELKIEZ')},
@@ -37,7 +41,7 @@
   }
   function selectCards({items,preferences,intent='all',pageContext='all',privateCards=[],calendarFocus='personal'}){
     const pref=cleanPreferences(preferences),group=intent==='all'?pageContext:intent;
-    const defaults=group==='walk'?['walks','discover','care']:group==='calendar'?[calendarFocus,'personal','community','threeden']:group==='feedback'?['tickets','requests','report']:['walks','personal','tickets'];
+    const defaults=group==='walk'?['walks','discover','care']:group==='learn'?['learning','hygiene','playvideo']:group==='calendar'?[calendarFocus,'personal','community','threeden']:group==='feedback'?['tickets','requests','report']:['walks','personal','tickets'];
     const allowed=key=>items[key]&&!pref.hidden.includes(key)&&(intent==='all'||items[key].group===intent);
     const overrides=new Map(privateCards.filter(c=>keys.includes(c.key)).map(c=>[c.key,c]));
     const privateKeys=privateCards.filter(c=>allowed(c.key)&&(group==='all'||items[c.key].group===group)).map(c=>c.key);
@@ -89,7 +93,7 @@
     const calendarFocus={THREEDEN:'threeden',CICEK:'cicek',TRAVELKIEZ:'travelkiez',RUBYBUBYS:'community'}[selectedCalendar]||
       (location.pathname.includes('/community/orte/threeden/')?'threeden':location.pathname.includes('/community/kieze/travelkiez/')?'travelkiez':pageContext==='walk'?'cicek':'personal');
     const section=document.createElement('section');section.id='blob-suggestions';section.setAttribute('aria-label',"Relevant suggestions");
-    section.innerHTML="<div class=\"blob-suggestion-heading\"><span aria-hidden=\"true\">✦</span><div><h2>What are you planning?</h2><p>A little path to the next step.</p></div></div><div class=\"blob-intents\" role=\"group\" aria-label=\"Your plan\"><button type=\"button\" data-intent=\"walk\">Dog walks</button><button type=\"button\" data-intent=\"calendar\">Calendar</button><button type=\"button\" data-intent=\"feedback\">Replies</button></div><div id=\"blob-suggestion-cards\"></div><p id=\"blob-personal-status\" role=\"status\"></p><details class=\"blob-suggestion-settings\"><summary>Adjust suggestions</summary><label><input type=\"checkbox\" data-enabled> Show suggestions on this device</label><label><input type=\"checkbox\" data-personal disabled> Include personal account updates</label><p data-scope></p><p>Account updates are fetched when opened. Events: the next 14 days. Tickets: the last 20; requests: the last 50. Content is not permanently stored here.</p><button type=\"button\" data-reset>Reset pinned and hidden items</button><button type=\"button\" data-auto>Show paths relevant to this page again</button></details>";
+    section.innerHTML="<div class=\"blob-suggestion-heading\"><span aria-hidden=\"true\">✦</span><div><h2>What are you planning?</h2><p>A little path to the next step.</p></div></div><div class=\"blob-intents\" role=\"group\" aria-label=\"Your plan\"><button type=\"button\" data-intent=\"walk\">Dog walks</button><button type=\"button\" data-intent=\"learn\">Learning</button><button type=\"button\" data-intent=\"calendar\">Calendar</button><button type=\"button\" data-intent=\"feedback\">Replies</button></div><div id=\"blob-suggestion-cards\"></div><p id=\"blob-personal-status\" role=\"status\"></p><details class=\"blob-suggestion-settings\"><summary>Adjust suggestions</summary><label><input type=\"checkbox\" data-enabled> Show suggestions on this device</label><label><input type=\"checkbox\" data-personal disabled> Include personal account updates</label><p data-scope></p><p>Account updates are fetched when opened. Events: the next 14 days. Tickets: the last 20; requests: the last 50. Content is not permanently stored here.</p><button type=\"button\" data-reset>Reset pinned and hidden items</button><button type=\"button\" data-auto>Show paths relevant to this page again</button></details>";
     (chat.querySelector('.blob-other-ways')||chat.querySelector('#blob-actions')).before(section);
     const list=section.querySelector('#blob-suggestion-cards'),notice=section.querySelector('#blob-personal-status'),enabled=section.querySelector('[data-enabled]'),personal=section.querySelector('[data-personal]'),scope=section.querySelector('[data-scope]');
     let owner=undefined,pref=cleanPreferences({}),intent='all',privateCards=[],generation=0,controller=null,client=null,subscription=null,loading=null,disposed=false,privateBusy=false,partial=false,failed=false,storageAvailable=true;

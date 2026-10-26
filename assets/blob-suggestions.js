@@ -5,7 +5,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
   const RUBY='SERVICE-RUBYBUBYS-HERZ-SCHNAUZE';
-  const keys=['walks','discover','care','personal','community','travelkiez','threeden','cicek','tickets','requests','report'];
+  const keys=['walks','discover','care','learning','hygiene','playvideo','personal','community','travelkiez','threeden','cicek','tickets','requests','report'];
   const uuid=value=>typeof value==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(value);
   const text=(value,max=160)=>typeof value==='string'?value.slice(0,max):'';
   function cleanPreferences(raw){
@@ -15,6 +15,7 @@
   function context(path,search=''){
     const p=String(path).replace(/index\.html$/,'');
     if(p.endsWith('/tickets/'))return 'feedback';
+    if(p.includes('/leistungen/rubybubys-herz-und-schnauze/lernen/'))return 'learn';
     if(p.endsWith('/kalender/')||p.endsWith('/kalender/verbinden/')||p.endsWith('/community/orte/threeden/'))return 'calendar';
     if(p.includes('/leistungen/rubybubys-herz-und-schnauze/')||p.endsWith('/treffpunkte/')&&new URLSearchParams(search).get('leistung')===RUBY)return 'walk';
     return 'all';
@@ -25,6 +26,9 @@
       walks:{key:'walks',group:'walk',title:'Meine Gassitreffpunkte',detail:'Lieblingsorte und unverbindliche Zweistundenfenster.',href:url('treffpunkte/?leistung='+RUBY)},
       discover:{key:'discover',group:'walk',title:'Neue Treffpunkte entdecken',detail:'Andere Orte, Beschreibungen und aktuelle Gassifenster.',href:url('treffpunkte/?leistung='+RUBY+'&ansicht=entdecken')},
       care:{key:'care',group:'walk',title:'Gassihilfe & Betreuung',detail:'Menschen kennenlernen und Unterstützung absprechen.',href:url('leistungen/rubybubys-herz-und-schnauze/betreuung/')},
+      learning:{key:'learning',group:'learn',title:'Das Lernhaus',detail:'Die passende Anleitung zu Verhalten, Alltag und Pflege finden.',href:url('leistungen/rubybubys-herz-und-schnauze/lernen/')},
+      hygiene:{key:'hygiene',group:'learn',title:'Pflege & Hygiene',detail:'Krallen, Ohren, Zähne, Fell und Pfoten.',href:url('leistungen/rubybubys-herz-und-schnauze/lernen/#pflege')},
+      playvideo:{key:'playvideo',group:'learn',title:'Hundespiel im Video beobachten',detail:'Ein echter Clip mit Fragen und Erklärungen.',href:url('leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel-video/')},
       personal:{key:'personal',group:'calendar',title:'Mein Kalender',detail:'Deine privaten Termine und bestätigten Anfragen. Mit Konto.',href:url('kalender/?kalender=PERSONAL')},
       community:{key:'community',group:'calendar',title:'Rubybubys-Kalender',detail:'Gemeinsame Veranstaltungen und Begegnungen.',href:url('kalender/?kalender=RUBYBUBYS')},
       travelkiez:{key:'travelkiez',group:'calendar',title:'Travelkiez-Kalender',detail:'Termine und Begegnungen in der Nachbarschaft.',href:url('kalender/?kalender=TRAVELKIEZ')},
@@ -37,7 +41,7 @@
   }
   function selectCards({items,preferences,intent='all',pageContext='all',privateCards=[],calendarFocus='personal'}){
     const pref=cleanPreferences(preferences),group=intent==='all'?pageContext:intent;
-    const defaults=group==='walk'?['walks','discover','care']:group==='calendar'?[calendarFocus,'personal','community','threeden']:group==='feedback'?['tickets','requests','report']:['walks','personal','tickets'];
+    const defaults=group==='walk'?['walks','discover','care']:group==='learn'?['learning','hygiene','playvideo']:group==='calendar'?[calendarFocus,'personal','community','threeden']:group==='feedback'?['tickets','requests','report']:['walks','personal','tickets'];
     const allowed=key=>items[key]&&!pref.hidden.includes(key)&&(intent==='all'||items[key].group===intent);
     const overrides=new Map(privateCards.filter(c=>keys.includes(c.key)).map(c=>[c.key,c]));
     const privateKeys=privateCards.filter(c=>allowed(c.key)&&(group==='all'||items[c.key].group===group)).map(c=>c.key);
@@ -89,7 +93,7 @@
     const calendarFocus={THREEDEN:'threeden',CICEK:'cicek',TRAVELKIEZ:'travelkiez',RUBYBUBYS:'community'}[selectedCalendar]||
       (location.pathname.includes('/community/orte/threeden/')?'threeden':location.pathname.includes('/community/kieze/travelkiez/')?'travelkiez':pageContext==='walk'?'cicek':'personal');
     const section=document.createElement('section');section.id='blob-suggestions';section.setAttribute('aria-label','Passende Vorschläge');
-    section.innerHTML='<div class="blob-suggestion-heading"><span aria-hidden="true">✦</span><div><h2>Was hast du vor?</h2><p>Ein kleiner Weg zum nächsten Schritt.</p></div></div><div class="blob-intents" role="group" aria-label="Dein Vorhaben"><button type="button" data-intent="walk">Gassi</button><button type="button" data-intent="calendar">Kalender</button><button type="button" data-intent="feedback">Rückmeldungen</button></div><div id="blob-suggestion-cards"></div><p id="blob-personal-status" role="status"></p><details class="blob-suggestion-settings"><summary>Vorschläge einstellen</summary><label><input type="checkbox" data-enabled> Vorschläge auf diesem Gerät anzeigen</label><label><input type="checkbox" data-personal disabled> Eigene Kontohinweise einbeziehen</label><p data-scope></p><p>Kontohinweise werden beim Öffnen abgerufen. Termine: nächste 14 Tage. Tickets: die letzten 20; Anfragen: die letzten 50. Inhalte werden hier nicht dauerhaft gespeichert.</p><button type="button" data-reset>Anheftungen und Ausblendungen zurücksetzen</button><button type="button" data-auto>Wieder zur Seite passende Wege</button></details>';
+    section.innerHTML='<div class="blob-suggestion-heading"><span aria-hidden="true">✦</span><div><h2>Was hast du vor?</h2><p>Ein kleiner Weg zum nächsten Schritt.</p></div></div><div class="blob-intents" role="group" aria-label="Dein Vorhaben"><button type="button" data-intent="walk">Gassi</button><button type="button" data-intent="learn">Lernen</button><button type="button" data-intent="calendar">Kalender</button><button type="button" data-intent="feedback">Rückmeldungen</button></div><div id="blob-suggestion-cards"></div><p id="blob-personal-status" role="status"></p><details class="blob-suggestion-settings"><summary>Vorschläge einstellen</summary><label><input type="checkbox" data-enabled> Vorschläge auf diesem Gerät anzeigen</label><label><input type="checkbox" data-personal disabled> Eigene Kontohinweise einbeziehen</label><p data-scope></p><p>Kontohinweise werden beim Öffnen abgerufen. Termine: nächste 14 Tage. Tickets: die letzten 20; Anfragen: die letzten 50. Inhalte werden hier nicht dauerhaft gespeichert.</p><button type="button" data-reset>Anheftungen und Ausblendungen zurücksetzen</button><button type="button" data-auto>Wieder zur Seite passende Wege</button></details>';
     (chat.querySelector('.blob-other-ways')||chat.querySelector('#blob-actions')).before(section);
     const list=section.querySelector('#blob-suggestion-cards'),notice=section.querySelector('#blob-personal-status'),enabled=section.querySelector('[data-enabled]'),personal=section.querySelector('[data-personal]'),scope=section.querySelector('[data-scope]');
     let owner=undefined,pref=cleanPreferences({}),intent='all',privateCards=[],generation=0,controller=null,client=null,subscription=null,loading=null,disposed=false,privateBusy=false,partial=false,failed=false,storageAvailable=true;

@@ -6,7 +6,7 @@ test('only known choices survive stored preferences; private payloads and arbitr
  assert.deepEqual(api.cleanPreferences({pinned:['walks','walks','https://other.test/'],hidden:['tickets','__proto__'],personal:1,title:'private',owner}),{pinned:['walks'],hidden:['tickets'],personal:false});
 });
 test('page context uses explicit public paths and known calendar/service choices',()=>{
- assert.equal(api.context('/leistungen/rubybubys-herz-und-schnauze/lernen/'),'walk');
+ assert.equal(api.context('/leistungen/rubybubys-herz-und-schnauze/lernen/'),'learn');
  assert.equal(api.context('/kalender/index.html?bad'),'all');
  assert.equal(api.context('/kalender/index.html'),'calendar');
  assert.equal(api.context('/community/orte/threeden/'),'calendar');
