@@ -1,0 +1,253 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "guide-koerpersprache",
+      "kind": "learning",
+      "title": "Was sagt mein Hund gerade?",
+      "detail": "Signale im Verlauf lesen, statt aus einer wedelnden Rute Gefühle abzuleiten.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/koerpersprache/",
+      "terms": "Was sagt mein Hund gerade? What is my dog telling me? Hundesprache Angst Stress Knurren Wedeln body language fear stress growling wagging Hundesprache Signale wedeln knurren Angst Stress body language signals wag growl fear stress"
+    },
+    {
+      "id": "guide-hundespiel",
+      "kind": "learning",
+      "title": "Spielen sie noch oder wird einer bedrängt?",
+      "detail": "Verlauf, Unterbrechungen und freiwilligen Kontakt erkennen. Mit echter Videoübung.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel/",
+      "terms": "Spielen sie noch oder wird einer bedrängt? Still playing, or is one dog being overwhelmed? Spiel Spielen Raufen Welpentreff Mobbing Pause play wrestling puppy meetup bullying break spielen Spielcheck Spielpause bedrängt play playing consent break"
+    },
+    {
+      "id": "guide-belohnung",
+      "kind": "learning",
+      "title": "Wie belohne ich im richtigen Moment?",
+      "detail": "Timing, Belohnungsplatz und ein verständliches Markersignal aufbauen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/belohnung/",
+      "terms": "Wie belohne ich im richtigen Moment? How do I reward at the right moment? Training Lernen Clicker Marker Leckerli positive Verstärkung training learning clicker marker treats positive reinforcement Erziehung erziehen Training trainieren belohnen Leckerli Marker Timing positive reinforcement reward treat training"
+    },
+    {
+      "id": "guide-leine",
+      "kind": "learning",
+      "title": "Lockere Leine üben und trotzdem spazieren gehen",
+      "detail": "Früher belohnen, Ziehen-Rückkehr-Schleifen lösen und Alltag von Übungen unterscheiden.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/leine/",
+      "terms": "Lockere Leine üben und trotzdem spazieren gehen Practise loose-lead walking and still enjoy walks Leinenführigkeit ziehen zerren Gassi Schnüffeln loose lead leash pulling walking sniffing Leinenführigkeit zieht ziehen lockere Leine leash pulling loose lead walking"
+    },
+    {
+      "id": "guide-rueckruf",
+      "kind": "learning",
+      "title": "Zurückkommen, auch wenn es spannend wird",
+      "detail": "Ein Rückrufsignal verlässlich aufbauen und Ablenkung sinnvoll steigern.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/rueckruf/",
+      "terms": "Zurückkommen, auch wenn es spannend wird Coming back when the world is interesting Rückruf hier komm Freilauf Schleppleine recall come back off lead long line abrufen kommt nicht zurück Rückruf hier rufen recall come back return"
+    },
+    {
+      "id": "guide-begegnungen",
+      "kind": "learning",
+      "title": "Eine Hundebegegnung mit mehr Raum gestalten",
+      "detail": "Abstand wählen, eine Ausweichmöglichkeit behalten und Kontakt freiwillig lassen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/begegnungen/",
+      "terms": "Eine Hundebegegnung mit mehr Raum gestalten Give dog encounters more space Hundebegegnungen bellen Angst reaktiv Leinenaggression dog encounters barking fear reactive leash reactivity Hundebegegnung Kontakt andere Hunde vorbeigehen Begegnung dog encounters meeting other dogs"
+    },
+    {
+      "id": "guide-welpen",
+      "kind": "learning",
+      "title": "Die Welt kennenlernen, ohne alles mitzumachen",
+      "detail": "Neue Erfahrungen dosieren und beim Ankommen einen verlässlichen Rückzugsort schaffen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/welpen/",
+      "terms": "Die Welt kennenlernen, ohne alles mitzumachen Explore the world without doing everything Welpe Sozialisierung Umwelt Junghund Ankommen puppy socialisation socialization environment adolescent settling Welpe Welpen Junghund sozialisieren Sozialisierung neue Umgebung puppy socialisation new home"
+    },
+    {
+      "id": "guide-stubenrein",
+      "kind": "learning",
+      "title": "Stubenreinheit ohne Schimpfen aufbauen",
+      "detail": "Den richtigen Moment erkennen, draußen belohnen und Unfälle sinnvoll einordnen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/stubenrein/",
+      "terms": "Stubenreinheit ohne Schimpfen aufbauen Build toilet habits without scolding Pipi pinkeln lösen Stubenrein Toilette Welpe pee wee toilet house training puppy accidents Pipi pinkeln Wohnung Toilette sauber werden stubenrein toilet house training accidents pee"
+    },
+    {
+      "id": "guide-welpenbeissen",
+      "kind": "learning",
+      "title": "Wenn der Welpe Hände und Kleidung erwischt",
+      "detail": "Früh umlenken, Bewegung aus dem Spiel nehmen und Ruhebedürfnisse erkennen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/welpenbeissen/",
+      "terms": "Wenn der Welpe Hände und Kleidung erwischt When a puppy grabs hands and clothes Welpenbeißen zwicken beißen Hände Hose Zahnwechsel puppy biting mouthing nipping hands trousers teething Welpe beißt beisst beißen beissen knabbert Hände Kleidung puppy biting mouthing nipping"
+    },
+    {
+      "id": "guide-ruhe",
+      "kind": "learning",
+      "title": "Ruhe ermöglichen, statt sie festzuhalten",
+      "detail": "Einen passenden Ruheort und entspannte Momente aufbauen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/ruhe/",
+      "terms": "Ruhe ermöglichen, statt sie festzuhalten Make rest possible rather than holding it in place Ruhe Schlaf entspannen hibbelig Decke übermüdet rest sleep settle relax blanket overexcited overtired schlafen Schlaf entspannen Pause Ruhe settle sleep rest relax"
+    },
+    {
+      "id": "guide-alleinbleiben",
+      "kind": "learning",
+      "title": "Alleinsein vorbereiten und Trennungsstress erkennen",
+      "detail": "Kleine Abstände beobachten und für notwendige Abwesenheiten Betreuung einplanen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/alleinbleiben/",
+      "terms": "Alleinsein vorbereiten und Trennungsstress erkennen Prepare for time alone and notice separation distress Alleinbleiben allein Trennung heulen verlassen Betreuung alone separation anxiety crying leaving care alleine allein sein alleinbleiben Trennungsangst verlassen separation anxiety home alone leave"
+    },
+    {
+      "id": "guide-krallen",
+      "kind": "learning",
+      "title": "Krallen kontrollieren und sicher kürzen",
+      "detail": "Werkzeug, durchbluteten Bereich und die Grenzen bei dunklen Krallen kennen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/krallen/",
+      "terms": "Krallen kontrollieren und sicher kürzen Check nails and trim them safely Nägel Nagel schneiden Krallen schneiden kürzen Pfoten nails clipping trimming claws quick paws Nägel Nagel Naegel Krallen Kralle schneiden kürzen knipsen nails nail claws clipping trimming quick"
+    },
+    {
+      "id": "guide-ohren",
+      "kind": "learning",
+      "title": "Ohren prüfen und bei Bedarf reinigen",
+      "detail": "Normale Kontrolle von behandlungsbedürftigen Beschwerden unterscheiden.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/ohren/",
+      "terms": "Ohren prüfen und bei Bedarf reinigen Check ears and clean when needed Ohren putzen reinigen Ohrenschmalz Ohrpflege ears ear cleaning wax ear care Ohr Ohren putzen sauber reinigen Ohrenschmalz ear ears wax cleaning clean"
+    },
+    {
+      "id": "guide-zaehne",
+      "kind": "learning",
+      "title": "Zähneputzen langsam aufbauen",
+      "detail": "Vom Lippenkontakt zur Bürste – ohne das Maul aufzuzwingen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/zaehne/",
+      "terms": "Zähneputzen langsam aufbauen Build up tooth brushing gradually Zähne Zahnpflege putzen Zahnbürste Zahnstein Mundgeruch teeth dental brushing toothbrush tartar bad breath Zahn Zähne Zaehne Zahnpasta Zahnbürste Zähneputzen Maul Mundgeruch teeth tooth dental brushing toothpaste breath"
+    },
+    {
+      "id": "guide-fell",
+      "kind": "learning",
+      "title": "Fell bürsten und passend baden",
+      "detail": "Werkzeug und Häufigkeit am Fell ausrichten, statt an einem starren Pflegeplan.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/fell/",
+      "terms": "Fell bürsten und passend baden Brush the coat and bathe when appropriate Fell Bürsten Kämmen Baden Shampoo Filz Fellwechsel coat brushing combing bath shampoo mats shedding Fell bürsten kämmen baden waschen Shampoo verfilzt Filz scheren groom grooming coat fur brushing bath matted"
+    },
+    {
+      "id": "guide-pfoten",
+      "kind": "learning",
+      "title": "Pfoten nach dem Spaziergang kontrollieren",
+      "detail": "Schmutz, Veränderungen und anhaltendes Lecken aufmerksam einordnen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/pfoten/",
+      "terms": "Pfoten nach dem Spaziergang kontrollieren Check paws after a walk Pfoten Ballen Zehen lecken sauber Streusalz paws pads toes licking clean road salt Pfote Pfoten Ballen Zehen lecken schmutzig Streusalz paw paws pads toes licking dirty"
+    },
+    {
+      "id": "guide-geschirr",
+      "kind": "learning",
+      "title": "Das Geschirr anziehen, wenn dein Hund ausweicht",
+      "detail": "Den schwierigen Handgriff finden und freiwillige Kooperation aufbauen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/geschirr/",
+      "terms": "Das Geschirr anziehen, wenn dein Hund ausweicht Putting on a harness when your dog moves away Geschirr anziehen anfassen Pflege Kooperation Angst harness handling grooming cooperation fear Geschirr anziehen anfassen ausweichen Kooperation freiwillig harness handling cooperative care touch"
+    },
+    {
+      "id": "guide-betreuung",
+      "kind": "learning",
+      "title": "Eine Betreuung vorbereiten, die wirklich zu euch passt",
+      "detail": "Kennenlernen, Grenzen und Übergabe gemeinsam klären.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/betreuung/",
+      "terms": "Eine Betreuung vorbereiten, die wirklich zu euch passt Prepare care that genuinely fits your dog Betreuung Hundesitter Gassihilfe Urlaub Übergabe care sitter dog walking holiday handover Übergabe Betreuung Kennenlernen Notfallkontakt Ablauf handover sitter care preparation introduction"
+    },
+    {
+      "id": "guide-ressourcen",
+      "kind": "learning",
+      "title": "Wenn dein Hund Futter oder Gegenstände verteidigt",
+      "detail": "Abstand und Sicherheit schaffen, bevor ihr an Veränderung arbeitet.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/ressourcen/",
+      "terms": "Wenn dein Hund Futter oder Gegenstände verteidigt When your dog guards food or objects Ressourcen Futter verteidigen knurren wegnehmen tauschen resource guarding food growling taking objects trading Futter Spielzeug Knochen verteidigen bewachen wegnehmen knurren resource guarding food toy bone growling"
+    },
+    {
+      "id": "guide-hilfe",
+      "kind": "learning",
+      "title": "Wann ein Artikel nicht mehr reicht",
+      "detail": "Passende Hilfe wählen und Beobachtungen für den Termin vorbereiten.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/hilfe/",
+      "terms": "Wann ein Artikel nicht mehr reicht When an article is not enough Tierarzt Trainer Hundeschule Angst Schmerzen Hilfe aggressiv vet trainer dog school fear pain help aggression Trainer Hundeschule Verhaltenstherapie Tierarzt Schmerzen Aggression Angst Hilfe dog trainer behaviourist vet pain aggression fear help"
+    },
+    {
+      "id": "learning-house",
+      "kind": "learning",
+      "title": "Das Lernhaus",
+      "detail": "Alle Anleitungen zu Verhalten, Alltag und Pflege.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/",
+      "terms": "Lernen Lernbereich Wissen Ratgeber Anleitung Informationen Erziehung learn learning knowledge guide information training"
+    },
+    {
+      "id": "care-guides",
+      "kind": "learning",
+      "title": "Pflege & Hygiene",
+      "detail": "Krallen, Ohren, Zähne, Fell und Pfoten im Überblick.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/#pflege",
+      "terms": "Pflege Hygiene Körperpflege alle Anleitungen care hygiene grooming all guides"
+    },
+    {
+      "id": "play-video",
+      "kind": "learning",
+      "title": "Hundespiel im Video beobachten",
+      "detail": "Ein kurzer echter Clip mit sechs Beobachtungsfragen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel-video/",
+      "terms": "Hundespiel Spiel spielen Video Film Clip beobachten Fragen Übung play playing video film clip observe questions exercise"
+    },
+    {
+      "id": "heart-hound",
+      "kind": "service",
+      "title": "Rubybubys Herz und Schnauze",
+      "detail": "Das Angebot und die Wege zu Treffen, Betreuung und Lernen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/",
+      "terms": "Herz Schnauze Herzensschnauze Rubybubys Angebot Projekt Hundetreff heart hound service project"
+    },
+    {
+      "id": "walking-slots",
+      "kind": "service",
+      "title": "Gassi gehen & verabreden",
+      "detail": "Treffpunkte und unverbindliche Zweistundenfenster öffnen.",
+      "path": "treffpunkte/?leistung=SERVICE-RUBYBUBYS-HERZ-SCHNAUZE",
+      "terms": "Gassi gassigehen spazieren Spaziergang wer kommt wer da Treffpunkt Zeitslots walk walking meetup slots attendance"
+    },
+    {
+      "id": "walking-map",
+      "kind": "service",
+      "title": "Gassiorte auf der Karte",
+      "detail": "Berliner Orte, Beschreibungen und andere Treffpunkte entdecken.",
+      "path": "treffpunkte/?leistung=SERVICE-RUBYBUBYS-HERZ-SCHNAUZE&ansicht=entdecken&darstellung=karte",
+      "terms": "Karte Map Berlin Ort Orte Hundeauslauf Auslauf Park Parks Maps location places dog exercise areas"
+    },
+    {
+      "id": "special-meetups",
+      "kind": "service",
+      "title": "Besondere Treffen entdecken",
+      "detail": "Geplante Treffen bei Herz und Schnauze ansehen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/#termine",
+      "terms": "Termin Termine Welpentreff Welpentreffen Treffen Event Events Veranstaltung puppy meetup events dates"
+    },
+    {
+      "id": "walking-help",
+      "kind": "service",
+      "title": "Gassihilfe finden oder anbieten",
+      "detail": "Erste Kontakte und Unterstützung für einzelne Runden.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/gassihilfe/",
+      "terms": "Gassihilfe Gassigeher Nachbar Nachbarn helfen Hilfe anbieten Runde Spazierhilfe dog walker walking help neighbours offer"
+    },
+    {
+      "id": "trusted-care",
+      "kind": "service",
+      "title": "Vertraute Betreuung & längere Absprachen",
+      "detail": "Kontakte, Tagesbetreuung, Übernachtungen und mehrere Tage.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/betreuung/",
+      "terms": "Betreuung betreuen aufpassen Hundesitter Sitter Urlaub Übernachtung länger Kontakte care caring sitter holiday overnight longer contacts"
+    },
+    {
+      "id": "animal-friendly-hosts",
+      "kind": "service",
+      "title": "Tierfreundliche Orte & Gastgeber",
+      "detail": "Das Vorhaben für Restaurants, Hostels und andere Orte kennenlernen.",
+      "path": "leistungen/rubybubys-herz-und-schnauze/gastgeber/",
+      "terms": "Restaurant Restaurants Hostel Hotel Geschäft Geschäfte Café Cafe Gastgeber tierfreundlich host animal friendly business"
+    },
+    {
+      "id": "cicek-calendar",
+      "kind": "service",
+      "title": "Zeit mit Çiçek",
+      "detail": "Ihre freigegebenen Gassi- und Betreuungszeiten im Kalender.",
+      "path": "kalender/?kalender=CICEK",
+      "terms": "Cicek Çiçek Blume Hündin buchen buchbar verfügbar Kalender calendar availability book flower"
+    }
+  ]
+}

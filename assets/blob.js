@@ -4,6 +4,12 @@
     const cfg = window.BLOB_CONFIG || {};
     const pageMode = document.body.dataset.blobMode || cfg.mode || 'guide';
     const root = cfg.root || './';
+    function internalHref(value) {
+      if (typeof value !== 'string') return null;
+      try { const url = new URL(value, location.href); return url.origin === location.origin ? url.href : null; }
+      catch (error) { return null; }
+    }
+    const actionHref = internalHref(cfg.actionHref);
     const links = Object.assign({
       home: root,
       community: root + 'community/',
@@ -25,11 +31,12 @@
     chat.innerHTML = `<p id="blob-line">Ich sortiere Möglichkeiten. Menschen sortiere ich nicht.</p>
       <div id="blob-meta">Modus: ${pageMode}</div>
       <details class="blob-other-ways"><summary>Weitere Wege & Blob</summary><div class="blob-chat-actions" id="blob-actions">
-        ${cfg.actionTarget ? `<button id="blob-action" type="button">${cfg.actionLabel || 'Hier helfen'}</button>` : ''}
+        ${actionHref ? `<a id="blob-action-link" href="${actionHref}">${cfg.actionLabel || 'Hier helfen'}</a>` : cfg.actionTarget ? `<button id="blob-action" type="button">${cfg.actionLabel || 'Hier helfen'}</button>` : ''}
         <button id="blob-next" type="button">Weiter</button>
         <a class="secondary" href="${links.home}">Start</a>
         <a class="secondary" href="${links.community}">Community</a>
         <a class="secondary" href="${links.services}">Leistungen</a>
+        <a class="secondary" href="${root}leistungen/rubybubys-herz-und-schnauze/lernen/">Lernhaus</a>
         <a class="secondary" href="${links.system}">FFE-System</a>
         <a class="secondary" href="${root}hilfe/">Hilfe & Stand</a>
         <a class="secondary" id="blob-feedback" href="${root}tickets/">Ticket schreiben</a>
@@ -45,15 +52,30 @@
     const meta = document.getElementById('blob-meta');
     // Suggestions and account libraries are loaded only after opening Blob.
     let suggestionsLoading = null;
+    let knowledgeLoading = null;
+    function loadKnowledge() {
+      if (knowledgeLoading) return;
+      knowledgeLoading = new Promise((resolve, reject) => {
+        const css = document.createElement('link');
+        css.rel = 'stylesheet'; css.href = root + 'assets/blob-knowledge.css?v=20261026-1';
+        document.head.append(css);
+        const script = document.createElement('script');
+        script.src = root + 'assets/blob-knowledge.js?v=20261026-1';
+        script.onload = () => { window.GemDenBlobKnowledge.mount({root,chat}); resolve(); };
+        script.onerror = () => { script.remove(); css.remove(); reject(new Error('knowledge')); };
+        document.head.append(script);
+      }).catch(() => { knowledgeLoading = null; say('Die Themensuche konnte gerade nicht geladen werden. Unter „Weitere Wege“ findest du das Lernhaus.', 'Blob · Seitenhilfe'); });
+    }
     function visibilityChanged(open) {
       window.dispatchEvent(new CustomEvent('blob:visibility', {detail:{open}}));
+      if (open) loadKnowledge();
       if (!open || suggestionsLoading) return;
       suggestionsLoading = new Promise((resolve, reject) => {
         const css = document.createElement('link');
-        css.rel = 'stylesheet'; css.href = root + 'assets/blob-suggestions.css?v=20261020-1';
+        css.rel = 'stylesheet'; css.href = root + 'assets/blob-suggestions.css?v=20261026-1';
         document.head.append(css);
         const script = document.createElement('script');
-        script.src = root + 'assets/blob-suggestions.js?v=20261020-1';
+        script.src = root + 'assets/blob-suggestions.js?v=20261026-1';
         script.onload = () => { window.GemDenBlobSuggestions.mount({root,chat,character}); resolve(); };
         script.onerror = () => { script.remove(); css.remove(); reject(new Error('suggestions')); };
         document.head.append(script);
@@ -215,6 +237,7 @@
     document.getElementById('blob-name').addEventListener('click', rename);
     document.getElementById('blob-next').addEventListener('click', nextLine);
     document.getElementById('blob-action')?.addEventListener('click', activateContext);
+    document.getElementById('blob-action-link')?.addEventListener('click', () => close(false));
     window.addEventListener('blob:say', event => {
       if (!event.detail?.text) return;
       say(named(event.detail.text), event.detail.meta);
