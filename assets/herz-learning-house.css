@@ -11,3 +11,181 @@
 @media(max-width:700px){.house-hero{aspect-ratio:auto;border-radius:20px;margin-top:10px}.house-hero-image{height:auto;aspect-ratio:2/1;object-fit:contain}.house-hero-copy{position:static;width:auto;padding:22px 24px 28px;background:#fff2d5}.house-hero-copy h1{font-size:2.7rem;margin:8px 0 14px}.house-hero-copy>p:not(.eyebrow){font-size:.91rem;max-width:350px;margin-bottom:18px}.house-hero-copy .eyebrow{font-size:.6rem}.house-motion{top:12px;bottom:auto;right:10px;font-size:.62rem;min-height:34px;padding:6px 9px}.house-firefly-one{top:23%}.house-firefly-two{top:30%}.house-discover,.house-catalog,.house-video-feature,.house-credits{padding:22px 18px;border-radius:19px;margin-block:16px}.house-portals{grid-template-columns:1fr 1fr;gap:10px}.house-portal-art{height:112px}.house-portal-copy{padding:16px 12px}.house-portal-copy>.house-symbol{width:30px;height:30px;right:9px;top:97px;font-size:1.08rem}.house-portal h3{font-size:1.15rem}.house-portal p{font-size:.73rem;line-height:1.6}.house-portal-link{font-size:.67rem;margin-top:11px}.house-section-heading h2,.house-catalog>h2,.house-video-feature h2{font-size:1.85rem}.house-topic{padding:17px 15px 27px}.house-topic h3{font-size:1.22rem}.house-topic>p:last-of-type{font-size:.76rem}.house-category-heading h2{font-size:1.5rem}.house-category-heading p{font-size:.76rem}.house-feature{grid-template-columns:1fr;border-radius:19px}.house-feature-art img{height:260px;object-position:center 65%}.house-feature>div:last-child{padding:0 23px 24px}.house-feature h2{font-size:1.9rem}.house-search-row{flex-wrap:wrap}.house-search input{flex-basis:100%;font-size:.87rem;padding:13px}.house-search button{min-height:40px}.house-reading-header{display:block;padding:24px 22px;position:relative;overflow:hidden}.house-reading-header h1{font-size:2rem;max-width:none}.house-reading-header .eyebrow{font-size:.65rem}.house-reading-header>div>p:last-child{font-size:.87rem}.house-reading-art{display:none}.house-article{padding:24px 20px;border-radius:18px;font-size:.94rem;line-height:1.85}.house-article>p:first-child{font-size:1rem}.house-article h2{font-size:1.55rem;margin-top:29px}.house-toc{padding:15px 18px;border-radius:15px}.house-toc nav{grid-template-columns:1fr}.house-table table{font-size:.72rem;line-height:1.65}.house-table td,.house-table th{padding:9px 7px}.house-original,.house-sources,.house-video-box{padding:19px 16px}.house-questions summary{padding:15px 13px;font-size:.98rem;gap:10px}.house-questions details>p{padding:0 16px 18px;font-size:.87rem}.house-sources ul{padding-left:18px}.house-sources a{overflow-wrap:anywhere}.house-footer{padding-inline:6px}}
 @media(max-width:420px){.house-topic-grid{grid-template-columns:1fr}.house-portal-art{height:99px}.house-portal-copy>.house-symbol{top:84px}.house-portal h3{font-size:1.07rem}.house-portal p{font-size:.72rem}.house-reading-header h1{font-size:1.85rem}.house-hero-copy{padding-inline:18px}.house-hero-copy h1{font-size:2.4rem}}
 @media(prefers-reduced-motion:reduce){.learning-house *, .learning-house *::before,.learning-house *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* The living animal storybook: the library has its own illustrated materials. */
+.learning-house {
+  --house-paper: #fff1d1;
+  --house-ink: #193f32;
+  --house-line: #b7924f;
+  background: radial-gradient(ellipse at 50% 0, #3f5140 0, #14372e 900px);
+  background-attachment: scroll;
+}
+.learning-house .site-nav {
+  background: linear-gradient(100deg, #f5e2b3, #fff4d9 28%, #fff4d9 72%, #f5e2b3);
+  border: 1px solid #b18b45;
+  border-bottom: 4px double #b18b45;
+  border-radius: 7px 7px 13px 13px;
+  box-shadow: 0 3px 0 #704b2f, 0 6px 0 #d5b982, 0 12px 25px #081f2850;
+}
+.house-hero {
+  border-radius: 12px;
+  border-color: #a88846;
+  box-shadow: 0 3px 0 #6e4529, 0 7px 0 #ceb077, 0 15px 30px #061d2640;
+}
+.house-hero-copy { left: 25%; top: 33%; width: 50%; }
+.house-hero-picture { display: block; width: 100%; height: 100%; }
+.house-hero-copy h1 {
+  color: #1b4233;
+  font-weight: 600;
+  letter-spacing: -.045em;
+  text-shadow: 0 1px #fff9e0;
+}
+.house-hero-copy > p:not(.eyebrow) { color: #46563c; }
+.learning-house .button {
+  border-radius: 5px 5px 12px 5px;
+  border-color: #7a1c31;
+  box-shadow: inset 0 0 0 2px #c66a723b, 0 3px 0 #57252d24;
+}
+.house-motion { border-radius: 5px; background: #fff0d2ef; }
+.house-firefly-one { left: 12%; top: 18%; }
+.house-firefly-two { right: 13%; top: 24%; }
+.house-discover, .house-catalog, .house-credits, .house-reading-header,
+.house-article, .house-toc {
+  background-color: var(--house-paper);
+  background-image:
+    radial-gradient(ellipse at 8% 8%, #b8873320, transparent 50%),
+    repeating-linear-gradient(3deg, #69431303 0 1px, transparent 1px 5px),
+    linear-gradient(90deg, #b98b3e19, transparent 4%, transparent 96%, #b98b3e19);
+}
+.house-discover, .house-catalog, .house-credits {
+  position: relative;
+  border-radius: 5px 18px 18px 5px;
+  border: 1px solid #b79350;
+  border-left: 5px double #9c793e;
+  box-shadow: 3px 3px 0 #dbbf82, 5px 5px 0 #795b35, 0 12px 25px #091f2326;
+}
+.house-section-heading, .house-catalog > h2 {
+  padding-bottom: 16px;
+  border-bottom: 1px solid #c3a160;
+}
+.house-section-heading h2 { margin-bottom: 0; }
+.house-portals { gap: 22px 18px; padding-top: 22px; }
+.house-portal {
+  border-radius: 4px 4px 13px 4px;
+  background: linear-gradient(100deg, #f7e5bb, #fff3d6 25%, #ffefd0);
+  border-color: #c19b55;
+  box-shadow: 2px 3px 0 #bd995536;
+}
+.house-portal-art { height: auto; padding: 5px 5px 0; }
+.house-portal-art img {
+  width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: contain;
+  border-radius: 2px; background: #fff0ce;
+}
+.house-portal-copy { padding: 16px 40px 22px 18px; }
+.house-portal-copy > .house-symbol {
+  top: auto; right: 12px; bottom: 15px; width: 25px; height: 34px;
+  background: #9f2339; color: #fff0cb; border: 0; border-radius: 1px;
+  clip-path: polygon(0 0,100% 0,100% 100%,50% 84%,0 100%);
+  font-size: 1rem; padding-bottom: 4px;
+}
+.house-portal h3 { font-weight: 500; }
+.house-portal-link { border-bottom: 1px solid #bd8b55; padding-bottom: 3px; }
+.house-topic {
+  border-radius: 3px 10px 10px 3px;
+  border-color: #d1b375;
+  background: linear-gradient(100deg, #f4e2b9, #fff5dc 10%, #fff5dc 90%, #f8e9c6);
+  box-shadow: 2px 2px 0 #b99c5740;
+}
+.house-topic::before {
+  content: ''; position: absolute; top: -1px; right: 17px; width: 9px; height: 15px;
+  background: #a32a3d; clip-path: polygon(0 0,100% 0,100% 100%,50% 72%,0 100%);
+}
+.house-topic-kind { padding-right: 15px; }
+.house-category-heading > .house-symbol {
+  background: #f4dfae; border: 1px solid #b9944e;
+  box-shadow: inset 0 0 0 3px #ffefca;
+}
+.house-category + .house-category { border-top: 3px double #c7a460; }
+.house-search input, .house-search button { border-radius: 4px; }
+.house-feature {
+  background: linear-gradient(110deg, #efd5a0, #fff3d5 60%);
+  border-radius: 5px 18px 18px 5px; border-color: #b79350;
+  box-shadow: 3px 3px 0 #b59458;
+}
+.house-feature-art { padding: 14px; }
+.house-feature-art img {
+  height: auto; aspect-ratio: 3 / 2; object-fit: contain; border-radius: 3px;
+}
+.house-video-feature {
+  background: linear-gradient(120deg, #163b31, #314e37);
+  border: 3px double #bf9b53; border-radius: 5px 18px 18px 5px;
+  box-shadow: inset 0 0 0 5px #d1af5c12;
+}
+.house-reading-header {
+  grid-template-columns: minmax(0,1fr) 260px;
+  border: 1px solid #b38d47; border-bottom: 4px double #b38d47;
+  border-radius: 5px 14px 14px 5px;
+}
+.house-reading-art img {
+  width: 260px; height: auto; aspect-ratio: 3 / 2; object-fit: contain;
+  border: 1px solid #c3a160; border-radius: 3px;
+  box-shadow: 2px 3px 0 #b8995f50;
+}
+.house-article {
+  border-radius: 4px 16px 16px 4px;
+  border-left: 5px double #b28b4a;
+  box-shadow: 3px 3px 0 #d7ba7e, 5px 5px 0 #755738;
+}
+.house-article h2 { color: #204532; }
+.house-toc {
+  border-radius: 3px 3px 13px 3px; border-top: 4px solid #9f2339;
+  box-shadow: 2px 3px 0 #9f7e4738;
+}
+.house-related > div > a, .house-original, .house-sources,
+.house-questions details { border-radius: 4px 10px 10px 4px; }
+.house-video-box { border: 3px double #b99a54; border-radius: 4px 12px 12px 4px; }
+.house-video-box h2 { color: #fff0d2; }
+@media (min-width: 701px) and (max-width: 1000px) {
+  .house-hero-copy { top: 29%; }
+  .house-hero-copy h1 { font-size: clamp(2.3rem,5vw,3rem); }
+  .house-hero-copy > p:not(.eyebrow) { font-size: .84rem; line-height: 1.5; }
+  .house-hero-copy .eyebrow { font-size: .58rem; }
+  .house-hero-copy .button { padding: 10px 13px; font-size: .74rem; }
+}
+@media (max-width: 1000px) {
+  .house-portal-copy { padding: 15px 36px 20px 14px; }
+  .house-reading-header { grid-template-columns: minmax(0,1fr) 190px; }
+  .house-reading-art img { width: 190px; }
+}
+@media (max-width: 700px) {
+  .learning-house .site-nav { border-radius: 5px 5px 10px 10px; }
+  .house-hero { border-radius: 8px; }
+  .house-hero-image { aspect-ratio: 3 / 2; object-fit: cover; }
+  .house-hero-picture { height: auto; }
+  .house-hero-copy {
+    position: static; width: auto; padding: 24px 20px 28px;
+    background: radial-gradient(ellipse at 50% 0,#ffedc0,transparent 80%),#fff2d2;
+    border-top: 1px solid #bc9853;
+    box-shadow: inset 5px 0 #a27e3530, inset -5px 0 #a27e3530;
+  }
+  .house-hero-copy h1 { font-size: 2.55rem; }
+  .house-motion {
+    position: static; display: block; margin: 0 auto 16px;
+    font-size: .65rem; min-height: 32px;
+  }
+  .house-discover,.house-catalog,.house-credits {
+    border-radius: 4px 12px 12px 4px; padding: 22px 17px;
+  }
+  .house-portals { gap: 15px 10px; padding-top: 18px; }
+  .house-portal-art { height: auto; padding: 3px 3px 0; }
+  .house-portal-copy { padding: 12px 12px 39px; }
+  .house-portal-copy > .house-symbol { right: 9px; bottom: 8px; width: 20px; height: 28px; font-size: .8rem; }
+  .house-portal h3 { font-size: 1.08rem; }
+  .house-portal-link { font-size: .66rem; margin-top: 12px; }
+  .house-feature { border-radius: 4px 12px 12px 4px; gap: 10px; }
+  .house-feature-art { padding: 10px 10px 0; }
+  .house-feature-art img { height: auto; }
+  .house-reading-header { display: block; border-radius: 4px 12px 12px 4px; }
+  .house-reading-art { display: none; }
+  .house-article { border-radius: 4px 12px 12px 4px; }
+}
