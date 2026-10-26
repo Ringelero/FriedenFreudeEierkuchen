@@ -50,7 +50,7 @@ export const categories=[
  {id:'alltag',name:T('Welpen & Alltag','Puppies & everyday life'),desc:T('Ankommen, Stubenreinheit, Beißen, Ruhe und Alleinsein.','Settling in, toilet training, mouthing, rest and time alone.'),art:'meet',symbol:'⌂'},
  {id:'pflege',name:T('Pflege & Hygiene','Care & hygiene'),desc:T('Krallen, Ohren, Zähne, Fell und Pfoten – mit Fachanleitungen.','Nails, ears, teeth, coat and paws, with expert guidance.'),art:'hygiene',symbol:'❋'},
  {id:'kooperation',name:T('Kooperation & Betreuung','Cooperation & care'),desc:T('Mitmachen ermöglichen und vertraute Übergaben vorbereiten.','Enable willing participation and prepare trusted handovers.'),art:'care',symbol:'♡'},
- {id:'hilfe',name:T('Wenn es schwierig wird','When things get difficult'),desc:T('Ressourcen schützen, Überforderung erkennen und Hilfe finden.','Guarding, overwhelm and finding suitable support.'),art:'learn',symbol:'?'}
+ {id:'hilfe',name:T('Wenn es schwierig wird','When things get difficult'),desc:T('Ressourcen schützen, Überforderung erkennen und Hilfe finden.','Guarding, overwhelm and finding suitable support.'),art:'support',symbol:'?'}
 ];
 export const articles=[
  {id:'koerpersprache',category:'verstehen',title:T('Was sagt mein Hund gerade?','What is my dog telling me?'),desc:T('Signale im Verlauf lesen, statt aus einer wedelnden Rute Gefühle abzuleiten.','Read signals in context instead of judging feelings from a wagging tail.'),terms:T('Hundesprache Angst Stress Knurren Wedeln','body language fear stress growling wagging'),sources:['body','play'],related:['hundespiel','begegnungen'],sections:[
