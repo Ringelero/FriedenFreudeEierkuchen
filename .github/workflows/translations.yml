@@ -12,4 +12,5 @@ jobs:
         with:
           node-version: '22'
       - run: node scripts/build-languages.mjs --check
-      - run: node --test tests/language*.test.cjs
+      - run: node scripts/build-learning.mjs --check
+      - run: node --test tests/language*.test.cjs tests/learning-house.test.cjs
