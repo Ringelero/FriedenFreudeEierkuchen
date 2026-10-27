@@ -1,17 +1,25 @@
 {
   "$schema": "../../schemas/gemden-services.v1.schema.json",
   "schema_version": "1.0.0",
-  "updated": "2026-10-20",
+  "updated": "2026-10-27",
   "categories": [
-    { "id": "SOCIAL", "name": "Soziales", "public_path": "/leistungen/#soziales" }
+    {
+      "id": "SOCIAL",
+      "name": "Soziales",
+      "public_path": "/leistungen/#soziales"
+    }
   ],
   "services": [
     {
       "id": "SERVICE-RUBYBUBYS-HERZ-SCHNAUZE",
       "name": "Rubybubys Herz und Schnauze",
       "summary": "Gemeinsame Spaziergänge, Lernen mit Vertrauen und ein wachsendes Netz für gegenseitige Unterstützung und tierfreundliche Orte.",
-      "category_ids": ["SOCIAL"],
-      "provider_ids": ["DYN-RUBYBUBYS"],
+      "category_ids": [
+        "SOCIAL"
+      ],
+      "provider_ids": [
+        "DYN-RUBYBUBYS"
+      ],
       "public_path": "/leistungen/rubybubys-herz-und-schnauze/",
       "status": "building",
       "availability": {
@@ -19,6 +27,20 @@
         "growing": "Das Gastgebernetz und weitere gemeinsame Angebote vor Ort entstehen durch echte Absprachen."
       },
       "location_note": "Ortsübergreifend · jeder Treff hat seinen eigenen Ort"
+    },
+    {
+      "id": "SERVICE-RUBYBUBYS-OBDACHLOSENHILFE",
+      "name": "Rubybubys Obdachlosenhilfe",
+      "summary": "Erste Ideen für die Unterstützung obdachloser und wohnungsloser Menschen – zum gemeinsamen Weiterentwickeln.",
+      "category_ids": [
+        "SOCIAL"
+      ],
+      "provider_ids": [
+        "DYN-RUBYBUBYS"
+      ],
+      "public_path": "/leistungen/rubybubys-obdachlosenhilfe/",
+      "status": "building",
+      "location_note": "Ideensammlung · konkrete Aktionen und Orte werden noch gemeinsam vereinbart"
     }
   ]
 }

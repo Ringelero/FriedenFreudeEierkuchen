@@ -1,7 +1,7 @@
 {
   "$schema": "../../schemas/gemden-services.v1.schema.json",
   "schema_version": "1.0.0",
-  "updated": "2026-10-20",
+  "updated": "2026-10-27",
   "categories": [
     {
       "id": "SOCIAL",
@@ -27,6 +27,20 @@
         "growing": "The host network and further shared local services grow through real agreements."
       },
       "location_note": "Across locations · each meetup has its own place"
+    },
+    {
+      "id": "SERVICE-RUBYBUBYS-OBDACHLOSENHILFE",
+      "name": "Rubybubys homelessness support",
+      "summary": "Initial ideas for supporting people experiencing homelessness, to develop together.",
+      "category_ids": [
+        "SOCIAL"
+      ],
+      "provider_ids": [
+        "DYN-RUBYBUBYS"
+      ],
+      "public_path": "/leistungen/rubybubys-obdachlosenhilfe/",
+      "status": "building",
+      "location_note": "Ideas collection · specific activities and places are still to be agreed together"
     }
   ]
 }

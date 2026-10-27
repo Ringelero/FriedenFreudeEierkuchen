@@ -5,6 +5,17 @@ const api=require('../assets/blob-knowledge.js');
 const suggestions=require('../assets/blob-suggestions.js');
 const corpus=()=>api.cleanItems(JSON.parse(fs.readFileSync('assets/data/blob-knowledge.v1.json','utf8')));
 
+test('homeless support is discoverable in both languages and adds only its exact destination',()=>{
+  const destination='leistungen/rubybubys-obdachlosenhilfe/';
+  assert.equal(api.safePath(destination),true);
+  for(const unsafe of [destination+'private/',destination+'?person=1','leistungen/another-service/'])assert.equal(api.safePath(unsafe),false,unsafe);
+  for(const language of ['', 'en/']){
+    const items=api.cleanItems(JSON.parse(fs.readFileSync(language+'assets/data/blob-knowledge.v1.json','utf8')));
+    for(const query of ['Obdachlosenhilfe','Wohnungslosenhilfe','homelessness support'])assert.equal(api.search(items,query)[0]?.id,'homeless-support',language+query);
+    assert.equal(new URL(items.find(item=>item.id==='homeless-support').path,'https://gemden.red/'+language).pathname,'/'+language+destination);
+  }
+});
+
 test('every learning guide and the real-video exercise have a direct Blob destination',async()=>{
   const {articles}=await import('../scripts/learning-data.mjs');
   const items=corpus();
