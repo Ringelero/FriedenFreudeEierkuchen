@@ -8,7 +8,7 @@ const catalog = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/services
 const community = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/community-v0.1.json'), 'utf8'));
 const clone = value => JSON.parse(JSON.stringify(value));
 
-test('homeless support is one ideas-only Rubybubys service across all entry points and languages', () => {
+test('homeless support is one Rubybubys service with four prepared entrances across all entry points and languages', () => {
   const service = catalog.services.find(item => item.id === 'SERVICE-RUBYBUBYS-OBDACHLOSENHILFE');
   assert.ok(service);
   assert.deepEqual(service.provider_ids, ['DYN-RUBYBUBYS']);
@@ -25,7 +25,7 @@ test('homeless support is one ideas-only Rubybubys service across all entry poin
       assert.ok(links.includes('/' + language + service.public_path.slice(1)), `${language}${page}: fallback link missing`);
     }
     const page = fs.readFileSync(path.join(root, language, service.public_path, 'index.html'), 'utf8');
-    assert.equal((page.match(/<details\b/g) || []).length, 6);
+    assert.equal((page.match(/<details\b/g) || []).length, 4);
     assert.match(page, language ? /Ideas collection/ : /Ideensammlung/);
     assert.match(page, language ? /not yet been implemented/ : /noch nicht umgesetzt/);
   }
