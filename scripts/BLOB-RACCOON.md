@@ -1,11 +1,11 @@
-# Blob's Heart & Hound raccoon
+# Blob’s Heart & Hound raccoon
 
-`assets/blob-raccoon.js` supplies the scoped appearance and finite greeting animation. `blob.js` loads the small module only for the service, meeting-place view and calendar. Other areas retain their existing character.
+The scoped companion lives entirely inside the existing floating toggle button. Opening the panel fades and lifts the face into a full sitting body at the same screen edge. Closing reverses the transition. No greeting portrait, duplicate mascot or title block is inserted into the panel. The original face, sitting and waving transparent WebPs are reused.
 
-`isContext()` recognises the service and all child routes, including English, the walking map with the explicit service ID, and the `CICEK` calendar. Shared views update their URL synchronously from click/change handlers; a microtask checks the scope after those handlers. History navigation is observed too. No polling or replacement of browser history functions is used.
+The body poses load on opening the panel. A failed pose load retains the working face and panel. Finite motions include the opening paw wave, two gentle breathing cycles, curious head tilt on pointer entry, a brief happy response to a successful topic lookup, and manual Wave/Stretch controls under Further ways & Blob. The latter include the existing locally saved motion switch. Reduced motion disables animations and transitions while retaining the correct face/body state. Hiding the page or closing cancels timers and motions. No video, canvas, polling or new private requests.
 
-The approved three transparent character illustrations are reused. The small face loads in an active context; body poses load on opening Blob. The SVG greeting reuses the same waving WebP for the body and clipped foreleg. Its masks and pivot use a 710 × 800 reference frame and belong to that particular pose; update them together if the artwork changes. There is no video or canvas rendering.
+The waving SVG separates the original raised paw from its body with two clipping masks in a710x800 reference frame. Keep masks and pivot together if replacing that artwork.
 
-The greeting lasts 2.6 seconds. Clicking the figure replays it; closing the panel or hiding the page cancels it. The local `gemden_blob_raccoon_motion_v1` preference stores only `on` or `off`. The operating system's reduced-motion preference always takes precedence. No account setting or server data is changed.
+Context is unchanged: service and child routes in DE/EN, shared walking view with the exact service ID, and the CICEK calendar. Scope updates after existing URL-changing click/change handlers and on history navigation. Generic map/calendar views retain their own character. The compact controls are hidden outside this context.
 
-Maintain German and English together via `translations/en.json`, then run `build-learning.mjs` and `build-languages.mjs`. The scope and motion policy are covered by `tests/blob-raccoon.test.cjs`.
+A topic lookup emits only the payload-free blob:react UI event, never the question text. Direct guide links, suggestions and all access checks remain unchanged. Maintain German source, dictionary entries and cache versions, then run build-learning and build-languages plus both check modes. Tests cover context and the reduced-motion/pause policy; browser checks cover one visible figure, transitions, pause, answers, shared-page scope and mobile geometry.
