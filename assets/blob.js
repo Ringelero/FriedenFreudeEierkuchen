@@ -71,7 +71,7 @@
         css.rel = 'stylesheet'; css.href = root + 'assets/blob-knowledge.css?v=20261026-1';
         document.head.append(css);
         const script = document.createElement('script');
-        script.src = root + 'assets/blob-knowledge.js?v=20261027-1';
+        script.src = root + 'assets/blob-knowledge.js?v=20261027-2';
         script.onload = () => { window.GemDenBlobKnowledge.mount({root,chat}); resolve(); };
         script.onerror = () => { script.remove(); css.remove(); reject(new Error('knowledge')); };
         document.head.append(script);
@@ -86,7 +86,7 @@
         css.rel = 'stylesheet'; css.href = root + 'assets/blob-suggestions.css?v=20261026-1';
         document.head.append(css);
         const script = document.createElement('script');
-        script.src = root + 'assets/blob-suggestions.js?v=20261026-1';
+        script.src = root + 'assets/blob-suggestions.js?v=20261027-1';
         script.onload = () => { window.GemDenBlobSuggestions.mount({root,chat,character}); resolve(); };
         script.onerror = () => { script.remove(); css.remove(); reject(new Error('suggestions')); };
         document.head.append(script);

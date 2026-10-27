@@ -8,6 +8,7 @@
   function requestedTarget(location){
     const id=hashId(location.hash);if(id&&!id.includes('='))return id;
     const params=new URLSearchParams(location.search||'');
+    if(/^[a-f0-9-]{36}$/i.test(params.get('anfrage')||''))return 'konto-kontakte';
     if(/^[a-f0-9-]{36}$/i.test(params.get('resonanz')||''))return 'resonance-center';
     if(['have','can','need','time','chance'].includes(params.get('signal')))return 'opportunity-workspace';
     if(params.get('type')==='recovery'||/(?:^#|&)type=recovery(?:&|$)/.test(location.hash||''))return 'password-form';
@@ -26,6 +27,7 @@
         if(!destination.matches('input,select,textarea,button,a'))destination.setAttribute('tabindex','-1');
         destination.focus({preventScroll:true});
       }
+      if(window.CustomEvent)window.dispatchEvent(new window.CustomEvent('gemden:account-view',{detail:{id:panel.id}}));
       return panel.id;
     }
     document.getElementById('signed-in-panel').addEventListener('click',event=>{

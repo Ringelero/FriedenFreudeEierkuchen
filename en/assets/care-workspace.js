@@ -11,7 +11,7 @@
    handover:required(input.handover,1000,"Handover"),reachability:required(input.reachability,1000,"Contact details"),routine:required(input.routine,2000,"Everyday life and needs"),terms:required(input.terms,1000,"costs and arrangements"),backup};
  }
  function localTime(iso){if(!iso)return '';const d=new Date(iso);return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);}
- function roomHref(id){if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id||''))throw new Error("The private conversation has no valid identifier.");return `/konto/?resonanz=${id}#resonance-center`;}
+ function roomHref(id,language='de'){if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id||''))throw new Error("The private conversation has no valid identifier.");return `${language==='en'?'/en':''}/konto/?resonanz=${id}#resonance-center`;}
  function mount(el,client){
   const $=s=>el.querySelector(s),status=$('[data-care-status]'),detail=$('[data-care-detail]');let generation=0,listEpoch=0,detailEpoch=0,page=0,planPage=0,selected=null,profile=null,busy=false,disposed=false;
   const requested=new URLSearchParams(location.search).get('anfrage');
@@ -45,7 +45,7 @@
    }return card;
   }
   function renderDetail(){const d=selected;detail.hidden=false;detail.replaceChildren();const header=node('div',undefined,'care-section-head');header.append(node('h2',`With ${d.counterpart_name}`),button("Close",()=>{detailEpoch++;detail.hidden=true;detail.replaceChildren();selected=null;const u=new URL(location.href);u.searchParams.delete('anfrage');u.hash='kontakte';history.replaceState(null,'',u);},'care-secondary'));detail.append(header,node('p',d.title,'help-hint'));
-   const actions=node('div',undefined,'care-actions');actions.append(link(d.can_write?"Write to each other privately ↗":"View earlier messages ↗",roomHref(d.response_id)));
+   const actions=node('div',undefined,'care-actions');actions.append(link(d.can_write?"Write to each other privately ↗":"View earlier messages ↗",roomHref(d.response_id,document.documentElement.lang)));
    if(d.saved||d.can_write)actions.append(button(d.saved?"♡ Remove contact":"♡ Save contact",()=>perform(async g=>{await rpc('set_trusted_care_contact',{requested_response:d.response_id,saved:!d.saved});if(g!==generation)return;await workspace();await open(d.response_id,false,planPage);message(d.saved?"Removed from your private contact list.":"Saved as a trusted contact for you only.");}),'care-secondary'));detail.append(actions);
    if(!d.can_write)detail.append(node('p',"The private conversation has ended or an account is currently inactive. New proposals and consents are not possible here. You can still cancel an existing arrangement.",'help-hint'));
    if(d.plans.length)d.plans.forEach(p=>detail.append(renderPlan(p,d)));else detail.append(node('p',"No care arranged yet. First make sure you feel comfortable with each other. Then you can propose a specific period.",'care-empty'));

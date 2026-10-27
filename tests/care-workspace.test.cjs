@@ -14,3 +14,5 @@ test('room links only target the known account route with an exact response iden
  assert.equal(care.roomHref('af111111-1111-4111-8111-111111111111'),'/konto/?resonanz=af111111-1111-4111-8111-111111111111#resonance-center');
  assert.throws(()=>care.roomHref('javascript:alert(1)'));assert.throws(()=>care.roomHref('a&next=https://elsewhere'));
 });
+
+test('private room keeps the English account route',()=>{assert.equal(care.roomHref('af111111-1111-4111-8111-111111111111','en'),'/en/konto/?resonanz=af111111-1111-4111-8111-111111111111#resonance-center');});

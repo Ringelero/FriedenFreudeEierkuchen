@@ -18,7 +18,7 @@
   ];
   const canonical=word=>concepts.find(([rule])=>rule.test(word))?.[1]||word;
   function tokens(value){return [...new Set((normalize(value).match(/[\p{L}\p{N}]+/gu)||[]).filter(word=>word.length>1&&!stop.test(word)).flatMap(word=>/^(hundespielvideo|dogplayvideo|playvideo)$/.test(word)?['play','video']:[canonical(word)]))];}
-  function safePath(value){return typeof value==='string'&&value.length<400&&!/[\\\s]/.test(value)&&!/\.\.|%2e|%2f|%5c/i.test(value)&&/^(?:leistungen\/rubybubys-herz-und-schnauze\/(?:[a-z0-9-]+\/)*(?:#[a-z0-9-]+)?|treffpunkte\/\?leistung=SERVICE-RUBYBUBYS-HERZ-SCHNAUZE(?:&[a-z]+=[a-z]+)*|kalender\/\?kalender=CICEK)$/.test(value);}
+  function safePath(value){return typeof value==='string'&&value.length<400&&!/[\\\s]/.test(value)&&!/\.\.|%2e|%2f|%5c/i.test(value)&&(value==='konto/#konto-kontakte'||/^(?:leistungen\/rubybubys-herz-und-schnauze\/(?:[a-z0-9-]+\/)*(?:#[a-z0-9-]+)?|treffpunkte\/\?leistung=SERVICE-RUBYBUBYS-HERZ-SCHNAUZE(?:&[a-z]+=[a-z]+)*|kalender\/\?kalender=CICEK)$/.test(value));}
   function cleanItems(raw){return (Array.isArray(raw?.items)?raw.items:[]).slice(0,80).filter(item=>item&&safePath(item.path)&&typeof item.title==='string'&&typeof item.detail==='string'&&typeof item.terms==='string').map(item=>({id:String(item.id||'').slice(0,80),title:item.title.slice(0,180),detail:item.detail.slice(0,350),path:item.path,terms:item.terms.slice(0,1800)}));}
   function search(items,question,limit=3){
     const words=tokens(String(question||'').slice(0,300));if(!words.length)return [];
