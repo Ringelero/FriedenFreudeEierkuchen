@@ -47,3 +47,33 @@ test('dog access uses explicit verified classification rather than guessing from
  assert.equal(api.dogAccessLabel(api.dogAccess({services:[{id:api.RUBY,dog_access:'unknown',walks_enabled:false}]})),'Hunde-Zugang ungeklärt');
  assert.equal(api.dogAccessLabel('unverified-value'),'');
 });
+
+test('shared map assets and manifests resolve on German, English and local pages',()=>{
+ for(const page of ['https://gemden.red/treffpunkte/','https://gemden.red/en/treffpunkte/','http://127.0.0.1:8783/en/treffpunkte/?leistung='+api.RUBY]){
+  const assets=api.mapAssets(page,true),origin=new URL(page).origin;
+  assert.equal(assets.script,origin+'/assets/vendor/leaflet-1.9.4/leaflet.js');
+  assert.equal(assets.css,origin+'/assets/vendor/leaflet-1.9.4/leaflet.css');
+  assert.equal(assets.manifest,origin+'/treffpunkte/herz-schnauze.webmanifest');
+  assert.equal(api.mapAssets(page).manifest,origin+'/treffpunkte/manifest.webmanifest');
+ }
+});
+test('map-only off-leash filter preserves verified counts in mixed clusters without mutating data',()=>{
+ const points=[{count:1,id:'a',dog_access:'unknown'},{count:1,id:'b',dog_access:'designated_off_leash'},{count:4,id:null,off_leash_count:2,prohibited_count:1},{count:2,off_leash_count:0},{count:1,dog_access:'prohibited'}];
+ const before=JSON.stringify(points),filtered=api.visibleMapPoints(points,true);
+ assert.deepEqual(filtered.map(p=>p.visible_count),[1,2]);assert.equal(filtered[1].count,4);
+ assert.equal(api.visibleMapPoints(points).reduce((n,p)=>n+p.visible_count,0),9);
+ assert.equal(JSON.stringify(points),before);
+ assert.equal(api.visibleMapPoints([{count:3,off_leash_count:99}],true)[0].visible_count,3);
+ assert.deepEqual(api.visibleMapPoints([{count:3}],true),[]);
+});
+test('shared map link keeps language, selected service, viewport and filter but omits other page parameters',()=>{
+ const url=api.mapShareUrl('https://gemden.red/en/treffpunkte/?ort=public-place&unrelated=private#detail',api.RUBY,{lat:52.51456789,lng:13.40345678},12,true),u=new URL(url);
+ assert.equal(u.pathname,'/en/treffpunkte/');assert.equal(u.searchParams.get('leistung'),api.RUBY);
+ assert.equal(u.searchParams.get('ausschnitt'),'52.51457,13.40346,12');assert.equal(u.searchParams.get('hundeauslauf'),'1');
+ assert.equal(u.searchParams.get('ansicht'),'entdecken');assert.equal(u.searchParams.get('darstellung'),'karte');
+ assert.equal(u.searchParams.has('ort'),false);assert.equal(u.searchParams.has('unrelated'),false);assert.equal(u.hash,'');
+ assert.deepEqual(api.mapViewFromUrl(url),{latitude:52.51457,longitude:13.40346,zoom:12});
+ for(const value of ['NaN,13,12','52,Infinity,12','86,13,12','52,181,12','52,13,20','52,13,1','52,13,3.5',',,','52,,12']){
+  assert.equal(api.mapViewFromUrl('https://gemden.red/treffpunkte/?ausschnitt='+encodeURIComponent(value)),null,value);
+ }
+});
