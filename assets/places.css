@@ -24,3 +24,8 @@
 }
 
 .places-source-note{padding:0 16px;margin:12px 0 18px;border:1px solid #e2cfca;border-radius:16px;background:#fffaf4}.places-source-note summary{min-height:44px;padding:13px 0;font-size:.82rem;font-weight:700;color:#861e43;cursor:pointer}.places-source-note p,.places-source-note li{font-size:.81rem;line-height:1.75;color:#715c65}.places-source-note a{color:#861e43;text-underline-offset:3px;overflow-wrap:anywhere}.places-source-note ul{padding-left:18px}.places-source-note li+li{margin-top:8px}.places-source-note[open]{padding-bottom:8px}
+
+.places-map-tools{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:12px 0}.places-map-tools label{display:grid;max-width:100%;font-size:.84rem;cursor:pointer}.places-map-tools button{min-height:44px}.places-cluster-icon.is-off-leash{background:#276777}
+@media(max-width:620px){.places-map-tools{align-items:stretch}.places-map-tools label,.places-map-tools button{width:100%}}
+
+.places-map-share{display:flex;flex-wrap:wrap;gap:10px;align-items:end;padding:14px;background:#fffaf4;border:1px solid var(--line);border-radius:14px;margin:10px 0}.places-map-share label{display:grid;gap:5px;flex:1 1 260px;font-size:.82rem}.places-map-share input{min-width:0;width:100%;font:inherit;padding:11px;border:1px solid var(--line);border-radius:9px}.places-map-share a{min-height:44px;display:inline-flex;align-items:center;padding:8px;color:var(--ruby);font-size:.82rem}
