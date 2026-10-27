@@ -25,7 +25,7 @@
     return {
       walks:{key:'walks',group:'walk',title:'Meine Gassitreffpunkte',detail:'Lieblingsorte und unverbindliche Zweistundenfenster.',href:url('treffpunkte/?leistung='+RUBY)},
       discover:{key:'discover',group:'walk',title:'Neue Treffpunkte entdecken',detail:'Andere Orte, Beschreibungen und aktuelle Gassifenster.',href:url('treffpunkte/?leistung='+RUBY+'&ansicht=entdecken')},
-      care:{key:'care',group:'walk',title:'Gassihilfe & Betreuung',detail:'Menschen kennenlernen und Unterstützung absprechen.',href:url('leistungen/rubybubys-herz-und-schnauze/betreuung/')},
+      care:{key:'care',group:'walk',title:'Gassihilfe & Betreuung',detail:'Menschen kennenlernen und Unterstützung absprechen.',href:url('leistungen/rubybubys-herz-und-schnauze/gassihilfe/')},
       learning:{key:'learning',group:'learn',title:'Das Lernhaus',detail:'Die passende Anleitung zu Verhalten, Alltag und Pflege finden.',href:url('leistungen/rubybubys-herz-und-schnauze/lernen/')},
       hygiene:{key:'hygiene',group:'learn',title:'Pflege & Hygiene',detail:'Krallen, Ohren, Zähne, Fell und Pfoten.',href:url('leistungen/rubybubys-herz-und-schnauze/lernen/#pflege')},
       playvideo:{key:'playvideo',group:'learn',title:'Hundespiel im Video beobachten',detail:'Ein echter Clip mit Fragen und Erklärungen.',href:url('leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel-video/')},

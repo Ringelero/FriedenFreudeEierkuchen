@@ -1,0 +1,47 @@
+/* A shared garden for finding and offering walking help. */
+.world-gassihilfe{--herz-ink:#203f32;--herz-ruby:#93293e;--herz-muted:#68715f;--herz-line:#d8cba7;background:radial-gradient(ellipse at 50% 0,#4b6c4b,#173f34 1000px);color:var(--herz-ink)}
+.world-gassihilfe .site-shell{max-width:1280px;padding:22px 24px 0}
+.world-gassihilfe .site-nav{margin-bottom:0;padding:12px 23px;background:#fff7e5;border:1px solid #c6ac73;border-radius:14px 14px 0 0;box-shadow:none}
+.world-gassihilfe .site-mark{font-family:Georgia,serif;color:#234634}.world-gassihilfe .nav-links a{color:#234634}.world-gassihilfe .nav-links [aria-current=page],.world-gassihilfe .nav-toggle[aria-expanded=true]{background:#245a46;color:#fff8e4}.world-gassihilfe .nav-toggle{background:#fffaed;border-color:#c6b48d;color:#245a46}
+.world-gassihilfe main{gap:24px;background:#fff6e0;padding:0 26px 24px;border:1px solid #c6ac73;border-top:0;border-radius:0 0 16px 16px;box-shadow:0 12px 40px #082b2540}
+.world-gassihilfe .help-hero{isolation:isolate;position:relative;min-height:430px;margin:0 -26px;padding:0;border:0;border-radius:0;background:#fff1d2}
+.help-garden-art{position:absolute;inset:0;z-index:-1}.help-garden-art img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 48%}
+.help-hero-copy{position:relative;width:48%;padding:48px 0 32px 6%;max-width:600px}
+.world-gassihilfe .help-back{font-size:.75rem;min-height:30px;color:#315a42}.world-gassihilfe .help-hero .eyebrow{font-size:.63rem;letter-spacing:.09em;margin:10px 0}
+.world-gassihilfe .help-hero h1{font-size:clamp(2.6rem,4.3vw,3.7rem);line-height:1.03;color:#204631}.world-gassihilfe .help-hero h1 em{color:inherit;font-style:normal}
+.help-hero-copy>p:last-child{font:400 .96rem/1.55 Georgia,serif;color:#395540;max-width:400px;margin:17px 0 0}
+.world-gassihilfe .help-art{display:none}
+.world-gassihilfe .help-paths{gap:12px;grid-template-columns:1fr 1fr .85fr}
+.world-gassihilfe .help-paths a{background:#fffbed;border-color:#d7c7a1;border-radius:12px;box-shadow:0 3px 8px #795d2510;gap:9px}
+.world-gassihilfe .help-paths a[data-help-intent=need]{background:#245a46;border-color:#245a46;color:#fff8e6}
+.world-gassihilfe .help-paths a[data-help-intent=need] :is(span,small){color:#eee7c8}
+.world-gassihilfe .help-paths a:hover{border-color:#6f9476;transform:translateY(-2px)}.world-gassihilfe .help-paths strong{font-size:1.33rem}.world-gassihilfe .help-paths small{font-size:.79rem;line-height:1.55}
+.world-gassihilfe .help-paths a:last-child{background:#eff1df}
+.world-gassihilfe .help-private-shortcut{padding:0 3px;margin-top:-16px;font-size:.76rem}.world-gassihilfe .help-private-shortcut a{color:#315a42}
+.world-gassihilfe .help-section-head h2,.world-gassihilfe .help-how h2,.world-gassihilfe .help-composer h2{color:#244832}
+.world-gassihilfe .help-filters{padding:16px;border:1px solid #ded3b1;background:#f3eed9;border-radius:12px;gap:11px}.world-gassihilfe .help-filters label{font-size:.76rem}
+.world-gassihilfe input,.world-gassihilfe textarea,.world-gassihilfe select{background:#fffcf1;border-color:#d4c7a3;color:#254932}
+.world-gassihilfe button,.world-gassihilfe .button{background:#245a46;border-color:#245a46;border-radius:9px;color:#fff7e1}
+.world-gassihilfe .help-composer form>button{background:#a72b41;border-color:#a72b41}
+.world-gassihilfe .help-card,.world-gassihilfe .help-empty{background:#fffbef;border-color:#d7c7a1;border-radius:12px;box-shadow:0 3px 10px #806c2910}
+.world-gassihilfe .help-card h3{color:#254832}.world-gassihilfe .help-tag{display:inline-block;padding:5px 9px;background:#f0e6cf;border-radius:20px}
+.world-gassihilfe .help-card .help-private-note{background:#edf0df}.world-gassihilfe .help-empty{border-style:dashed}.world-gassihilfe .help-empty p{max-width:660px}
+.world-gassihilfe .help-composer{background:linear-gradient(120deg,#f0efda,#f7ecd3);border:1px solid #d3c198;border-radius:14px;padding:27px}
+.world-gassihilfe .site-availability{background:#fff9e9;border-color:#d7c7a1;color:#536d4d}
+.world-gassihilfe .help-result:not(:empty){background:#fffbed;border-color:#d7c7a1}.world-gassihilfe .help-how{padding:4px 1px}.world-gassihilfe .help-how ol{gap:13px;margin:18px 0}.world-gassihilfe .help-how li{background:#fffaeb;border:1px solid #ded3b1;border-radius:12px;padding:18px}.world-gassihilfe .help-how li:before{color:#8e3448}
+.world-gassihilfe .footer{color:#efdfbd;padding:25px 5px 90px}.world-gassihilfe .footer a{color:#ffe4a6}.world-gassihilfe .site-help-links{border-color:#6c8b70}
+@media(max-width:760px){.world-gassihilfe .site-shell{padding:10px 10px 0}.world-gassihilfe .site-nav{padding:10px 14px}.world-gassihilfe .nav-links{background:#fff7e4}.world-gassihilfe main{padding:0 15px 22px;gap:20px}.world-gassihilfe .help-hero{margin:0 -15px}.world-gassihilfe .help-filters{grid-template-columns:1fr 1fr}.world-gassihilfe .help-filters label:last-of-type{grid-column:1/-1}.world-gassihilfe .help-filters button{width:100%;grid-column:1/-1}.world-gassihilfe .help-list{grid-template-columns:1fr}.world-gassihilfe .help-composer{padding:22px 18px}.world-gassihilfe .footer{padding-bottom:105px}}
+@media(max-width:620px){
+ .world-gassihilfe .help-hero{min-height:0}.help-garden-art{position:relative;display:block;height:175px}.help-garden-art img{object-position:75% 50%}
+ .help-hero-copy{width:100%;max-width:none;padding:12px 19px 22px;background:#fff4dc}
+ .world-gassihilfe .help-hero .eyebrow{display:none}.world-gassihilfe .help-back{font-size:.7rem;margin-bottom:8px}
+ .world-gassihilfe .help-hero h1{font-size:2rem;line-height:1.05;letter-spacing:-.03em}.world-gassihilfe .help-hero h1 br{display:none}.world-gassihilfe .help-hero h1 em::before{content:' '}
+ .help-hero-copy>p:last-child{font:400 .82rem/1.5 system-ui;margin-top:11px}
+ .world-gassihilfe .help-paths{grid-template-columns:1fr 1fr;gap:9px}.world-gassihilfe .help-paths a{padding:16px 13px;gap:8px}.world-gassihilfe .help-paths a:last-child{grid-column:1/-1;padding:13px 15px;grid-template-columns:1fr 1.5fr;align-items:center}.world-gassihilfe .help-paths a:last-child>span{grid-column:1/-1}.world-gassihilfe .help-paths a:last-child small{font-size:.74rem}.world-gassihilfe .help-paths strong{font-size:1.16rem;line-height:1.2}.world-gassihilfe .help-paths span{font-size:.59rem}.world-gassihilfe .help-paths small{font-size:.75rem;line-height:1.45}
+ .world-gassihilfe .help-private-shortcut{display:block;margin-top:-12px;padding:0 2px}.world-gassihilfe .help-private-shortcut span{display:none}
+ .world-gassihilfe .help-filters{padding:13px;gap:10px}.world-gassihilfe .help-filters label{font-size:.71rem}.world-gassihilfe .help-filters select{padding:10px 7px;font-size:.85rem}
+ .world-gassihilfe .help-how ol{gap:11px}.world-gassihilfe .help-how li{padding:16px}.world-gassihilfe .help-section-head>a{font-size:.76rem}.world-gassihilfe h2{font-size:1.7rem}
+}
+@media(prefers-reduced-motion:reduce){.world-gassihilfe .help-paths a{transform:none!important}}
+
+@media(min-width:621px){.help-hero-copy{width:45%;padding-top:60px;padding-left:7%;background:radial-gradient(ellipse at 45% 55%,#fff3d390,transparent 73%)}.world-gassihilfe .help-hero h1{font-size:clamp(2.5rem,4vw,3.2rem)}.help-hero-copy>p:last-child{max-width:350px;font-size:.9rem;text-shadow:0 1px 1px #fff7e3}}

@@ -228,9 +228,9 @@
     {
       "id": "trusted-care",
       "kind": "service",
-      "title": "Trusted care & longer arrangements",
-      "detail": "Contacts, day care, overnight stays and several days.",
-      "path": "leistungen/rubybubys-herz-und-schnauze/betreuung/",
+      "title": "My contacts & care",
+      "detail": "Trusted people and private care arrangements in your account.",
+      "path": "konto/#konto-kontakte",
       "terms": "Betreuung betreuen aufpassen Hundesitter Sitter Urlaub Übernachtung länger Kontakte care caring sitter holiday overnight longer contacts"
     },
     {

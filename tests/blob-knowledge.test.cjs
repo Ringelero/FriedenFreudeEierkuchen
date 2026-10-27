@@ -54,3 +54,5 @@ test('English output keeps bilingual keywords and opens the English guide',()=>{
   assert.match(match.title,/nails/);
   assert.equal(new URL(match.path,'https://gemden.red/en/').pathname,'/en/leistungen/rubybubys-herz-und-schnauze/lernen/krallen/');
 });
+
+test('contact lookup leads to the account tab without accepting arbitrary private URLs',()=>{assert.equal(api.safePath('konto/#konto-kontakte'),true);assert.equal(api.safePath('konto/?anfrage=private#konto-kontakte'),false);assert.equal(api.safePath('konto/#password-form'),false);assert.equal(corpus().find(i=>i.id==='trusted-care').path,'konto/#konto-kontakte');});

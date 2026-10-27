@@ -25,7 +25,7 @@
     return {
       walks:{key:'walks',group:'walk',title:"My dog-walking meeting points",detail:"Favourite places and non-binding two-hour slots.",href:url('treffpunkte/?leistung='+RUBY)},
       discover:{key:'discover',group:'walk',title:"Discover new meeting points",detail:"Other places, descriptions and current dog-walking slots.",href:url('treffpunkte/?leistung='+RUBY+'&ansicht=entdecken')},
-      care:{key:'care',group:'walk',title:"Dog-walking help & care",detail:"Get to know people and arrange support.",href:url('leistungen/rubybubys-herz-und-schnauze/betreuung/')},
+      care:{key:'care',group:'walk',title:"Dog-walking help & care",detail:"Get to know people and arrange support.",href:url('leistungen/rubybubys-herz-und-schnauze/gassihilfe/')},
       learning:{key:'learning',group:'learn',title:"The learning house",detail:"Find a relevant guide to behaviour, everyday life and care.",href:url('leistungen/rubybubys-herz-und-schnauze/lernen/')},
       hygiene:{key:'hygiene',group:'learn',title:"Care & hygiene",detail:"Nails, ears, teeth, coat and paws.",href:url('leistungen/rubybubys-herz-und-schnauze/lernen/#pflege')},
       playvideo:{key:'playvideo',group:'learn',title:"Observe dog play in a video",detail:"A real clip with questions and explanations.",href:url('leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel-video/')},

@@ -13,4 +13,4 @@ jobs:
           node-version: '22'
       - run: node scripts/build-languages.mjs --check
       - run: node scripts/build-learning.mjs --check
-      - run: node --test tests/language*.test.cjs tests/learning-house.test.cjs tests/blob-knowledge.test.cjs tests/blob-suggestions.test.cjs tests/blob-raccoon.test.cjs tests/places.test.cjs
+      - run: node --test tests/language*.test.cjs tests/learning-house.test.cjs tests/blob-knowledge.test.cjs tests/blob-suggestions.test.cjs tests/blob-raccoon.test.cjs tests/places.test.cjs tests/account-views.test.cjs tests/care-workspace.test.cjs tests/care-entry.test.cjs

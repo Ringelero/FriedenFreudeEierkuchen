@@ -11,7 +11,7 @@
    handover:required(input.handover,1000,'Übergabe'),reachability:required(input.reachability,1000,'Erreichbarkeit'),routine:required(input.routine,2000,'Alltag und Bedürfnisse'),terms:required(input.terms,1000,'Kosten und Rahmen'),backup};
  }
  function localTime(iso){if(!iso)return '';const d=new Date(iso);return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);}
- function roomHref(id){if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id||''))throw new Error('Der private Austausch hat keine gültige Kennung.');return `/konto/?resonanz=${id}#resonance-center`;}
+ function roomHref(id,language='de'){if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id||''))throw new Error('Der private Austausch hat keine gültige Kennung.');return `${language==='en'?'/en':''}/konto/?resonanz=${id}#resonance-center`;}
  function mount(el,client){
   const $=s=>el.querySelector(s),status=$('[data-care-status]'),detail=$('[data-care-detail]');let generation=0,listEpoch=0,detailEpoch=0,page=0,planPage=0,selected=null,profile=null,busy=false,disposed=false;
   const requested=new URLSearchParams(location.search).get('anfrage');
@@ -45,7 +45,7 @@
    }return card;
   }
   function renderDetail(){const d=selected;detail.hidden=false;detail.replaceChildren();const header=node('div',undefined,'care-section-head');header.append(node('h2',`Mit ${d.counterpart_name}`),button('Schließen',()=>{detailEpoch++;detail.hidden=true;detail.replaceChildren();selected=null;const u=new URL(location.href);u.searchParams.delete('anfrage');u.hash='kontakte';history.replaceState(null,'',u);},'care-secondary'));detail.append(header,node('p',d.title,'help-hint'));
-   const actions=node('div',undefined,'care-actions');actions.append(link(d.can_write?'Privat miteinander schreiben ↗':'Bisherigen Nachrichtenverlauf ansehen ↗',roomHref(d.response_id)));
+   const actions=node('div',undefined,'care-actions');actions.append(link(d.can_write?'Privat miteinander schreiben ↗':'Bisherigen Nachrichtenverlauf ansehen ↗',roomHref(d.response_id,document.documentElement.lang)));
    if(d.saved||d.can_write)actions.append(button(d.saved?'♡ Kontakt entfernen':'♡ Kontakt merken',()=>perform(async g=>{await rpc('set_trusted_care_contact',{requested_response:d.response_id,saved:!d.saved});if(g!==generation)return;await workspace();await open(d.response_id,false,planPage);message(d.saved?'Aus deiner privaten Kontaktliste entfernt.':'Nur für dich als vertrauter Kontakt gespeichert.');}),'care-secondary'));detail.append(actions);
    if(!d.can_write)detail.append(node('p','Der private Austausch ist beendet oder ein Konto ist gerade nicht aktiv. Neue Vorschläge und Zustimmungen sind hier nicht möglich. Eine vorhandene Absprache kannst du weiterhin absagen.','help-hint'));
    if(d.plans.length)d.plans.forEach(p=>detail.append(renderPlan(p,d)));else detail.append(node('p','Noch keine Betreuung abgesprochen. Klärt erst, ob ihr euch miteinander wohlfühlt. Dann könnt ihr einen konkreten Zeitraum vorschlagen.','care-empty'));

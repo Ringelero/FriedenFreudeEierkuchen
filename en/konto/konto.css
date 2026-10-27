@@ -551,3 +551,16 @@ body.account-home :is(.account-view-nav,.account-route,.account-section-links,.a
  .account-session-footer{align-items:start;flex-direction:column;gap:12px}.account-session-footer .button{align-self:stretch}.account-management{align-items:start;flex-direction:column}
 }
 @media(prefers-reduced-motion:reduce){.account-route{transition:none}.account-route:hover{transform:none}}
+
+/* Private contacts belong to the signed-in account. */
+.account-care{--herz-ink:#2c4339;--herz-ruby:#8f354d;--herz-muted:#6c7568;--herz-line:#dfd5c5;min-width:0}
+.account-care [hidden]{display:none!important}.account-care .care-login{padding:18px 20px;border-radius:12px;background:#f7f3ea}.account-care .care-login h2{font-size:1.4rem}
+.account-care .care-section h2{font:500 1.5rem/1.25 Georgia,serif}.account-care .care-person h3,.account-care .care-conversation h3{font-size:1.3rem}
+.account-care .care-nav{gap:8px}.account-care .care-nav a{background:#eeeade;color:#625846;font-size:.77rem;padding:7px 10px}
+.account-care button{min-height:44px;padding:10px 13px;border:1px solid #d6c5b5;border-radius:10px;background:#fffaf1;color:#7a3448;font:600 .8rem/1.4 system-ui;cursor:pointer}.account-care button:disabled{opacity:.55;cursor:wait}
+.account-care :is(input,select,textarea){width:100%;max-width:100%;min-width:0;box-sizing:border-box;padding:11px;border:1px solid #d6c8bd;border-radius:9px;background:#fffdf7;font:inherit;color:#344d40}.account-care textarea{resize:vertical}.account-care label{display:grid;gap:6px;font-size:.8rem;font-weight:600}
+.account-care .help-hint,.account-care .help-status{font-size:.8rem;line-height:1.65;color:#6c7568}.account-care [data-state=error]{color:#a12d43}
+.account-care .care-actions{gap:8px}.account-care .care-detail{padding:22px;background:#f5eddf;border-radius:13px}.account-care .care-propose,.account-care form>button[type=submit]{background:#8f354d;color:#fff8f0}
+.account-care .care-section-head h2{font-size:1.5rem}.account-care .help-pager{display:flex;gap:10px;margin-top:12px}
+.account-care .care-contacts,.account-care .care-conversations{grid-template-columns:repeat(2,minmax(0,1fr))}.account-care .care-plan-facts div{grid-template-columns:110px minmax(0,1fr)}
+@media(max-width:700px){.account-care .care-contacts,.account-care .care-conversations{grid-template-columns:1fr}.account-care .care-section-head{flex-wrap:wrap}.account-care .care-detail{padding:17px 13px}.account-care .care-plan-facts div{grid-template-columns:1fr}}
