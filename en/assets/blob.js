@@ -45,6 +45,17 @@
         <button id="blob-close" class="secondary" type="button">Quiet</button>
       </div></details>`;
     document.body.append(character, chat);
+    // The small theme module is needed only in the service and its shared views.
+    if (/^\/(?:en\/)?(?:leistungen\/rubybubys-herz-und-schnauze(?:\/|$)|treffpunkte\/|kalender\/)/.test(location.pathname)) {
+      const style = document.createElement('link');
+      style.rel = 'stylesheet'; style.href = root + 'assets/blob-raccoon.css?v=20261027-1';
+      document.head.append(style);
+      const script = document.createElement('script');
+      script.src = root + 'assets/blob-raccoon.js?v=20261027-1';
+      script.onload = () => window.GemDenBlobRaccoon.mount({root,chat,character});
+      script.onerror = () => { script.remove(); style.remove(); };
+      document.head.append(script);
+    }
     // Send only the public path as context, never account query strings or fragments.
     document.getElementById('blob-feedback').href = /\/tickets\/(?:index\.html)?$/.test(location.pathname) ? '#new-ticket-title' : root + 'tickets/?seite=' + encodeURIComponent(location.pathname) + '#new-ticket-title';
 
@@ -130,6 +141,11 @@
     function named(prefix) { return state.name ? `${state.name}: ${prefix}` : prefix; }
 
     const lines = {
+      raccoon: [
+        "Ask me about a guide and I will take you to the right page.",
+        "A walk, a meetup or care? Find the direct routes here.",
+        "The learning house offers guides, original sources and videos to keep learning."
+      ],
       guide: [
         "I'm Blob: a guide, a toy and professionally unqualified for absolute rule.",
         "Institution, situation, profile, tool, evidence. Five steps. No mystical oracle fog.",
@@ -150,7 +166,7 @@
       ]
     };
     function nextLine() {
-      const pool = lines[pageMode] || lines.guide;
+      const pool = character.classList.contains('blob-raccoon') ? lines.raccoon : lines[pageMode] || lines.guide;
       say(named(pool[Math.floor(Math.random() * pool.length)]), `Blob · ${pageMode}`, true);
       emote();
     }
@@ -244,6 +260,7 @@
       emote();
     });
     setInterval(() => {
+      if (character.classList.contains('blob-raccoon')) return;
       character.classList.add('blink');
       setTimeout(() => character.classList.remove('blink'), 150);
     }, 3900);
