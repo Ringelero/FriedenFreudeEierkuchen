@@ -4,8 +4,7 @@
   else root.GemDenBlobRaccoon=api;
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const RUBY='SERVICE-RUBYBUBYS-HERZ-SCHNAUZE';
-  const motionKey='gemden_blob_raccoon_motion_v1';
+  const RUBY='SERVICE-RUBYBUBYS-HERZ-SCHNAUZE',motionKey='gemden_blob_raccoon_motion_v1';
   function isContext(path,search=''){
     const p=String(path||'').replace(/^\/en(?=\/)/,'').replace(/index\.html$/,'');
     if(p.includes('..')||/[\\%]/.test(p))return false;
@@ -15,70 +14,93 @@
   }
   const animationEnabled=({reduced=false,paused=false}={})=>!reduced&&!paused;
   function mount({root:relativeRoot,chat,character}){
-    if(chat.querySelector('.blob-raccoon-greeting'))return;
-    const base=new URL(relativeRoot,location.href),assets=new URL('/assets/blob-waschbaer/',base).href;
+    if(character.querySelector('.blob-raccoon-body'))return;
+    const assets=new URL('/assets/blob-waschbaer/',new URL(relativeRoot,location.href)).href;
     const media=window.matchMedia('(prefers-reduced-motion: reduce)');
     let paused=false;try{paused=localStorage.getItem(motionKey)==='off';}catch{}
-    let active=false,open=chat.classList.contains('open'),failed=false,epoch=0,waveTimer=null,poseLoading=null,posesReady=false;
-    const head=document.createElement('img');head.className='blob-raccoon-head';head.alt='';head.width=160;head.height=138;head.draggable=false;head.hidden=true;character.append(head);
-    const greeting=document.createElement('div');greeting.className='blob-raccoon-greeting';greeting.hidden=true;
-    greeting.innerHTML="<button type=\"button\" class=\"blob-raccoon-figure\" aria-label=\"Let Blob wave\" title=\"Let Blob wave\"><img class=\"blob-raccoon-sitting\" alt=\"\" width=\"234\" height=\"256\"><svg class=\"blob-raccoon-wave\" viewBox=\"0 0 710 800\" aria-hidden=\"true\" focusable=\"false\"><defs><clipPath id=\"blob-raccoon-body\"><path clip-rule=\"evenodd\" fill-rule=\"evenodd\" d=\"M0 0H710V800H0Z M13 209L126 209L146 336L168 378L220 427L241 454L223 508L114 494L48 426L13 350Z\"/></clipPath><clipPath id=\"blob-raccoon-paw\"><path d=\"M13 209L126 209L146 336L168 378L220 427L241 454L223 508L114 494L48 426L13 350Z\"/></clipPath></defs><image data-raccoon-body width=\"710\" height=\"800\" clip-path=\"url(#blob-raccoon-body)\"/><g class=\"blob-raccoon-paw\"><image data-raccoon-paw width=\"710\" height=\"800\" clip-path=\"url(#blob-raccoon-paw)\"/></g></svg></button><div class=\"blob-raccoon-caption\"><strong>Blob</strong><span>Herz und Schnauze</span><button type=\"button\" class=\"blob-raccoon-motion\" aria-pressed=\"false\">Pause movement</button></div>";
-    chat.prepend(greeting);
-    const figure=greeting.querySelector('.blob-raccoon-figure'),sitting=greeting.querySelector('.blob-raccoon-sitting'),toggle=greeting.querySelector('.blob-raccoon-motion');
+    let active=false,open=chat.classList.contains('open'),failed=false,epoch=0,poseLoading=null,posesReady=false;
+    const timers=new Set();
+    const head=document.createElement('img');head.className='blob-raccoon-head';head.alt='';head.width=160;head.height=138;head.draggable=false;head.hidden=true;
+    const body=document.createElement('span');body.className='blob-raccoon-body';body.hidden=true;body.setAttribute('aria-hidden','true');
+    body.innerHTML='<img class="blob-raccoon-sitting" alt="" width="234" height="256" draggable="false"><svg class="blob-raccoon-wave" viewBox="0 0 710 800" aria-hidden="true" focusable="false"><defs><clipPath id="blob-raccoon-body"><path clip-rule="evenodd" fill-rule="evenodd" d="M0 0H710V800H0Z M13 209L126 209L146 336L168 378L220 427L241 454L223 508L114 494L48 426L13 350Z"/></clipPath><clipPath id="blob-raccoon-paw"><path d="M13 209L126 209L146 336L168 378L220 427L241 454L223 508L114 494L48 426L13 350Z"/></clipPath></defs><image data-raccoon-body width="710" height="800" clip-path="url(#blob-raccoon-body)"/><g class="blob-raccoon-paw"><image data-raccoon-paw width="710" height="800" clip-path="url(#blob-raccoon-paw)"/></g></svg>';
+    character.append(head,body);
+    const sitting=body.querySelector('.blob-raccoon-sitting');
+    const controls=document.createElement('div');controls.className='blob-raccoon-controls';controls.hidden=true;
+    const waveButton=document.createElement('button'),stretchButton=document.createElement('button'),toggle=document.createElement('button');
+    for(const b of [waveButton,stretchButton,toggle]){b.type='button';b.className='secondary';}
+    waveButton.textContent="Wave";stretchButton.textContent="Stretch";toggle.classList.add('blob-raccoon-motion');
+    controls.append(waveButton,stretchButton,toggle);chat.querySelector('.blob-other-ways').append(controls);
     const line=chat.querySelector('#blob-line'),originalLine=line.textContent,welcome="Your companion for walks, care and learning together.";
     const canMove=()=>animationEnabled({reduced:media.matches,paused});
-    function stopWave(){epoch++;clearTimeout(waveTimer);waveTimer=null;greeting.classList.remove('is-waving');}
+    function later(fn,ms){const t=setTimeout(()=>{timers.delete(t);fn();},ms);timers.add(t);}
+    function stopMotion(){epoch++;for(const t of timers)clearTimeout(t);timers.clear();character.classList.remove('is-waving','raccoon-joy','raccoon-stretch','raccoon-curious');}
+    function fitCharacter(){
+      if(!character.classList.contains('blob-positioned')||matchMedia('(max-width:760px)').matches)return;
+      const rect=character.getBoundingClientRect();
+      character.style.left=Math.max(4,Math.min(innerWidth-rect.width-4,rect.left))+'px';
+      character.style.top=Math.max(4,Math.min(innerHeight-rect.height-4,rect.top))+'px';
+    }
+    function pose(){
+      character.classList.toggle('raccoon-expanded',active&&open&&posesReady);
+      character.setAttribute('aria-label',open?"Close Blob":"Open Blob");requestAnimationFrame(fitCharacter);
+    }
     function applyMotion(){
-      character.classList.toggle('raccoon-motion-active',active&&canMove());
+      character.classList.toggle('raccoon-motion-active',active&&canMove()&&!document.hidden);
       chat.classList.toggle('raccoon-motion-paused',!canMove());
       toggle.hidden=media.matches;toggle.textContent=paused?"Enable movement":"Pause movement";toggle.setAttribute('aria-pressed',String(paused));
-      figure.disabled=!canMove();if(!canMove())stopWave();
+      waveButton.disabled=stretchButton.disabled=!canMove();if(!canMove())stopMotion();
     }
-    function loadImage(src){return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve();image.onerror=reject;image.src=src;});}
+    function loadImage(src){return new Promise((resolve,reject)=>{const image=new Image();image.onload=resolve;image.onerror=reject;image.src=src;});}
     function loadPoses(){
       if(poseLoading)return poseLoading;
       const sittingSrc=assets+'sitzend-256.webp',waveSrc=assets+'winkend-256.webp';
       poseLoading=Promise.all([loadImage(sittingSrc),loadImage(waveSrc)]).then(()=>{
-        sitting.src=sittingSrc;greeting.querySelector('[data-raccoon-body]').setAttribute('href',waveSrc);greeting.querySelector('[data-raccoon-paw]').setAttribute('href',waveSrc);posesReady=true;
+        sitting.src=sittingSrc;body.querySelector('[data-raccoon-body]').setAttribute('href',waveSrc);body.querySelector('[data-raccoon-paw]').setAttribute('href',waveSrc);posesReady=true;
       }).catch(()=>{poseLoading=null;});
       return poseLoading;
     }
-    async function wave(){
-      stopWave();if(!active||!open||!canMove()||document.hidden)return;
+    async function showBody(greet=false){
       const current=epoch;await loadPoses();
-      if(current!==epoch||!posesReady||!active||!open||!canMove()||document.hidden)return;
-      void greeting.offsetWidth;greeting.classList.add('is-waving');waveTimer=setTimeout(()=>{greeting.classList.remove('is-waving');waveTimer=null;},2600);
+      if(!active||!open||!posesReady)return;
+      pose();if(current===epoch&&greet&&canMove()&&!document.hidden)wave();
     }
+    function animate(kind,duration){
+      stopMotion();if(!active||!open||!posesReady||!canMove()||document.hidden)return;
+      void character.offsetWidth;character.classList.add(kind);later(()=>character.classList.remove(kind),duration);
+    }
+    function wave(){animate('is-waving',2600);}
     function updateScope(){
       const enabled=!failed&&isContext(location.pathname,location.search);
       if(enabled===active)return;
-      active=enabled;character.classList.toggle('blob-raccoon',active);chat.classList.toggle('blob-raccoon-chat',active);head.hidden=greeting.hidden=!active;
+      active=enabled;character.classList.toggle('blob-raccoon',active);chat.classList.toggle('blob-raccoon-chat',active);
+      head.hidden=body.hidden=controls.hidden=!active;
       if(active){
-        head.src=assets+'gesicht-160.webp';if(!sitting.getAttribute('src'))sitting.src=head.src;
-        if(line.textContent===originalLine)line.textContent=welcome;
-        applyMotion();if(open)wave();
-      }else{stopWave();character.classList.remove('raccoon-motion-active');if(line.textContent===welcome)line.textContent=originalLine;}
+        head.src=assets+'gesicht-160.webp';if(line.textContent===originalLine)line.textContent=welcome;
+        applyMotion();pose();if(open)showBody(true);
+      }else{
+        stopMotion();character.classList.remove('raccoon-motion-active','raccoon-expanded');
+        if(line.textContent===welcome)line.textContent=originalLine;
+      }
     }
+    character.addEventListener('transitionend',event=>{if(event.target===character)fitCharacter();});
     head.addEventListener('load',()=>character.classList.add('raccoon-art-ready'));
     head.addEventListener('error',()=>{failed=true;updateScope();});
-    toggle.addEventListener('click',()=>{paused=!paused;try{localStorage.setItem(motionKey,paused?'off':'on');}catch{}applyMotion();if(!paused)wave();});
-    figure.addEventListener('click',wave);
+    toggle.addEventListener('click',()=>{paused=!paused;try{localStorage.setItem(motionKey,paused?'off':'on');}catch{}applyMotion();if(!paused&&open)wave();});
+    waveButton.addEventListener('click',wave);
+    stretchButton.addEventListener('click',()=>animate('raccoon-stretch',1600));
+    character.addEventListener('pointerenter',()=>{if(active&&!open&&canMove()){character.classList.add('raccoon-curious');later(()=>character.classList.remove('raccoon-curious'),1200);}});
     media.addEventListener?.('change',applyMotion);
     window.addEventListener('blob:visibility',event=>{
-      const wasOpen=open;open=event.detail?.open===true;
-      if(!open){stopWave();return;}
-      if(active){loadPoses();if(!wasOpen)wave();}
+      const wasOpen=open;open=event.detail?.open===true;stopMotion();pose();
+      if(active&&open)showBody(!wasOpen);
     });
-    document.addEventListener('visibilitychange',()=>{if(document.hidden)stopWave();});
-    window.addEventListener('pagehide',stopWave);
-    window.addEventListener('popstate',updateScope);
-    window.addEventListener('pageshow',updateScope);
-    // These pages update their public URL synchronously in click/change handlers.
+    for(const event of ['blob:say','blob:react'])window.addEventListener(event,()=>{if(active&&open)animate('raccoon-joy',900);});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)stopMotion();applyMotion();});
+    window.addEventListener('pagehide',stopMotion);
+    window.addEventListener('popstate',updateScope);window.addEventListener('pageshow',updateScope);
     const afterInteraction=()=>queueMicrotask(updateScope);
-    document.addEventListener('click',afterInteraction);
-    document.addEventListener('change',afterInteraction);
-    updateScope();
-    return {updateScope,wave};
+    document.addEventListener('click',afterInteraction);document.addEventListener('change',afterInteraction);
+    updateScope();return {updateScope,wave};
   }
   return {RUBY,isContext,animationEnabled,mount};
 });

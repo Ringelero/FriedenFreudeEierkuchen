@@ -48,10 +48,10 @@
     // The small theme module is needed only in the service and its shared views.
     if (/^\/(?:en\/)?(?:leistungen\/rubybubys-herz-und-schnauze(?:\/|$)|treffpunkte\/|kalender\/)/.test(location.pathname)) {
       const style = document.createElement('link');
-      style.rel = 'stylesheet'; style.href = root + 'assets/blob-raccoon.css?v=20261027-1';
+      style.rel = 'stylesheet'; style.href = root + 'assets/blob-raccoon.css?v=20261027-2';
       document.head.append(style);
       const script = document.createElement('script');
-      script.src = root + 'assets/blob-raccoon.js?v=20261027-1';
+      script.src = root + 'assets/blob-raccoon.js?v=20261027-2';
       script.onload = () => window.GemDenBlobRaccoon.mount({root,chat,character});
       script.onerror = () => { script.remove(); style.remove(); };
       document.head.append(script);
@@ -71,7 +71,7 @@
         css.rel = 'stylesheet'; css.href = root + 'assets/blob-knowledge.css?v=20261026-1';
         document.head.append(css);
         const script = document.createElement('script');
-        script.src = root + 'assets/blob-knowledge.js?v=20261026-1';
+        script.src = root + 'assets/blob-knowledge.js?v=20261027-1';
         script.onload = () => { window.GemDenBlobKnowledge.mount({root,chat}); resolve(); };
         script.onerror = () => { script.remove(); css.remove(); reject(new Error('knowledge')); };
         document.head.append(script);
