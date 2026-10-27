@@ -117,7 +117,7 @@
   .possibilities-page .workshop-hero-art {inset:0}
   .possibilities-page .workshop-hero-copy {width:47%;max-width:860px}
   .possibilities-page .workshop-hero-copy h1 {
-    font-size:clamp(3.1rem,4.4vw,5.7rem);line-height:1.04;
+    font-size:clamp(3.1rem,4.4vw,5.7rem);line-height:1.04;text-wrap:balance;
   }
   .possibilities-page:lang(en) .workshop-hero-copy h1 {
     font-size:clamp(3rem,4vw,5rem);
