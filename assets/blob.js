@@ -71,7 +71,7 @@
         css.rel = 'stylesheet'; css.href = root + 'assets/blob-knowledge.css?v=20261026-1';
         document.head.append(css);
         const script = document.createElement('script');
-        script.src = root + 'assets/blob-knowledge.js?v=20261027-2';
+        script.src = root + 'assets/blob-knowledge.js?v=20261027-3';
         script.onload = () => { window.GemDenBlobKnowledge.mount({root,chat}); resolve(); };
         script.onerror = () => { script.remove(); css.remove(); reject(new Error('knowledge')); };
         document.head.append(script);

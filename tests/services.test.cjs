@@ -7,6 +7,29 @@ const root = path.resolve(__dirname, '..');
 const catalog = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/services.v1.json'), 'utf8'));
 const community = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/community-v0.1.json'), 'utf8'));
 const clone = value => JSON.parse(JSON.stringify(value));
+
+test('homeless support is one ideas-only Rubybubys service across all entry points and languages', () => {
+  const service = catalog.services.find(item => item.id === 'SERVICE-RUBYBUBYS-OBDACHLOSENHILFE');
+  assert.ok(service);
+  assert.deepEqual(service.provider_ids, ['DYN-RUBYBUBYS']);
+  assert.deepEqual(service.category_ids, ['SOCIAL']);
+  assert.equal(api.availabilityLabel(service), 'In Vorbereitung');
+  assert.equal(service.availability, undefined);
+  for (const language of ['', 'en/']) {
+    const localized = JSON.parse(fs.readFileSync(path.join(root, language, 'assets/data/services.v1.json'), 'utf8')).services.find(item => item.id === service.id);
+    assert.equal(localized.public_path, service.public_path);
+    for (const page of ['leistungen/index.html', 'community/index.html', 'community/dynastien/rubybubys/index.html']) {
+      const html = fs.readFileSync(path.join(root, language, page), 'utf8');
+      assert.ok(html.includes(`data-service-id="${service.id}"`));
+      const links = [...html.matchAll(/href="([^"]+)"/g)].map(match => new URL(match[1], `https://gemden.red/${language}${page}`).pathname);
+      assert.ok(links.includes('/' + language + service.public_path.slice(1)), `${language}${page}: fallback link missing`);
+    }
+    const page = fs.readFileSync(path.join(root, language, service.public_path, 'index.html'), 'utf8');
+    assert.equal((page.match(/<details\b/g) || []).length, 6);
+    assert.match(page, language ? /Ideas collection/ : /Ideensammlung/);
+    assert.match(page, language ? /not yet been implemented/ : /noch nicht umgesetzt/);
+  }
+});
 test('availability distinguishes usable tools from a growing network and respects pauses',()=>{
  const service=clone(catalog.services[0]);assert.equal(api.availabilityLabel(service),'Teilweise nutzbar');
  service.status='paused';assert.equal(api.availabilityLabel(service),'Pausiert');
@@ -21,7 +44,7 @@ test('a shared service retains its identity across topic and community views', (
   const topic = api.selectServices(fixture, { categoryId: 'SOCIAL' });
   const dynasty = api.selectServices(fixture, { providerId: 'DYN-RUBYBUBYS' });
   const kiez = api.selectServices(fixture, { providerId: 'KIEZ-P-HAIN' });
-  assert.equal(topic.length, 1);
+  assert.equal(topic.length, fixture.services.length);
   assert.equal(topic[0], dynasty[0]);
   assert.equal(topic[0], kiez[0]);
   assert.equal(api.selectServices(fixture, { categoryId: 'UNKNOWN' }).length, 0);
@@ -30,10 +53,10 @@ test('a shared service retains its identity across topic and community views', (
 
 test('a service does not appear as another community offer and archived records disappear', () => {
   assert.equal(api.selectServices(catalog, { providerId: 'KIEZ-P-HAIN' }).length, 0);
-  assert.equal(api.selectServices(catalog, { providerId: 'DYN-RUBYBUBYS', categoryId: 'SOCIAL' }).length, 1);
+  assert.equal(api.selectServices(catalog, { providerId: 'DYN-RUBYBUBYS', categoryId: 'SOCIAL' }).length, catalog.services.length);
   const archived = clone(catalog);
   archived.services[0].status = 'archived';
-  assert.equal(api.selectServices(archived).length, 0);
+  assert.equal(api.selectServices(archived).some(service => service.id === archived.services[0].id), false);
 });
 
 test('unresolved providers, categories and duplicate records are rejected', () => {

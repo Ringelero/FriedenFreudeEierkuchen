@@ -162,6 +162,14 @@
       "terms": "Wann ein Artikel nicht mehr reicht When an article is not enough Tierarzt Trainer Hundeschule Angst Schmerzen Hilfe aggressiv vet trainer dog school fear pain help aggression Trainer Hundeschule Verhaltenstherapie Tierarzt Schmerzen Aggression Angst Hilfe dog trainer behaviourist vet pain aggression fear help"
     },
     {
+      "id": "homeless-support",
+      "kind": "service",
+      "title": "Rubybubys homelessness support",
+      "detail": "Ideas for supporting people experiencing homelessness. Still in preparation.",
+      "path": "leistungen/rubybubys-obdachlosenhilfe/",
+      "terms": "Obdachlosenhilfe obdachlos Obdachlose Obdachlosen Wohnungslosenhilfe wohnungslos Wohnungslose Wohnungslosen soziale Hilfe unterstützen homelessness homeless unhoused support ideas"
+    },
+    {
       "id": "learning-house",
       "kind": "learning",
       "title": "The learning house",
