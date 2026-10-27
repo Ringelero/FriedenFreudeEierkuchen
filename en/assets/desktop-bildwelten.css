@@ -1,0 +1,148 @@
+/* Existing page worlds expand with desktop windows; phone layouts stay separate. */
+@media (min-width:1101px) {
+  :is(.garden-home,.community-overview,.possibilities-page) {
+    --desktop-gutter:clamp(28px,3vw,76px);
+  }
+  :is(.garden-home,.community-overview,.possibilities-page) .site-shell {
+    width:100%; max-width:2400px; padding-inline:var(--desktop-gutter);
+  }
+  :is(.community-overview,.possibilities-page) .site-nav {
+    padding:11px 18px; gap:18px;
+  }
+  :is(.community-overview,.possibilities-page) .site-nav .nav-links {
+    gap:clamp(5px,.6vw,16px);
+  }
+  :is(.community-overview,.possibilities-page) .site-nav .nav-links a {
+    padding:12px clamp(10px,1vw,22px); font-size:clamp(.84rem,.85vw,1rem);
+  }
+  :is(.community-overview,.possibilities-page) .site-nav .site-mark {
+    font-size:clamp(1.65rem,1.65vw,2.2rem);
+  }
+
+  /* The painted home frame, portal and three paths grow together. */
+  .garden-home {
+    --garden-portal-size:clamp(440px,33vw,760px);
+  }
+  .garden-home .site-shell {padding-top:clamp(25px,2vw,42px)}
+  .garden-home .site-shell::before {
+    width:100%; height:calc(var(--garden-portal-size) + 600px);
+  }
+  .garden-home .site-nav {
+    margin-left:clamp(145px,calc(20vw - 100px),340px);
+    margin-right:clamp(25px,3.5vw,84px);
+  }
+  .garden-home .site-nav .site-mark {
+    font-size:clamp(2.65rem,3.5vw,3.6rem);
+  }
+  .garden-home .home-hero {
+    grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);
+    min-height:0;
+    padding:clamp(28px,2.5vw,55px) clamp(20px,2vw,48px) 15px clamp(155px,12vw,280px);
+    gap:clamp(20px,2.2vw,52px);
+  }
+  .garden-home .home-story {min-width:0;padding:23px 15px;gap:22px}
+  .garden-home .home-hero .display {
+    max-width:16ch;font-size:clamp(3.35rem,4.7vw,6.2rem);line-height:1.02;
+  }
+  .garden-home .home-story .lead {
+    max-width:49ch;font-size:clamp(1.1rem,1.22vw,1.4rem);line-height:1.6;
+  }
+  .garden-home .world-portal {
+    width:min(100%,var(--garden-portal-size));max-width:none;
+  }
+  .garden-home .portal-label {
+    max-width:34ch;font-size:clamp(.82rem,.85vw,1rem);padding:8px 15px;
+  }
+  .garden-home .garden-paths {
+    gap:clamp(14px,1.4vw,32px);margin:12px clamp(28px,4vw,94px) 0;
+  }
+  .garden-home .garden-path {
+    min-height:clamp(335px,20vw,410px);
+    padding:clamp(45px,3vw,66px) clamp(35px,3.3vw,76px);
+    gap:17px;
+  }
+  .garden-home .garden-symbol {width:clamp(48px,3.1vw,68px);height:clamp(48px,3.1vw,68px)}
+  .garden-home .garden-path b {font-size:clamp(1.45rem,1.9vw,2.45rem)}
+  .garden-home .garden-path small {font-size:clamp(.96rem,1vw,1.16rem)}
+  .garden-home main > .section {
+    width:100%;max-width:1800px;margin-inline:auto;
+    padding:clamp(60px,5vw,100px) clamp(24px,3vw,70px) 0;
+  }
+  .garden-home .grid.three {gap:clamp(20px,2vw,40px)}
+  .garden-home .footer {margin:64px clamp(24px,3vw,70px) 0}
+
+  /* The community panorama reaches the edges; navigation cards share its scale. */
+  .community-overview .community-hero {
+    min-height:clamp(600px,70svh,840px);
+    margin-inline:calc(-1 * var(--desktop-gutter));
+    padding:60px calc(var(--desktop-gutter) + 20px) 94px;
+  }
+  .community-overview .community-hero-art {inset:0}
+  .community-overview .community-hero-art img {object-position:64% center}
+  .community-overview .community-hero-copy {width:40%;max-width:720px}
+  .community-overview .community-hero-copy h1 {
+    font-size:clamp(3.6rem,4.8vw,6.3rem);line-height:1.02;
+  }
+  .community-overview .community-hero-copy > p:not(.eyebrow) {
+    max-width:36ch;font-size:clamp(1rem,1.05vw,1.22rem);line-height:1.75;
+  }
+  .community-overview .community-hero-copy .button {
+    font-size:clamp(.85rem,.85vw,1rem);padding:14px 22px;
+  }
+  .community-overview .community-portals {
+    margin-top:-46px;gap:clamp(16px,1.3vw,30px);
+  }
+  .community-overview .community-portal {
+    grid-template-rows:clamp(175px,12vw,265px) 1fr;
+  }
+  .community-overview .community-portal-art {height:clamp(175px,12vw,265px)}
+  .community-overview .community-portal-copy {padding:24px clamp(22px,1.7vw,38px) 30px;gap:12px}
+  .community-overview .community-portal-copy strong {font-size:clamp(1.65rem,2vw,2.65rem)}
+  .community-overview .community-portal-copy > span {font-size:clamp(.88rem,.86vw,1rem)}
+  .community-overview .community-portal-copy small {font-size:clamp(.76rem,.73vw,.88rem)}
+  .community-overview .community-sections,
+  .community-overview .section {width:100%;max-width:1800px}
+  .community-overview .community-kiez-card,
+  .community-overview .community-kiez-card .community-card-art {min-height:clamp(245px,17vw,350px)}
+  .community-overview .community-dynasty-main,
+  .community-overview .community-ruby-art {min-height:clamp(300px,22vw,440px)}
+  .community-overview .community-neighborhoods {gap:clamp(20px,1.5vw,34px)}
+
+  /* Remove the 1160px width inherited by the workshop, while keeping prose readable. */
+  .possibilities-page .possibility-hero {
+    min-height:clamp(480px,61svh,760px);
+    margin-inline:calc(-1 * var(--desktop-gutter));
+    padding:65px calc(var(--desktop-gutter) + 22px) 92px;
+  }
+  .possibilities-page .workshop-hero-art {inset:0}
+  .possibilities-page .workshop-hero-copy {width:47%;max-width:860px}
+  .possibilities-page .workshop-hero-copy h1 {
+    font-size:clamp(3.1rem,4.4vw,5.7rem);line-height:1.04;
+  }
+  .possibilities-page:lang(en) .workshop-hero-copy h1 {
+    font-size:clamp(3rem,4vw,5rem);
+  }
+  .possibilities-page .workshop-hero-copy > p:not(.eyebrow) {
+    max-width:38ch;font-size:clamp(1rem,1.05vw,1.22rem);line-height:1.75;
+  }
+  .possibilities-page .workshop-entryways {margin-top:-34px;gap:clamp(16px,1.4vw,32px)}
+  .possibilities-page .workshop-entryways > a {
+    grid-template-rows:clamp(165px,12vw,265px) auto;
+    padding:20px clamp(24px,2vw,44px) 32px;
+  }
+  .possibilities-page .workshop-entry-art {height:clamp(165px,12vw,265px)}
+  .possibilities-page .workshop-entry-copy strong {font-size:clamp(1.8rem,2vw,2.7rem)}
+  .possibilities-page .workshop-entry-copy small {font-size:clamp(.82rem,.85vw,1rem)}
+  .possibilities-page .workshop-entry-arrow {width:40px;height:40px;right:25px;bottom:32px}
+  .possibilities-page [data-possibility-view] {width:100%;max-width:1800px;margin-inline:auto}
+  .possibilities-page .service-card {padding:clamp(28px,2.4vw,48px)}
+  .possibilities-page .service-card h3 {font-size:clamp(1.85rem,2vw,2.6rem)}
+  .possibilities-page .service-card p {max-width:65ch}
+  .possibilities-page .prompt-panel {margin-inline:auto;width:100%}
+}
+
+@media (min-width:861px) and (max-width:1100px) {
+  .garden-home .site-nav {margin-inline:8px}
+  .garden-home .home-hero {padding-left:85px;padding-right:20px}
+  .garden-home .home-hero .display {font-size:clamp(2.6rem,4.8vw,3.3rem)}
+}
