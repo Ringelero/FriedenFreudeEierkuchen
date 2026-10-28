@@ -268,3 +268,38 @@
 @media (prefers-reduced-motion: reduce) {
   .garden-home .garden-path { transition: none; }
 }
+
+/* The second garden continues the existing painting and adds three useful paths. */
+.garden-home .garden-beyond {position:relative;margin-top:clamp(35px,3.5vw,70px);isolation:isolate}
+.garden-home .garden-beyond-heading {max-width:900px;margin:0 auto 18px;padding:0 22px;text-align:center}
+.garden-home .garden-beyond-heading h2 {margin:12px 0 17px;color:var(--ink);font:700 clamp(2.25rem,3.9vw,4.8rem)/1.08 Georgia,serif;letter-spacing:-.045em;text-wrap:balance}
+.garden-home .garden-beyond-heading > p:not(.eyebrow) {max-width:55ch;margin:0 auto;color:var(--muted);font-size:clamp(1rem,1.12vw,1.25rem);line-height:1.65;text-wrap:balance}
+.garden-home .garden-discovery-world {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;align-items:stretch}
+.garden-home .garden-discovery-path {display:flex;flex-direction:column;min-width:0;color:var(--ink);text-decoration:none;border-radius:42% 26% 23% 35% / 8% 12% 5% 8%;padding-bottom:18px}
+.garden-home .garden-discovery-art {display:block;position:relative;overflow:hidden;width:100%;aspect-ratio:1;mask-image:linear-gradient(transparent,#000 5%,#000 85%,transparent);pointer-events:none}
+.garden-home .garden-discovery-art img {display:block;width:300%;max-width:none;height:auto}
+.garden-home .is-kalender .garden-discovery-art img {transform:translateX(-33.333333%)}
+.garden-home .is-system .garden-discovery-art img {transform:translateX(-66.666667%)}
+.garden-home .garden-discovery-copy {position:relative;display:flex;flex-direction:column;align-items:center;gap:15px;flex:1;width:90%;max-width:470px;margin:-15px auto 0;padding:0 18px 18px;text-align:center}
+.garden-home .garden-discovery-copy h3 {margin:0;color:var(--ink);font:700 clamp(1.85rem,2.8vw,3.5rem)/1.12 Georgia,serif;letter-spacing:-.04em}
+.garden-home .garden-discovery-copy p {max-width:31ch;margin:0;color:var(--muted);font-size:clamp(.98rem,1.05vw,1.23rem);line-height:1.6;text-wrap:balance}
+.garden-home .garden-discovery-action {display:inline-flex;align-items:center;justify-content:center;gap:13px;min-height:48px;margin-top:auto;padding:9px 5px;border-bottom:1px solid #9b773d;font-size:clamp(1rem,1.05vw,1.17rem);font-weight:700;line-height:1.4}
+.garden-home .garden-discovery-action > span {transition:transform .18s ease}
+.garden-home .garden-discovery-path:hover .garden-discovery-action {color:#8b3f43;border-color:#8b3f43}
+.garden-home .garden-discovery-path:hover .garden-discovery-action > span {transform:translate(3px,-3px)}
+.garden-home .garden-discovery-path:focus-visible {outline:3px solid #963b4b;outline-offset:4px}
+@media(max-width:760px){
+ .garden-home .site-shell::before {width:100%}
+ .garden-home .garden-beyond {margin-top:55px}
+ .garden-home .garden-beyond-heading {padding:0 14px;margin-bottom:22px}
+ .garden-home .garden-beyond-heading h2 {font-size:clamp(2.15rem,7.8vw,3.4rem)}
+ .garden-home .garden-discovery-world {grid-template-columns:1fr;gap:28px}
+ .garden-home .garden-discovery-path {width:100%;max-width:460px;margin-inline:auto}
+ .garden-home .garden-discovery-art {mask-image:linear-gradient(transparent,#000 5%,#000 88%,transparent)}
+ .garden-home .garden-discovery-path .garden-discovery-art img {width:100%;transform:none}
+ .garden-home .garden-discovery-copy {gap:11px;margin-top:-5px;max-width:390px}
+ .garden-home .garden-discovery-copy h3 {font-size:2.1rem}
+ .garden-home .garden-discovery-copy p {font-size:1.04rem}
+ .garden-home .garden-discovery-action {font-size:1rem}
+}
+@media(prefers-reduced-motion:reduce){.garden-home .garden-discovery-action > span {transition:none}}
