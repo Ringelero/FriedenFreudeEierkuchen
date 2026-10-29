@@ -7,8 +7,9 @@
   <title>GemDen · FriedenFreudeEierkuchen</title>
   <link rel="stylesheet" href="./assets/site.css?v=20261020-2">
   <link rel="stylesheet" href="./assets/blob.css?v=20261016-1">
-  <link rel="stylesheet" href="./assets/home-garden.css?v=20261029-1">
+  <link rel="stylesheet" href="./assets/home-garden.css?v=20261029-2">
   <link rel="stylesheet" href="./assets/desktop-bildwelten.css?v=20261027-2">
+  <link rel="stylesheet" href="./assets/blob-garden-home.css?v=20261029-1">
 <!-- gemden-language:start -->
 <meta name="gemden-languages" content="/ /404.html /community/ /community/dynastien/rubybubys/ /community/kieze/p-hain/ /community/kieze/travelkiez/ /community/mitglieder/julius/ /community/mitglieder/profil/ /community/orte/threeden/ /entwuerfe/blob-waschbaer/ /entwuerfe/herz-gassi/ /entwuerfe/moeglichkeiten/ /entwuerfe/obdachlosenhilfe/ /gestalten/ /hilfe/ /impressum/ /info/ /julius/ /kalender/ /kalender/verbinden/ /konto/ /leistungen/ /leistungen/rubybubys-herz-und-schnauze/ /leistungen/rubybubys-herz-und-schnauze/betreuung/ /leistungen/rubybubys-herz-und-schnauze/gassihilfe/ /leistungen/rubybubys-herz-und-schnauze/gastgeber/ /leistungen/rubybubys-herz-und-schnauze/lernen/ /leistungen/rubybubys-herz-und-schnauze/lernen/alleinbleiben/ /leistungen/rubybubys-herz-und-schnauze/lernen/begegnungen/ /leistungen/rubybubys-herz-und-schnauze/lernen/belohnung/ /leistungen/rubybubys-herz-und-schnauze/lernen/betreuung/ /leistungen/rubybubys-herz-und-schnauze/lernen/fell/ /leistungen/rubybubys-herz-und-schnauze/lernen/geschirr/ /leistungen/rubybubys-herz-und-schnauze/lernen/hilfe/ /leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel-video/ /leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel/ /leistungen/rubybubys-herz-und-schnauze/lernen/koerpersprache/ /leistungen/rubybubys-herz-und-schnauze/lernen/krallen/ /leistungen/rubybubys-herz-und-schnauze/lernen/leine/ /leistungen/rubybubys-herz-und-schnauze/lernen/ohren/ /leistungen/rubybubys-herz-und-schnauze/lernen/pfoten/ /leistungen/rubybubys-herz-und-schnauze/lernen/ressourcen/ /leistungen/rubybubys-herz-und-schnauze/lernen/rueckruf/ /leistungen/rubybubys-herz-und-schnauze/lernen/ruhe/ /leistungen/rubybubys-herz-und-schnauze/lernen/stubenrein/ /leistungen/rubybubys-herz-und-schnauze/lernen/welpen/ /leistungen/rubybubys-herz-und-schnauze/lernen/welpenbeissen/ /leistungen/rubybubys-herz-und-schnauze/lernen/zaehne/ /leistungen/rubybubys-obdachlosenhilfe/ /leistungen/smart-home/ /system/ /tickets/ /treffpunkte/ /verwaltung/mitglieder/">
 <link rel="alternate" hreflang="de" href="https://gemden.red/">
@@ -31,9 +32,9 @@
           <p class="lead">Hast du es nicht satt, dass die Konzerne uns alle abziehen? Lass uns eine Community gründen. Lass uns füreinander da sein. Nicht von den Reichen abhängig. Sondern unabhängig!</p>
           <a class="button garden-start" href="#wege">Jetzt loslegen <span aria-hidden="true">→</span></a>
         </div>
-        <div class="world-portal" aria-label="Portal in die GemDen-Welt">
-          <img class="garden-portal" src="./assets/art/garden/portal-20261013.png" alt="" width="1254" height="1254" fetchpriority="high" decoding="async">
-          <span class="portal-label">Blob kennt die Wege. Entscheiden musst du trotzdem selbst.</span>
+        <div class="world-portal" id="blob-zuhause" aria-labelledby="blob-home-title">
+          <div class="blob-home-scene"><img class="garden-portal" src="./assets/art/garden/portal-20261013.png" alt="" width="1254" height="1254" fetchpriority="high" decoding="async"><span class="blob-home-seat" data-blob-seat></span></div>
+          <div class="blob-home-explainer"><p class="eyebrow">Dein kleiner Wegweiser</p><h2 id="blob-home-title">Hier wohnt Blob.</h2><p>Tippe auf Blob und sag, was du suchst. Er findet passende Seiten und begleitet dich durch GemDen. Deine Suchwörter bleiben in diesem Browser.</p><div class="blob-home-controls" hidden><button type="button" data-blob-home-wave>Wink mal!</button><button type="button" data-blob-home-pause aria-pressed="false">Bewegung pausieren</button></div></div>
         </div>
       </header>
 
@@ -59,20 +60,11 @@
       </nav>
 
       <section class="garden-beyond" aria-labelledby="einstieg-title">
-        <div class="garden-beyond-heading"><p class="eyebrow">Weiter entdecken</p><h2 id="einstieg-title">Ein Stück weiter durch den Garten.</h2><p>Entdecke Orte auf der Karte, plane gemeinsame Zeit oder lerne das FFE-System kennen.</p></div>
-        <nav class="garden-discovery-world" aria-label="Karte, Kalender und FFE-System">
-          <a class="garden-discovery-path is-karte" href="./treffpunkte/?ansicht=entdecken&amp;darstellung=karte">
-            <picture class="garden-discovery-art" aria-hidden="true"><source media="(min-width:761px)" srcset="./assets/art/garden/gartenwege-20261029-1280.webp 1280w, ./assets/art/garden/gartenwege-20261029-1942.webp 1942w" sizes="(min-width:2400px) 2250px, 94vw"><img src="./assets/art/garden/gartenwege-karte-20261029-360.webp" srcset="./assets/art/garden/gartenwege-karte-20261029-360.webp 360w, ./assets/art/garden/gartenwege-karte-20261029-640.webp 640w" sizes="(max-width:500px) calc(100vw - 24px), 460px" width="640" height="800" alt="" loading="lazy" decoding="async"></picture>
-            <div class="garden-discovery-copy"><h3>Karte</h3><p>Lieblingsorte, Treffpunkte und neue Wege in deiner Nähe.</p><span class="garden-discovery-action">Karte öffnen <span aria-hidden="true">↗</span></span></div>
-          </a>
-          <a class="garden-discovery-path is-kalender" href="./kalender/">
-            <picture class="garden-discovery-art" aria-hidden="true"><source media="(min-width:761px)" srcset="./assets/art/garden/gartenwege-20261029-1280.webp 1280w, ./assets/art/garden/gartenwege-20261029-1942.webp 1942w" sizes="(min-width:2400px) 2250px, 94vw"><img src="./assets/art/garden/gartenwege-kalender-20261029-360.webp" srcset="./assets/art/garden/gartenwege-kalender-20261029-360.webp 360w, ./assets/art/garden/gartenwege-kalender-20261029-640.webp 640w" sizes="(max-width:500px) calc(100vw - 24px), 460px" width="640" height="799" alt="" loading="lazy" decoding="async"></picture>
-            <div class="garden-discovery-copy"><h3>Kalender</h3><p>Gemeinsame Termine entdecken und deine eigene Zeit im Blick behalten.</p><span class="garden-discovery-action">Kalender öffnen <span aria-hidden="true">↗</span></span></div>
-          </a>
-          <a class="garden-discovery-path is-system" href="./system/">
-            <picture class="garden-discovery-art" aria-hidden="true"><source media="(min-width:761px)" srcset="./assets/art/garden/gartenwege-20261029-1280.webp 1280w, ./assets/art/garden/gartenwege-20261029-1942.webp 1942w" sizes="(min-width:2400px) 2250px, 94vw"><img src="./assets/art/garden/gartenwege-system-20261029-360.webp" srcset="./assets/art/garden/gartenwege-system-20261029-360.webp 360w, ./assets/art/garden/gartenwege-system-20261029-640.webp 640w" sizes="(max-width:500px) calc(100vw - 24px), 460px" width="640" height="800" alt="" loading="lazy" decoding="async"></picture>
-            <div class="garden-discovery-copy"><h3>FFE-System</h3><p>Wie unsere Gemeinschaft gedacht ist: Ideen, Regeln und die Verbindungen dazwischen.</p><span class="garden-discovery-action">Zusammenhänge entdecken <span aria-hidden="true">↗</span></span></div>
-          </a>
+        <div class="garden-beyond-heading"><h2 id="einstieg-title">Die Welt erkunden.</h2></div>
+        <nav class="garden-object-world" aria-label="Karte, Kalender und FFE-System">
+          <a class="garden-object-path is-karte" href="./treffpunkte/?ansicht=entdecken&amp;darstellung=karte"><img src="./assets/art/garden/gartenobjekt-karte-20261029-420.webp" srcset="./assets/art/garden/gartenobjekt-karte-20261029-420.webp 420w, ./assets/art/garden/gartenobjekt-karte-20261029-800.webp 800w" sizes="(max-width:760px) calc(100vw - 30px), (max-width:1300px) 40vw, 720px" width="800" height="698" alt="" loading="lazy" decoding="async"><span class="garden-object-copy"><strong>Karte</strong><span>Orte und Treffpunkte entdecken.</span><span class="garden-object-action">Karte öffnen <span aria-hidden="true">↗</span></span></span></a>
+          <a class="garden-object-path is-kalender" href="./kalender/"><img src="./assets/art/garden/gartenobjekt-kalender-20261029-420.webp" srcset="./assets/art/garden/gartenobjekt-kalender-20261029-420.webp 420w, ./assets/art/garden/gartenobjekt-kalender-20261029-800.webp 800w" sizes="(max-width:760px) calc(100vw - 30px), (max-width:1300px) 40vw, 720px" width="800" height="1044" alt="" loading="lazy" decoding="async"><span class="garden-object-copy"><strong>Kalender</strong><span>Gemeinsame Zeit planen.</span><span class="garden-object-action">Kalender öffnen <span aria-hidden="true">↗</span></span></span></a>
+          <a class="garden-object-path is-system" href="./system/"><img src="./assets/art/garden/gartenobjekt-system-20261029-420.webp" srcset="./assets/art/garden/gartenobjekt-system-20261029-420.webp 420w, ./assets/art/garden/gartenobjekt-system-20261029-800.webp 800w" sizes="(max-width:760px) calc(100vw - 30px), (max-width:1300px) 40vw, 720px" width="800" height="736" alt="" loading="lazy" decoding="async"><span class="garden-object-copy"><strong>FFE-System</strong><span>Ideen und Regeln verstehen.</span><span class="garden-object-action">System entdecken <span aria-hidden="true">↗</span></span></span></a>
         </nav>
       </section>
 
@@ -87,8 +79,9 @@
     <nav class="site-help-links" aria-label="Hilfe und Tickets"><a href="./hilfe/">Hilfe &amp; Stand</a><a href="./tickets/?seite=%2F#new-ticket-title">Ticket schreiben</a><a href="./tickets/#ticket-list-title">Meine Tickets</a></nav></footer>
   </div>
 
-  <script>window.BLOB_CONFIG={mode:"guide",root:"./"};</script>
+  <script>window.BLOB_CONFIG={mode:"guide",root:"./",residence:"garden"};</script>
   <script src="./assets/site.js?v=20261020-1" defer></script>
-  <script src="./assets/blob.js?v=20261027-4" defer></script>
+  <script src="./assets/blob.js?v=20261029-6" defer></script>
+  <script src="./assets/blob-garden-home.js?v=20261029-1" defer></script>
 </body>
 </html>

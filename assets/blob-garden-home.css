@@ -1,0 +1,69 @@
+/* Blob's residence and conversation styling apply only to the homepage. */
+.garden-home .blob-home-scene {position:relative}
+.garden-home .blob-home-seat {position:absolute;left:53%;top:66%;width:88px;height:82px;transform:translate(-50%,-50%);z-index:3}
+.garden-home .blob-home-seat::before {content:'';position:absolute;bottom:0;left:13px;width:62px;height:10px;border-radius:50%;background:#183c3540;filter:blur(4px);pointer-events:none}
+.garden-home .blob-home-explainer {max-width:35ch;margin:-8px auto 0;padding:0 16px;text-align:center}
+.garden-home .blob-home-explainer .eyebrow {font-size:.64rem;margin:0 0 7px}
+.garden-home .blob-home-explainer h2 {font:700 clamp(1.7rem,2.1vw,2.6rem)/1.1 Georgia,serif;letter-spacing:-.04em;margin:0 0 11px;color:var(--ink)}
+.garden-home .blob-home-explainer p:not(.eyebrow) {font:.94rem/1.6 Georgia,serif;color:var(--muted);margin:0}
+.garden-home .blob-home-controls {display:flex;justify-content:center;flex-wrap:wrap;gap:5px 15px;margin:7px 0 0}
+.garden-home .blob-home-controls[hidden] {display:none}
+.garden-home .blob-home-controls button {border:0;background:transparent;color:#6d4c32;font:600 .73rem/1.4 system-ui;min-height:44px;padding:6px 2px;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.garden-home #blob-character.blob-home-resident {width:78px;height:74px;padding:0;animation:none;transform:none;touch-action:pan-y;user-select:none;overflow:visible;z-index:10002;border:0;border-radius:47% 53% 42% 58% / 56% 47% 53% 44%;background:radial-gradient(ellipse at 31% 21%,#fff0ca 0,transparent 15%),radial-gradient(circle at 30% 25%,#f8b39a,#da7270 47%,#9e4b59 90%);box-shadow:0 9px 15px #56394126,inset -8px -8px 17px #73373e3b,inset 5px 5px 14px #fff4cd44;transition:height .25s ease,border-radius .25s ease,box-shadow .2s ease}
+.garden-home #blob-character.blob-home-resident:focus-visible {outline:3px solid #426846;outline-offset:5px}
+.garden-home #blob-character.blob-home-resident .blob-face {transform:translateY(2px);transition:transform .25s ease}
+.garden-home #blob-character.blob-home-resident .blob-eyes {gap:15px;transform:translate(var(--look-x,0),var(--look-y,0));transition:transform .18s ease}
+.garden-home #blob-character.blob-home-resident .blob-eye {width:9px;height:13px}
+.garden-home #blob-character.blob-home-resident.blink .blob-eye {height:3px;transform:translateY(5px)!important}
+.garden-home #blob-character.blob-home-resident .blob-mouth {width:20px;height:9px;border-bottom-width:2px}
+.garden-home #blob-character.is-chat-open {height:106px;border-radius:47% 53% 38% 42% / 38% 40% 60% 60%}
+.garden-home #blob-character.is-chat-open .blob-face {transform:translateY(-17px)}
+.garden-home #blob-character.is-home-peek-top {--look-y:4px;box-shadow:0 5px 14px #56394122}
+.garden-home #blob-character.is-home-peek-bottom {--look-y:-3px}
+.garden-home .blob-home-limb {position:absolute;top:35px;width:15px;height:35px;border-radius:70% 50%;background:linear-gradient(#df8580,#b95b65);opacity:0;transition:opacity .2s ease;transform-origin:50% 15%;pointer-events:none}
+.garden-home .blob-home-limb.is-left {left:-7px;transform:rotate(35deg)}
+.garden-home .blob-home-limb.is-right {right:-7px;transform:rotate(-35deg)}
+.garden-home .blob-home-foot {position:absolute;bottom:-4px;width:28px;height:13px;border-radius:60%;background:#bf6570;opacity:0;transition:opacity .2s ease;pointer-events:none}
+.garden-home .blob-home-foot.is-left {left:7px}
+.garden-home .blob-home-foot.is-right {right:7px}
+.garden-home .is-chat-open :is(.blob-home-limb,.blob-home-foot) {opacity:1}
+.garden-home .is-home-waving .blob-home-limb.is-right {opacity:1;animation:blobHomeWave 1.8s ease both}
+@keyframes blobHomeWave {0%,100%{transform:rotate(-35deg)}25%,65%{transform:rotate(-145deg)}45%,85%{transform:rotate(-100deg)}}
+.garden-home .home-motion-paused .blob-home-limb {animation:none!important}
+.garden-home #blob-chat.blob-home-chat {--blob-ink:#213f2c;--blob-muted:#61705d;--blob-ruby:#345a3c;--blob-border:#c6c6ab;right:120px;bottom:22px;width:min(430px,calc(100vw - 150px));max-height:calc(100dvh - 44px);padding:23px;gap:14px;background:#fcf8ed;border:1px solid #b4ba98;border-radius:26px 32px 23px 29px;box-shadow:0 18px 60px #172e2530;backdrop-filter:none;scrollbar-width:thin}
+.garden-home .blob-home-chat-head {display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.garden-home .blob-home-chat-head span {font:.66rem/1.5 system-ui;letter-spacing:.1em;text-transform:uppercase;color:#6c795e}
+.garden-home .blob-home-chat-head h2 {font:600 2rem/1.1 Georgia,serif;letter-spacing:-.04em;color:#24442e;margin:4px 0 0}
+.garden-home .blob-home-chat-head {position:sticky;top:-1px;z-index:3;background:#fcf8ed;padding-block:3px 9px}
+.garden-home .blob-home-chat-head button {display:grid;place-items:center;width:44px;height:44px;border:1px solid #bdc6aa;border-radius:50%;font:1.4rem/1 Georgia;background:#f0efdf;color:#345a3c;cursor:pointer}
+.garden-home #blob-chat #blob-line {margin:0;font:400 1.08rem/1.5 Georgia,serif;color:#506249}
+.garden-home #blob-chat #blob-meta {display:none}
+.garden-home .blob-home-routes {display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.garden-home .blob-home-routes a {display:flex;align-items:center;min-height:44px;padding:9px 13px;border:1px solid #cad1ba;border-radius:10px 16px 10px 16px;color:#2d4e34;background:#f4f3e5;font:600 .84rem/1.35 system-ui;text-decoration:none}
+.garden-home .blob-home-routes a:hover {background:#e6ead4;border-color:#7b9565}
+.garden-home #blob-chat #blob-knowledge {padding-top:14px;border-color:#cbd0b9}
+.garden-home #blob-chat #blob-knowledge label {color:#2d4e34;font:600 1.05rem/1.35 Georgia,serif}
+.garden-home #blob-chat #blob-knowledge input {border-color:#a8b497;background:#fffef6;border-radius:10px;color:#29452f}
+.garden-home #blob-chat #blob-knowledge button[type=submit] {background:#365c3d;color:#fffce9;border-color:#365c3d;border-radius:10px;font-weight:600}
+.garden-home #blob-chat .blob-question-examples {display:none}
+.garden-home #blob-chat .blob-knowledge-status {color:#66705e;font-size:.72rem;line-height:1.55;margin:9px 0 0}
+.garden-home #blob-chat .blob-knowledge-results a {background:#f1f2e1;border-color:#bdc9a5;border-radius:12px;color:#29452f}
+.garden-home #blob-chat :is(.blob-home-personal,.blob-other-ways) {border-top:1px solid #cbd0b9;padding-top:6px;margin:0}
+.garden-home #blob-chat :is(.blob-home-personal,.blob-other-ways)>summary {padding:11px 2px;color:#566b47;font:500 .8rem/1.4 system-ui;cursor:pointer;min-height:44px}
+.garden-home .blob-home-motion-tools {display:flex;flex-wrap:wrap;gap:8px;padding:5px 0 10px}
+.garden-home .blob-home-motion-tools button {border:1px solid #bdc6aa;border-radius:9px;background:#f4f2e4;color:#345a3c;min-height:44px;padding:8px 10px;font:.76rem/1.4 system-ui;cursor:pointer}
+.garden-home #blob-chat #blob-suggestions {border:0;padding-top:5px}
+.garden-home #blob-chat .blob-chat-actions :is(button,a) {background:#e9eddc;color:#345a3c;border-radius:10px;font-weight:600}
+.garden-home #blob-chat :is(a,button,input):focus-visible {outline:3px solid #839859;outline-offset:3px}
+@media(max-width:760px){
+ .garden-home .blob-home-explainer {max-width:34ch;padding-inline:8px}
+ .garden-home .blob-home-explainer h2 {font-size:1.85rem}
+ .garden-home .blob-home-explainer p:not(.eyebrow) {font-size:.91rem}
+ .garden-home #blob-chat.blob-home-chat {left:12px;right:12px;bottom:138px;width:auto;max-height:calc(100dvh - 164px);padding:20px;gap:12px;border-radius:24px}
+ .garden-home .blob-home-chat-head h2 {font-size:1.8rem}
+ .garden-home .blob-home-routes a {font-size:.79rem;padding:9px 11px}
+ .garden-home #blob-chat #blob-knowledge input {padding-inline:9px}
+}
+@media(prefers-reduced-motion:reduce){
+ .garden-home #blob-character.blob-home-resident,.garden-home #blob-character.blob-home-resident * {animation:none!important;transition:none!important}
+}
