@@ -3,6 +3,8 @@
   "language": "en",
   "files": [
     "en/404.html",
+    "en/assets/blob-garden-home.css",
+    "en/assets/blob-garden-home.js",
     "en/assets/blob-knowledge.css",
     "en/assets/blob-knowledge.js",
     "en/assets/blob-raccoon.css",

@@ -3,6 +3,7 @@
   ready(function () {
     const cfg = window.BLOB_CONFIG || {};
     const pageMode = document.body.dataset.blobMode || cfg.mode || 'guide';
+    const gardenHome = cfg.residence === 'garden' && document.body.classList.contains('garden-home');
     const root = cfg.root || './';
     function internalHref(value) {
       if (typeof value !== 'string') return null;
@@ -71,7 +72,7 @@
         css.rel = 'stylesheet'; css.href = root + 'assets/blob-knowledge.css?v=20261026-1';
         document.head.append(css);
         const script = document.createElement('script');
-        script.src = root + 'assets/blob-knowledge.js?v=20261027-3';
+        script.src = root + 'assets/blob-knowledge.js?v=' + (gardenHome ? '20261029-4' : '20261027-3');
         script.onload = () => { window.GemDenBlobKnowledge.mount({root,chat}); resolve(); };
         script.onerror = () => { script.remove(); css.remove(); reject(new Error('knowledge')); };
         document.head.append(script);
@@ -166,7 +167,7 @@
       ]
     };
     function nextLine() {
-      const pool = character.classList.contains('blob-raccoon') ? lines.raccoon : lines[pageMode] || lines.guide;
+      const pool = gardenHome ? ["I can show you suitable routes through GemDen. What would you like to discover?", "Search for a topic or choose an area. You decide which route to open."] : character.classList.contains('blob-raccoon') ? lines.raccoon : lines[pageMode] || lines.guide;
       say(named(pool[Math.floor(Math.random() * pool.length)]), `Blob · ${pageMode}`, true);
       emote();
     }
@@ -201,6 +202,7 @@
     let offsetX = 0;
     let offsetY = 0;
     function setPosition(x, y, persist = true) {
+      if (gardenHome) return;
       if (window.matchMedia('(max-width: 760px)').matches) return;
       const safeX = Math.max(4, Math.min(window.innerWidth - character.offsetWidth - 4, x));
       const safeY = Math.max(4, Math.min(window.innerHeight - character.offsetHeight - 4, y));
@@ -213,6 +215,7 @@
     }
     if (Number.isFinite(state.x) && Number.isFinite(state.y)) setTimeout(() => setPosition(state.x, state.y, false), 80);
     character.addEventListener('pointerdown', event => {
+      if (gardenHome) return;
       if (window.matchMedia('(max-width: 760px)').matches) return;
       dragging = true; moved = false;
       character.setPointerCapture(event.pointerId);
@@ -260,7 +263,7 @@
       emote();
     });
     setInterval(() => {
-      if (character.classList.contains('blob-raccoon')) return;
+      if (gardenHome || character.classList.contains('blob-raccoon')) return;
       character.classList.add('blink');
       setTimeout(() => character.classList.remove('blink'), 150);
     }, 3900);
