@@ -72,15 +72,16 @@
         css.rel = 'stylesheet'; css.href = root + 'assets/blob-knowledge.css?v=20261026-1';
         document.head.append(css);
         const script = document.createElement('script');
-        script.src = root + 'assets/blob-knowledge.js?v=' + (gardenHome ? '20261029-4' : '20261027-3');
+        script.src = root + 'assets/blob-knowledge.js?v=' + (gardenHome ? '20261030-1' : '20261027-3');
         script.onload = () => { window.GemDenBlobKnowledge.mount({root,chat}); resolve(); };
         script.onerror = () => { script.remove(); css.remove(); reject(new Error('knowledge')); };
         document.head.append(script);
-      }).catch(() => { knowledgeLoading = null; say('Die Themensuche konnte gerade nicht geladen werden. Unter „Weitere Wege“ findest du das Lernhaus.', 'Blob · Seitenhilfe'); });
+      }).catch(() => { knowledgeLoading = null; if (gardenHome) { line.hidden = false; say('Die Suche konnte gerade nicht geladen werden. Über die Bereichsknöpfe kommst du trotzdem weiter.', 'Blob · Seitenhilfe'); } else say('Die Themensuche konnte gerade nicht geladen werden. Unter „Weitere Wege“ findest du das Lernhaus.', 'Blob · Seitenhilfe'); });
     }
     function visibilityChanged(open) {
       window.dispatchEvent(new CustomEvent('blob:visibility', {detail:{open}}));
       if (open) loadKnowledge();
+      if (gardenHome) return;
       if (!open || suggestionsLoading) return;
       suggestionsLoading = new Promise((resolve, reject) => {
         const css = document.createElement('link');

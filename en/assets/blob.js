@@ -72,15 +72,16 @@
         css.rel = 'stylesheet'; css.href = root + 'assets/blob-knowledge.css?v=20261026-1';
         document.head.append(css);
         const script = document.createElement('script');
-        script.src = root + 'assets/blob-knowledge.js?v=' + (gardenHome ? '20261029-4' : '20261027-3');
+        script.src = root + 'assets/blob-knowledge.js?v=' + (gardenHome ? '20261030-1' : '20261027-3');
         script.onload = () => { window.GemDenBlobKnowledge.mount({root,chat}); resolve(); };
         script.onerror = () => { script.remove(); css.remove(); reject(new Error('knowledge')); };
         document.head.append(script);
-      }).catch(() => { knowledgeLoading = null; say("Topic search could not load right now. You can find the learning house under “Other routes”.", "Blob · Page help"); });
+      }).catch(() => { knowledgeLoading = null; if (gardenHome) { line.hidden = false; say("Search could not be loaded just now. You can still use the area buttons to continue.", "Blob · Page help"); } else say("Topic search could not load right now. You can find the learning house under “Other routes”.", "Blob · Page help"); });
     }
     function visibilityChanged(open) {
       window.dispatchEvent(new CustomEvent('blob:visibility', {detail:{open}}));
       if (open) loadKnowledge();
+      if (gardenHome) return;
       if (!open || suggestionsLoading) return;
       suggestionsLoading = new Promise((resolve, reject) => {
         const css = document.createElement('link');
