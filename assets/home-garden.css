@@ -295,3 +295,13 @@
  .garden-home .garden-object-copy > span:not(.garden-object-action) {font-size:clamp(.86rem,3.8cqw,1rem)}
  .garden-home .garden-object-action {font-size:clamp(.78rem,3.2cqw,.93rem)}
 }
+
+/* The invitation and Community summary belong to the existing garden. */
+.garden-home .home-invitation {max-width:43ch;color:var(--ink);font:400 clamp(1.06rem,1.2vw,1.35rem)/1.55 Georgia,serif;display:grid;gap:.65em}
+.garden-home .home-invitation p {margin:0}
+.garden-home .home-invitation .home-curious {font-weight:700}
+.garden-home .garden-community-summary {display:grid;gap:.55em}
+.garden-home .garden-community-summary>span {font-size:inherit;line-height:inherit}
+.garden-home .garden-community-summary strong {font-weight:700}
+.garden-home .home-hero .home-story .display {max-width:18ch;font-size:clamp(2.7rem,4.4vw,5.4rem);line-height:1.05}
+@media(max-width:760px){.garden-home .home-hero .home-story .display{font-size:clamp(2.2rem,7.5vw,3.6rem)}.garden-home .home-invitation{margin-inline:auto;font-size:1.07rem}.garden-home .garden-path:has(.garden-community-summary){padding-block:49px;min-height:340px}}

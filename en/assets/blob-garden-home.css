@@ -31,29 +31,39 @@
 @keyframes blobHomeWave {0%,100%{transform:rotate(-35deg)}25%,65%{transform:rotate(-145deg)}45%,85%{transform:rotate(-100deg)}}
 .garden-home .home-motion-paused .blob-home-limb {animation:none!important}
 .garden-home #blob-chat.blob-home-chat {--blob-ink:#213f2c;--blob-muted:#61705d;--blob-ruby:#345a3c;--blob-border:#c6c6ab;right:120px;bottom:22px;width:min(430px,calc(100vw - 150px));max-height:calc(100dvh - 44px);padding:23px;gap:14px;background:#fcf8ed;border:1px solid #b4ba98;border-radius:26px 32px 23px 29px;box-shadow:0 18px 60px #172e2530;backdrop-filter:none;scrollbar-width:thin}
-.garden-home .blob-home-chat-head {display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
-.garden-home .blob-home-chat-head span {font:.66rem/1.5 system-ui;letter-spacing:.1em;text-transform:uppercase;color:#6c795e}
-.garden-home .blob-home-chat-head h2 {font:600 2rem/1.1 Georgia,serif;letter-spacing:-.04em;color:#24442e;margin:4px 0 0}
-.garden-home .blob-home-chat-head {position:sticky;top:-1px;z-index:3;background:#fcf8ed;padding-block:3px 9px}
-.garden-home .blob-home-chat-head button {display:grid;place-items:center;width:44px;height:44px;border:1px solid #bdc6aa;border-radius:50%;font:1.4rem/1 Georgia;background:#f0efdf;color:#345a3c;cursor:pointer}
-.garden-home #blob-chat #blob-line {margin:0;font:400 1.08rem/1.5 Georgia,serif;color:#506249}
+.garden-home .blob-home-chat-head {display:flex;align-items:center;gap:10px;position:sticky;top:-1px;z-index:3;background:#fcf8ed;padding-block:0 8px}
+.garden-home .blob-home-chat-head button {border:1px solid #bdc6aa;color:#345a3c;cursor:pointer;background:#f0efdf}
+.garden-home .blob-home-introduce {display:flex;align-items:center;gap:9px;flex:1;min-width:0;min-height:56px;padding:10px 12px;border-radius:14px;font:600 .91rem/1.35 system-ui;text-align:left}
+.garden-home .blob-home-introduce>span:first-child {font:1.5rem/1 Georgia;color:#a36c49}
+.garden-home .blob-home-chevron {margin-left:auto;font-size:1.2rem;transition:transform .2s ease}
+.garden-home .blob-home-introduce[aria-expanded=true] {background:#e4e9d4}
+.garden-home .blob-home-introduce[aria-expanded=true] .blob-home-chevron {transform:rotate(180deg)}
+.garden-home .blob-home-close {display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:50%;font:1.4rem/1 Georgia}
+.garden-home .blob-home-introduction {padding:15px 16px;background:#f0efdd;border-left:3px solid #879867;border-radius:0 14px 14px 0}
+.garden-home .blob-home-introduction p {margin:0;color:#34513a;font:1.04rem/1.6 Georgia,serif}
+.garden-home #blob-chat #blob-line {margin:0;font:.86rem/1.5 system-ui;color:#506249}
 .garden-home #blob-chat #blob-meta {display:none}
-.garden-home .blob-home-routes {display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.garden-home .blob-home-routes a {display:flex;align-items:center;min-height:44px;padding:9px 13px;border:1px solid #cad1ba;border-radius:10px 16px 10px 16px;color:#2d4e34;background:#f4f3e5;font:600 .84rem/1.35 system-ui;text-decoration:none}
-.garden-home .blob-home-routes a:hover {background:#e6ead4;border-color:#7b9565}
-.garden-home #blob-chat #blob-knowledge {padding-top:14px;border-color:#cbd0b9}
+.garden-home .blob-home-categories {display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.garden-home .blob-home-categories button {display:flex;align-items:center;gap:11px;min-width:0;min-height:68px;padding:12px;border:1px solid #c1cbb0;border-radius:14px 19px 14px 19px;color:#2d4e34;background:#f0f0df;font:600 .86rem/1.3 system-ui;text-align:left;cursor:pointer}
+.garden-home .blob-home-categories svg {width:24px;height:24px;flex:none;color:#617c50}
+.garden-home .blob-home-categories button:hover {background:#e3e8cf;border-color:#7b9565}
+.garden-home :is(.blob-home-categories,.blob-home-selection,.blob-home-introduction)[hidden] {display:none}
+.garden-home .blob-home-selection {display:grid;gap:12px}
+.garden-home .blob-home-back {justify-self:start;min-height:44px;padding:6px 0;border:0;background:transparent;color:#526d45;font:600 .8rem/1.4 system-ui;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.garden-home .blob-home-selection h2 {font:600 1.65rem/1.15 Georgia,serif;color:#24442e;margin:0;letter-spacing:-.03em}
+.garden-home .blob-home-selection-note {font:.85rem/1.6 system-ui;color:#58684d;margin:0}
+.garden-home .blob-home-choices {display:grid;gap:7px}
+.garden-home .blob-home-choices a {display:grid;gap:4px;min-height:52px;align-content:center;padding:12px 14px;border:1px solid #c1cbb0;border-radius:12px;color:#2d4e34;background:#f2f1e2;text-decoration:none;overflow-wrap:anywhere}
+.garden-home .blob-home-choices a:hover {background:#e3e8cf;border-color:#7b9565}
+.garden-home .blob-home-choices strong {font:600 .87rem/1.45 system-ui}
+.garden-home .blob-home-choices small {color:#647354;font:.74rem/1.4 system-ui}
+.garden-home #blob-chat #blob-knowledge {padding-top:8px;margin:0;border:0}
 .garden-home #blob-chat #blob-knowledge label {color:#2d4e34;font:600 1.05rem/1.35 Georgia,serif}
 .garden-home #blob-chat #blob-knowledge input {border-color:#a8b497;background:#fffef6;border-radius:10px;color:#29452f}
 .garden-home #blob-chat #blob-knowledge button[type=submit] {background:#365c3d;color:#fffce9;border-color:#365c3d;border-radius:10px;font-weight:600}
 .garden-home #blob-chat .blob-question-examples {display:none}
 .garden-home #blob-chat .blob-knowledge-status {color:#66705e;font-size:.72rem;line-height:1.55;margin:9px 0 0}
 .garden-home #blob-chat .blob-knowledge-results a {background:#f1f2e1;border-color:#bdc9a5;border-radius:12px;color:#29452f}
-.garden-home #blob-chat :is(.blob-home-personal,.blob-other-ways) {border-top:1px solid #cbd0b9;padding-top:6px;margin:0}
-.garden-home #blob-chat :is(.blob-home-personal,.blob-other-ways)>summary {padding:11px 2px;color:#566b47;font:500 .8rem/1.4 system-ui;cursor:pointer;min-height:44px}
-.garden-home .blob-home-motion-tools {display:flex;flex-wrap:wrap;gap:8px;padding:5px 0 10px}
-.garden-home .blob-home-motion-tools button {border:1px solid #bdc6aa;border-radius:9px;background:#f4f2e4;color:#345a3c;min-height:44px;padding:8px 10px;font:.76rem/1.4 system-ui;cursor:pointer}
-.garden-home #blob-chat #blob-suggestions {border:0;padding-top:5px}
-.garden-home #blob-chat .blob-chat-actions :is(button,a) {background:#e9eddc;color:#345a3c;border-radius:10px;font-weight:600}
 .garden-home #blob-chat :is(a,button,input):focus-visible {outline:3px solid #839859;outline-offset:3px}
 @media(max-width:760px){
  .garden-home .blob-home-explainer {max-width:34ch;padding-inline:8px}

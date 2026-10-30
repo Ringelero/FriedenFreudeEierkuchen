@@ -9,12 +9,78 @@
   }
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
-  const HOME_PATHS = Object.freeze(['community/','leistungen/','konto/','treffpunkte/?ansicht=entdecken&darstellung=karte','kalender/','system/']);
+  const HOME_PATHS = Object.freeze(['community/','leistungen/','konto/','treffpunkte/?ansicht=entdecken&darstellung=karte','kalender/','system/','community/#dynastien','community/#synergien']);
+  const INTRODUCTION = 'Hast du es nicht satt, dass die Konzerne uns alle abziehen? Lass uns eine Community gründen. Lass uns füreinander da sein. Nicht von den Reichen abhängig. Sondern unabhängig!';
+  const CATEGORIES = Object.freeze([
+    {id:'services',title:'Leistungen',icon:'sprout'},
+    {id:'account',title:'Mein Konto',icon:'person'},
+    {id:'dynasties',title:'Dynastien',icon:'home'},
+    {id:'synergies',title:'Synergien',icon:'connections'},
+    {id:'map',title:'Karte',icon:'map'},
+    {id:'calendar',title:'Kalender',icon:'calendar'},
+    {id:'system',title:'FFE-System',icon:'book'},
+    {id:'help',title:'Hilfe & Tickets',icon:'help'}
+  ]);
+  const ICONS = {
+    sprout:'<path d="M12 21V11M12 13C3 14 3 7 4 4c6 0 9 3 8 9Zm0-1c-1-7 4-10 9-9 0 6-3 10-9 9Z"></path>',
+    person:'<path d="M8 7a4 4 0 1 0 8 0 4 4 0 0 0-8 0Zm-4 14c0-10 16-10 16 0"></path>',
+    home:'<path d="m3 11 9-8 9 8M5 10v11h14V10M9 21v-7h6v7"></path>',
+    connections:'<path d="M8 12h8M7 7l5 9 5-9M3 5a3 3 0 1 0 6 0 3 3 0 0 0-6 0Zm12 0a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM9 19a3 3 0 1 0 6 0 3 3 0 0 0-6 0Z"></path>',
+    map:'<path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2Zm6-2v16m6-14v16"></path>',
+    calendar:'<path d="M7 3v4m10-4v4M4 10h16M4 5h16v16H4Zm4 9h2m4 0h2m-8 3h2"></path>',
+    book:'<path d="M12 6C8 3 5 3 2 4v15c4-1 7 0 10 2m0-15c4-3 7-3 10-2v15c-4-1-7 0-10 2Zm0 0v15"></path>',
+    help:'<path d="M4 3h16v14H9l-5 4Zm5 5a3 3 0 0 1 6 0c0 2-3 2-3 4m0 2v.1"></path>'
+  };
+  function catalogEntries(raw,kind) {
+    const config = {
+      services:{key:'services',path:/^\/leistungen\/[a-z0-9-]+\/$/},
+      dynasties:{key:'dynasties',path:/^\/community\/dynastien\/[a-z0-9-]+\/$/},
+      synergies:{key:'synergies',path:/^\/community\/synergien\/[a-z0-9-]+\/$/}
+    }[kind];
+    if (!config) return [];
+    const seen = new Set(), statuses = {building:'In Vorbereitung',open:'Nutzbar',paused:'Pausiert'};
+    return (Array.isArray(raw?.[config.key]) ? raw[config.key] : []).filter(item => {
+      if (!item || item.status === 'archived' || typeof item.name !== 'string' || !item.name.trim() || !config.path.test(item.public_path) || seen.has(item.public_path)) return false;
+      seen.add(item.public_path); return true;
+    }).map(item => ({title:item.name.slice(0,180),path:item.public_path.slice(1),detail:kind === 'services' ? item.status === 'building' && item.availability ? 'Teilweise nutzbar' : statuses[item.status] || '' : ''}));
+  }
+  function categoryLinks(id) {
+    return ({
+      account:[
+        {title:'Mein Konto öffnen',path:'konto/#konto-uebersicht'},
+        {title:'Profil & eigene Seite',path:'konto/#konto-profil'},
+        {title:'Zusammenarbeit',path:'konto/#konto-zusammenarbeit'},
+        {title:'Kontakte & Betreuung',path:'konto/#konto-kontakte'},
+        {title:'Mein Kalender',path:'kalender/?kalender=PERSONAL'},
+        {title:'Einstellungen',path:'konto/#konto-einstellungen'}
+      ],
+      map:[
+        {title:'Karte öffnen',path:HOME_PATHS[3]},
+        {title:'Treffpunkte als Liste',path:'treffpunkte/?ansicht=entdecken&darstellung=liste'}
+      ],
+      calendar:[
+        {title:'Alle Kalender',path:'kalender/'},
+        {title:'Mein Kalender',path:'kalender/?kalender=PERSONAL'},
+        {title:'Rubybubys',path:'kalender/?kalender=RUBYBUBYS'},
+        {title:'ThreeDen',path:'kalender/?kalender=THREEDEN'},
+        {title:'Çiçek',path:'kalender/?kalender=CICEK'}
+      ],
+      system:[
+        {title:'FFE-System entdecken',path:'system/'},
+        {title:'Über GemDen & FFE',path:'info/'}
+      ],
+      help:[
+        {title:'Hilfe & Stand',path:'hilfe/'},
+        {title:'Ticket schreiben',path:'tickets/#new-ticket-title'},
+        {title:'Meine Tickets',path:'tickets/#ticket-list-title'}
+      ]
+    })[id] || [];
+  }
   const clamp = (value, low, high) => Math.max(low, Math.min(Math.max(low, high), value));
   function placement(anchor, viewport, size = 78) {
     const x = clamp(anchor.left + (anchor.width - size) / 2, 12, viewport.width - size - 12);
-    if (anchor.top < 16) return {edge:'top', x, y:-24};
-    if (anchor.bottom > viewport.height - 16) return {edge:'bottom', x, y:viewport.height - size + 24};
+    if (anchor.top < 16) return {edge:'top', x, y:8};
+    if (anchor.bottom > viewport.height - 16) return {edge:'bottom', x, y:Math.max(8,viewport.height - size - 8)};
     return {edge:'home', x, y:anchor.top};
   }
   function animationEnabled({reduced = false, paused = false, hidden = false} = {}) {
@@ -28,12 +94,14 @@
     if (!seat || !character || !chat || character.classList.contains('blob-home-resident')) return;
     const base = new URL(window.BLOB_CONFIG.root || './', location.href);
     const routes = [
-      {id:'home-community',path:HOME_PATHS[0],title:'Community',detail:'Kieze, Dynastien und Menschen.',terms:'Community Gemeinschaft Kieze Dynastien Menschen neighbourhoods people'},
+      {id:'home-community',path:HOME_PATHS[0],title:'Community',detail:'Dynastien, Synergien und die Menschen dahinter.',terms:'Community Gemeinschaft Dynastien Synergien Menschen people connections'},
       {id:'home-opportunities',path:HOME_PATHS[1],title:'Möglichkeiten',detail:'Angebote, Fähigkeiten und gemeinsame Vorhaben.',terms:'Möglichkeiten Angebote anbieten Gesuche Fähigkeiten opportunities offers skills'},
       {id:'home-account',path:HOME_PATHS[2],title:'Mein Konto',detail:'Dein Profil und deine Verbindungen.',terms:'Konto Profil eigene Welt account profile my world'},
       {id:'home-map',path:HOME_PATHS[3],title:'Karte',detail:'Orte und Treffpunkte entdecken.',terms:'Karte Orte Treffpunkte Lieblingsorte Stadtplan map places meeting points'},
       {id:'home-calendar',path:HOME_PATHS[4],title:'Kalender',detail:'Gemeinsame und eigene Termine.',terms:'Kalender Termine Veranstaltungen calendar dates events'},
-      {id:'home-system',path:HOME_PATHS[5],title:'FFE-System',detail:'Ideen, Regeln und ihre Verbindungen.',terms:'FFE System Regeln Institutionen Zusammenhänge institutions rules connections'}
+      {id:'home-system',path:HOME_PATHS[5],title:'FFE-System',detail:'Ideen, Regeln und ihre Verbindungen.',terms:'FFE System Regeln Institutionen Zusammenhänge institutions rules connections'},
+      {id:'home-dynasties',path:HOME_PATHS[6],title:'Dynastien',detail:'Große Freundes- und Familienkreise. Eine selbst gewählte Heimat.',terms:'Dynastien Dynastie Freunde Familie Heimat Zugehörigkeit dynasties friends family home belonging'},
+      {id:'home-synergies',path:HOME_PATHS[7],title:'Synergien',detail:'Hobbys, Gemeinsamkeiten und Zugehörigkeiten verbinden Dynastien.',terms:'Synergien Synergie Hobbys Gemeinsamkeiten Kultur Schach Tennis Hexen synergies hobbies interests culture chess tennis witches'}
     ];
     window.BLOB_CONFIG.homeRoutes = routes;
     character.classList.add('blob-home-resident');
@@ -41,29 +109,71 @@
     seat.append(character);
     chat.classList.add('blob-home-chat');
     const header = document.createElement('div'); header.className = 'blob-home-chat-head';
-    header.innerHTML = '<div><span>Dein Wegweiser</span><h2>Frag Blob.</h2></div><button type="button" aria-label="Blob schließen">×</button>';
-    chat.prepend(header);
-    header.querySelector('button').addEventListener('click', () => {
+    header.innerHTML = '<button type="button" class="blob-home-introduce" id="blob-intro-toggle" aria-expanded="false" aria-controls="blob-introduction"><span aria-hidden="true">✦</span><span>GemDen kennenlernen</span><span class="blob-home-chevron" aria-hidden="true">⌄</span></button><button type="button" class="blob-home-close" aria-label="Blob schließen">×</button>';
+    header.querySelector('.blob-home-close').addEventListener('click', () => {
       if (chat.classList.contains('open')) character.click();
       character.focus({preventScroll:true});
     });
-    document.getElementById('blob-line').textContent = 'Welchen Weg suchst du?';
-    const nav = document.createElement('nav'); nav.className = 'blob-home-routes'; nav.setAttribute('aria-label','Direkte Wege mit Blob');
-    for (const route of routes) {
-      const link = document.createElement('a'); link.href = new URL(route.path, base).href;
-      link.textContent = route.title; nav.append(link);
+    const intro = document.createElement('section'); intro.id = 'blob-introduction'; intro.className = 'blob-home-introduction'; intro.hidden = true; intro.setAttribute('aria-labelledby','blob-intro-toggle');
+    const introText = document.createElement('p'); introText.textContent = INTRODUCTION; intro.append(introText);
+    const introToggle = header.querySelector('.blob-home-introduce');
+    function showIntroduction(open) { intro.hidden = !open; introToggle.setAttribute('aria-expanded',String(open)); }
+    introToggle.addEventListener('click',() => showIntroduction(intro.hidden));
+    const searchAnchor = document.createElement('span'); searchAnchor.dataset.blobSearchAnchor = ''; searchAnchor.hidden = true;
+    const nav = document.createElement('nav'); nav.className = 'blob-home-categories'; nav.setAttribute('aria-label','Bereiche entdecken');
+    for (const category of CATEGORIES) {
+      const button = document.createElement('button'); button.type = 'button'; button.dataset.blobCategory = category.id;
+      button.setAttribute('aria-expanded','false'); button.setAttribute('aria-controls','blob-home-selection');
+      button.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[category.icon]+'</svg>';
+      const label = document.createElement('span'); label.textContent = category.title; button.append(label);
+      button.addEventListener('click',() => showCategory(category)); nav.append(button);
     }
-    document.getElementById('blob-meta').after(nav);
-    const personal = document.createElement('details'); personal.className = 'blob-home-personal';
-    personal.innerHTML = '<summary>Deine Abkürzungen und Einstellungen</summary>';
-    chat.querySelector('.blob-other-ways').before(personal);
-    const motionTools = document.createElement('div'); motionTools.className = 'blob-home-motion-tools';
-    motionTools.innerHTML = '<button type="button" data-blob-home-wave>Wink mal!</button><button type="button" data-blob-home-pause aria-pressed="false">Bewegung pausieren</button>';
-    personal.append(motionTools);
+    const selection = document.createElement('section'); selection.id = 'blob-home-selection'; selection.className = 'blob-home-selection'; selection.hidden = true;
+    selection.innerHTML = '<button type="button" class="blob-home-back">← Alle Bereiche</button><h2 id="blob-home-selection-title" tabindex="-1"></h2><p class="blob-home-selection-note" role="status"></p><div class="blob-home-choices"></div>';
+    selection.setAttribute('aria-labelledby','blob-home-selection-title');
+    const heading = selection.querySelector('h2'), note = selection.querySelector('.blob-home-selection-note'), choices = selection.querySelector('.blob-home-choices');
+    const line = document.getElementById('blob-line'), meta = document.getElementById('blob-meta'); line.textContent = ''; line.hidden = true; meta.hidden = true;
+    chat.replaceChildren(header,intro,line,searchAnchor,nav,selection,meta);
+    let selected = '', selectionEpoch = 0;
+    const catalogs = new Map();
+    function addChoice(entry) {
+      const link = document.createElement('a'); link.href = new URL(entry.path,base).href;
+      const title = document.createElement('strong'); title.textContent = entry.title; link.append(title);
+      if (entry.detail) {const detail = document.createElement('small'); detail.textContent = entry.detail; link.append(detail);}
+      choices.append(link);
+    }
+    function showRoot(focus = true) {
+      const previous = selected; selected = ''; selectionEpoch++; nav.hidden = false; selection.hidden = true;
+      nav.querySelectorAll('button').forEach(button => button.setAttribute('aria-expanded','false'));
+      if (focus) nav.querySelector('[data-blob-category="'+previous+'"]')?.focus({preventScroll:true});
+    }
+    selection.querySelector('.blob-home-back').addEventListener('click',() => showRoot());
+    async function showCategory(category) {
+      selected = category.id; const epoch = ++selectionEpoch;
+      nav.hidden = true; selection.hidden = false; showIntroduction(false); choices.replaceChildren();
+      nav.querySelectorAll('button').forEach(button => button.setAttribute('aria-expanded',String(button.dataset.blobCategory === selected)));
+      heading.textContent = category.title; note.textContent = ''; note.hidden = true; heading.focus({preventScroll:true}); chat.scrollTop = 0;
+      const dynamic = ['services','dynasties','synergies'].includes(category.id);
+      if (!dynamic) {categoryLinks(category.id).forEach(addChoice);return;}
+      const overview = category.id === 'services' ? {title:'Alle Leistungen in Möglichkeiten',path:'leistungen/'} : category.id === 'dynasties' ? {title:'Über Dynastien',path:'community/#dynastien'} : {title:'Was Synergien verbindet',path:'community/#synergien'};
+      addChoice(overview); note.hidden = false; note.textContent = 'Übersicht wird geladen …';
+      const file = category.id === 'services' ? 'services.v1.json' : 'community-v0.1.json';
+      try {
+        if (!catalogs.has(file)) catalogs.set(file,fetch(new URL('assets/data/'+file,base),{credentials:'omit',cache:'no-cache'}).then(response => {if (!response.ok) throw Error('catalog');return response.json();}).catch(error => {catalogs.delete(file);throw error;}));
+        const raw = await catalogs.get(file); if (epoch !== selectionEpoch) return;
+        const entries = catalogEntries(raw,category.id); entries.forEach(addChoice);
+        note.textContent = category.id === 'synergies' ? entries.length ? 'Gemeinsame Interessen verbinden unsere Dynastien.' : 'Hobbys, Gemeinsamkeiten und Zugehörigkeiten verbinden Dynastien. Hier sind noch keine Synergien veröffentlicht.' : entries.length ? '' : 'Hier sind noch keine Einträge veröffentlicht.';
+        note.hidden = !note.textContent;
+      } catch {
+        if (epoch !== selectionEpoch) return;
+        note.textContent = 'Die Übersicht konnte gerade nicht geladen werden. Du kannst den Bereich trotzdem direkt öffnen.';
+      }
+    }
+    document.querySelectorAll('[data-blob-home-open]').forEach(button => button.addEventListener('click',event => {event.preventDefault();if (!chat.classList.contains('open')) character.click();}));
     const controls = document.querySelector('.blob-home-controls'); controls.hidden = false;
     const media = matchMedia('(prefers-reduced-motion: reduce)');
     const key = 'gemden_blob_home_motion_paused';
-    let paused = false, active = true, phase = '', frame = 0, lookFrame = 0, blinkTimer = 0, blinkEnd = 0, waveEnd = 0, morph = null, panelMotion = null, pendingFocus = false;
+    let paused = false, active = true, phase = '', frame = 0, lookFrame = 0, blinkTimer = 0, blinkEnd = 0, waveEnd = 0, morph = null, panelMotion = null;
     let pointer = {x:0,y:0}, positionStamp = '';
     try { paused = localStorage.getItem(key) === 'true'; } catch {}
     const canMove = () => animationEnabled({reduced:media.matches,paused,hidden:document.hidden || !active});
@@ -105,17 +215,12 @@
       applyMotion();
     }));
     function tuneContents() {
-      const suggestions = chat.querySelector('#blob-suggestions');
-      if (suggestions && suggestions.parentElement !== personal) personal.append(suggestions);
       const knowledge = chat.querySelector('#blob-knowledge');
-      if (knowledge && (knowledge.parentElement !== chat || knowledge.nextElementSibling !== personal)) personal.before(knowledge);
+      if (knowledge && (knowledge.parentElement !== chat || knowledge.nextElementSibling !== searchAnchor)) searchAnchor.before(knowledge);
       if (knowledge && !knowledge.dataset.homeTuned) {
         knowledge.dataset.homeTuned = 'true';
         knowledge.querySelector('label').textContent = 'Was möchtest du finden?';
-        knowledge.querySelector('input').placeholder = 'Zum Beispiel Kalender oder Krallenpflege';
-      }
-      if (pendingFocus && knowledge && isOpen()) {
-        pendingFocus = false; knowledge.querySelector('input').focus({preventScroll:true});
+        knowledge.querySelector('input').placeholder = 'Deine Frage …';
       }
     }
     function locate() {
@@ -161,12 +266,11 @@
     window.addEventListener('resize',queue,{passive:true});
     window.addEventListener('blob:visibility',event => {
       if (event.detail?.open) {
-        pendingFocus = innerWidth > 760;
         if (canMove() && chat.animate) {panelMotion?.cancel();panelMotion=chat.animate([{opacity:0,transform:'translateY(9px)'},{opacity:1,transform:'translateY(0)'}],{duration:180,easing:'ease-out'});}
-        if (!pendingFocus) header.querySelector('button').focus({preventScroll:true});
+        introToggle.focus({preventScroll:true});
         wave();
       }
-      else {pendingFocus = false;panelMotion?.cancel();clearTimeout(waveEnd);character.classList.remove('is-home-waving');}
+      else {showRoot(false);panelMotion?.cancel();clearTimeout(waveEnd);character.classList.remove('is-home-waving');}
       tuneContents(); queue();
     });
     window.addEventListener('blob:react',wave);
@@ -188,5 +292,5 @@
     new MutationObserver(tuneContents).observe(chat,{childList:true,subtree:true});
     applyMotion(); queue();
   }
-  return {HOME_PATHS,placement,animationEnabled,mount};
+  return {HOME_PATHS,CATEGORIES,INTRODUCTION,catalogEntries,categoryLinks,placement,animationEnabled,mount};
 });
