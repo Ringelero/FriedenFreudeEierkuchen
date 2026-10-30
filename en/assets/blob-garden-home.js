@@ -201,6 +201,7 @@
       waveEnd = setTimeout(() => character.classList.remove('is-home-waving'), 1900);
     }
     function applyMotion() {
+      document.body.classList.toggle('home-motion-paused',!canMove());
       character.classList.toggle('home-motion-paused',!canMove());
       for (const button of document.querySelectorAll('[data-blob-home-pause]')) {
         button.textContent = paused ? "Enable movement" : "Pause movement";
