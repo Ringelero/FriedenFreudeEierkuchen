@@ -1,6 +1,6 @@
 /* Approved ink-and-watercolour world; copy remains selectable HTML. */
 .community-sketch{--ink:#173f36;--muted:#45604c;--ruby:#a94f32;--line:#adb396;background:#f5ecd4;color:var(--ink);font-family:Georgia,'Times New Roman',serif}
-.community-sketch .site-shell{width:min(1800px,100%);max-width:none;padding:0;margin:auto}
+.community-sketch .site-shell{width:min(2400px,100%);max-width:none;padding:0;margin:auto}
 .community-sketch .site-nav{position:relative;z-index:4;margin:0;padding:20px clamp(20px,5vw,90px);border:0;border-radius:0;box-shadow:none;background:#f8eed6;color:var(--ink);gap:20px}
 .community-sketch .site-mark{font:700 clamp(1.7rem,2.5vw,2.8rem)/1.1 Georgia,serif;letter-spacing:-.05em;color:var(--ink)}
 .community-sketch .nav-links a{font-family:Georgia,serif;color:var(--ink);background:transparent;border-radius:0}

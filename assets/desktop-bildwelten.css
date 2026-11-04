@@ -1,23 +1,24 @@
 /* Existing page worlds expand with desktop windows; phone layouts stay separate. */
 @media (min-width:1101px) {
-  :is(.garden-home,.community-overview,.possibilities-page) {
+  :is(.garden-home,.community-overview,.possibilities-page,.community-sketch) {
     --desktop-gutter:clamp(28px,3vw,76px);
   }
-  :is(.garden-home,.community-overview,.possibilities-page) .site-shell {
+  :is(.garden-home,.community-overview,.possibilities-page,.community-sketch) .site-shell {
     width:100%; max-width:2400px; padding-inline:var(--desktop-gutter);
   }
-  :is(.community-overview,.possibilities-page) .site-nav {
+  :is(.community-overview,.possibilities-page,.community-sketch) .site-nav {
     padding:11px 18px; gap:18px;
   }
-  :is(.community-overview,.possibilities-page) .site-nav .nav-links {
+  :is(.community-overview,.possibilities-page,.community-sketch) .site-nav .nav-links {
     gap:clamp(5px,.6vw,16px);
   }
-  :is(.community-overview,.possibilities-page) .site-nav .nav-links a {
+  :is(.community-overview,.possibilities-page,.community-sketch) .site-nav .nav-links a {
     padding:12px clamp(10px,1vw,22px); font-size:clamp(.84rem,.85vw,1rem);
   }
-  :is(.community-overview,.possibilities-page) .site-nav .site-mark {
+  :is(.community-overview,.possibilities-page,.community-sketch) .site-nav .site-mark {
     font-size:clamp(1.65rem,1.65vw,2.2rem);
   }
+  .community-sketch .footer {max-width:none;padding-inline:18px}
 
   /* The painted home frame, portal and three paths grow together. */
   .garden-home {
