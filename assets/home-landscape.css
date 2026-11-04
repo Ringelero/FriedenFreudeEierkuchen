@@ -31,7 +31,7 @@
 @media(min-width:1101px){.landscape-home .home-landscape{margin-inline:calc(-1 * var(--desktop-gutter))}}
 @media(min-width:761px) and (max-width:1050px){.landscape-home .home-landscape{margin-inline:-28px}.landscape-home .flow-route{gap:5px}.landscape-home .flow-route h2{font-size:clamp(1.4rem,3cqw,2.2rem)}.landscape-home .flow-route p{font-size:clamp(.84rem,1.55cqw,1rem)}}
 @media(max-width:760px){
- .landscape-home .home-landscape {margin-inline:-22px}
+ .landscape-home .home-landscape {margin-inline:-22px;margin-top:-150px;z-index:1}
  .landscape-home :is(.flow-primary,.flow-secondary) {position:relative}
  .landscape-home .flow-primary {height:max(340cqw,76rem)}
  .landscape-home .flow-first-art {height:100%}
@@ -39,7 +39,7 @@
  .landscape-home .flow-second-art {display:block;pointer-events:none}
  .landscape-home .flow-second-art {height:100%}
  .landscape-home .flow-second-art img {display:block;width:100%;height:100%;object-fit:fill;mask-image:linear-gradient(transparent,#000 3%,#000 96%,transparent)}
- .landscape-home .flow-secondary {height:max(300cqw,64rem);margin-top:-28px}
+ .landscape-home .flow-secondary {height:max(300cqw,64rem);margin-top:-76px}
  .landscape-home .flow-map-anchor {top:9%}
  .landscape-home .flow-route {gap:6px;padding:0 5px}
  .landscape-home .flow-route h2 {font-size:clamp(1.55rem,7.5cqw,2.5rem);line-height:1.12}
