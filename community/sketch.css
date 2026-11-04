@@ -1,0 +1,103 @@
+/* Approved ink-and-watercolour world; copy remains selectable HTML. */
+.community-sketch{--ink:#173f36;--muted:#45604c;--ruby:#a94f32;--line:#adb396;background:#f5ecd4;color:var(--ink);font-family:Georgia,'Times New Roman',serif}
+.community-sketch .site-shell{width:min(1800px,100%);max-width:none;padding:0;margin:auto}
+.community-sketch .site-nav{position:relative;z-index:4;margin:0;padding:20px clamp(20px,5vw,90px);border:0;border-radius:0;box-shadow:none;background:#f8eed6;color:var(--ink);gap:20px}
+.community-sketch .site-mark{font:700 clamp(1.7rem,2.5vw,2.8rem)/1.1 Georgia,serif;letter-spacing:-.05em;color:var(--ink)}
+.community-sketch .nav-links a{font-family:Georgia,serif;color:var(--ink);background:transparent;border-radius:0}
+.community-sketch .nav-links a[aria-current=page]{background:transparent;border-bottom:2px solid #b96943}
+.community-sketch .nav-toggle{color:var(--ink);background:#fbf2dd;border-color:#aab095}
+.community-sketch .language-switcher{background:#fbf2dd;border-color:#b9bea2;box-shadow:none}
+.community-sketch .language-switcher a[aria-current=true]{background:#315745;color:#fff6df}
+.community-sketch [hidden]{display:none!important}
+.community-sketch a:focus-visible,.community-sketch button:focus-visible{outline:3px solid #315c4a;outline-offset:5px}
+.sketch-scene{position:relative;isolation:isolate;container-type:inline-size;aspect-ratio:1122/1402}
+.sketch-art{position:absolute;inset:0;z-index:-1;display:block;pointer-events:none}
+.sketch-art img{display:block;width:100%;height:100%;object-fit:fill}
+.sketch-intro{position:absolute;left:35.5%;top:4%;width:35%;text-align:center;isolation:isolate}
+.sketch-intro:before{content:'';position:absolute;inset:-12px -16px;z-index:-1;border-radius:45%;background:#fbeed58c;filter:blur(12px);pointer-events:none}
+.sketch-intro h1{font:500 clamp(2rem,4cqw,4.4rem)/1.03 Georgia,serif;letter-spacing:-.045em;margin:0 0 15px;color:var(--ink)}
+.sketch-intro p{font:400 clamp(.95rem,1.35cqw,1.45rem)/1.55 Georgia,serif;margin:0;text-wrap:pretty;color:var(--ink)}
+.sketch-entry{position:absolute;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:clamp(8px,.85cqw,15px);text-align:center;min-width:0;isolation:isolate;scroll-margin-top:20px;padding:0 4px}
+.sketch-dynasties{left:9%;top:53%;width:33%;height:18%}
+.sketch-synergies{left:58%;top:62%;width:31%;height:16%}
+.sketch-entry h2{font:500 clamp(2rem,3.6cqw,4rem)/1.04 Georgia,serif;letter-spacing:-.035em;margin:0;color:var(--ink);text-wrap:balance}
+.sketch-entry .sketch-origin{font:400 clamp(.75rem,1.02cqw,1.05rem)/1.4 Georgia,serif;color:#435c47;margin:0;max-width:100%}
+.sketch-entry .sketch-description{font:400 clamp(1rem,1.4cqw,1.45rem)/1.45 Georgia,serif;max-width:32ch;text-wrap:balance;margin:0;color:var(--ink)}
+.sketch-synergies h2{font-size:clamp(1.9rem,3.2cqw,3.6rem)}
+.sketch-synergies .sketch-description{font-size:clamp(1rem,1.28cqw,1.3rem)}
+.sketch-open{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:44px;padding:10px 25px;border:0;border-radius:999px;text-decoration:none;background:#a95136;color:#fff8e7;font:500 clamp(.95rem,1.45cqw,1.4rem)/1.2 Georgia,serif;box-shadow:none}
+.sketch-open:hover{background:#873e28;color:#fff8e7}
+.sketch-open[aria-expanded=true]{background:#315745}
+.sketch-mobile-faces,.sketch-mobile-bottom{display:none}
+.sketch-noscript{padding:25px;display:flex;gap:20px;flex-wrap:wrap}
+.community-sketch .footer{max-width:1500px;margin:0 auto;padding:25px clamp(20px,4vw,70px) 45px;border:0;background:#f5ecd4;color:var(--ink)}
+.community-sketch .footer a{color:var(--ink)}
+
+/* Only the selected branches are drawn. No continuous layout or animation loop. */
+.connections-explorer{max-width:1350px;margin:0 auto;padding:40px clamp(18px,4vw,70px) 50px;scroll-margin-top:12px}
+.connection-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:35px}
+.connection-toolbar h2{font:500 clamp(1.8rem,3vw,2.8rem)/1.1 Georgia,serif;margin:0;letter-spacing:-.035em}
+.connection-actions{display:flex;gap:12px;flex-wrap:wrap}
+.connection-quiet{font:400 .9rem/1.35 Georgia,serif;min-height:44px;padding:10px 3px;background:none;border:0;border-bottom:1px solid #859176;color:var(--ink)}
+.connection-canvas{position:relative;isolation:isolate;min-width:0}
+.connection-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1;overflow:visible}
+.connection-line{stroke:#a4af92;stroke-width:1.5;fill:none}
+.connection-line.is-shared{stroke:#a25439;stroke-width:2.5}
+.connection-layer{display:grid;grid-template-columns:repeat(var(--node-count,2),minmax(0,1fr));gap:24px;align-items:start}
+.connection-layer+.connection-layer{margin-top:70px}
+.connection-layer.is-many{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.connection-node{position:relative;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:4px 8px;isolation:isolate}
+.connection-node-control{display:inline-flex;gap:10px;align-items:center;justify-content:center;min-height:48px;max-width:100%;padding:13px 24px;border:1px solid #9ca98b;border-radius:48% 35% 42% 40%/42% 48% 40% 42%;background:#fbf2db;color:var(--ink);font:500 clamp(1.12rem,1.8vw,1.5rem)/1.25 Georgia,serif;text-decoration:none;overflow-wrap:anywhere}
+.connection-node-control:hover{background:#e9e7c9;color:var(--ink)}
+.connection-node-control[aria-expanded=true]{background:#365c49;border-color:#365c49;color:#fff6dd}
+.connection-node-kind{font:400 .85rem/1.4 Georgia,serif;color:#49614b;margin:0}
+.connection-profile{display:inline-flex;align-items:center;min-height:38px;font:400 .9rem/1.35 Georgia,serif;color:var(--ink);text-underline-offset:4px}
+.connection-shared{font:400 .9rem/1.45 Georgia,serif;color:#7d3e2c;max-width:25ch;margin:0}
+.connection-node-steam{pointer-events:none;position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse at 25% 70%,#fff7ded9,transparent 65%),radial-gradient(ellipse at 70% 30%,#f4ecd2de,transparent 65%);z-index:1}
+.connection-status{font:400 .92rem/1.5 Georgia,serif;min-height:1.5em;color:#49614b;margin:30px 0 0;text-align:center}
+.connection-fallback{display:flex;gap:18px;flex-wrap:wrap;margin-top:20px}
+.connection-error{color:#7c382a}
+.synergy-page .synergy-main{max-width:1000px;padding:clamp(30px,6vw,85px) clamp(22px,5vw,60px);margin:auto}
+.synergy-heading{padding:45px 30px;background:#fbf2dd;border-radius:28% 16% 22% 13%/12% 16% 20% 16%;margin-bottom:40px}
+.synergy-heading h1{font:500 clamp(2.4rem,6vw,4.5rem)/1.08 Georgia,serif;margin:12px 0 20px;letter-spacing:-.04em}
+.synergy-heading p,.synergy-connections p{font:400 1.05rem/1.6 Georgia,serif;max-width:60ch}
+.synergy-heading .eyebrow{font:.8rem/1.4 system-ui,sans-serif;letter-spacing:.1em}
+.synergy-connections h2{font:500 2rem/1.2 Georgia,serif}
+.synergy-links{display:flex;gap:14px 25px;flex-wrap:wrap;margin:24px 0}
+.synergy-links a{color:var(--ink);min-height:44px;display:inline-flex;align-items:center;text-underline-offset:4px}
+@media(max-width:1100px) and (min-width:1001px){.sketch-entry{gap:7px}.sketch-entry h2{font-size:3.2cqw}.sketch-entry .sketch-origin{font-size:.75rem}.sketch-entry .sketch-description{font-size:1rem}.sketch-intro p{font-size:.9rem}}
+@media(max-width:1000px){
+ .sketch-scene{aspect-ratio:auto;display:flex;flex-direction:column;--sketch-art:url('/assets/community/zeichenwelt-20261104-1122.webp')}
+ .sketch-art{position:relative;inset:auto;z-index:0;height:43cqw;overflow:hidden;order:0;flex:none}
+ .sketch-art img{height:auto;object-fit:initial;transform:translateY(-1%)}
+ .sketch-intro{position:relative;inset:auto;width:auto;order:1;text-align:center;margin:0 clamp(22px,7vw,65px);padding:8px 0 24px}
+ .sketch-intro:before{background:#f5ecd4d9;inset:-15px;filter:blur(8px)}
+ .sketch-intro h1{font-size:clamp(2.2rem,7cqw,3.4rem);margin-bottom:18px}
+ .sketch-intro p{font-size:clamp(1.05rem,4.5cqw,1.3rem);line-height:1.6;max-width:40ch;margin:auto}
+ .sketch-mobile-faces{display:block;order:2;height:52cqw;max-height:430px;background-image:var(--sketch-art);background-size:100% auto;background-position:center 42%;pointer-events:none}
+ .sketch-entry{position:relative;inset:auto;width:auto;height:auto;min-height:380px;margin:0 clamp(8px,3vw,24px);padding:55px clamp(32px,11vw,95px);gap:14px;background-image:radial-gradient(ellipse,#f9efd9dd 0 35%,#f9efd95c 60%,transparent 75%),var(--sketch-art);background-repeat:no-repeat;background-size:100% 100%,260cqw auto}
+ .sketch-dynasties{order:3;background-position:center,calc(50% + 65cqw) calc(50% - 39cqw)}
+ .sketch-synergies{order:4;background-position:center,calc(50% - 57.2cqw) calc(50% - 71.5cqw)}
+ .sketch-entry h2{font-size:clamp(2rem,8cqw,3rem)}
+ .sketch-entry .sketch-origin{font-size:clamp(.82rem,3.45cqw,1rem);line-height:1.5}
+ .sketch-entry .sketch-description{font-size:clamp(1.05rem,4.5cqw,1.3rem);line-height:1.5;max-width:30ch}
+ .sketch-open{font-size:1.08rem;padding:11px 26px}
+ .sketch-mobile-bottom{display:block;order:5;height:45cqw;max-height:340px;background-image:var(--sketch-art);background-size:100% auto;background-position:center bottom;pointer-events:none}
+ .connection-layer{gap:18px}
+ .connection-layer+.connection-layer{margin-top:60px}
+ .connection-node-control{font-size:1.12rem;padding:12px 18px}
+}
+@media(max-width:600px){
+ .community-sketch .site-nav{padding:17px 20px;gap:12px}
+ .connection-toolbar{align-items:flex-start;gap:14px}
+ .connection-actions{gap:12px}
+ .connection-node{padding-inline:3px;gap:7px}
+ .connection-node-control{font-size:1rem;padding:11px 12px}
+ .connection-node-kind{font-size:.8rem}
+ .connection-layer[data-depth="2"],.connection-layer[data-depth="3"]{display:flex;flex-direction:column;align-items:center;gap:40px;margin-inline:28px}
+ .connection-layer[data-depth="2"] .connection-node,.connection-layer[data-depth="3"] .connection-node{width:100%}
+ .connection-layer[data-depth="2"] .connection-node-control,.connection-layer[data-depth="3"] .connection-node-control{font-size:1.1rem;padding:13px 22px}
+ .connection-layer.is-many{grid-template-columns:repeat(auto-fit,minmax(125px,1fr))}
+ .connections-explorer{padding-top:28px}
+}
+@media(prefers-reduced-motion:reduce){.community-sketch *{scroll-behavior:auto!important}.connection-node-steam{animation:none!important}}

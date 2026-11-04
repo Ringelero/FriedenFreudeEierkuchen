@@ -1,7 +1,7 @@
 {
   "meta": {
     "schema_version": "0.1",
-    "updated": "2026-10-21",
+    "updated": "2026-11-04",
     "status": "public-community-catalog",
     "note": "Öffentlicher Katalog der Community-Räume. Private Inhalte und Zugriffsrechte werden getrennt über das Konto verwaltet."
   },
@@ -166,5 +166,15 @@
     }
   ],
   "evidence": [],
-  "projects": []
+  "projects": [],
+  "synergies": [
+    {
+      "id": "SYN-ALTERNATIVE",
+      "slug": "alternative",
+      "name": "Die Alternativen",
+      "status": "building",
+      "description": "Die Beschreibung dieser Synergie folgt.",
+      "public_path": "/community/synergien/alternative/"
+    }
+  ]
 }

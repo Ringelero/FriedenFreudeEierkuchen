@@ -1,0 +1,20 @@
+{
+  "meta": {"schema_version": "1", "status": "public"},
+  "nodes": [
+    {"id":"ROOT-DYNASTIES","kind":"category","name":"Dynastien"},
+    {"id":"ROOT-SYNERGIES","kind":"category","name":"Synergien"},
+    {"id":"DYN-RUBYBUBYS","kind":"dynasty","name":"Rubybubys","public_path":"/community/dynastien/rubybubys/"},
+    {"id":"SYN-ALTERNATIVE","kind":"synergy","name":"Die Alternativen","public_path":"/community/synergien/alternative/"},
+    {"id":"PLACE-THREEDEN","kind":"place","name":"ThreeDen","public_path":"/community/orte/threeden/"},
+    {"id":"SERVICE-RUBYBUBYS-OBDACHLOSENHILFE","kind":"service","name":"Obdachlosenhilfe","public_path":"/leistungen/rubybubys-obdachlosenhilfe/"},
+    {"id":"SERVICE-RUBYBUBYS-HERZ-SCHNAUZE","kind":"service","name":"Herz & Schnauze","public_path":"/leistungen/rubybubys-herz-und-schnauze/"}
+  ],
+  "links": [
+    {"from":"ROOT-DYNASTIES","to":"DYN-RUBYBUBYS"},
+    {"from":"ROOT-SYNERGIES","to":"SYN-ALTERNATIVE"},
+    {"from":"DYN-RUBYBUBYS","to":"PLACE-THREEDEN"},
+    {"from":"DYN-RUBYBUBYS","to":"SERVICE-RUBYBUBYS-OBDACHLOSENHILFE"},
+    {"from":"DYN-RUBYBUBYS","to":"SERVICE-RUBYBUBYS-HERZ-SCHNAUZE"},
+    {"from":"SYN-ALTERNATIVE","to":"SERVICE-RUBYBUBYS-OBDACHLOSENHILFE"}
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "meta": {
     "schema_version": "0.1",
-    "updated": "2026-10-21",
+    "updated": "2026-11-04",
     "status": "public-community-catalog",
     "note": "Public catalogue of Community spaces. Private content and access permissions are managed separately through the account."
   },
@@ -166,5 +166,15 @@
     }
   ],
   "evidence": [],
-  "projects": []
+  "projects": [],
+  "synergies": [
+    {
+      "id": "SYN-ALTERNATIVE",
+      "slug": "alternative",
+      "name": "The Alternatives",
+      "status": "building",
+      "description": "A description of this synergy will follow.",
+      "public_path": "/community/synergien/alternative/"
+    }
+  ]
 }
