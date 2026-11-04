@@ -19,6 +19,7 @@
     font-size:clamp(1.65rem,1.65vw,2.2rem);
   }
   .community-sketch .footer {max-width:none;padding-inline:18px}
+  .community-sketch .sketch-world {margin-inline:calc(-1 * var(--desktop-gutter))}
 
   /* The painted home frame, portal and three paths grow together. */
   .garden-home {
