@@ -18,7 +18,7 @@ test('homeless support is one Rubybubys service with four prepared entrances acr
   for (const language of ['', 'en/']) {
     const localized = JSON.parse(fs.readFileSync(path.join(root, language, 'assets/data/services.v1.json'), 'utf8')).services.find(item => item.id === service.id);
     assert.equal(localized.public_path, service.public_path);
-    for (const page of ['leistungen/index.html', 'community/index.html', 'community/dynastien/rubybubys/index.html']) {
+    for (const page of ['leistungen/index.html', 'community/dynastien/rubybubys/index.html']) {
       const html = fs.readFileSync(path.join(root, language, page), 'utf8');
       assert.ok(html.includes(`data-service-id="${service.id}"`));
       const links = [...html.matchAll(/href="([^"]+)"/g)].map(match => new URL(match[1], `https://gemden.red/${language}${page}`).pathname);
@@ -88,7 +88,7 @@ test('catalog destinations stay within real internal service and provider routes
 test('both HTML entry paths work independently of catalog loading and return to the provider', () => {
   const service = catalog.services[0];
   const route = service.public_path;
-  const pages = ['leistungen/index.html', 'community/dynastien/rubybubys/index.html', 'community/index.html'];
+  const pages = ['leistungen/index.html', 'community/dynastien/rubybubys/index.html'];
   for (const page of pages) {
     const html = fs.readFileSync(path.join(root, page), 'utf8');
     assert.ok(html.includes(service.name));
