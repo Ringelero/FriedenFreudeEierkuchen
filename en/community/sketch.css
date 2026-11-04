@@ -104,3 +104,51 @@
  .connection-layer[data-depth="2"] .connection-node-control,.connection-layer[data-depth="3"] .connection-node-control{font-size:1.25rem}
 }
 @media(prefers-reduced-motion:reduce){.community-sketch *{scroll-behavior:auto!important}}
+
+/* Six original seed/lantern objects, from one shared transparent atlas. */
+.connection-garden{padding-top:18px;padding-bottom:95px}
+.connection-node{flex-direction:column;gap:0}
+.connection-node:before{display:none}
+.connection-node-control{position:relative;display:block;width:min(100%,245px);min-height:0;aspect-ratio:1;padding:0;border:0;border-radius:0;background:none!important;color:var(--ink);overflow:visible;isolation:isolate;touch-action:manipulation}
+.connection-node.is-expandable .connection-node-control{width:min(100%,270px)}
+.connection-node-art{display:block;position:absolute;inset:0;z-index:-1;background-image:url('/assets/community/samenformen-20261104-1536.webp');background-size:300% 200%;background-repeat:no-repeat;pointer-events:none;transition:transform .22s ease-out,filter .22s ease-out}
+.connection-node-copy{position:absolute;inset:34% 16% 24%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transform:rotate(-3deg)}
+.connection-node-name{display:block;max-width:100%;font:500 clamp(1rem,1.9cqw,1.65rem)/1.18 Georgia,serif;text-wrap:balance;overflow-wrap:normal}
+.connection-node-action{display:inline-flex;gap:7px;align-items:center;font:400 .82rem/1.25 Georgia,serif;color:#486046;white-space:nowrap}
+.connection-node-symbol{font:400 1.05em/1 Georgia,serif;opacity:1}
+.connection-node-control:hover .connection-node-art{transform:translateY(-3px) rotate(-1deg);filter:drop-shadow(0 3px 3px #566a4036)}
+.connection-node-control[aria-expanded=true] .connection-node-art{filter:drop-shadow(0 3px 3px #a86a3e3d)}
+.connection-node-control[aria-expanded=true] .connection-node-action{color:#8c4e31;font-style:italic}
+.connection-profile{position:relative;display:inline-flex;gap:8px;align-items:center;justify-content:center;min-height:44px;min-width:80px;padding:3px 10px;margin-top:-12px;font:400 .86rem/1.2 Georgia,serif;color:var(--ink);text-decoration:underline;text-underline-offset:4px;z-index:2}
+.connection-node[data-motif="1"] .connection-node-copy{transform:rotate(-5deg);inset:39% 10% 21%}
+.connection-node[data-motif="2"] .connection-node-copy{transform:rotate(2deg);inset:34% 17% 25%}
+.connection-node[data-motif="3"] .connection-node-copy{transform:rotate(-2deg);inset:34% 15% 24%}
+.connection-node[data-motif="3"] .connection-node-name{font-size:clamp(.9rem,1.55cqw,1.4rem)}
+.connection-node[data-motif="4"] .connection-node-copy{transform:rotate(2deg);inset:32% 18% 24%}
+.connection-node.is-shared .connection-node-name{color:#884a30}
+.connection-layer+.connection-layer{margin-top:85px}
+.connection-stem .connection-line{stroke:#59694b;stroke-width:5.2;stroke-linecap:round;fill:none}
+.connection-stem .connection-line-inner{stroke:#eddfbd;stroke-width:3;stroke-linecap:round;fill:none}
+.connection-stem.is-shared .connection-line{stroke:#a56b46}
+.connection-stem .connection-rung{stroke:#59694b;stroke-width:1;stroke-linecap:round;fill:none}
+.connection-stem.is-shared .connection-rung{stroke:#9a623e}
+.connection-bud{fill:#b3bc8b;stroke:#59694b;stroke-width:.85;stroke-linejoin:round}
+.connection-stem.is-shared .connection-bud{fill:#d6b77c;stroke:#9a623e}
+@media(max-width:850px){
+ .connection-garden{padding-top:18px;padding-inline:7%;padding-bottom:85px}
+ .connection-node-art{background-image:url('/assets/community/samenformen-20261104-768.webp')}
+ .connection-node-control{width:min(62cqw,210px)}
+ .connection-node.is-expandable .connection-node-control{width:100%}
+ .connection-node-name{font-size:clamp(1rem,4.5cqw,1.3rem)}
+ .connection-layer[data-depth="1"] .connection-node-name{font-size:clamp(.87rem,4cqw,1.55rem)}
+ .connection-layer[data-depth="1"] .connection-node[data-motif="1"] .connection-node-name{font-size:clamp(.82rem,3.8cqw,1.45rem)}
+ .connection-node-copy{gap:5px}
+ .connection-node-action{font-size:.75rem;gap:5px}
+ .connection-layer[data-depth="1"] .connection-node-action{font-size:clamp(.66rem,2.9cqw,.82rem)}
+ .connection-layer[data-depth="1"] .connection-node-symbol{display:inline}
+ .connection-layer[data-depth="1"] .connection-profile{position:relative;right:auto;top:auto;min-height:44px;min-width:80px;font-size:.8rem;margin-top:-5px}
+ .connection-layer+.connection-layer{margin-top:75px}
+ .connection-layer[data-depth="2"],.connection-layer[data-depth="3"]{gap:35px;margin-inline:0}
+ .connection-layer[data-depth="2"] .connection-node-control,.connection-layer[data-depth="3"] .connection-node-control{padding:0;font-size:inherit}
+}
+@media(prefers-reduced-motion:reduce){.connection-node-art{transition:none!important}.connection-node-control:hover .connection-node-art{transform:none}}

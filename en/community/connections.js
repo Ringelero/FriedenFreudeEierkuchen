@@ -51,6 +51,7 @@
   let drawnKeys = new Set(), frame = 0, lastSize = '', animateNext = false;
   const canMove = () => !paused && !media.matches && !document.hidden;
   const localPath = path => document.documentElement.lang === 'en' ? '/en' + path : path;
+  const motifs = {'DYN-RUBYBUBYS':0,'SYN-ALTERNATIVE':1,'PLACE-THREEDEN':2,'SERVICE-RUBYBUBYS-OBDACHLOSENHILFE':3,'SERVICE-RUBYBUBYS-HERZ-SCHNAUZE':4};
   function syncRoots() {
     paintedRoots.forEach(button => {
       const on = opened.has(button.dataset.rootToggle);
@@ -70,12 +71,20 @@
   function nodeControl(node, expandable) {
     const control = document.createElement(expandable ? 'button' : 'a');
     control.className = 'connection-node-control'; control.id = 'connection-control-' + node.id;
-    const name = document.createElement('span'); name.textContent = node.name; control.append(name);
+    const art = document.createElement('span'); art.className = 'connection-node-art'; art.setAttribute('aria-hidden','true');
+    const motif = motifs[node.id] ?? 5;
+    art.style.backgroundPosition = (motif % 3 * 50) + '% ' + (Math.floor(motif / 3) * 100) + '%';
+    const copy = document.createElement('span'); copy.className = 'connection-node-copy';
+    const name = document.createElement('span'); name.className = 'connection-node-name'; name.textContent = node.name;
+    const action = document.createElement('span'); action.className = 'connection-node-action';
+    const actionLabel = document.createElement('span');
+    actionLabel.textContent = expandable ? (opened.has(node.id) ? "Close" : "Discover") : "View";
+    const symbol = document.createElement('span'); symbol.className = 'connection-node-symbol'; symbol.setAttribute('aria-hidden','true'); symbol.textContent = expandable ? (opened.has(node.id) ? '−' : '+') : '→';
+    action.append(actionLabel, symbol); copy.append(name, action); control.append(art, copy);
     if (expandable) {
       control.type = 'button'; control.dataset.connectionToggle = node.id;
       control.setAttribute('aria-expanded', String(opened.has(node.id)));
       control.setAttribute('aria-controls', 'connection-layers');
-      const symbol = document.createElement('span'); symbol.className = 'connection-node-symbol'; symbol.setAttribute('aria-hidden','true'); symbol.textContent = opened.has(node.id) ? '−' : '+'; control.append(symbol);
     } else control.href = localPath(node.public_path);
     return control;
   }
@@ -97,10 +106,13 @@
         if (depth === 1) element.style.gridColumn = graph.links.find(edge => edge.to === node.id)?.from === ROOTS[0] ? '1' : '2';
         if ((incoming.get(node.id)||0) > 1) element.classList.add('is-shared');
         const expandable = catalogue.links.some(edge => edge.from === node.id);
+        if (expandable) element.classList.add('is-expandable');
+        element.dataset.motif = String(motifs[node.id] ?? 5);
         element.append(nodeControl(node, expandable));
         if (expandable && node.public_path) {
-          const link = document.createElement('a'); link.className = 'connection-profile'; link.href = localPath(node.public_path); link.textContent = '↗';
-          link.setAttribute('aria-label', node.name + ' – ' + "Open page →"); link.title = node.name; element.append(link);
+          const link = document.createElement('a'); link.className = 'connection-profile'; link.href = localPath(node.public_path); link.textContent = "Visit page";
+          const arrow = document.createElement('span'); arrow.textContent = '↗'; arrow.setAttribute('aria-hidden','true'); link.append(arrow);
+          link.setAttribute('aria-label', node.name + ' – ' + "Visit page"); link.title = node.name; element.append(link);
         }
         row.append(element); nodeElements.set(node.id, element);
       }
@@ -119,30 +131,45 @@
     const nextKeys = new Set(), incoming = new Map(); graph.links.forEach(edge => incoming.set(edge.to,(incoming.get(edge.to)||0)+1));
     for (const edge of graph.links) {
       const root = paintedRoots.find(button => button.dataset.rootToggle === edge.from);
-      const fromNode = root || nodeElements.get(edge.from)?.querySelector('button,a');
+      const fromNode = root || nodeElements.get(edge.from);
       const toNode = nodeElements.get(edge.to)?.querySelector('button,a');
       if (!fromNode || !toNode) continue;
       const from = fromNode.getBoundingClientRect(), to = toNode.getBoundingClientRect();
       const sx = from.left + from.width/2 - box.left, sy = from.bottom - box.top + 3;
-      let ex = to.left + to.width/2 - box.left, ey = to.top - box.top - 4, pathText;
+      let ex = to.left + to.width/2 - box.left, ey = to.top + to.height*.045 - box.top, pathText;
       if (root) {
         const lane = box.width * (edge.from === ROOTS[0] ? .055 : .945);
         const bend = Math.min(sy + 65, ey - 35);
         pathText = 'M '+sx+' '+sy+' C '+sx+' '+bend+', '+lane+' '+bend+', '+lane+' '+(bend+35)+' C '+lane+' '+(ey-40)+', '+ex+' '+(ey-55)+', '+ex+' '+ey;
       } else if (box.width <= 850 && graph.nodes.find(node => node.id === edge.to).depth >= 2) {
         const left = sx < box.width/2, lane = box.width * (left ? .045 : .955);
-        ex = (left ? to.left-4 : to.right+4) - box.left; ey = to.top + to.height/2 - box.top;
+        ex = (left ? to.left+to.width*.08 : to.right-to.width*.08) - box.left; ey = to.top + to.height*.52 - box.top;
         const elbow = Math.min(sy + 36, ey - 35), mid = sy + (ey-sy)/2;
         pathText = 'M '+sx+' '+sy+' C '+sx+' '+elbow+', '+lane+' '+elbow+', '+lane+' '+(elbow+18)+' C '+(lane-7)+' '+mid+', '+(lane+9)+' '+ey+', '+ex+' '+ey;
       } else {
         const mid = sy + (ey-sy)/2; pathText = 'M '+sx+' '+sy+' C '+sx+' '+mid+', '+ex+' '+mid+', '+ex+' '+ey;
       }
       const key = edge.from + ':' + edge.to; nextKeys.add(key);
-      const path = document.createElementNS('http://www.w3.org/2000/svg','path'); path.setAttribute('class','connection-line'+((incoming.get(edge.to)||0)>1?' is-shared':'')); path.setAttribute('d',pathText); path.dataset.connection = key; svg.append(path);
+      const group = document.createElementNS('http://www.w3.org/2000/svg','g'); group.setAttribute('class','connection-stem'+((incoming.get(edge.to)||0)>1?' is-shared':'')); svg.append(group);
+      const path = document.createElementNS('http://www.w3.org/2000/svg','path'); path.setAttribute('class','connection-line'+((incoming.get(edge.to)||0)>1?' is-shared':'')); path.setAttribute('d',pathText); path.dataset.connection = key; group.append(path);
+      const inner = path.cloneNode(); inner.removeAttribute('data-connection'); inner.setAttribute('class','connection-line-inner'); group.append(inner);
+      const length = path.getTotalLength();
+      const rungs = Math.min(18,Math.max(3,Math.floor(length/34)));
+      const details = document.createElementNS('http://www.w3.org/2000/svg','g'); details.setAttribute('class','connection-stem-details'); group.append(details);
+      for (let i=1;i<rungs;i++) {
+        const distance = length*i/rungs, point = path.getPointAtLength(distance), next = path.getPointAtLength(Math.min(length,distance+2));
+        const dx=next.x-point.x,dy=next.y-point.y,norm=Math.hypot(dx,dy)||1,nx=-dy/norm,ny=dx/norm;
+        const rung = document.createElementNS('http://www.w3.org/2000/svg','path');
+        rung.setAttribute('class','connection-rung'); rung.setAttribute('d','M '+(point.x-nx*2.8)+' '+(point.y-ny*2.8)+' Q '+(point.x+Math.sin(i)*1.4)+' '+(point.y+Math.cos(i)*1.2)+', '+(point.x+nx*2.8)+' '+(point.y+ny*2.8)); details.append(rung);
+        if (i===Math.floor(rungs*.35) || i===Math.floor(rungs*.7)) {
+          const side=i%2?1:-1,leaf = document.createElementNS('http://www.w3.org/2000/svg','path');
+          const tipX=point.x+nx*side*14-dx/norm*6,tipY=point.y+ny*side*14-dy/norm*6;
+          leaf.setAttribute('class','connection-bud'); leaf.setAttribute('d','M '+point.x+' '+point.y+' Q '+(point.x+nx*side*3-dx/norm*13)+' '+(point.y+ny*side*3-dy/norm*13)+', '+tipX+' '+tipY+' Q '+(point.x+nx*side*13+dx/norm*2)+' '+(point.y+ny*side*13+dy/norm*2)+', '+point.x+' '+point.y); details.append(leaf);
+        }
+      }
       if (animateNext && !drawnKeys.has(key) && canMove()) {
-        const length = path.getTotalLength(); path.style.strokeDasharray = String(length);
-        const movement = path.animate([{strokeDashoffset:length},{strokeDashoffset:0}],{duration:850,easing:'ease-out'});
-        movement.onfinish = () => {path.style.strokeDasharray = '';};
+        for (const stroke of [path,inner]) {stroke.style.strokeDasharray=String(length); const movement=stroke.animate([{strokeDashoffset:length},{strokeDashoffset:0}],{duration:900,easing:'ease-out'}); movement.onfinish=()=>{stroke.style.strokeDasharray='';};}
+        details.animate([{opacity:0,offset:0},{opacity:0,offset:.55},{opacity:1}],{duration:1000,easing:'ease-out'});
       }
     }
     drawnKeys = nextKeys; animateNext = false;
