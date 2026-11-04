@@ -22,6 +22,14 @@ test('edge positions fit narrow phones and wide desktop windows', () => {
     assert.ok(result.x>=12); assert.ok(result.x+78<=width-12);
   }
 });
+test('a whole tall resident fits at either screen edge without treating its height as its width', () => {
+  const size={width:104,height:130},viewport={width:320,height:740};
+  for (const anchor of [{top:-180,bottom:-46,left:20,width:114},{top:900,bottom:1034,left:280,width:114}]) {
+    const point=home.placement(anchor,viewport,size);
+    assert.ok(point.x>=12 && point.x+size.width<=viewport.width-12);
+    assert.ok(point.y>=8 && point.y+size.height<=viewport.height-8);
+  }
+});
 test('either pause, reduced motion or a hidden page stops gestures', () => {
   assert.equal(home.animationEnabled(),true);
   for (const options of [{paused:true},{reduced:true},{hidden:true},{paused:true,reduced:true}]) assert.equal(home.animationEnabled(options),false);
