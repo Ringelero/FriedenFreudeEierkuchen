@@ -78,16 +78,19 @@
   }
   const clamp = (value, low, high) => Math.max(low, Math.min(Math.max(low, high), value));
   function placement(anchor, viewport, size = 78) {
-    const x = clamp(anchor.left + (anchor.width - size) / 2, 12, viewport.width - size - 12);
+    const width = typeof size === 'number' ? size : size.width;
+    const height = typeof size === 'number' ? size : size.height;
+    const x = clamp(anchor.left + (anchor.width - width) / 2, 12, viewport.width - width - 12);
     if (anchor.top < 16) return {edge:'top', x, y:8};
-    if (anchor.bottom > viewport.height - 16) return {edge:'bottom', x, y:Math.max(8,viewport.height - size - 8)};
+    if (anchor.bottom > viewport.height - 16) return {edge:'bottom', x, y:Math.max(8,viewport.height - height - 8)};
     return {edge:'home', x, y:anchor.top};
   }
   function animationEnabled({reduced = false, paused = false, hidden = false} = {}) {
     return !reduced && !paused && !hidden;
   }
   function mount() {
-    if (!document.body.classList.contains('garden-home') || window.BLOB_CONFIG?.residence !== 'garden') return;
+    const residence = window.BLOB_CONFIG?.residence;
+    if (!(residence === 'garden' && document.body.classList.contains('garden-home')) && !(residence === 'sketch' && document.body.classList.contains('community-sketch'))) return;
     const seat = document.querySelector('[data-blob-seat]');
     const character = document.getElementById('blob-character');
     const chat = document.getElementById('blob-chat');
@@ -106,6 +109,11 @@
     window.BLOB_CONFIG.homeRoutes = routes;
     character.classList.add('blob-home-resident');
     character.insertAdjacentHTML('beforeend','<span class="blob-home-limb is-left" aria-hidden="true"></span><span class="blob-home-limb is-right" aria-hidden="true"></span><span class="blob-home-foot is-left" aria-hidden="true"></span><span class="blob-home-foot is-right" aria-hidden="true"></span>');
+    if (document.body.classList.contains('blob-balloon')) {
+      const figure = document.createElement('span'); figure.className = 'blob-balloon-figure'; figure.setAttribute('aria-hidden','true');
+      figure.innerHTML = '<span class="blob-balloon-frame is-rest"></span><span class="blob-balloon-frame is-wave"></span>';
+      figure.append(character.querySelector('.blob-face')); character.append(figure);
+    }
     seat.append(character);
     chat.classList.add('blob-home-chat');
     const header = document.createElement('div'); header.className = 'blob-home-chat-head';
@@ -170,7 +178,13 @@
       }
     }
     document.querySelectorAll('[data-blob-home-open]').forEach(button => button.addEventListener('click',event => {event.preventDefault();if (!chat.classList.contains('open')) character.click();}));
-    const controls = document.querySelector('.blob-home-controls'); controls.hidden = false;
+    let controls = document.querySelector('.blob-home-controls');
+    if (!controls) {
+      controls = document.createElement('div'); controls.className = 'blob-home-controls';
+      controls.innerHTML = "<button type=\"button\" data-blob-home-wave>Give us a wave!</button><button type=\"button\" data-blob-home-pause aria-pressed=\"false\">Pause movement</button>";
+      chat.append(controls);
+    }
+    controls.hidden = false;
     const media = matchMedia('(prefers-reduced-motion: reduce)');
     const key = 'gemden_blob_home_motion_paused';
     let paused = false, active = true, phase = '', frame = 0, lookFrame = 0, blinkTimer = 0, blinkEnd = 0, waveEnd = 0, morph = null, panelMotion = null;
@@ -228,7 +242,8 @@
       frame = 0;
       if (!active) return;
       const open = isOpen(), rect = seat.getBoundingClientRect();
-      const place = placement(rect,{width:document.documentElement.clientWidth || innerWidth,height:innerHeight});
+      character.classList.toggle('is-chat-open',open);
+      const place = placement(rect,{width:document.documentElement.clientWidth || innerWidth,height:innerHeight},{width:character.offsetWidth,height:character.offsetHeight});
       const next = open ? 'open' : place.edge;
       const stamp = next === 'home' || open ? next+'|'+innerWidth+'|'+innerHeight : next+'|'+place.x+'|'+place.y;
       if (stamp === positionStamp) return;

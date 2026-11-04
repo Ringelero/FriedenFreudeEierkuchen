@@ -3,7 +3,7 @@
   ready(function () {
     const cfg = window.BLOB_CONFIG || {};
     const pageMode = document.body.dataset.blobMode || cfg.mode || 'guide';
-    const gardenHome = cfg.residence === 'garden' && document.body.classList.contains('garden-home');
+    const gardenHome = (cfg.residence === 'garden' && document.body.classList.contains('garden-home')) || (cfg.residence === 'sketch' && document.body.classList.contains('community-sketch'));
     const root = cfg.root || './';
     function internalHref(value) {
       if (typeof value !== 'string') return null;
@@ -72,7 +72,7 @@
         css.rel = 'stylesheet'; css.href = root + 'assets/blob-knowledge.css?v=20261026-1';
         document.head.append(css);
         const script = document.createElement('script');
-        script.src = root + 'assets/blob-knowledge.js?v=' + (gardenHome ? '20261030-1' : '20261027-3');
+        script.src = root + 'assets/blob-knowledge.js?v=' + (gardenHome ? '20261104-1' : '20261027-3');
         script.onload = () => { window.GemDenBlobKnowledge.mount({root,chat}); resolve(); };
         script.onerror = () => { script.remove(); css.remove(); reject(new Error('knowledge')); };
         document.head.append(script);

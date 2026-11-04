@@ -33,7 +33,7 @@
   function mount({root:relativeRoot,chat}){
     if(chat.querySelector('#blob-knowledge'))return;
     const base=new URL(relativeRoot,location.href);
-    const home=document.body.classList.contains('garden-home')&&window.BLOB_CONFIG?.residence==='garden';
+    const home=(document.body.classList.contains('garden-home')&&window.BLOB_CONFIG?.residence==='garden')||(document.body.classList.contains('community-sketch')&&window.BLOB_CONFIG?.residence==='sketch');
     const section=document.createElement('section');section.id='blob-knowledge';section.setAttribute('aria-label',"Ask Blob about a topic");
     section.innerHTML="<form class=\"blob-knowledge-form\"><label for=\"blob-question\">What would you like to know?</label><div class=\"blob-question-row\"><input id=\"blob-question\" type=\"search\" maxlength=\"300\" autocomplete=\"off\" placeholder=\"How do I trim my dog’s nails?\"><button type=\"submit\">Find a page</button></div></form><div class=\"blob-question-examples\" aria-label=\"Examples\"><button type=\"button\" data-question=\"Krallenpflege\">Nail care</button><button type=\"button\" data-question=\"Hundespielvideo\">Dog play video</button><button type=\"button\" data-question=\"Betreuung\">Care</button></div><p class=\"blob-knowledge-status\" role=\"status\">Ask about a guide or a service. Your input stays in this browser.</p><div class=\"blob-knowledge-results\"></div>";
     (chat.querySelector('[data-blob-search-anchor]')||chat.querySelector('#blob-suggestions')||chat.querySelector('.blob-other-ways')).before(section);
