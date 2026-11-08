@@ -1,7 +1,7 @@
 {
   "meta": {
     "schema_version": "0.1",
-    "updated": "2026-11-04",
+    "updated": "2026-11-08",
     "status": "public-community-catalog",
     "note": "Public catalogue of Community spaces. Private content and access permissions are managed separately through the account."
   },
@@ -175,6 +175,86 @@
       "status": "building",
       "description": "A description of this synergy will follow.",
       "public_path": "/community/synergien/alternative/"
+    },
+    {
+      "id": "SYN-CONNAISSEURS",
+      "slug": "connaisseurs",
+      "name": "Connaisseurs",
+      "status": "building",
+      "description": "For people with a sense for refined taste, special moments of enjoyment and an eye for detail.",
+      "public_path": "/community/synergien/connaisseurs/"
+    },
+    {
+      "id": "SYN-PROMILLANTEN",
+      "slug": "promillanten",
+      "name": "The Promillanten",
+      "status": "building",
+      "description": "Bars, conversations and good nights. For people who enjoy raising a glass and exploring nightlife together.",
+      "public_path": "/community/synergien/promillanten/"
+    },
+    {
+      "id": "SYN-MODERNE",
+      "slug": "moderne",
+      "name": "The Moderns",
+      "status": "building",
+      "description": "Trying technology, understanding new ideas and exploring today’s possibilities.",
+      "public_path": "/community/synergien/moderne/"
+    },
+    {
+      "id": "SYN-NERDS",
+      "slug": "nerds",
+      "name": "Nerds",
+      "status": "building",
+      "description": "Diving deep into what you love, from games and fantasy to science and technology.",
+      "public_path": "/community/synergien/nerds/"
+    },
+    {
+      "id": "SYN-VISIONAERE",
+      "slug": "visionaere",
+      "name": "Visionaries",
+      "status": "building",
+      "description": "Imagining the future and making the first steps towards it possible.",
+      "public_path": "/community/synergien/visionaere/"
+    },
+    {
+      "id": "SYN-HOOLIGANS",
+      "slug": "hooligans",
+      "name": "Hooligans",
+      "status": "building",
+      "description": "Watching sport together, sharing the excitement and cheering on your teams.",
+      "public_path": "/community/synergien/hooligans/"
+    },
+    {
+      "id": "SYN-KUENSTLER",
+      "slug": "kuenstler",
+      "name": "Artists",
+      "status": "building",
+      "description": "Turning your own ideas into pictures, sounds, stories and other works.",
+      "public_path": "/community/synergien/kuenstler/"
+    },
+    {
+      "id": "SYN-HEXEN",
+      "slug": "hexen",
+      "name": "Witches",
+      "status": "building",
+      "description": "Witch culture, rituals and personal paths that grow together.",
+      "public_path": "/community/synergien/hexen/"
+    },
+    {
+      "id": "SYN-MACHER",
+      "slug": "macher",
+      "name": "Makers",
+      "status": "building",
+      "description": "For people who build things, make repairs and put their own ideas into practice.",
+      "public_path": "/community/synergien/macher/"
+    },
+    {
+      "id": "SYN-AKTIVE",
+      "slug": "aktive",
+      "name": "The Active",
+      "status": "building",
+      "description": "Playing sports, trying something new and getting moving together.",
+      "public_path": "/community/synergien/aktive/"
     }
   ]
 }

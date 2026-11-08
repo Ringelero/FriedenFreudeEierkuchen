@@ -8,6 +8,33 @@ test('device setup remains closed without deliberately enabled public HTTPS conf
 test('device state distinguishes expiration and revocation from active access',()=>{
  const now=Date.parse('2026-10-19T12:00:00Z');assert.equal(deviceState({expires_at:'2027-01-01T00:00:00Z'},now),'Aktiv');assert.equal(deviceState({expires_at:'2026-01-01T00:00:00Z'},now),'Abgelaufen');assert.equal(deviceState({expires_at:'2027-01-01T00:00:00Z',revoked_at:'2026-10-18T12:00:00Z'},now),'Widerrufen');
 });
+
+test('missing or invalid device expiration never appears as an active credential',()=>{
+ assert.equal(deviceState({}),'Status unbekannt');
+ assert.equal(deviceState({expires_at:'invalid'}),'Status unbekannt');
+});
+
+test('enabled setup updates its introduction and copies account fields without exposing the device secret',async()=>{
+ const elements=new Map(),handlers=new Map(),copied=[];
+ const make=()=>({value:'',hidden:true,textContent:'',dataset:{},type:'password',addEventListener(type,fn){handlers.set(this.id+':'+type,fn);},setAttribute(){},append(){},replaceChildren(){}});
+ const element=id=>{if(!elements.has(id)){const el=make();el.id=id;elements.set(id,el);}return elements.get(id);};
+ const client={auth:{getSession:async()=>({data:{session:{user:{id:'local-owner'}}}}),onAuthStateChange(){}},rpc:async()=>({data:[],error:null})};
+ const context={window:{GemDenCalendarConnection:{enabled:true,serverUrl:'https://calendar.example.org/'},FFE_SUPABASE_CLIENT:client,addEventListener(){}},document:{getElementById:element,createElement:make},navigator:{clipboard:{writeText:async value=>{copied.push(value);}}},URL,Date,Intl};
+ vm.runInNewContext(fs.readFileSync(require.resolve('../kalender/verbinden/verbinden.js'),'utf8'),context);await new Promise(setImmediate);
+ assert.equal(element('connection-state-badge').dataset.state,'ready');assert.equal(element('connection-waiting').hidden,true);
+ assert.match(element('connection-intro').textContent,/beide Richtungen/);
+ element('device-server').value='https://calendar.example.org/';element('device-user').value='local-device';element('device-secret').value='secret-stays-separate';
+ await handlers.get('device-server-copy:click')();await handlers.get('device-user-copy:click')();
+ assert.deepEqual(copied,['https://calendar.example.org/','local-device']);
+});
+
+test('failed account loading reports an unavailable setup instead of claiming it is ready',async()=>{
+ const elements=new Map();const element=id=>{if(!elements.has(id))elements.set(id,{value:'',dataset:{},addEventListener(){},setAttribute(){}});return elements.get(id);};
+ const context={window:{GemDenCalendarConnection:{enabled:true,serverUrl:'https://calendar.example.org/'},FFE_SUPABASE_CLIENT:{auth:{getSession:async()=>{throw Error('unavailable');}}},addEventListener(){}},document:{getElementById:element},URL,Date,Intl};
+ vm.runInNewContext(fs.readFileSync(require.resolve('../kalender/verbinden/verbinden.js'),'utf8'),context);await new Promise(setImmediate);
+ assert.equal(element('connection-state-badge').dataset.state,'error');
+ assert.equal(element('device-status').dataset.state,'error');
+});
 test('preparation page makes no auth or device calls and loads no SDK while connection is disabled',()=>{
  const listeners={},elements=new Map();const element=id=>{if(!elements.has(id))elements.set(id,{addEventListener:(type,fn)=>{listeners[id+':'+type]=fn;}});return elements.get(id);};
  const window={GemDenCalendarConnection:{enabled:false,serverUrl:''},addEventListener:()=>{}};

@@ -38,7 +38,7 @@
   const explorer = document.querySelector('[data-connections-explorer]');
   if (!explorer) return;
   const world = document.querySelector('[data-sketch-world]');
-  const dataUrl = new URL('../assets/data/community-connections.v1.json?v=20261104-2', document.currentScript.src);
+  const dataUrl = new URL('../assets/data/community-connections.v1.json?v=20261108-3', document.currentScript.src);
   const layers = explorer.querySelector('[data-connection-layers]');
   const svg = world.querySelector('[data-connection-lines]');
   const status = explorer.querySelector('[data-connection-status]');
@@ -101,9 +101,19 @@
       const row = document.createElement('div'); row.className = 'connection-layer'; row.dataset.depth = String(depth);
       const peers = graph.nodes.filter(node => node.depth === depth);
       row.style.setProperty('--node-count', String(peers.length)); if (peers.length > 4) row.classList.add('is-many');
+      const branches = new Map();
+      if (depth === 1) {
+        for (const rootId of ROOTS) {
+          if (!peers.some(node => graph.links.some(link => link.from === rootId && link.to === node.id))) continue;
+          const branch = document.createElement('div'); branch.className = 'connection-branch'; branch.dataset.branch = rootId;
+          branch.setAttribute('role','group'); branch.setAttribute('aria-label',catalogue.nodes.get(rootId).name);
+          row.append(branch); branches.set(rootId,branch);
+        }
+        if (branches.size === 1) row.classList.add('is-single-branch');
+      }
       for (const node of peers) {
         const element = document.createElement('article'); element.className = 'connection-node'; element.dataset.connectionNode = node.id;
-        if (depth === 1) element.style.gridColumn = graph.links.find(edge => edge.to === node.id)?.from === ROOTS[0] ? '1' : '2';
+        const branchRoot = depth === 1 ? graph.links.find(edge => edge.to === node.id)?.from : null;
         if ((incoming.get(node.id)||0) > 1) element.classList.add('is-shared');
         const expandable = catalogue.links.some(edge => edge.from === node.id);
         if (expandable) element.classList.add('is-expandable');
@@ -114,7 +124,7 @@
           const arrow = document.createElement('span'); arrow.textContent = '↗'; arrow.setAttribute('aria-hidden','true'); link.append(arrow);
           link.setAttribute('aria-label', node.name + ' – ' + 'Zur Seite'); link.title = node.name; element.append(link);
         }
-        row.append(element); nodeElements.set(node.id, element);
+        (branches.get(branchRoot) || row).append(element); nodeElements.set(node.id, element);
       }
       layers.append(row);
     }
@@ -197,12 +207,21 @@
     if (paused) world.getAnimations({subtree:true}).forEach(animation => animation.finish());
   });
   new ResizeObserver(() => {const box = world.getBoundingClientRect(); if (box.width + ':' + box.height !== lastSize) scheduleDraw();}).observe(world);
-  function followHash() {
+  async function followHash() {
     const hash = location.hash.slice(1);
-    const id = hash === 'dynastien' ? ROOTS[0] : hash === 'synergien' ? ROOTS[1] : hash === 'rubybubys' ? 'DYN-RUBYBUBYS' : hash === 'alternative' ? 'SYN-ALTERNATIVE' : null;
+    if (!hash) return;
+    let id = hash === 'dynastien' ? ROOTS[0] : hash === 'synergien' ? ROOTS[1] : hash === 'rubybubys' ? 'DYN-RUBYBUBYS' : null;
+    if (!id) {
+      if (!/^[a-z0-9-]+$/.test(hash)) return;
+      try {
+        const current = await loadCatalogue();
+        if (location.hash.slice(1) !== hash) return;
+        id = [...current.nodes.values()].find(node => node.kind === 'synergy' && node.public_path.split('/').filter(Boolean).pop() === hash)?.id;
+      } catch (_) { return; }
+    }
     if (!id) return;
     if (id === 'DYN-RUBYBUBYS') opened.add(ROOTS[0]);
-    if (id === 'SYN-ALTERNATIVE') opened.add(ROOTS[1]);
+    if (id.startsWith('SYN-')) opened.add(ROOTS[1]);
     if (!opened.has(id)) toggle(id,true);
   }
   window.addEventListener('hashchange',followHash); followHash();

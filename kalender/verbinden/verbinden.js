@@ -2,7 +2,7 @@
   function connectionState(value){
     try{const u=new URL(value?.serverUrl);const h=u.hostname.toLowerCase();if(value.enabled!==true||u.protocol!=='https:'||u.username||u.password||u.search||u.hash||h==='localhost'||h.endsWith('.local')||h.startsWith('127.')||h==='[::1]'||/^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(h))return null;return {serverUrl:u.href};}catch{return null;}
   }
-  function deviceState(device,now=Date.now()){return device.revoked_at?'Widerrufen':Date.parse(device.expires_at)<=now?'Abgelaufen':'Aktiv';}
+  function deviceState(device,now=Date.now()){const expires=Date.parse(device.expires_at);return device.revoked_at?'Widerrufen':!Number.isFinite(expires)?'Status unbekannt':expires<=now?'Abgelaufen':'Aktiv';}
   if(typeof module==='object'&&module.exports){module.exports={connectionState,deviceState};return;}
   const $=id=>document.getElementById(id),config=connectionState(window.GemDenCalendarConnection);
   let client=config?window.FFE_SUPABASE_CLIENT:null,user=null,revision=0,busy=false;
@@ -32,18 +32,25 @@
   $('device-secret-close').addEventListener('click',closeSecret);
   $('device-secret-show').addEventListener('click',()=>{const show=$('device-secret').type==='password';$('device-secret').type=show?'text':'password';$('device-secret-show').textContent=show?'Schlüssel verbergen':'Schlüssel anzeigen';$('device-secret-show').setAttribute('aria-pressed',String(show));});
   $('device-secret-copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('device-secret').value);status('Geräteschlüssel kopiert. Füge ihn ausschließlich in deiner Kalender-App ein.');}catch{status('Kopieren ist hier nicht verfügbar. Zeige den Schlüssel an und kopiere ihn über die Textauswahl.');}});
+  for(const [button,field,label] of [['device-server-copy','device-server','Serveradresse kopiert.'],['device-user-copy','device-user','Benutzername kopiert.']]){
+    $(button).addEventListener('click',async()=>{if(!$(field).value)return;try{await navigator.clipboard.writeText($(field).value);status(label);}catch{status('Kopieren ist hier nicht verfügbar. Kopiere den Wert über die Textauswahl.');}});
+  }
   $('devices-reload').addEventListener('click',load);
   window.addEventListener('pagehide',closeSecret);
   window.addEventListener('pageshow',event=>{if(event.persisted){closeSecret();document.querySelector('main').hidden=true;location.reload();}});
   (async()=>{
     if(!config)return;
+    $('connection-intro').textContent='Verbinde deinen persönlichen GemDen-Kalender mit deiner gewohnten Kalender-App. Änderungen werden in beide Richtungen abgeglichen.';
+    $('connection-state-badge').textContent='Geräteverwaltung wird geladen';
+    $('connection-state-badge').dataset.state='loading';
+    $('connection-waiting').hidden=true;
     try{
       if(!client){if(!window.supabase?.createClient)await script('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js');if(!window.FFE_SUPABASE_CONFIG)await script('../../assets/supabase-config.js');await script('../../assets/supabase-client.js');client=window.FFE_SUPABASE_CLIENT;}
       if(!client)throw Error('connection');const {data,error}=await client.auth.getSession();if(error)throw error;user=data.session?.user||null;
       client.auth.onAuthStateChange((_event,session)=>{if((session?.user?.id||null)!==(user?.id||null)){user=null;revision++;closeSecret();$('device-list').replaceChildren();document.querySelector('main').hidden=true;setTimeout(()=>location.reload(),0);}});
-      $('connection-state-badge').textContent='Kalenderzugang freigeschaltet';$('connection-waiting').hidden=true;
+      $('connection-state-badge').textContent='Kalenderzugang freigeschaltet';$('connection-state-badge').dataset.state='ready';
       if(!user){$('device-access-note').replaceChildren(document.createTextNode('Melde dich an, um deinen persönlichen Kalender zu verbinden. '));const link=node('a','Zum Konto');link.href='../../konto/';$('device-access-note').append(link);return;}
       $('devices-intro').textContent='Erstelle für jedes Gerät einen eigenen Zugang. Hier kannst du ihn später wieder widerrufen.';$('devices-ready').hidden=false;$('device-access-note').hidden=true;await load();
-    }catch{status('Die Geräteverwaltung ist gerade nicht erreichbar. Deine Kalender-App kannst du später verbinden.','error');}
+    }catch{$('connection-state-badge').textContent='Einrichtung gerade nicht erreichbar';$('connection-state-badge').dataset.state='error';status('Die Geräteverwaltung ist gerade nicht erreichbar. Deine Kalender-App kannst du später verbinden.','error');}
   })();
 })();

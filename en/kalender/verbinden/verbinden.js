@@ -2,7 +2,7 @@
   function connectionState(value){
     try{const u=new URL(value?.serverUrl);const h=u.hostname.toLowerCase();if(value.enabled!==true||u.protocol!=='https:'||u.username||u.password||u.search||u.hash||h==='localhost'||h.endsWith('.local')||h.startsWith('127.')||h==='[::1]'||/^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(h))return null;return {serverUrl:u.href};}catch{return null;}
   }
-  function deviceState(device,now=Date.now()){return device.revoked_at?"Revoke":Date.parse(device.expires_at)<=now?"Expired":"Active";}
+  function deviceState(device,now=Date.now()){const expires=Date.parse(device.expires_at);return device.revoked_at?"Revoke":!Number.isFinite(expires)?"Status unknown":expires<=now?"Expired":"Active";}
   if(typeof module==='object'&&module.exports){module.exports={connectionState,deviceState};return;}
   const $=id=>document.getElementById(id),config=connectionState(window.GemDenCalendarConnection);
   let client=config?window.FFE_SUPABASE_CLIENT:null,user=null,revision=0,busy=false;
@@ -32,18 +32,25 @@
   $('device-secret-close').addEventListener('click',closeSecret);
   $('device-secret-show').addEventListener('click',()=>{const show=$('device-secret').type==='password';$('device-secret').type=show?'text':'password';$('device-secret-show').textContent=show?"Hide key":"Show key";$('device-secret-show').setAttribute('aria-pressed',String(show));});
   $('device-secret-copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('device-secret').value);status("Device key copied. Paste it only into your calendar app.");}catch{status("Copying is unavailable here. Display the key and copy it by selecting the text.");}});
+  for(const [button,field,label] of [['device-server-copy','device-server',"Server address copied."],['device-user-copy','device-user',"Username copied."]]){
+    $(button).addEventListener('click',async()=>{if(!$(field).value)return;try{await navigator.clipboard.writeText($(field).value);status(label);}catch{status("Copying is not available here. Select the text to copy the value.");}});
+  }
   $('devices-reload').addEventListener('click',load);
   window.addEventListener('pagehide',closeSecret);
   window.addEventListener('pageshow',event=>{if(event.persisted){closeSecret();document.querySelector('main').hidden=true;location.reload();}});
   (async()=>{
     if(!config)return;
+    $('connection-intro').textContent="Connect your personal GemDen calendar to your usual calendar app. Changes sync in both directions.";
+    $('connection-state-badge').textContent="Loading device management";
+    $('connection-state-badge').dataset.state='loading';
+    $('connection-waiting').hidden=true;
     try{
       if(!client){if(!window.supabase?.createClient)await script('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js');if(!window.FFE_SUPABASE_CONFIG)await script('../../assets/supabase-config.js');await script('../../assets/supabase-client.js');client=window.FFE_SUPABASE_CLIENT;}
       if(!client)throw Error('connection');const {data,error}=await client.auth.getSession();if(error)throw error;user=data.session?.user||null;
       client.auth.onAuthStateChange((_event,session)=>{if((session?.user?.id||null)!==(user?.id||null)){user=null;revision++;closeSecret();$('device-list').replaceChildren();document.querySelector('main').hidden=true;setTimeout(()=>location.reload(),0);}});
-      $('connection-state-badge').textContent="Calendar access enabled";$('connection-waiting').hidden=true;
+      $('connection-state-badge').textContent="Calendar access enabled";$('connection-state-badge').dataset.state='ready';
       if(!user){$('device-access-note').replaceChildren(document.createTextNode("Sign in to connect your personal calendar. "));const link=node('a',"Go to your account");link.href='../../konto/';$('device-access-note').append(link);return;}
       $('devices-intro').textContent="Create separate access credentials for each device. You can revoke them here later.";$('devices-ready').hidden=false;$('device-access-note').hidden=true;await load();
-    }catch{status("Device management is currently unavailable. You can connect your calendar app later.",'error');}
+    }catch{$('connection-state-badge').textContent="Setup is currently unavailable";$('connection-state-badge').dataset.state='error';status("Device management is currently unavailable. You can connect your calendar app later.",'error');}
   })();
 })();

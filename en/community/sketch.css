@@ -152,3 +152,12 @@
  .connection-layer[data-depth="2"] .connection-node-control,.connection-layer[data-depth="3"] .connection-node-control{padding:0;font-size:inherit}
 }
 @media(prefers-reduced-motion:reduce){.connection-node-art{transition:none!important}.connection-node-control:hover .connection-node-art{transform:none}}
+
+/* Existing painted objects arranged within their opened branch. */
+.connection-layer[data-depth="1"]{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:clamp(20px,4vw,65px)}
+.connection-layer[data-depth="1"].is-single-branch{grid-template-columns:minmax(0,1fr);max-width:1100px;width:100%;margin-inline:auto}
+.connection-branch{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:18px 12px;align-items:start;justify-items:center;min-width:0}
+.connection-branch>.connection-node{width:100%;min-width:0;container-type:inline-size}
+.connection-branch .connection-node-control,.connection-branch .connection-node.is-expandable .connection-node-control{width:min(100%,245px)}
+.connection-layer[data-depth="1"] .connection-branch .connection-node-name{font-size:clamp(.9rem,8cqw,1.35rem)}
+@media(max-width:850px){.connection-branch{grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr));gap:14px 10px}.connection-layer[data-depth="1"]{gap:15px}.connection-branch .connection-node-copy{inset:34% 8% 24%}}

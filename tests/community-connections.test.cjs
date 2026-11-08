@@ -12,6 +12,9 @@ test('both languages retain canonical service identities and existing destinatio
   const services = JSON.parse(readFileSync(join(__dirname, '../assets/data/services.v1.json'), 'utf8')).services;
   for (const language of ['', 'en/']) {
     const localized = JSON.parse(readFileSync(join(__dirname, '..', language, 'assets/data/community-connections.v1.json'), 'utf8'));
+    for (const node of localized.nodes.filter(n => n.public_path)) {
+      assert.ok(readFileSync(join(__dirname, '..', language, node.public_path, 'index.html'), 'utf8').includes('<h1'));
+    }
     for (const node of localized.nodes.filter(n => n.kind === 'service')) {
       assert.equal(node.public_path, services.find(s => s.id === node.id).public_path);
       assert.ok(readFileSync(join(__dirname, '..', language, node.public_path, 'index.html'), 'utf8').includes('<h1'));
@@ -22,7 +25,7 @@ test('both languages retain canonical service identities and existing destinatio
 test('initial view has only the two entries; expansion reveals the selected relationships', () => {
   assert.deepEqual(visibleGraph(catalogue, new Set()).nodes.map(n => n.id), roots);
   const graph = visibleGraph(catalogue, new Set([...roots, 'DYN-RUBYBUBYS', 'SYN-ALTERNATIVE']));
-  assert.equal(graph.nodes.length, 7);
+  assert.equal(graph.nodes.length, raw.nodes.length);
   assert.equal(graph.nodes.filter(n => n.id === shared).length, 1);
   assert.deepEqual(graph.links.filter(l => l.to === shared).map(l => l.from).sort(), ['DYN-RUBYBUBYS', 'SYN-ALTERNATIVE']);
 });
@@ -45,6 +48,6 @@ test('invalid and duplicate links are ignored; cyclic extensions terminate witho
     {from: shared, to: 'DYN-RUBYBUBYS'}]});
   const graph = visibleGraph(extended, new Set([...roots, ...raw.nodes.map(n => n.id)]));
   assert.equal(graph.nodes.length, new Set(graph.nodes.map(n => n.id)).size);
-  assert.equal(graph.nodes.length, 7);
-  assert.equal(graph.links.length, 7);
+  assert.equal(graph.nodes.length, raw.nodes.length);
+  assert.equal(graph.links.length, raw.links.length + 1);
 });
