@@ -27,6 +27,12 @@
       "public_path": "/community/synergien/alternative/"
     },
     {
+      "id": "SYN-CONNAISSEURS",
+      "kind": "synergy",
+      "name": "Connaisseurs",
+      "public_path": "/community/synergien/connaisseurs/"
+    },
+    {
       "id": "PLACE-THREEDEN",
       "kind": "place",
       "name": "ThreeDen",
@@ -43,6 +49,60 @@
       "kind": "service",
       "name": "Heart & Snout",
       "public_path": "/leistungen/rubybubys-herz-und-schnauze/"
+    },
+    {
+      "id": "SYN-PROMILLANTEN",
+      "kind": "synergy",
+      "name": "The Promillanten",
+      "public_path": "/community/synergien/promillanten/"
+    },
+    {
+      "id": "SYN-MODERNE",
+      "kind": "synergy",
+      "name": "The Moderns",
+      "public_path": "/community/synergien/moderne/"
+    },
+    {
+      "id": "SYN-NERDS",
+      "kind": "synergy",
+      "name": "Nerds",
+      "public_path": "/community/synergien/nerds/"
+    },
+    {
+      "id": "SYN-VISIONAERE",
+      "kind": "synergy",
+      "name": "Visionaries",
+      "public_path": "/community/synergien/visionaere/"
+    },
+    {
+      "id": "SYN-HOOLIGANS",
+      "kind": "synergy",
+      "name": "Hooligans",
+      "public_path": "/community/synergien/hooligans/"
+    },
+    {
+      "id": "SYN-KUENSTLER",
+      "kind": "synergy",
+      "name": "Artists",
+      "public_path": "/community/synergien/kuenstler/"
+    },
+    {
+      "id": "SYN-HEXEN",
+      "kind": "synergy",
+      "name": "Witches",
+      "public_path": "/community/synergien/hexen/"
+    },
+    {
+      "id": "SYN-MACHER",
+      "kind": "synergy",
+      "name": "Makers",
+      "public_path": "/community/synergien/macher/"
+    },
+    {
+      "id": "SYN-AKTIVE",
+      "kind": "synergy",
+      "name": "The Active",
+      "public_path": "/community/synergien/aktive/"
     }
   ],
   "links": [
@@ -53,6 +113,10 @@
     {
       "from": "ROOT-SYNERGIES",
       "to": "SYN-ALTERNATIVE"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-CONNAISSEURS"
     },
     {
       "from": "DYN-RUBYBUBYS",
@@ -69,6 +133,46 @@
     {
       "from": "SYN-ALTERNATIVE",
       "to": "SERVICE-RUBYBUBYS-OBDACHLOSENHILFE"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-PROMILLANTEN"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-MODERNE"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-NERDS"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-VISIONAERE"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-HOOLIGANS"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-KUENSTLER"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-HEXEN"
+    },
+    {
+      "from": "SYN-CONNAISSEURS",
+      "to": "SERVICE-RUBYBUBYS-HERZ-SCHNAUZE"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-MACHER"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-AKTIVE"
     }
   ]
 }
