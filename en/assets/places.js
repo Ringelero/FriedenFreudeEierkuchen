@@ -85,7 +85,9 @@
     if(r.error&&r.error.name!=='AuthSessionMissingError')throw r.error;
     if(r.data?.user){authUser=r.data.user;access=await rpc(client,'get_place_workspace',{service});if(g!==generation)return;}
     authReady=true;fillPrefs();applyView(entryView(prefs().favorites,chosenView||requestedView));await loadList();if(g!==generation)return;if(display==='map'&&view==='discover')await showMap();
-    const place=url.searchParams.get('ort');if(place&&/^[a-f0-9-]{36}$/i.test(place))await openPlace(place,null,false);
+    const place=url.searchParams.get('ort'),time=Date.parse(url.searchParams.get('zeit')),current=Date.parse(slotStart());
+    const slot=Number.isFinite(time)&&time%HOURS===0&&time>=current&&time<current+84*HOURS?new Date(time).toISOString():null;
+    if(place&&/^[a-f0-9-]{36}$/i.test(place))await openPlace(place,slot,false);
    }catch(e){if(g===generation){authReady=false;applyView('discover');status("Your account status could not be checked. You can view public places; try again before posting an entry.",true);await loadList(false);}}
   }
   function card(p,index){const c=node('article',undefined,'place-card');

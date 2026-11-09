@@ -7,7 +7,7 @@ const check=process.argv.includes('--check');
 const dictionary=JSON.parse(await readFile(path.join(site,'translations/en.json'),'utf8'));
 const termTranslations=JSON.parse(await readFile(path.join(site,'translations/en-search-terms.json'),'utf8'));
 const sources=new Map(),outputs=new Map(),missing=new Map(),stableValues=new Set();
-const skip=new Set(['en','scripts','translations','node_modules','.git','tests','editor-src','assistant','supabase','vendor']);
+const skip=new Set(['en','scripts','translations','node_modules','.git','tests','editor-src','assistant','supabase','vendor','mobile']);
 const german=/[äöüÄÖÜß]|\b(?:der|die|das|den|dem|des|ein|eine|einer|einen|einem|und|oder|für|mit|von|zum|zur|dein|deine|deinen|deinem|deiner|du|dich|dir|ist|sind|wird|werden|nicht|noch|auch|bitte|hier|kann|kannst|kein|keine|nur|auf|bei|im|aus|nach|durch|sich|soll|darf|wer|was|wie|wenn|dann|aber|alle|neu|laden|geladen|Fehler|Anmelden|Abmelden|Schließen|Speichern|Abbrechen|Bearbeiten|Löschen|Entwurf|Vorschau|Anfrage|Privat|Privates|Titel|Beschreibung|Ort|Typ|Art|Stand|Status|Offen|Zurück|Weiter|Nächste|Vorige|Heute|Morgen|Bereit|Datum|Uhrzeit|Beginn|Ende|Name|Quelle|Angebot|Teilen|Suchen|Filter|Inhalt|Menü|Sprache|Deutsch|Englisch)\b/i;
 const normalize=s=>s.replace(/\s+/g,' ').trim();
 const own=(object,key)=>Object.hasOwn(object,key);
