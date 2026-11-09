@@ -1,0 +1,32 @@
+name: GemDen iOS Simulator
+
+on:
+  pull_request:
+    paths:
+      - "mobile/**"
+      - ".github/workflows/mobile-ios.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  simulator:
+    runs-on: macos-26
+    timeout-minutes: 18
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npx --yes pnpm@11.25.0 install --frozen-lockfile
+      - run: node build-web.mjs && node node_modules/@capacitor/cli/bin/capacitor sync ios
+      - run: |
+          xcodebuild -version
+          xcodebuild -project ios/App/App.xcodeproj -scheme App \
+            -configuration Debug -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/gemden-ios" CODE_SIGNING_ALLOWED=NO build
+          test -d "$RUNNER_TEMP/gemden-ios/Build/Products/Debug-iphonesimulator/App.app/PlugIns/GassiWidget.appex"

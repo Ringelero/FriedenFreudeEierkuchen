@@ -1,0 +1,8 @@
+{
+  "appId": "red.gemden.app",
+  "appName": "GemDen",
+  "webDir": "www",
+  "server": {
+    "appStartPath": "/gassi/index.html"
+  }
+}
