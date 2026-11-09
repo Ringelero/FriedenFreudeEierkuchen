@@ -489,12 +489,106 @@
     };
   }
 
-  function renderPage(page, catalog, resolvedBindings) {
+  let portfolioSequence = 0;
+
+  function portfolioText(title, text) {
+    if (!text.trim()) return null;
+    return element('div', { className: 'gdm-portfolio-text' }, [
+      element('h3', { text: title }),
+      element('p', { text })
+    ]);
+  }
+
+  function portfolioSection(title, content) {
+    return element('section', { className: 'section panel gdm-portfolio-section' }, [
+      element('h2', { text: title }), ...content
+    ]);
+  }
+
+  function renderPortfolioDetails(region, details) {
+    let selected = [];
+    try { selected = JSON.parse(details.interests); } catch { /* Invalid profile text has no group links. */ }
+    const ids = new Set(Array.isArray(selected) ? selected : []);
+    const prefix = document.documentElement.lang === 'en' ? '/en' : '';
+    const links = (Array.isArray(details.catalog) ? details.catalog : [])
+      .filter(group => ids.has(group.id) && group.status !== 'archived'
+        && /^\/(?:community|leistungen)\/(?:[a-z0-9-]+\/)+$/.test(group.public_path))
+      .map(group => element('a', { className: 'status-chip', text: group.name, attrs: { href: safeInternalHref(prefix + group.public_path) } }));
+    const interests = portfolioSection('Synergien', links.length ? [
+      element('p', { text: 'Diese Synergien interessieren mich.' }),
+      element('div', { className: 'gdm-portfolio-links' }, links)
+    ] : [element('p', { text: 'Hier ist Platz für meine Interessen.' })]);
+    const wishContent = [
+      portfolioText('Was ich suche', details.wishes),
+      portfolioText('Wobei ich helfen kann', details.offers)
+    ].filter(Boolean);
+    const wishes = portfolioSection('Wünsche', wishContent.length ? wishContent : [
+      element('p', { text: 'Hier ist Platz für meine Wünsche und Angebote.' })
+    ]);
+    const places = details.places.trim() ? portfolioSection('Lieblingsorte', [
+      element('p', { className: 'gdm-portfolio-text', text: details.places })
+    ]) : null;
+    if (details.layout !== 'tabs') {
+      if (links.length) region.append(interests);
+      if (wishContent.length) region.append(wishes);
+      if (places) region.append(places);
+      return;
+    }
+    const modules = Array.from(region.children);
+    const skills = modules.filter(node => ['gemden.skill-grid', 'gemden.evidence-grid'].includes(node.dataset.moduleType));
+    const projects = modules.filter(node => node.dataset.moduleType === 'gemden.project-grid');
+    const sections = [
+      { label: 'Fähigkeiten', nodes: skills.length ? skills : [portfolioSection('Fähigkeiten', [])] },
+      { label: 'Synergien', nodes: [interests] },
+      { label: 'Wünsche', nodes: [wishes] }
+    ];
+    if (projects.length) sections.push({ label: 'Projekte', nodes: projects });
+    if (places) sections.push({ label: 'Lieblingsorte', nodes: [places] });
+    const anchor = modules.find(node => skills.includes(node) || projects.includes(node));
+    const tabs = element('div', { className: 'gdm-portfolio-tabs' });
+    const nav = element('div', { className: 'gdm-portfolio-tablist', attrs: { role: 'tablist', 'aria-label': 'Portfolio-Bereiche' } });
+    tabs.append(nav);
+    region.insertBefore(tabs, anchor || null);
+    const base = 'portfolio-' + (++portfolioSequence);
+    const controls = sections.map(({ label, nodes }, index) => {
+      const tabId = base + '-tab-' + index;
+      const panelId = base + '-panel-' + index;
+      const button = element('button', { text: label, attrs: { type: 'button', role: 'tab', id: tabId, 'aria-controls': panelId } });
+      const panel = element('div', { attrs: { role: 'tabpanel', id: panelId, 'aria-labelledby': tabId, tabindex: '0' } }, nodes);
+      nav.append(button);
+      tabs.append(panel);
+      return { button, panel };
+    });
+    function select(index, focus = false) {
+      controls.forEach(({ button, panel }, current) => {
+        const active = current === index;
+        button.setAttribute('aria-selected', String(active));
+        button.tabIndex = active ? 0 : -1;
+        panel.hidden = !active;
+      });
+      if (focus) controls[index].button.focus();
+    }
+    controls.forEach(({ button }, index) => {
+      button.addEventListener('click', () => select(index));
+      button.addEventListener('keydown', event => {
+        const last = controls.length - 1;
+        const targets = { ArrowRight: index === last ? 0 : index + 1, ArrowLeft: index === 0 ? last : index - 1, Home: 0, End: last };
+        if (!Object.hasOwn(targets, event.key)) return;
+        event.preventDefault();
+        select(targets[event.key], true);
+      });
+    });
+    select(0);
+  }
+
+  function renderPage(page, catalog, resolvedBindings, options = {}) {
     const grants = new Set(page.capability_context.module_permission_grants);
     const manifests = moduleIndex(catalog);
     const container = element('div', { className: 'gdm-page' });
     applyTheme(container, page.theme, grants.has('module:ui.motion.decorative'));
     const context = { page, can: capability => grants.has(capability) };
+    const details = options.profileDetails !== false && page.subject.kind === 'member' ? resolvedBindings.member?.profile_portfolio : null;
+    const portfolioRegion = page.regions.find(region => region.modules.some(instance => instance.type === 'gemden.profile-hero')) || page.regions[0];
 
     page.regions.forEach(region => {
       const regionNode = element('div', { className: `gdm-region gdm-layout-${region.layout}`, attrs: { 'data-region-id': region.id } });
@@ -527,6 +621,7 @@
         regionNode.append(moduleNode);
         queueMicrotask(() => moduleContext.emit('page:module-ready', { region_id: region.id }));
       });
+      if (details && region === portfolioRegion) renderPortfolioDetails(regionNode, details);
       container.append(regionNode);
     });
     return container;

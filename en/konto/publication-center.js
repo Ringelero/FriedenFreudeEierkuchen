@@ -18,7 +18,12 @@
     bio: "About me",
     location: "Location or area of activity",
     availability_note: "Availability",
-    boundaries: "Boundaries"
+    boundaries: "Boundaries",
+    synergy_interests: "Selected groups",
+    profile_wishes: "What I am looking for",
+    profile_offers: "What I can help with",
+    favorite_places: "My favourite places",
+    portfolio_layout: "My page layout"
   };
   const KIND_LABELS = {
     profile_field: "Profile field",

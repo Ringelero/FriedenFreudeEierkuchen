@@ -70,6 +70,7 @@
     "en/assets/worlds.css",
     "en/community/connections.css",
     "en/community/connections.js",
+    "en/community/dynastien/rubybubys/friendship-tree.js",
     "en/community/dynastien/rubybubys/index.html",
     "en/community/dynastien/rubybubys/wonderland.css",
     "en/community/index.html",
@@ -102,8 +103,8 @@
     "en/entwuerfe/herz-gassi/index.html",
     "en/entwuerfe/moeglichkeiten/index.html",
     "en/entwuerfe/obdachlosenhilfe/index.html",
-    "en/gestalten/assets/Editor-44C53YAG-B_iCCl65.js",
-    "en/gestalten/assets/Render-DQXAYUBI-DFrULvU2.js",
+    "en/gestalten/assets/Editor-44C53YAG-Cjb2c8D2.js",
+    "en/gestalten/assets/Render-DQXAYUBI-bGlNuY2o.js",
     "en/gestalten/assets/chunk-2CNEFIQP-FfguShpu.js",
     "en/gestalten/assets/chunk-4P4VZS4P-DnEmq4Ce.js",
     "en/gestalten/assets/chunk-67Y7M4OJ-Dlal914Q.js",
@@ -111,9 +112,9 @@
     "en/gestalten/assets/chunk-NJTGWYYH-dPY49Zcw.js",
     "en/gestalten/assets/dist-6xBrUab3.js",
     "en/gestalten/assets/dist-Cbhxcb1b.js",
-    "en/gestalten/assets/full-7ZJV44EE-CNTRc3kw.js",
-    "en/gestalten/assets/index-BslsD12O.css",
-    "en/gestalten/assets/index-CgpKovC7.js",
+    "en/gestalten/assets/full-7ZJV44EE-D1ELApmV.js",
+    "en/gestalten/assets/index-BwlHp1ph.css",
+    "en/gestalten/assets/index-CyGjoNqy.js",
     "en/gestalten/assets/jsx-runtime-B1l2Nbuf.js",
     "en/gestalten/assets/loaded-36WRJPBT-BajtNP_j.js",
     "en/gestalten/assets/loaded-JKA25A3T-baKffwcg.js",
@@ -195,6 +196,9 @@
     "en/verwaltung/mitglieder/index.html",
     "en/verwaltung/mitglieder/member-admin.js",
     "en/verwaltung/mitglieder/mitglieder.css",
-    "en/verwaltung/mitglieder/verwaltung.js"
+    "en/verwaltung/mitglieder/verwaltung.js",
+    "en/willkommen/index.html",
+    "en/willkommen/start.css",
+    "en/willkommen/start.js"
   ]
 }

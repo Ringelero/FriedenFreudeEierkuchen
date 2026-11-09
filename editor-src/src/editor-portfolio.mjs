@@ -55,6 +55,15 @@ export function portfolioCommunity(baseCommunity, portfolio, released = false) {
   const select = items => released ? items.filter(isReleased) : items;
   const { profile, catalog } = portfolio;
   const fields = new Map(select(portfolio.fields).map(row => [row.field_key, row.value_text]));
+  let interests = fields.get('synergy_interests') || '[]';
+  if (!released && !fields.has('synergy_interests')) {
+    try {
+      const start = JSON.parse(fields.get('rubybubys_start') || '{}');
+      if (Array.isArray(start?.synergy_ids)) interests = JSON.stringify(start.synergy_ids);
+    } catch {
+      // An older or incomplete start draft has no interests to import.
+    }
+  }
   const skillCatalog = new Map(catalog.map(row => [row.id, row]));
   const skills = select(portfolio.profileSkills).map(row => {
     const skill = skillCatalog.get(row.skill_id);
@@ -75,6 +84,14 @@ export function portfolioCommunity(baseCommunity, portfolio, released = false) {
     status: released ? 'publication-gated' : 'private-editor', tagline: fields.get('tagline') || '', bio: fields.get('bio') || '',
     location: fields.get('location') || '', availability_note: fields.get('availability_note') || '',
     dynasty_ids: [], kiez_ids: [], boundaries: (fields.get('boundaries') || '').split(/\n+/).map(line => line.trim()).filter(Boolean),
+    profile_portfolio: {
+      layout: fields.get('portfolio_layout') || '',
+      interests,
+      wishes: fields.get('profile_wishes') || '',
+      offers: fields.get('profile_offers') || '',
+      places: fields.get('favorite_places') || '',
+      catalog: baseCommunity.synergies || []
+    },
     skill_ids: skills.map(row => row.id), evidence_ids: evidence.map(row => row.id), project_ids: projects.map(row => row.id)
   };
   // Portfolio text stays in memory. Page documents retain only their original bindings.

@@ -432,6 +432,23 @@
     );
     const actions = element('div', 'member-actions');
     actions.append(identityAction(member), accountAction(member), permissionAction(member));
+    if (member.account_status === 'active' && member.id !== currentData.current_user_id) {
+      const start = element('button', 'button secondary', "Prepare Rubybubys welcome");
+      start.type = 'button';
+      const status = element('p', 'form-status');
+      status.setAttribute('role', 'status');
+      start.addEventListener('click', async () => {
+        start.disabled = true;
+        try {
+          await admin.prepareFriend(client, member.id);
+          setMessage(status, "Ready. Your friend will find the welcome in their account after signing in.", 'success');
+        } catch (error) {
+          setMessage(status, admin.describeError(error, "The Rubybubys welcome could not be prepared."), 'error');
+          start.disabled = false;
+        }
+      });
+      actions.append(start, status);
+    }
     card.append(head, details, actions);
     return card;
   }
@@ -573,6 +590,59 @@
       setMessage(inviteStatus, admin.describeError(error, "The invitation could not be sent."), 'error');
     } finally {
       inviteSubmit.disabled = false;
+    }
+  });
+
+  const friendInviteResult = document.getElementById('friend-invite-result');
+  const friendInviteLink = document.getElementById('friend-invite-link');
+  const friendInviteStatus = document.getElementById('friend-invite-status');
+  function clearFriendInviteLink() {
+    friendInviteResult.hidden = true;
+    friendInviteLink.value = '';
+  }
+  window.addEventListener('pagehide', clearFriendInviteLink);
+  document.getElementById('friend-invite-copy').addEventListener('click', async () => {
+    if (!friendInviteLink.value) return;
+    try {
+      await navigator.clipboard.writeText(friendInviteLink.value);
+      setMessage(friendInviteStatus, "Invitation link copied.", 'success');
+    } catch {
+      friendInviteLink.focus();
+      friendInviteLink.select();
+    }
+  });
+  document.getElementById('friend-invite-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const submits = form.querySelectorAll('button[type="submit"]');
+    const sendEmail = event.submitter?.value === 'email';
+    const status = friendInviteStatus;
+    const email = document.getElementById('friend-invite-email').value;
+    if (sendEmail && !window.confirm("Send the Rubybubys invitation by email now?")) return;
+    clearFriendInviteLink();
+    submits.forEach(button => { button.disabled = true; });
+    setMessage(status, "Preparing the invitation…");
+    try {
+      if (sendEmail) {
+        const invited = await admin.inviteMember(client, { email, rubybubys: true });
+        form.reset();
+        if (invited.friend_prepared) {
+          setMessage(status, "Invitation sent. The welcome is ready in their account.", 'success');
+        } else {
+          setMessage(status, "Invitation sent. Prepare the Rubybubys welcome from the new account in the list below.", 'error');
+        }
+      } else {
+        const link = await admin.createFriendLink(client, email);
+        form.reset();
+        friendInviteLink.value = link;
+        friendInviteResult.hidden = false;
+        setMessage(status, "Your personal invitation link is ready.", 'success');
+      }
+      await refreshMembers({ preserveMessage: true });
+    } catch (error) {
+      setMessage(status, admin.describeError(error, "The invitation could not be prepared."), 'error');
+    } finally {
+      submits.forEach(button => { button.disabled = false; });
     }
   });
 

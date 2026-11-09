@@ -318,7 +318,7 @@ async function getTargetMember(ctx: any, targetUserId: string) {
     ctx.supabaseAdmin.auth.admin.getUserById(targetUserId),
     ctx.supabaseAdmin
       .from("profiles")
-      .select("id,display_name,account_status")
+      .select("id,display_name,account_status,stable_id")
       .eq("id", targetUserId)
       .maybeSingle(),
   ])
@@ -343,12 +343,44 @@ function publicAuthClient() {
   })
 }
 
+async function prepareFriendStart(ctx: any, targetUserId: string) {
+  const target = await getTargetMember(ctx, targetUserId)
+  if (target.profile.account_status !== "active") {
+    throw new MemberAdminError(409, "friend_start_inactive", "Der Rubybubys-Start braucht ein aktives Konto.")
+  }
+  if (!target.profile.stable_id) {
+    // Use an independent identifier, never a derivation of the Auth user ID.
+    const stableId = "MEM-" + crypto.randomUUID().replaceAll("-", "").toUpperCase()
+    const result = await ctx.supabase.rpc("assign_member_identity", {
+      target_user_id: targetUserId,
+      target_stable_id: stableId,
+    })
+    const assigned = Array.isArray(result.data) ? result.data[0] : result.data
+    if (result.error || assigned?.stable_id !== stableId) {
+      const current = await getTargetMember(ctx, targetUserId)
+      if (!current.profile.stable_id) throw databaseActionError(result.error)
+      if (current.profile.account_status !== "active") {
+        throw new MemberAdminError(409, "friend_start_inactive", "Der Rubybubys-Start braucht ein aktives Konto.")
+      }
+    }
+  }
+  if (target.user.app_metadata?.gemden_rubybubys_invited !== true) {
+    const result = await ctx.supabaseAdmin.auth.admin.updateUserById(targetUserId, {
+      app_metadata: { gemden_rubybubys_invited: true },
+    })
+    if (result.error || result.data.user?.app_metadata?.gemden_rubybubys_invited !== true) {
+      throw new MemberAdminError(503, "friend_start_failed", "Der Rubybubys-Start konnte gerade nicht vorbereitet werden.")
+    }
+  }
+}
+
 async function inviteMember(input: JsonRecord, ctx: any, actorUserId: string) {
   const email = normalizeEmail(input.email)
-  const displayName = normalizeDisplayName(input.display_name)
+  const friend = input.rubybubys === true
+  const displayName = normalizeDisplayName(friend ? "Neues Mitglied" : input.display_name)
   const reason = normalizeReason(
     input.reason,
-    "Einladung über die geschützte GemDen-Mitgliederverwaltung versendet.",
+    friend ? "Persönliche Einladung in den Rubybubys-Freundeskreis." : "Einladung über die geschützte GemDen-Mitgliederverwaltung versendet.",
   )
   const inviteResult = await ctx.supabaseAdmin.auth.admin.inviteUserByEmail(email, {
     data: { display_name: displayName },
@@ -368,6 +400,7 @@ async function inviteMember(input: JsonRecord, ctx: any, actorUserId: string) {
 
   const invitedUserId = inviteResult.data.user?.id || null
   let auditRecorded = false
+  let friendPrepared = false
   if (invitedUserId) {
     try {
       await applyAccountAction(ctx, {
@@ -380,6 +413,14 @@ async function inviteMember(input: JsonRecord, ctx: any, actorUserId: string) {
     } catch (error) {
       console.error("member-admin invite audit failure", error)
     }
+    if (friend) {
+      try {
+        await prepareFriendStart(ctx, invitedUserId)
+        friendPrepared = true
+      } catch {
+        // Email delivery already happened. The manager can retry preparation on the account.
+      }
+    }
   }
 
   return response({
@@ -389,8 +430,36 @@ async function inviteMember(input: JsonRecord, ctx: any, actorUserId: string) {
       display_name: displayName,
       redirect_to: INVITE_REDIRECT,
       audit_recorded: auditRecorded,
+      friend_prepared: friendPrepared,
     },
   }, 201)
+}
+
+async function createFriendLink(input: JsonRecord, ctx: any, actorUserId: string) {
+  const email = normalizeEmail(input.email)
+  const { data, error } = await ctx.supabaseAdmin.auth.admin.generateLink({
+    type: "invite",
+    email,
+    options: { data: { display_name: "Neues Mitglied" }, redirectTo: INVITE_REDIRECT },
+  })
+  if (data?.user?.email_confirmed_at || /already|exists|registered/i.test(`${error?.code || ""} ${error?.message || ""}`)) {
+    throw new MemberAdminError(409, "member_exists", "Dieses Konto gibt es bereits. Bereite den Rubybubys-Start unten am Konto vor.")
+  }
+  if (error || !data?.user?.id || data.user.email?.toLowerCase() !== email || data.properties?.verification_type !== "invite") {
+    throw new MemberAdminError(503, "invite_link_failed", "Der Einladungslink konnte gerade nicht erstellt werden.")
+  }
+  const link = new URL(data.properties.action_link)
+  if (link.protocol !== "https:" || !link.pathname.endsWith("/verify") || link.searchParams.get("type") !== "invite") {
+    throw new MemberAdminError(503, "invite_link_invalid", "Der Einladungslink konnte gerade nicht geprüft werden.")
+  }
+  await prepareFriendStart(ctx, data.user.id)
+  await applyAccountAction(ctx, {
+    actorUserId,
+    targetUserId: data.user.id,
+    action: "member_invited",
+    reason: "Persönlichen Einladungslink für den Rubybubys-Freundeskreis erstellt.",
+  })
+  return response({ invitation: { link: link.href, email } }, 201)
 }
 
 async function updateDisplayName(input: JsonRecord, ctx: any, actorUserId: string) {
@@ -506,6 +575,13 @@ async function handleAction(req: Request, ctx: any, actorUserId: string) {
   switch (input.action) {
     case "invite":
       return await inviteMember(input, ctx, actorUserId)
+    case "create_friend_link":
+      return await createFriendLink(input, ctx, actorUserId)
+    case "prepare_friend": {
+      const targetUserId = normalizeUserId(input.user_id)
+      await prepareFriendStart(ctx, targetUserId)
+      return response({ friend: { user_id: targetUserId, prepared: true } })
+    }
     case "update_display_name":
       return await updateDisplayName(input, ctx, actorUserId)
     case "send_login_link":
