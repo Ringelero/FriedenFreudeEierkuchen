@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gassi_widget_name">Mein Gassi-Ort</string>
+    <string name="gassi_widget_empty">Gassi-Ort in GemDen wählen</string>
+</resources>
