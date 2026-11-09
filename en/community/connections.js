@@ -38,7 +38,7 @@
   const explorer = document.querySelector('[data-connections-explorer]');
   if (!explorer) return;
   const world = document.querySelector('[data-sketch-world]');
-  const dataUrl = new URL('../assets/data/community-connections.v1.json?v=20261108-3', document.currentScript.src);
+  const dataUrl = new URL('../assets/data/community-connections.v1.json?v=20261109-1', document.currentScript.src);
   const layers = explorer.querySelector('[data-connection-layers]');
   const svg = world.querySelector('[data-connection-lines]');
   const status = explorer.querySelector('[data-connection-status]');

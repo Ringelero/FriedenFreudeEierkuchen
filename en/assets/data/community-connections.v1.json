@@ -103,6 +103,18 @@
       "kind": "synergy",
       "name": "The Active",
       "public_path": "/community/synergien/aktive/"
+    },
+    {
+      "id": "SYN-SCHNAUZIS",
+      "kind": "synergy",
+      "name": "Schnauzis",
+      "public_path": "/leistungen/rubybubys-herz-und-schnauze/"
+    },
+    {
+      "id": "SYN-STREUNER",
+      "kind": "synergy",
+      "name": "Streuner",
+      "public_path": "/leistungen/rubybubys-herz-und-schnauze/gassihilfe/"
     }
   ],
   "links": [
@@ -173,6 +185,14 @@
     {
       "from": "ROOT-SYNERGIES",
       "to": "SYN-AKTIVE"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-SCHNAUZIS"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-STREUNER"
     }
   ]
 }

@@ -35,7 +35,7 @@
     const config = {
       services:{key:'services',path:/^\/leistungen\/[a-z0-9-]+\/$/},
       dynasties:{key:'dynasties',path:/^\/community\/dynastien\/[a-z0-9-]+\/$/},
-      synergies:{key:'synergies',path:/^\/community\/synergien\/[a-z0-9-]+\/$/}
+      synergies:{key:'synergies',path:/^\/(?:community\/synergien\/[a-z0-9-]+|leistungen\/rubybubys-herz-und-schnauze(?:\/gassihilfe)?)\/$/}
     }[kind];
     if (!config) return [];
     const seen = new Set(), statuses = {building:'In Vorbereitung',open:'Nutzbar',paused:'Pausiert'};

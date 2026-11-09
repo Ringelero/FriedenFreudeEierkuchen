@@ -1,7 +1,7 @@
 {
   "meta": {
     "schema_version": "0.1",
-    "updated": "2026-11-08",
+    "updated": "2026-11-09",
     "status": "public-community-catalog",
     "note": "Öffentlicher Katalog der Community-Räume. Private Inhalte und Zugriffsrechte werden getrennt über das Konto verwaltet."
   },
@@ -255,6 +255,22 @@
       "status": "building",
       "description": "Sport treiben, Neues ausprobieren und gemeinsam in Bewegung kommen.",
       "public_path": "/community/synergien/aktive/"
+    },
+    {
+      "id": "SYN-SCHNAUZIS",
+      "slug": "schnauzis",
+      "name": "Schnauzis",
+      "status": "building",
+      "description": "Die Schnauzis sind die Tierfreunde bei Herz und Schnauze.",
+      "public_path": "/leistungen/rubybubys-herz-und-schnauze/"
+    },
+    {
+      "id": "SYN-STREUNER",
+      "slug": "streuner",
+      "name": "Streuner",
+      "status": "building",
+      "description": "Die Streuner sind gern mit Tieren unterwegs, entdecken neue Ecken und helfen bei Gassirunden aus.",
+      "public_path": "/leistungen/rubybubys-herz-und-schnauze/gassihilfe/"
     }
   ]
 }
