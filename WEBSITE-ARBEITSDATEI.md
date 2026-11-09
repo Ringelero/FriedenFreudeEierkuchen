@@ -142,7 +142,7 @@ Eine stabile Kern-ID aus dem Buch/Systemindex, zum Beispiel:
 
 - `W01` Möglichkeiten-Marktplatz & Matching
 - `K05` Akademie, Angeberschein & Skill Trees
-- `K10` Rubin-KI als Navigator
+- `K10` Blob als Navigator
 - `R01` Dynastien & polyzentrische Kreise
 - `F04` Privatsphäre & Datenautonomie
 - `T05` Digitale Verfassung & Zugriffsmacht

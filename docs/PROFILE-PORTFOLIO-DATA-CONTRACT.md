@@ -63,7 +63,7 @@ Der öffentliche Profilweg `/community/mitglieder/profil/?mitglied=MEM-*` und Ju
 
 ## KI-Grenze
 
-Ollama ist kein Bestandteil dieses Vertrags. Matching und Vorschläge bleiben deterministisch und regelbasiert. Eine spätere Rubin/Psyche-KI darf denselben engen Vorschlagsvertrag bedienen, aber weder veröffentlichen noch Rechte, Prüfstatus oder Aufträge vergeben.
+Ollama ist kein Bestandteil dieses Vertrags. Matching und Vorschläge bleiben deterministisch und regelbasiert. Eine spätere KI-Anbindung darf denselben engen Vorschlagsvertrag bedienen, aber weder veröffentlichen noch Rechte, Prüfstatus oder Aufträge vergeben.
 
 ## Bewusst folgende Verträge
 
