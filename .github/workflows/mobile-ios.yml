@@ -34,3 +34,19 @@ jobs:
             -configuration Debug -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath "$RUNNER_TEMP/gemden-ios" ARCHS=arm64 CODE_SIGNING_ALLOWED=NO build
           test -d "$RUNNER_TEMP/gemden-ios/Build/Products/Debug-iphonesimulator/App.app/PlugIns/GassiWidget.appex"
+      - name: Build unsigned iPhone archive
+        run: |
+          xcodebuild -quiet -project ios/App/App.xcodeproj -scheme App \
+            -configuration Release -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/gemden-ios-device" \
+            -archivePath "$RUNNER_TEMP/GemDen-unsigned.xcarchive" CODE_SIGNING_ALLOWED=NO archive
+          app="$RUNNER_TEMP/GemDen-unsigned.xcarchive/Products/Applications/App.app"
+          test -d "$app/PlugIns/GassiWidget.appex"
+          xcrun vtool -show-build "$app/App"
+          ditto -c -k --keepParent "$RUNNER_TEMP/GemDen-unsigned.xcarchive" "$RUNNER_TEMP/GemDen-unsigned-xcarchive.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GemDen-iPhone-Archiv-unsigniert
+          path: ${{ runner.temp }}/GemDen-unsigned-xcarchive.zip
+          if-no-files-found: error
+          retention-days: 14
