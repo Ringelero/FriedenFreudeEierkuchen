@@ -61,6 +61,20 @@
 .gdm-page .panel { background: #fff; }
 .gdm-page .gdm-module { min-width: 0; }
 .gdm-page h1, .gdm-page h2, .gdm-page h3 { overflow-wrap: anywhere; hyphens: auto; }
+.gdm-portfolio-tablist {
+  display: flex; gap: .45rem; overflow-x: auto; padding: 5px;
+  border-bottom: 1px solid color-mix(in srgb, var(--gdm-accent) 24%, #fff);
+}
+.gdm-portfolio-tablist button {
+  flex: 0 0 auto; min-height: 44px; border: 1px solid transparent; border-radius: 10px;
+  background: #fff; padding: .45rem .8rem; font: inherit; color: var(--gdm-accent-deep);
+  cursor: pointer;
+}
+.gdm-portfolio-tablist button[aria-selected="true"] { border-color: var(--gdm-accent); font-weight: 700; }
+.gdm-portfolio-tabs [role="tabpanel"][hidden] { display: none !important; }
+.gdm-portfolio-section { padding: clamp(12px, 3vw, 26px); }
+.gdm-portfolio-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.gdm-portfolio-links { display: flex; flex-wrap: wrap; gap: .5rem; }
 .gdm-page .gdm-tone-ruby .section-head { border-left: 3px solid var(--gdm-accent); padding-left: 18px; }
 .gdm-page .gdm-tone-mint .section-head { border-left: 3px solid var(--mint); padding-left: 18px; }
 .gdm-page .gdm-tone-gold .section-head { border-left: 3px solid var(--gold); padding-left: 18px; }

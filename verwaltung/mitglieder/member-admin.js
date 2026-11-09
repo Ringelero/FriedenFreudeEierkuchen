@@ -116,19 +116,39 @@
     return await unwrapInvocation(result, fallback);
   }
 
-  async function inviteMember(client, { email, displayName, reason }) {
+  async function inviteMember(client, { email, displayName, reason, rubybubys = false }) {
     requireFunctionClient(client);
     const payload = {
       action: 'invite',
       email: normalizeEmail(email),
-      display_name: normalizeDisplayName(displayName),
-      reason: normalizeReason(reason)
+      ...(rubybubys ? { rubybubys: true } : {
+        display_name: normalizeDisplayName(displayName),
+        reason: normalizeReason(reason)
+      })
     };
     const data = await invokeAction(client, payload, 'Die Einladung konnte nicht versendet werden.');
     if (!data?.invited?.id || data.invited.email !== payload.email) {
       throw memberAdminError('invite_unconfirmed', 'Der Server hat die Einladung nicht vollständig bestätigt.');
     }
     return data.invited;
+  }
+
+  async function prepareFriend(client, userId) {
+    const target = normalizeUserId(userId);
+    const data = await invokeAction(client, { action: 'prepare_friend', user_id: target }, 'Der Rubybubys-Start konnte nicht vorbereitet werden.');
+    if (data?.friend?.user_id !== target || data.friend.prepared !== true) {
+      throw memberAdminError('friend_unconfirmed', 'Der Server hat den Rubybubys-Start nicht bestätigt.');
+    }
+  }
+
+  async function createFriendLink(client, value) {
+    const email = normalizeEmail(value);
+    const data = await invokeAction(client, { action: 'create_friend_link', email }, 'Der Einladungslink konnte nicht erstellt werden.');
+    if (data?.invitation?.email !== email || typeof data.invitation.link !== 'string'
+      || !data.invitation.link.startsWith('https://')) {
+      throw memberAdminError('invite_unconfirmed', 'Der Server hat den Einladungslink nicht vollständig bestätigt.');
+    }
+    return data.invitation.link;
   }
 
   async function updateMemberDisplayName(client, { userId, displayName, reason }) {
@@ -251,6 +271,8 @@
     assignIdentity,
     describeError,
     inviteMember,
+    createFriendLink,
+    prepareFriend,
     listMembers,
     normalizeDisplayName,
     normalizeEmail,

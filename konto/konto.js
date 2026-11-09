@@ -131,6 +131,9 @@
 
     const profile = profileResult.data;
     currentProfile = profile;
+    document.getElementById('rubybubys-start-card').hidden = !(
+      user.app_metadata?.gemden_rubybubys_invited === true && profile.account_status === 'active' && profile.stable_id
+    );
     document.getElementById('profile-heading').textContent = profile.display_name || 'Dein Profil';
     document.getElementById('account-stable-id').textContent = profile.stable_id || 'Noch nicht vergeben';
     document.getElementById('account-profile-status').textContent = formatProfileStatus(profile);
@@ -160,7 +163,7 @@
     }
 
     try {
-      await profileWorkspace.initialize({ client, profile });
+      await profileWorkspace.initialize({ client, profile, user });
     } catch {
       // Die Portfolio-Werkstatt zeigt ihren eigenen, präziseren Fehlerzustand.
     }
@@ -205,6 +208,7 @@
     currentUser = nextUser;
     currentProfile = null;
     memberAdminLink.hidden = true;
+    document.getElementById('rubybubys-start-card').hidden = true;
     profileWorkspace?.reset();
     publicationCenter?.reset();
     opportunityWorkspace?.reset({ clearDraft: !currentUser });

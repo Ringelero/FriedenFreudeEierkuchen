@@ -108,6 +108,14 @@
       name: profile.display_name,
       tagline: fieldMap.get('tagline') || '',
       bio: fieldMap.get('bio') || '',
+      profile_portfolio: {
+        layout: fieldMap.get('portfolio_layout') || '',
+        interests: fieldMap.get('synergy_interests') || '[]',
+        wishes: fieldMap.get('profile_wishes') || '',
+        offers: fieldMap.get('profile_offers') || '',
+        places: fieldMap.get('favorite_places') || '',
+        catalog: staticSource.synergies || []
+      },
       location: fieldMap.get('location') || '',
       availability_note: fieldMap.get('availability_note') || '',
       boundaries: (fieldMap.get('boundaries') || '').split(/\n+/).map(line => line.trim()).filter(Boolean),

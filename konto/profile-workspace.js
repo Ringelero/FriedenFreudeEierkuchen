@@ -4,7 +4,12 @@
     ['bio', 20],
     ['location', 30],
     ['availability_note', 40],
-    ['boundaries', 50]
+    ['boundaries', 50],
+    ['synergy_interests', 60],
+    ['profile_wishes', 65],
+    ['profile_offers', 70],
+    ['favorite_places', 75],
+    ['portfolio_layout', 80]
   ];
   const VISIBILITIES = [
     ['private', 'Privat – nur für mich'],
@@ -275,6 +280,42 @@
       input.disabled = locked;
       visibility.disabled = locked;
     });
+    renderInterests();
+  }
+
+  function parseJson(value, fallback) {
+    try { return JSON.parse(value) ?? fallback; } catch { return fallback; }
+  }
+
+  function renderInterests() {
+    const list = byId('profile-synergy-choices');
+    const input = byId('field-synergy_interests');
+    const record = state.fields.find(item => item.field_key === 'synergy_interests');
+    const start = parseJson(state.fields.find(item => item.field_key === 'rubybubys_start')?.value_text, {});
+    const value = record ? parseJson(record.value_text, []) : start.synergy_ids;
+    const selected = new Set(Array.isArray(value) ? value : []);
+    if (!state.synergies?.length) {
+      list.textContent = 'Synergien können gerade nicht geladen werden.';
+      byId('field-synergy_interests-visibility').disabled = true;
+      return;
+    }
+    const locked = Boolean(record && record.publication_status !== 'draft');
+    list.replaceChildren(...state.synergies.map(group => {
+      const label = node('label', 'choice-item');
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.value = group.id;
+      checkbox.checked = selected.has(group.id);
+      checkbox.disabled = locked;
+      label.append(checkbox, document.createTextNode(group.name));
+      return label;
+    }));
+    function update() {
+      const ids = Array.from(list.querySelectorAll('input:checked'), checkbox => checkbox.value);
+      input.value = ids.length || record || selected.size ? JSON.stringify(ids) : '';
+    }
+    list.onchange = update;
+    if (!locked) update();
   }
 
   function renderSkillPicker() {
@@ -416,7 +457,45 @@
     if (added.length) await result(state.client.from(table).insert(added.map(skillId => ({ [foreignKey]: foreignId, skill_id: skillId }))));
   }
 
+  async function loadFriendshipBranch(client, profile) {
+    const panel = byId('profile-rubybubys-join');
+    const toggle = byId('profile-tree-public');
+    panel.hidden = true;
+    toggle.checked = false;
+    if (!state.friend) return;
+    const enrollment = await client.from('rubybubys_memberships').upsert(
+      { member_id: profile.stable_id }, { onConflict: 'member_id', ignoreDuplicates: true }
+    );
+    if (enrollment.error) throw enrollment.error;
+    const membership = await result(client.from('rubybubys_memberships').select('show_public')
+      .eq('member_id', profile.stable_id).single());
+    if (state.profile?.stable_id !== profile.stable_id) return;
+    toggle.checked = membership.show_public;
+    setMessage(byId('profile-tree-status'), '');
+    panel.hidden = false;
+  }
+
   function wireForms() {
+    byId('profile-tree-public').addEventListener('change', async event => {
+      const toggle = event.currentTarget;
+      const memberId = state.profile?.stable_id;
+      if (!state.client || !memberId || byId('profile-rubybubys-join').hidden) return;
+      const visible = toggle.checked;
+      const status = byId('profile-tree-status');
+      toggle.disabled = true;
+      try {
+        await result(state.client.from('rubybubys_memberships').update({ show_public: visible })
+          .eq('member_id', memberId).select('show_public').single());
+        if (state.profile?.stable_id !== memberId) return;
+        setMessage(status, visible ? 'Dein Zweig ist freigegeben.' : 'Dein Zweig bleibt privat.', 'success');
+      } catch (error) {
+        if (state.profile?.stable_id !== memberId) return;
+        toggle.checked = !visible;
+        setMessage(status, describeError(error, 'Die Sichtbarkeit konnte nicht gespeichert werden.'), 'error');
+      } finally {
+        toggle.disabled = false;
+      }
+    });
     byId('profile-fields-form').addEventListener('submit', async event => {
       event.preventDefault();
       const submit = byId('profile-fields-submit');
@@ -649,9 +728,10 @@
 
   let formsWired = false;
 
-  async function initialize({ client, profile }) {
+  async function initialize({ client, profile, user }) {
     state.client = client;
     state.profile = profile;
+    state.friend = user?.app_metadata?.gemden_rubybubys_invited === true;
     const workspace = byId('portfolio-workspace');
     workspace.hidden = false;
     prepareControls();
@@ -666,7 +746,15 @@
     }
     workspace.querySelectorAll('input, textarea, select, button').forEach(control => { control.disabled = false; });
     setMessage(byId('portfolio-status'), 'Portfolio wird sicher geladen …');
+    loadFriendshipBranch(client, profile).catch(error => {
+      if (state.profile?.stable_id !== profile.stable_id) return;
+      setMessage(byId('portfolio-status'), describeError(error, 'Der Freundschaftsbaum konnte nicht geladen werden.'), 'error');
+    });
     try {
+      const response = await fetch('../assets/data/community-v0.1.json').then(value => value.ok ? value.json() : null).catch(() => null);
+      if (state.profile !== profile) return;
+      state.synergies = (Array.isArray(response?.synergies) ? response.synergies : []).filter(group =>
+        group?.status !== 'archived' && /^SYN-[A-Z0-9-]+$/.test(group?.id) && typeof group.name === 'string');
       await loadPortfolio();
     } catch (error) {
       setMessage(byId('portfolio-status'), describeError(error, 'Das Portfolio konnte nicht geladen werden.'), 'error');
@@ -684,9 +772,13 @@
   }
 
   function reset() {
+    byId('profile-rubybubys-join').hidden = true;
+    byId('profile-tree-public').checked = false;
     Object.assign(state, {
       client: null,
       profile: null,
+      friend: false,
+      synergies: [],
       catalog: [],
       fields: [],
       profileSkills: [],

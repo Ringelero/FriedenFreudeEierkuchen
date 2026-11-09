@@ -116,19 +116,39 @@
     return await unwrapInvocation(result, fallback);
   }
 
-  async function inviteMember(client, { email, displayName, reason }) {
+  async function inviteMember(client, { email, displayName, reason, rubybubys = false }) {
     requireFunctionClient(client);
     const payload = {
       action: 'invite',
       email: normalizeEmail(email),
-      display_name: normalizeDisplayName(displayName),
-      reason: normalizeReason(reason)
+      ...(rubybubys ? { rubybubys: true } : {
+        display_name: normalizeDisplayName(displayName),
+        reason: normalizeReason(reason)
+      })
     };
     const data = await invokeAction(client, payload, "The invitation could not be sent.");
     if (!data?.invited?.id || data.invited.email !== payload.email) {
       throw memberAdminError('invite_unconfirmed', "The server did not fully confirm the invitation.");
     }
     return data.invited;
+  }
+
+  async function prepareFriend(client, userId) {
+    const target = normalizeUserId(userId);
+    const data = await invokeAction(client, { action: 'prepare_friend', user_id: target }, "The Rubybubys welcome could not be prepared.");
+    if (data?.friend?.user_id !== target || data.friend.prepared !== true) {
+      throw memberAdminError('friend_unconfirmed', "The server could not confirm the Rubybubys welcome.");
+    }
+  }
+
+  async function createFriendLink(client, value) {
+    const email = normalizeEmail(value);
+    const data = await invokeAction(client, { action: 'create_friend_link', email }, "The invitation link could not be created.");
+    if (data?.invitation?.email !== email || typeof data.invitation.link !== 'string'
+      || !data.invitation.link.startsWith('https://')) {
+      throw memberAdminError('invite_unconfirmed', "The server did not fully confirm the invitation link.");
+    }
+    return data.invitation.link;
   }
 
   async function updateMemberDisplayName(client, { userId, displayName, reason }) {
@@ -251,6 +271,8 @@
     assignIdentity,
     describeError,
     inviteMember,
+    createFriendLink,
+    prepareFriend,
     listMembers,
     normalizeDisplayName,
     normalizeEmail,

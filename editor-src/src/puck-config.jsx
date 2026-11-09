@@ -39,7 +39,7 @@ function PublicModulePreview({ manifest, props, page, catalog, bindings }) {
     });
     const snapshot = { ...page, theme: theme || page.theme, regions: [{ id: 'main', layout: 'flow', modules: [instance] }] };
     try {
-      ref.current.replaceChildren(window.GemDenModules.renderPage(snapshot, catalog, bindings));
+      ref.current.replaceChildren(window.GemDenModules.renderPage(snapshot, catalog, bindings, { profileDetails: false }));
     } catch (error) {
       ref.current.textContent = `Vorschau: ${error.message}`;
     }

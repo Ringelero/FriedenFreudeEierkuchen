@@ -18,7 +18,12 @@
     bio: 'Über mich',
     location: 'Ort oder Wirkungsraum',
     availability_note: 'Verfügbarkeit',
-    boundaries: 'Grenzen'
+    boundaries: 'Grenzen',
+    synergy_interests: 'Gewählte Synergien',
+    profile_wishes: 'Was ich suche',
+    profile_offers: 'Wobei ich helfen kann',
+    favorite_places: 'Meine Lieblingsorte',
+    portfolio_layout: 'Aufbau meiner Seite'
   };
   const KIND_LABELS = {
     profile_field: 'Profilfeld',
