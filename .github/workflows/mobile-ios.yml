@@ -10,6 +10,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: gemden-ios-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   simulator:
     runs-on: macos-26
@@ -26,7 +30,7 @@ jobs:
       - run: node build-web.mjs && node node_modules/@capacitor/cli/bin/capacitor sync ios
       - run: |
           xcodebuild -version
-          xcodebuild -project ios/App/App.xcodeproj -scheme App \
+          xcodebuild -quiet -project ios/App/App.xcodeproj -scheme App \
             -configuration Debug -destination 'generic/platform=iOS Simulator' \
-            -derivedDataPath "$RUNNER_TEMP/gemden-ios" CODE_SIGNING_ALLOWED=NO build
+            -derivedDataPath "$RUNNER_TEMP/gemden-ios" ARCHS=arm64 CODE_SIGNING_ALLOWED=NO build
           test -d "$RUNNER_TEMP/gemden-ios/Build/Products/Debug-iphonesimulator/App.app/PlugIns/GassiWidget.appex"

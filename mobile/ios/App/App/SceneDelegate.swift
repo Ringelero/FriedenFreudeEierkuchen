@@ -55,9 +55,9 @@ final class GemDenBridgeViewController: CAPBridgeViewController {
 final class GemDenWidgetPlugin: CAPPlugin, CAPBridgedPlugin, EKEventEditViewDelegate {
     let identifier = "GemDenWidgetPlugin"
     let jsName = "GemDenWidget"
-    let pluginMethods = [
-        CAPPluginMethod(name: "setPlace", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "addToCalendar", returnType: CAPPluginReturnPromise)
+    let pluginMethods: [CAPPluginMethod] = [
+        .init(name: "setPlace", returnType: CAPPluginReturnPromise),
+        .init(name: "addToCalendar", returnType: CAPPluginReturnPromise)
     ]
     private let store = EKEventStore()
 
