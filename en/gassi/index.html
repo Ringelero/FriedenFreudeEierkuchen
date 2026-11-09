@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Find designated off-leash areas near you and see who is out with Heart and Snout.">
+  <title>Walk now · GemDen</title>
+  <link rel="stylesheet" href="/en/assets/site.css?v=20261020-2">
+  <link rel="stylesheet" href="/en/gassi/gassi.css?v=1">
+  <link rel="manifest" href="/gassi/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/assets/places-icon-192.png">
+<!-- gemden-language:start -->
+<meta name="gemden-languages" content="/ /404.html /community/ /community/dynastien/rubybubys/ /community/kieze/p-hain/ /community/kieze/travelkiez/ /community/mitglieder/julius/ /community/mitglieder/profil/ /community/orte/threeden/ /community/synergien/aktive/ /community/synergien/alternative/ /community/synergien/connaisseurs/ /community/synergien/hexen/ /community/synergien/hooligans/ /community/synergien/kuenstler/ /community/synergien/macher/ /community/synergien/moderne/ /community/synergien/nerds/ /community/synergien/promillanten/ /community/synergien/visionaere/ /entwuerfe/blob-waschbaer/ /entwuerfe/herz-gassi/ /entwuerfe/moeglichkeiten/ /entwuerfe/obdachlosenhilfe/ /gassi/ /gestalten/ /hilfe/ /impressum/ /info/ /julius/ /kalender/ /kalender/verbinden/ /konto/ /leistungen/ /leistungen/rubybubys-herz-und-schnauze/ /leistungen/rubybubys-herz-und-schnauze/betreuung/ /leistungen/rubybubys-herz-und-schnauze/gassihilfe/ /leistungen/rubybubys-herz-und-schnauze/gastgeber/ /leistungen/rubybubys-herz-und-schnauze/lernen/ /leistungen/rubybubys-herz-und-schnauze/lernen/alleinbleiben/ /leistungen/rubybubys-herz-und-schnauze/lernen/begegnungen/ /leistungen/rubybubys-herz-und-schnauze/lernen/belohnung/ /leistungen/rubybubys-herz-und-schnauze/lernen/betreuung/ /leistungen/rubybubys-herz-und-schnauze/lernen/fell/ /leistungen/rubybubys-herz-und-schnauze/lernen/geschirr/ /leistungen/rubybubys-herz-und-schnauze/lernen/hilfe/ /leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel-video/ /leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel/ /leistungen/rubybubys-herz-und-schnauze/lernen/koerpersprache/ /leistungen/rubybubys-herz-und-schnauze/lernen/krallen/ /leistungen/rubybubys-herz-und-schnauze/lernen/leine/ /leistungen/rubybubys-herz-und-schnauze/lernen/ohren/ /leistungen/rubybubys-herz-und-schnauze/lernen/pfoten/ /leistungen/rubybubys-herz-und-schnauze/lernen/ressourcen/ /leistungen/rubybubys-herz-und-schnauze/lernen/rueckruf/ /leistungen/rubybubys-herz-und-schnauze/lernen/ruhe/ /leistungen/rubybubys-herz-und-schnauze/lernen/stubenrein/ /leistungen/rubybubys-herz-und-schnauze/lernen/welpen/ /leistungen/rubybubys-herz-und-schnauze/lernen/welpenbeissen/ /leistungen/rubybubys-herz-und-schnauze/lernen/zaehne/ /leistungen/rubybubys-obdachlosenhilfe/ /leistungen/smart-home/ /system/ /tickets/ /treffpunkte/ /verwaltung/mitglieder/ /willkommen/">
+<link rel="alternate" hreflang="de" href="https://gemden.red/gassi/">
+<link rel="alternate" hreflang="en" href="https://gemden.red/en/gassi/">
+<link rel="canonical" href="https://gemden.red/en/gassi/">
+<link rel="stylesheet" href="/assets/language.css?v=20261020-1">
+<script src="/assets/language.js?v=20261020-1" defer></script>
+<!-- gemden-language:end -->
+</head>
+<body class="gassi-now">
+  <a class="skip-link" href="#inhalt">Skip to content</a>
+  <main id="inhalt" class="gassi-shell">
+    <nav class="gassi-nav" aria-label="Quick access"><a href="/en/">GemDen</a><a href="/en/kalender/">Calendar</a><a href="/en/konto/">Account</a></nav>
+    <header class="gassi-hero">
+      <p>Herz und Schnauze</p>
+      <h1>Walk now.</h1>
+      <p>Find an off-leash area near you. See who is there and head out.</p>
+    </header>
+    <section class="gassi-panel" aria-labelledby="gassi-find-title">
+      <h2 id="gassi-find-title">Where are we going?</h2>
+      <button class="gassi-primary" id="gassi-locate" type="button">Off-leash areas near me</button>
+      <form id="gassi-search" class="gassi-search" role="search">
+        <label for="gassi-query">Place, neighbourhood or borough</label>
+        <div><input id="gassi-query" type="search" maxlength="120" required><button type="submit">Search</button></div>
+      </form>
+      <p id="gassi-status" class="gassi-note" role="status"></p>
+      <div id="gassi-results" class="gassi-results"></div>
+      <a href="/en/treffpunkte/?ansicht=entdecken&darstellung=karte&gebiet=berlin&leistung=SERVICE-RUBYBUBYS-HERZ-SCHNAUZE&hundeauslauf=1">All off-leash areas on the map ↗</a>
+    </section>
+    <section class="gassi-panel" id="gassi-plan" aria-labelledby="gassi-plan-title">
+      <h2 id="gassi-plan-title">My next walk</h2>
+      <p class="gassi-note">Save a spot from the search to see its next walking windows here and in the GemDen calendar.</p>
+      <div data-gassi-plan></div>
+      <p><a href="/en/leistungen/rubybubys-herz-und-schnauze/#termine">See planned meetups ↗</a></p>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js" defer></script>
+  <script src="/en/assets/supabase-config.js" defer></script>
+  <script src="/en/assets/supabase-client.js" defer></script>
+  <script src="/en/gassi/gassi.js?v=1" defer></script>
+<!-- gemden-language-switcher:start --><nav class="language-switcher language-switcher-floating" data-language-switcher aria-label="Website language"><a href="/gassi/" lang="de" hreflang="de" aria-label="Deutsch">DE</a><a href="/en/gassi/" lang="en" hreflang="en" aria-label="English" aria-current="true">EN</a></nav><!-- gemden-language-switcher:end --></body>
+</html>
