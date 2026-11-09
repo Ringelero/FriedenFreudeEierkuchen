@@ -82,7 +82,7 @@
       "title": "Privacy & data autonomy",
       "home": "🧱 CHARTER",
       "status": "✅ political core adopted · 🧪 data inventory/privacy pilot · ⚖️ GDPR/legal gate",
-      "related": "K10 Rubin AI · T05 Access power · T06 Cybersecurity · B04 Rehabilitation · D07 Power map",
+      "related": "K10 Blob · T05 Access power · T06 Cybersecurity · B04 Rehabilitation · D07 Power map",
       "operational_profile": {
         "activate_when": [
           "personal data is processed, linked or used for AI/matching"
@@ -160,7 +160,7 @@
       "title": "Access to law and rules",
       "home": "🧱 CHARTER",
       "status": "✅ political core adopted · 🧪 reader/user tests · ⚖️ legal gate",
-      "related": "D08 Norm architecture · K10 Rubin AI · R06 Bureaucracy radar · T10 Fallback · K02 Decision brief",
+      "related": "D08 Norm architecture · K10 Blob · R06 Bureaucracy radar · T10 Fallback · K02 Decision brief",
       "operational_profile": null,
       "operational_profile_status": "core-page-awaiting-dedicated-profile",
       "operational_profile_id": "OP-F09"
@@ -206,10 +206,10 @@
       "title": "Caesar – founder's dignity, right to be heard & representation",
       "home": "🏛️ CONSTITUTIONAL PRINCIPLE",
       "status": "✅ political core adopted · ⚖️ legal gate if embedded in the articles of association",
-      "related": "D04 Deliberation · D07 Power map · F07 Anti-totalising limits · R07 Founder dependence · K10 Rubin AI",
+      "related": "D04 Deliberation · D07 Power map · F07 Anti-totalising limits · R07 Founder dependence · K10 Blob",
       "operational_profile": {
         "activate_when": [
-          "Rubin invokes his right to be heard as Caesar in a community decision"
+          "Julius invokes his right to be heard as Caesar in a community decision"
         ],
         "hard_limits": [
           "no veto",
@@ -367,7 +367,7 @@
       "title": "Shared infrastructure",
       "home": "⚙️ REGULATION",
       "status": "✅ political core adopted · 🧪 business-case pilot · ⚖️ legal gate",
-      "related": "W02 Tithe · W03 Commons pass · K10 Rubin AI · F03 Portability · T10 Fallback",
+      "related": "W02 Tithe · W03 Commons pass · K10 Blob · F03 Portability · T10 Fallback",
       "operational_profile": null,
       "operational_profile_status": "core-page-awaiting-dedicated-profile",
       "operational_profile_id": "OP-W04"
@@ -649,14 +649,14 @@
       "title": "Transactive memory / “Who knows what?”",
       "home": "⚙️ REGULATION",
       "status": "🧪 Experiment · ⚖️ legal gate",
-      "related": "K05 Angeberschein · K06 Mentoring · K10 Rubin AI · T04 Bus factor · D07 Power map",
+      "related": "K05 Angeberschein · K06 Mentoring · K10 Blob · T04 Bus factor · D07 Power map",
       "operational_profile": null,
       "operational_profile_status": "core-page-awaiting-dedicated-profile",
       "operational_profile_id": "OP-K09"
     },
     {
       "id": "K10",
-      "title": "Rubin AI as a navigator",
+      "title": "Blob as a navigator",
       "home": "🏛️ CONSTITUTIONAL PRINCIPLE",
       "status": "🧪 Experiment · ⚖️ legal gate · 🔬 research",
       "related": "F04 Privacy · F09 Access to rules · D08 Norm architecture · W01 Marketplace · K01 Evidence · T05 Access power · T06 Cybersecurity · T10 Fallback",
@@ -725,7 +725,7 @@
       "title": "Digital constitution & access power",
       "home": "🏛️ CONSTITUTIONAL PRINCIPLE",
       "status": "🟡 open · 🔬 research",
-      "related": "K10 Rubin AI · F04 Privacy · D07 Power map · T06 Security · T10 Fallback",
+      "related": "K10 Blob · F04 Privacy · D07 Power map · T06 Security · T10 Fallback",
       "operational_profile": null,
       "operational_profile_status": "core-page-awaiting-dedicated-profile",
       "operational_profile_id": "OP-T05"
@@ -735,7 +735,7 @@
       "title": "Cybersecurity & Privacy Engineering",
       "home": "⚙️ REGULATION",
       "status": "🧪 Experiment · ⚖️ legal gate",
-      "related": "F04 Privacy · T05 Access power · T02 Incident mode · T10 Fallback · K10 Rubin AI",
+      "related": "F04 Privacy · T05 Access power · T02 Incident mode · T10 Fallback · K10 Blob",
       "operational_profile": null,
       "operational_profile_status": "core-page-awaiting-dedicated-profile",
       "operational_profile_id": "OP-T06"
@@ -775,7 +775,7 @@
       "title": "Graceful degradation & manual fallback",
       "home": "🏛️ CONSTITUTIONAL PRINCIPLE",
       "status": "🧪 Experiment",
-      "related": "K10 Rubin AI · T04 Bus factor · T05 Access power · T02 Incident mode · F09 Access to rules",
+      "related": "K10 Blob · T04 Bus factor · T05 Access power · T02 Incident mode · F09 Access to rules",
       "operational_profile": null,
       "operational_profile_status": "core-page-awaiting-dedicated-profile",
       "operational_profile_id": "OP-T10"
@@ -851,7 +851,7 @@
       "title": "Bureaucracy radar",
       "home": "🧰 METHOD",
       "status": "🧪 Experiment · 🔬 research",
-      "related": "F09 Access to rules · K10 Rubin AI · R09 Organisation check · R08 Lifecycle · W04 Infrastructure",
+      "related": "F09 Access to rules · K10 Blob · R09 Organisation check · R08 Lifecycle · W04 Infrastructure",
       "operational_profile": null,
       "operational_profile_status": "core-page-awaiting-dedicated-profile",
       "operational_profile_id": "OP-R06"
@@ -997,7 +997,7 @@
       "function": "a fixed 10% community share of the defined community base of an externally monetised FFE value transaction",
       "neutral_term": "Community-Beitrag",
       "cultural_name": "Tithe",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ tithe regulations v0.1"
     },
     {
@@ -1006,7 +1006,7 @@
       "function": "petition, agenda-setting and a special right to be heard without power to rule",
       "neutral_term": "Petition/dialogue steward",
       "cultural_name": "Caesar",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ established"
     },
     {
@@ -1015,7 +1015,7 @@
       "function": "a social system for prestige, reflection and development with Bussies, four main branches, a life/season view, competition and a repair path",
       "neutral_term": "Recognition system",
       "cultural_name": "Mojo",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ pilot regulations v0.1 · 🧪 six-month review"
     },
     {
@@ -1024,7 +1024,7 @@
       "function": "an exchange system to be developed independently at a later stage; explicitly not Mojo",
       "neutral_term": "economic benefit / unit",
       "cultural_name": "Rubine",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "⏸️ deliberately deferred"
     },
     {
@@ -1033,7 +1033,7 @@
       "function": "autonomous FFE circle / sub-community",
       "neutral_term": "autonomous circle",
       "cultural_name": "Dynasty",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ established"
     },
     {
@@ -1042,7 +1042,7 @@
       "function": "a federal level between several communities",
       "neutral_term": "Federation / federal council",
       "cultural_name": "Die Illuminati",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ established"
     },
     {
@@ -1051,7 +1051,7 @@
       "function": "a limited real-world democracy pilot with a budget and jurisdiction",
       "neutral_term": "Governance-Pilot",
       "cultural_name": "Schützenfest",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ established"
     },
     {
@@ -1060,7 +1060,7 @@
       "function": "a tool for orderly speaking and listening",
       "neutral_term": "Conversation tool",
       "cultural_name": "Talking stone",
-      "naming_authority": "Rubin/WG",
+      "naming_authority": "Julius/WG",
       "status": "✅ established"
     },
     {
@@ -1069,7 +1069,7 @@
       "function": "a role/method for benevolent, genuine dissent",
       "neutral_term": "critical dissenting voice",
       "cultural_name": "Loyaler Stachel",
-      "naming_authority": "Rubin/WG",
+      "naming_authority": "Julius/WG",
       "status": "✅ established"
     },
     {
@@ -1078,7 +1078,7 @@
       "function": "may challenge power, habits and overconfidence with humour",
       "neutral_term": "Critiquing power through humour",
       "cultural_name": "Hofnarr",
-      "naming_authority": "Rubin/WG",
+      "naming_authority": "Julius/WG",
       "status": "✅ established"
     },
     {
@@ -1087,7 +1087,7 @@
       "function": "a protection test for outsiders, unpopular people and people with few social connections",
       "neutral_term": "Outsider/minority protection test",
       "cultural_name": "open",
-      "naming_authority": "Rubin/WG",
+      "naming_authority": "Julius/WG",
       "status": "🟡 new name needed"
     },
     {
@@ -1114,7 +1114,7 @@
       "function": "a shared pot for community support/resources",
       "neutral_term": "shared pot",
       "cultural_name": "Genossen ehren Genossen (GEG)",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ established"
     },
     {
@@ -1123,7 +1123,7 @@
       "function": "portable, member-controlled competence record",
       "neutral_term": "Competence pass",
       "cultural_name": "Angeberschein",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ established"
     },
     {
@@ -1132,7 +1132,7 @@
       "function": "checks whether participation is truly voluntary",
       "neutral_term": "Voluntariness check",
       "cultural_name": "Nein-Kosten-Test",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ established"
     },
     {
@@ -1141,7 +1141,7 @@
       "function": "a contact point/format for when knowledge is missing and suitable expertise needs to be found",
       "neutral_term": "Wissens-/Expertiserouting",
       "cultural_name": "Einstein der Weisen",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ established"
     },
     {
@@ -1150,7 +1150,7 @@
       "function": "a structured round for opposing positions",
       "neutral_term": "Dissent round",
       "cultural_name": "Stachelrunde",
-      "naming_authority": "Rubin/WG",
+      "naming_authority": "Julius/WG",
       "status": "✅ established"
     },
     {
@@ -1159,7 +1159,7 @@
       "function": "keep, repair, test or bury a rule",
       "neutral_term": "Rule review",
       "cultural_name": "Rule tribunal / Rule Court",
-      "naming_authority": "Rubin/WG",
+      "naming_authority": "Julius/WG",
       "status": "🟡 working name"
     },
     {
@@ -1168,7 +1168,7 @@
       "function": "an archive of abolished rules and the reasons for abolishing them",
       "neutral_term": "Rule archive",
       "cultural_name": "Museum of dead rules",
-      "naming_authority": "Rubin/WG",
+      "naming_authority": "Julius/WG",
       "status": "✅ established"
     },
     {
@@ -1177,7 +1177,7 @@
       "function": "a governance tool for shared resources; explicitly not GEG",
       "neutral_term": "Commons-Governance-Karte",
       "cultural_name": "Commons-Pass",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ retained as a separate tool"
     },
     {
@@ -1186,7 +1186,7 @@
       "function": "a small local advisory/decision-making circle; its specific authority depends on its mandate",
       "neutral_term": "small council",
       "cultural_name": "Local circle",
-      "naming_authority": "Rubin / freely chosen locally",
+      "naming_authority": "Julius / freely chosen locally",
       "status": "✅ general name established"
     },
     {
@@ -1195,7 +1195,7 @@
       "function": "a larger council format for coordination, representation or several sub-circles",
       "neutral_term": "Larger council",
       "cultural_name": "open",
-      "naming_authority": "Rubin / local communities",
+      "naming_authority": "Julius / local communities",
       "status": "🟡 name needed"
     },
     {
@@ -1204,7 +1204,7 @@
       "function": "a shared celebration after passing a development/mastery level",
       "neutral_term": "Transition/completion celebration",
       "cultural_name": "open",
-      "naming_authority": "Rubin / local communities",
+      "naming_authority": "Julius / local communities",
       "status": "🟡 cultural name needed"
     },
     {
@@ -1213,7 +1213,7 @@
       "function": "connects work, learning, help, commons and projects",
       "neutral_term": "Chancen-/Matching-Plattform",
       "cultural_name": "Opportunities marketplace",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ functional name established"
     },
     {
@@ -1222,7 +1222,7 @@
       "function": "a graph connecting people, things, places, tasks and communities",
       "neutral_term": "local commons/opportunities network",
       "cultural_name": "Living city map",
-      "naming_authority": "Rubin / open",
+      "naming_authority": "Julius / open",
       "status": "🟡 working title"
     },
     {
@@ -1231,7 +1231,7 @@
       "function": "a graph of skills, offices and organisation for people and dynasties",
       "neutral_term": "Development graph",
       "cultural_name": "Development network",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ functional name established"
     },
     {
@@ -1240,7 +1240,7 @@
       "function": "a small, voluntary, specific thank-you; not formal Mojo yet",
       "neutral_term": "accessible recognition",
       "cultural_name": "Bussi / Bussies",
-      "naming_authority": "Rubin",
+      "naming_authority": "Julius",
       "status": "✅ established"
     },
     {
@@ -4186,7 +4186,7 @@
         "T06 Threat Model"
       ],
       "culture": "No cultural obligation to disclose personal areas of life.",
-      "cross_checks": "K10 Rubin AI · T05 Access power · T06 Cybersecurity · B04 Rehabilitation · D07 Power map",
+      "cross_checks": "K10 Blob · T05 Access power · T06 Cybersecurity · B04 Rehabilitation · D07 Power map",
       "failure_modes": [
         "Data Creep",
         "Consent Theater",
@@ -4407,7 +4407,7 @@
         "Change log"
       ],
       "culture": "Cultural rules are marked as culture and are not secretly made legally enforceable.",
-      "cross_checks": "D08 Norm architecture · K10 Rubin AI · R06 Bureaucracy radar · T10 Fallback · K02 Decision brief",
+      "cross_checks": "D08 Norm architecture · K10 Blob · R06 Bureaucracy radar · T10 Fallback · K02 Decision brief",
       "failure_modes": [
         "a rule exists only in a chat",
         "an AI answer becomes a new norm",
@@ -4511,7 +4511,7 @@
       "id": "OP-D03",
       "core_id": "D03",
       "title": "Caesar – founder's dignity, right to be heard & representation",
-      "activate_when": "Rubin as Caesar wishes to be heard in a decision or to represent FFE culturally/diplomatically",
+      "activate_when": "Julius as Caesar wishes to be heard in a decision or to represent FFE culturally/diplomatically",
       "goal": "make room for the founder's knowledge and symbolism without transferring democratic decision-making power",
       "must_check": [
         "Has Caesar explicitly invoked the right to be heard?",
@@ -4540,9 +4540,9 @@
         "Minority report"
       ],
       "culture": "Honours, history and diplomatic travel are culturally possible; legendary status remains voluntary.",
-      "cross_checks": "D04 Deliberation · D07 Power map · F07 Anti-totalising limits · R07 Founder dependence · K10 Rubin AI",
+      "cross_checks": "D04 Deliberation · D07 Power map · F07 Anti-totalising limits · R07 Founder dependence · K10 Blob",
       "failure_modes": [
-        "**Founder worship:** Criticism of Rubin becomes culturally taboo.",
+        "**Founder worship:** Criticism of Julius becomes culturally taboo.",
         "**Soft veto:** Nobody disagrees, although no formal veto exists.",
         "**Endless hearing:** Speaking rights become a delaying tactic.",
         "**Court entourage:** Closeness to Caesar becomes a resource for access or status."
@@ -5038,7 +5038,7 @@
         "T10 Fallback"
       ],
       "culture": "Shared places and workshops may have a strong character; access remains fair.",
-      "cross_checks": "W02 Tithe · W03 Commons pass · K10 Rubin AI · F03 Portability · T10 Fallback",
+      "cross_checks": "W02 Tithe · W03 Commons pass · K10 Blob · F03 Portability · T10 Fallback",
       "failure_modes": [
         "**Infrastructure Empire**",
         "**Lock-in**",
@@ -6171,7 +6171,7 @@
         "T04 Continuity"
       ],
       "culture": "Knowledge markets and learning festivals may make expertise visible.",
-      "cross_checks": "K05 Angeberschein · K06 Mentoring · K10 Rubin AI · T04 Bus factor · D07 Power map",
+      "cross_checks": "K05 Angeberschein · K06 Mentoring · K10 Blob · T04 Bus factor · D07 Power map",
       "failure_modes": [
         "Knowledge Aristocracy",
         "Outdated expert list",
@@ -6185,8 +6185,8 @@
     {
       "id": "OP-K10",
       "core_id": "K10",
-      "title": "Rubin AI as a navigator",
-      "activate_when": "Rubin-KI or another AI explains a rule, routes cases or produces specific instructions for action",
+      "title": "Blob as a navigator",
+      "activate_when": "Blob or another AI explains a rule, routes cases or produces specific instructions for action",
       "goal": "apply current FFE norms and methods understandably without simulating power, truth or human worth",
       "must_check": [
         "What is the situation, and which facts are missing?",
@@ -6442,7 +6442,7 @@
         "T10 Fallback"
       ],
       "culture": "Technical titles or symbols may recognise competence; they do not create political authority.",
-      "cross_checks": "K10 Rubin AI · F04 Privacy · D07 Power map · T06 Security · T10 Fallback",
+      "cross_checks": "K10 Blob · F04 Privacy · D07 Power map · T06 Security · T10 Fallback",
       "failure_modes": [
         "Founder Root",
         "Shared Admin Password",
@@ -6489,7 +6489,7 @@
         "T10 Fallback"
       ],
       "culture": "Security culture may be practised playfully but must not create a culture of blame or fear.",
-      "cross_checks": "F04 Privacy · T05 Access power · T02 Incident mode · T10 Fallback · K10 Rubin AI",
+      "cross_checks": "F04 Privacy · T05 Access power · T02 Incident mode · T10 Fallback · K10 Blob",
       "failure_modes": [
         "Security Theater",
         "Founder Admin",
@@ -6669,7 +6669,7 @@
         "T06 Recovery"
       ],
       "culture": "Clear symbols for operating modes can provide orientation.",
-      "cross_checks": "K10 Rubin AI · T04 Bus factor · T05 Access power · T02 Incident mode · F09 Access to rules",
+      "cross_checks": "K10 Blob · T04 Bus factor · T05 Access power · T02 Incident mode · F09 Access to rules",
       "failure_modes": [
         "Paper Fallback",
         "Backup not restorable",
@@ -6941,7 +6941,7 @@
         "T03 Checklist"
       ],
       "culture": "A Day of Dead Rules can culturally retire unnecessary administration.",
-      "cross_checks": "F09 Access to rules · K10 Rubin AI · R09 Organisation check · R08 Lifecycle · W04 Infrastructure",
+      "cross_checks": "F09 Access to rules · K10 Blob · R09 Organisation check · R08 Lifecycle · W04 Infrastructure",
       "failure_modes": [
         "Cutting bureaucracy as a religion of deregulation",
         "Compliance disappears; risk remains",
@@ -6956,7 +6956,7 @@
       "id": "OP-R07",
       "core_id": "R07",
       "title": "Founder dependence & succession",
-      "activate_when": "FFE, knowledge, relationships or decisions depend too heavily on Rubin or other founders or key people",
+      "activate_when": "FFE, knowledge, relationships or decisions depend too heavily on Julius or other founders or key people",
       "goal": "preserve the founders' story while reducing operational and political dependency",
       "must_check": [
         "Which knowledge, network or access is unique?",
