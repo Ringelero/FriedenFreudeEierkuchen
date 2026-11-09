@@ -1,7 +1,7 @@
 {
   "meta": {
     "schema_version": "0.1",
-    "updated": "2026-11-08",
+    "updated": "2026-11-09",
     "status": "public-community-catalog",
     "note": "Public catalogue of Community spaces. Private content and access permissions are managed separately through the account."
   },
@@ -255,6 +255,22 @@
       "status": "building",
       "description": "Playing sports, trying something new and getting moving together.",
       "public_path": "/community/synergien/aktive/"
+    },
+    {
+      "id": "SYN-SCHNAUZIS",
+      "slug": "schnauzis",
+      "name": "Schnauzis",
+      "status": "building",
+      "description": "The Schnauzis are the animal lovers at Heart and Snout.",
+      "public_path": "/leistungen/rubybubys-herz-und-schnauze/"
+    },
+    {
+      "id": "SYN-STREUNER",
+      "slug": "streuner",
+      "name": "Streuner",
+      "status": "building",
+      "description": "The Streuner enjoy getting out with animals, exploring new places and helping with dog walks.",
+      "public_path": "/leistungen/rubybubys-herz-und-schnauze/gassihilfe/"
     }
   ]
 }
