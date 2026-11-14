@@ -316,6 +316,9 @@
     }
     list.onchange = update;
     if (!locked) update();
+    input.dataset.loadedValue = input.value;
+    const visibility = byId('field-synergy_interests-visibility');
+    visibility.dataset.loadedValue = visibility.value;
   }
 
   function renderSkillPicker() {
@@ -503,7 +506,13 @@
       submit.disabled = true;
       setMessage(status, 'Profilfelder werden gespeichert …');
       try {
-        const rows = FIELDS.map(([key, sortOrder]) => ({
+        const synergyInput = byId('field-synergy_interests');
+        const synergyVisibility = byId('field-synergy_interests-visibility');
+        const synergyChanged = !synergyVisibility.disabled && (
+          synergyInput.value !== synergyInput.dataset.loadedValue
+          || synergyVisibility.value !== synergyVisibility.dataset.loadedValue
+        );
+        const rows = FIELDS.filter(([key]) => key !== 'synergy_interests' || synergyChanged).map(([key, sortOrder]) => ({
           key,
           sortOrder,
           value: byId(`field-${key}`).value.trim(),

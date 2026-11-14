@@ -197,7 +197,7 @@
                     <select id="field-boundaries-visibility" data-visibility-select></select>
                   </div>
                 </div>
-                <fieldset class="choice-fieldset">
+                <fieldset class="choice-fieldset" id="profil-synergien">
                   <legend>Interessen und Zugehörigkeit</legend>
                   <div id="profile-rubybubys-join" hidden>
                     <p>Du gehörst zu den Rubybubys.</p>
@@ -260,6 +260,13 @@
                 <button class="button" id="profile-fields-submit" type="submit">Profilfelder als Entwurf speichern</button>
                 <p class="form-status" id="profile-fields-status" role="status" aria-live="polite"></p>
               </form>
+            </details>
+
+            <details class="workspace-block" open>
+              <summary>Meine Schnupperanfragen</summary>
+              <p id="profile-synergy-request-status" class="account-copy" role="status">Schnupperanfragen werden geladen …</p>
+              <ul id="profile-synergy-requests" class="account-copy"></ul>
+              <p><a href="../tickets/#ticket-list-title">Rückmeldungen in meinen Tickets lesen</a></p>
             </details>
 
             <details class="workspace-block" open>
@@ -647,10 +654,11 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2" defer></script>
   <script src="../assets/supabase-config.js" defer></script>
   <script src="../assets/supabase-client.js" defer></script>
+  <script src="../assets/synergy-profile.js?v=20261114-1" defer></script>
   <script src="../assets/member-page-template.js?v=20260926-1" defer></script>
   <script src="./auth-flow.js?v=20261114-1" defer></script>
   <script src="./page-bootstrap.js?v=20260926-1" defer></script>
-  <script src="./profile-workspace.js?v=20261109-3" defer></script>
+  <script src="./profile-workspace.js?v=20261114-1" defer></script>
   <script src="./publication-center.js?v=20261109-2" defer></script>
   <script src="../assets/opportunity-entry.js?v=20261019-1" defer></script>
   <script src="./opportunity-workspace.js?v=20261016-2" defer></script>
