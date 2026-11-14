@@ -288,7 +288,11 @@
     return;
   }
 
-  document.getElementById('konto-start').open = location.hash === '#konto-start';
+  const signupPanel = document.getElementById('konto-start');
+  const signupOpen = signupPanel.dataset.signupOpen === 'true';
+  signupPanel.open = location.hash === '#konto-start';
+  signupForm.hidden = !signupOpen;
+  document.getElementById('signup-pending').hidden = signupOpen;
   function rememberSynergy() {
     try {
       if (validSynergy(synergy)) sessionStorage.setItem(entryKey, synergy);
@@ -297,7 +301,7 @@
   }
   signupForm.addEventListener('submit', async event => {
     event.preventDefault();
-    if (signupSubmit.disabled) return;
+    if (!signupOpen || signupSubmit.disabled) return;
     signupSubmit.disabled = true;
     setMessage(signupStatus, "Requesting your link …");
     try {

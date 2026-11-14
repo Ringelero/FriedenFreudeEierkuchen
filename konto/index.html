@@ -52,10 +52,11 @@
               <h3>Sicher anmelden</h3>
             </div>
           </div>
-          <details class="source-fold" id="konto-start">
+          <details class="source-fold" id="konto-start" data-signup-open="false">
             <summary>Konto erstellen</summary>
-            <p>Bestätige deine E-Mail-Adresse und du bekommst einen Spitznamen. Deinen Namen und dein Profil kannst du jederzeit bearbeiten. Dein Profil startet privat.</p>
-            <form class="form-grid" id="signup-form">
+            <p id="signup-pending">Der Kontostart per E-Mail ist in Vorbereitung. Schau dich solange als Gast um. Wenn du bereits ein Konto hast, kannst du dich unten anmelden.</p>
+            <form class="form-grid" id="signup-form" hidden>
+              <p>Bestätige deine E-Mail-Adresse und du bekommst einen Spitznamen. Deinen Namen und dein Profil kannst du jederzeit bearbeiten. Dein Profil startet privat.</p>
               <div class="field"><label for="signup-email">E-Mail-Adresse</label><input id="signup-email" type="email" autocomplete="email" maxlength="254" required></div>
               <button id="signup-submit" class="button" type="submit">Link zum Kontostart senden</button>
               <p id="signup-status" class="form-status" role="status"></p>
