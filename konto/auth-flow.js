@@ -60,16 +60,16 @@
     return fallback;
   }
 
-  async function requestEmailLogin(client, { email, redirectTo }) {
+  async function requestEmailLogin(client, { email, redirectTo, createAccount = false }) {
     requireAuthMethod(client, 'signInWithOtp');
     const normalizedEmail = normalizeEmail(email);
-    if (!normalizedEmail) throw new Error('Bitte gib deine eingeladene E-Mail-Adresse ein.');
+    if (!normalizedEmail) throw new Error('Bitte gib deine E-Mail-Adresse ein.');
 
     const { data, error } = await client.auth.signInWithOtp({
       email: normalizedEmail,
       options: {
         emailRedirectTo: redirectTo,
-        shouldCreateUser: false
+        shouldCreateUser: createAccount
       }
     });
     if (error) throw error;
@@ -79,7 +79,7 @@
   async function signInWithPassword(client, { email, password }) {
     requireAuthMethod(client, 'signInWithPassword');
     const normalizedEmail = normalizeEmail(email);
-    if (!normalizedEmail) throw new Error('Bitte gib deine eingeladene E-Mail-Adresse ein.');
+    if (!normalizedEmail) throw new Error('Bitte gib deine E-Mail-Adresse ein.');
     if (!password) throw new Error('Bitte gib dein Passwort ein.');
 
     const { data, error } = await client.auth.signInWithPassword({

@@ -52,7 +52,17 @@
               <h3>Sicher anmelden</h3>
             </div>
           </div>
-          <p class="account-copy">Melde dich mit deinem selbst gesetzten Passwort an. Für den ersten Zugang steht dir auch der einmalige E-Mail-Link zur Verfügung.</p>
+          <details class="source-fold" id="konto-start" data-signup-open="false">
+            <summary>Konto erstellen</summary>
+            <p id="signup-pending">Der Kontostart per E-Mail ist in Vorbereitung. Schau dich solange als Gast um. Wenn du bereits ein Konto hast, kannst du dich unten anmelden.</p>
+            <form class="form-grid" id="signup-form" hidden>
+              <p>Bestätige deine E-Mail-Adresse und du bekommst einen Spitznamen. Deinen Namen und dein Profil kannst du jederzeit bearbeiten. Dein Profil startet privat.</p>
+              <div class="field"><label for="signup-email">E-Mail-Adresse</label><input id="signup-email" type="email" autocomplete="email" maxlength="254" required></div>
+              <button id="signup-submit" class="button" type="submit">Link zum Kontostart senden</button>
+              <p id="signup-status" class="form-status" role="status"></p>
+            </form>
+          </details>
+          <p class="account-copy">Du hast bereits ein Konto? Melde dich per Passwort oder Einmal-Link an.</p>
           <details class="source-fold"><summary>Erster Zugang mit einer Einladung?</summary><p>Fordere den einmaligen Link für die E-Mail-Adresse deiner Einladung an und öffne ihn auf deinem Gerät. Setze anschließend im Konto ein eigenes Passwort, damit du dich künftig direkt anmelden kannst.</p></details>
           <form class="form-grid" id="login-form">
             <div class="field">
@@ -78,6 +88,7 @@
             <span aria-hidden="true">◆</span>
             <div><strong>Dein Rubybubys-Start</strong><p>Wähle einen Namen, einen Stil und deine Synergien. Daraus entsteht deine eigene Seite.</p><a class="button" href="../willkommen/">Mein Portfolio starten</a></div>
           </aside>
+          <p id="signup-return" hidden><a class="button secondary" id="signup-return-link">Zur Schnupperanfrage</a></p>
           <nav class="account-view-nav" aria-label="Dein Kontobereich"><a href="#konto-uebersicht" aria-current="page">Übersicht</a><a href="#konto-profil">Profil &amp; Seite</a><a href="#konto-zusammenarbeit">Zusammenarbeit</a><a href="#konto-kontakte">Kontakte &amp; Betreuung</a><a href="#konto-einstellungen">Einstellungen</a></nav>
 
           <section id="konto-uebersicht" class="account-view" data-account-view aria-labelledby="overview-title">
@@ -637,7 +648,7 @@
   <script src="../assets/supabase-config.js" defer></script>
   <script src="../assets/supabase-client.js" defer></script>
   <script src="../assets/member-page-template.js?v=20260926-1" defer></script>
-  <script src="./auth-flow.js" defer></script>
+  <script src="./auth-flow.js?v=20261114-1" defer></script>
   <script src="./page-bootstrap.js?v=20260926-1" defer></script>
   <script src="./profile-workspace.js?v=20261109-3" defer></script>
   <script src="./publication-center.js?v=20261109-2" defer></script>
@@ -646,6 +657,6 @@
   <script src="./resonance-workspace.js?v=20261016-1" defer></script>
   <script src="./care-entry.js?v=20261027-1" defer></script>
   <script src="./account-views.js?v=20261027-1" defer></script>
-  <script src="./konto.js?v=20261109-2" defer></script>
+  <script src="./konto.js?v=20261114-1" defer></script>
 </body>
 </html>

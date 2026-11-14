@@ -43,7 +43,7 @@ function accountPage() {
   vm.runInNewContext(controller, {
     window, document: { getElementById: element },
     location: { pathname: '/konto/', search: '', hash: '', reload: () => { reloads++; } },
-    history: { replaceState() {} }, URL, Date, console
+    history: { replaceState() {} }, URL, URLSearchParams, Date, console
   });
   return {
     element, get reloads() { return reloads; },

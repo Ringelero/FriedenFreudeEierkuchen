@@ -13,6 +13,9 @@
   const loginSubmit = document.getElementById('login-submit');
   const loginLinkSubmit = document.getElementById('login-link-submit');
   const loginStatus = document.getElementById('login-status');
+  const signupForm = document.getElementById('signup-form');
+  const signupSubmit = document.getElementById('signup-submit');
+  const signupStatus = document.getElementById('signup-status');
   const accountDataStatus = document.getElementById('account-data-status');
   const profileForm = document.getElementById('profile-form');
   const profileSubmit = document.getElementById('profile-submit');
@@ -29,6 +32,25 @@
   let currentUser = null;
   let currentProfile = null;
   let renderedAccountId = null;
+  const entryKey = 'gemden_synergy_entry_v1';
+  const synergy = new URLSearchParams(location.search).get('synergie');
+  const validSynergy = value => /^[a-z0-9-]{1,60}$/.test(value || '');
+
+  function showSynergyReturn(user) {
+    const panel = document.getElementById('signup-return');
+    panel.hidden = true;
+    if (!user) return;
+    let picked = synergy;
+    try { picked ||= sessionStorage.getItem(entryKey); } catch { /* The context link is optional. */ }
+    if (!validSynergy(picked)) return;
+    const page = '/community/synergien/' + picked + '/';
+    const link = document.getElementById('signup-return-link');
+    link.href = '../tickets/?vorlage=synergie-schnuppern&seite=' + encodeURIComponent(page) + '#new-ticket-title';
+    link.addEventListener('click', () => {
+      try { sessionStorage.removeItem(entryKey); } catch { /* Navigation still works. */ }
+    }, { once: true });
+    panel.hidden = false;
+  }
 
   function setMessage(target, message, state) {
     target.textContent = message;
@@ -129,7 +151,16 @@
     if (permissionResult.error) throw permissionResult.error;
     if (!profileResult.data) throw new Error('Zu diesem Konto wurde noch kein Profil gefunden.');
 
-    const profile = profileResult.data;
+    let profile = profileResult.data;
+    if (!profile.stable_id && profile.account_status === 'active') {
+      const started = await client.rpc('start_own_member_profile');
+      if (started.error) throw started.error;
+      const result = await client.from('profiles')
+        .select('id,stable_id,display_name,visibility,publication_status,account_status').eq('id', user.id).single();
+      if (result.error) throw result.error;
+      profile = result.data;
+    }
+    if (currentUser?.id !== user.id) return;
     currentProfile = profile;
     document.getElementById('rubybubys-start-card').hidden = !(
       user.app_metadata?.gemden_rubybubys_invited === true && profile.account_status === 'active' && profile.stable_id
@@ -215,6 +246,7 @@
     resonanceWorkspace?.reset();
     signedOutPanel.hidden = Boolean(currentUser);
     signedInPanel.hidden = !currentUser;
+    showSynergyReturn(currentUser);
 
     if (!currentUser) {
       setConnection('Bereit zur Anmeldung', 'open');
@@ -249,11 +281,40 @@
     setConnection('Verbindung nicht verfügbar', 'open');
     loginSubmit.disabled = true;
     loginLinkSubmit.disabled = true;
+    signupSubmit.disabled = true;
     passwordSubmit.disabled = true;
     pageCreateButton.disabled = true;
     setMessage(loginStatus, window.FFE_SUPABASE_ERROR || 'Die Anmeldung konnte nicht gestartet werden.', 'error');
     return;
   }
+
+  const signupPanel = document.getElementById('konto-start');
+  const signupOpen = signupPanel.dataset.signupOpen === 'true';
+  signupPanel.open = location.hash === '#konto-start';
+  signupForm.hidden = !signupOpen;
+  document.getElementById('signup-pending').hidden = signupOpen;
+  function rememberSynergy() {
+    try {
+      if (validSynergy(synergy)) sessionStorage.setItem(entryKey, synergy);
+      else sessionStorage.removeItem(entryKey);
+    } catch { /* Account creation still works. */ }
+  }
+  signupForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!signupOpen || signupSubmit.disabled) return;
+    signupSubmit.disabled = true;
+    setMessage(signupStatus, 'Der Link wird angefordert …');
+    try {
+      rememberSynergy();
+      const email = document.getElementById('signup-email').value.trim();
+      await authFlow.requestEmailLogin(client, { email, redirectTo: 'https://gemden.red/konto/', createAccount: true });
+      setMessage(signupStatus, 'Schau in dein Postfach und öffne den Link, um in dein Konto zu kommen.', 'success');
+    } catch (error) {
+      setMessage(signupStatus, authFlow.describeAuthError(error, 'Der Kontostart ist gerade nicht verfügbar.'), 'error');
+    } finally {
+      signupSubmit.disabled = false;
+    }
+  });
 
   loginForm.addEventListener('submit', async event => {
     event.preventDefault();
@@ -262,7 +323,7 @@
     const password = document.getElementById('login-password').value;
     if (!email) {
       emailInput.focus();
-      setMessage(loginStatus, 'Bitte gib deine eingeladene E-Mail-Adresse ein.', 'error');
+      setMessage(loginStatus, 'Bitte gib deine E-Mail-Adresse ein.', 'error');
       return;
     }
 
@@ -284,16 +345,17 @@
     const email = document.getElementById('login-email').value.trim();
     if (!email) {
       document.getElementById('login-email').focus();
-      setMessage(loginStatus, 'Bitte gib deine eingeladene E-Mail-Adresse ein.', 'error');
+      setMessage(loginStatus, 'Bitte gib deine E-Mail-Adresse ein.', 'error');
       return;
     }
 
     loginLinkSubmit.disabled = true;
     setMessage(loginStatus, 'Der einmalige Anmeldelink wird angefordert …');
     try {
+      rememberSynergy();
       const redirectTo = new URL('./', location.href).href;
       await authFlow.requestEmailLogin(client, { email, redirectTo });
-      setMessage(loginStatus, 'Falls die Adresse eingeladen ist, liegt der einmalige Link gleich im Postfach. Öffne ihn auf einem Gerät und setze danach im Konto ein Passwort.', 'success');
+      setMessage(loginStatus, 'Wenn zu der Adresse ein Konto besteht, findest du den Einmal-Link im Postfach.', 'success');
     } catch (error) {
       setMessage(loginStatus, authFlow.describeAuthError(error, 'Der Link konnte nicht gesendet werden.'), 'error');
     } finally {
