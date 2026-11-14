@@ -17,22 +17,44 @@
   const $=id=>document.getElementById(id);
   let user=null,guestToken=null,page=0,canManage=false,request=0,submission=crypto.randomUUID(),ready=false;
   const params = new URLSearchParams(location.search);
-  const path = cleanPath(params.get('seite'));
+  const requestedPath = cleanPath(params.get('seite'));
   const designRequest = params.get('vorlage') === 'profil-design';
+  const synergyRequest = params.get('vorlage') === 'synergie-schnuppern'
+    && /^\/community\/synergien\/[a-z0-9-]{1,60}\/$/.test(requestedPath);
+  const synergySlug = synergyRequest ? requestedPath.split('/')[3] : '';
+  const serviceRequest = params.get('vorlage') === 'leistungsanfrage' && requestedPath === '/leistungen/';
+  const synergyServicePaths = new Map([
+    ['schnauzis', '/leistungen/rubybubys-herz-und-schnauze/'],
+    ['streuner', '/leistungen/rubybubys-herz-und-schnauze/gassihilfe/']
+  ]);
+  const path = synergyServicePaths.get(synergySlug) || requestedPath;
+  const synergyMarker = '[synergy-intro] ';
   const photoMarker = '\n\n[photo-link] ';
   const fileMarker = '\n\n[photo-file] ';
   const photoTypes = new Map([['image/jpeg','jpg'], ['image/png','png'], ['image/webp','webp']]);
   const photoInput = $('ticket-photo-file');
   let pendingPhoto = null;
   let ticketSaved = false;
-  function fillDesignRequest() {
+  function fillRequestTemplate() {
+    if (synergyRequest) {
+      $('synergy-ticket-note').hidden = false;
+      $('ticket-form').querySelector('input[value="wish"]').checked = true;
+      $('ticket-title').value = "Request to try out a group";
+      $('ticket-body').placeholder = "What interests you, and how would you like to get to know the group?";
+      $('synergy-ticket-login').href = '../konto/?synergie=' + synergySlug + '#konto-start';
+    }
+    if (serviceRequest) {
+      $('ticket-form').querySelector('input[value="wish"]').checked = true;
+      $('ticket-title').value = "Service enquiry";
+      $('ticket-body').placeholder = "Which service are you interested in, and what would you like to know?";
+    }
     if (!designRequest) return;
     $('design-reference').hidden = false;
     $('ticket-form').querySelector('input[value="wish"]').checked = true;
     $('ticket-title').value = "Design for my profile page";
     $('ticket-body').placeholder = "What mood, colours or motifs suit you? What do you like about your reference?";
   }
-  fillDesignRequest();
+  fillRequestTemplate();
   window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});
   const status=(target,text,state)=>{target.textContent=text;target.dataset.state=state||'';};
   function element(tag,text,className){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(className)el.className=className;return el;}
@@ -72,7 +94,8 @@
     const reference = attached ? -1 : body.lastIndexOf(photoMarker);
     const photo = reference >= 0 ? photoLink(body.slice(reference + photoMarker.length)) : '';
     summary.append(meta,element('h3',item.title));
-    card.append(summary,element('p',attached ? body.slice(0, attached.marker) : photo ? body.slice(0, reference) : body,'ticket-content'));
+    const visibleBody = attached ? body.slice(0, attached.marker) : photo ? body.slice(0, reference) : body;
+    card.append(summary,element('p',visibleBody.startsWith(synergyMarker) ? visibleBody.slice(synergyMarker.length) : visibleBody,'ticket-content'));
     if (photo) {
       const link = element('a', "Open the photo reference");
       link.href = photo;
@@ -161,7 +184,8 @@
       status($('submit-status'), "Choose either an upload or a photo link.", 'error');
       return;
     }
-    const body = $('ticket-body').value.trim() + (attachment ? fileMarker + attachment.path : photo ? photoMarker + photo : '');
+    const body = (synergyRequest ? synergyMarker : '') + $('ticket-body').value.trim()
+      + (attachment ? fileMarker + attachment.path : photo ? photoMarker + photo : '');
     if (body.length > 5000) {
       status($('submit-status'), "Shorten the description to make room for the photo reference.", 'error');
       return;
@@ -191,7 +215,7 @@
       $('ticket-body').readOnly = false;
       $('ticket-photo-link').readOnly = false;
       form.querySelectorAll('input[name="kind"]').forEach(input => { input.disabled = false; });
-      submission=crypto.randomUUID();form.reset();fillDesignRequest();page=0;$('ticket-filter').value='all';status($('submit-status'),"Received. You'll find your ticket and its progress in your list.",'success');await load();
+      submission=crypto.randomUUID();form.reset();fillRequestTemplate();page=0;$('ticket-filter').value='all';status($('submit-status'),"Received. You'll find your ticket and its progress in your list.",'success');await load();
     }catch(error){
       const errorText = ticketSaved ? "Your ticket is saved. Click “Send ticket” again to retry uploading the photo." : message(error);
       status($('submit-status'),errorText,'error');
@@ -209,7 +233,11 @@
       }
       else{guestToken=guestAccess();$('identity-note').replaceChildren(document.createTextNode("As a guest, access to your tickets stays in this browser. With an "));const link=element('a',"Account");link.href='../konto/';$('identity-note').append(link,document.createTextNode(" you can find new tickets across devices."));}
       client.auth.onAuthStateChange((_event,session)=>{if((session?.user?.id||null)!==(user?.id||null)){document.querySelector('main').hidden=true;setTimeout(()=>location.reload(),0);}});
-      ready=true;$('ticket-submit').disabled=false;await load();
+      ready=!synergyRequest||Boolean(user);
+      $('ticket-form').hidden=!ready;
+      $('synergy-ticket-signin').hidden=ready;
+      $('ticket-submit').disabled=!ready;
+      await load();
     }catch{status($('identity-note'),"Access could not be opened. Please use your account or allow local storage for guest tickets.",'error');}
   })();
 })();

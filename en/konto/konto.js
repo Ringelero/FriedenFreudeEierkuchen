@@ -1,6 +1,7 @@
 (function () {
   const client = window.FFE_SUPABASE_CLIENT;
   const authFlow = window.FFE_AUTH_FLOW;
+  const appAuth = window.FFE_APP_AUTH;
   const pageBootstrap = window.FFE_PAGE_BOOTSTRAP;
   const profileWorkspace = window.FFE_PROFILE_WORKSPACE;
   const publicationCenter = window.FFE_PUBLICATION_CENTER;
@@ -13,6 +14,9 @@
   const loginSubmit = document.getElementById('login-submit');
   const loginLinkSubmit = document.getElementById('login-link-submit');
   const loginStatus = document.getElementById('login-status');
+  const signupForm = document.getElementById('signup-form');
+  const signupSubmit = document.getElementById('signup-submit');
+  const signupStatus = document.getElementById('signup-status');
   const accountDataStatus = document.getElementById('account-data-status');
   const profileForm = document.getElementById('profile-form');
   const profileSubmit = document.getElementById('profile-submit');
@@ -26,9 +30,29 @@
   const memberAdminLink = document.getElementById('member-admin-link');
   const logoutButton = document.getElementById('logout-button');
   let authErrorFromUrl = authFlow?.authErrorFromLocation(location) || '';
+  let appReturnFailed = false;
   let currentUser = null;
   let currentProfile = null;
   let renderedAccountId = null;
+  const entryKey = 'gemden_synergy_entry_v1';
+  const synergy = new URLSearchParams(location.search).get('synergie');
+  const validSynergy = value => /^[a-z0-9-]{1,60}$/.test(value || '');
+
+  function showSynergyReturn(user) {
+    const panel = document.getElementById('signup-return');
+    panel.hidden = true;
+    if (!user) return;
+    let picked = synergy;
+    try { picked ||= sessionStorage.getItem(entryKey); } catch { /* The context link is optional. */ }
+    if (!validSynergy(picked)) return;
+    const page = '/community/synergien/' + picked + '/';
+    const link = document.getElementById('signup-return-link');
+    link.href = '../tickets/?vorlage=synergie-schnuppern&seite=' + encodeURIComponent(page) + '#new-ticket-title';
+    link.addEventListener('click', () => {
+      try { sessionStorage.removeItem(entryKey); } catch { /* Navigation still works. */ }
+    }, { once: true });
+    panel.hidden = false;
+  }
 
   function setMessage(target, message, state) {
     target.textContent = message;
@@ -129,7 +153,16 @@
     if (permissionResult.error) throw permissionResult.error;
     if (!profileResult.data) throw new Error("No profile has been found for this account yet.");
 
-    const profile = profileResult.data;
+    let profile = profileResult.data;
+    if (!profile.stable_id && profile.account_status === 'active') {
+      const started = await client.rpc('start_own_member_profile');
+      if (started.error) throw started.error;
+      const result = await client.from('profiles')
+        .select('id,stable_id,display_name,visibility,publication_status,account_status').eq('id', user.id).single();
+      if (result.error) throw result.error;
+      profile = result.data;
+    }
+    if (currentUser?.id !== user.id) return;
     currentProfile = profile;
     document.getElementById('rubybubys-start-card').hidden = !(
       user.app_metadata?.gemden_rubybubys_invited === true && profile.account_status === 'active' && profile.stable_id
@@ -215,12 +248,17 @@
     resonanceWorkspace?.reset();
     signedOutPanel.hidden = Boolean(currentUser);
     signedInPanel.hidden = !currentUser;
+    showSynergyReturn(currentUser);
 
     if (!currentUser) {
       setConnection("Ready to sign in", 'open');
-      if (authErrorFromUrl) {
+      if (appReturnFailed || authErrorFromUrl) {
         cleanAuthAddress();
-        setMessage(loginStatus, authFlow.describeAuthError(authErrorFromUrl), 'error');
+        const message = appReturnFailed
+          ? "Open the latest sign-in link on the device where you requested it in the GemDen app."
+          : authFlow.describeAuthError(authErrorFromUrl);
+        setMessage(loginStatus, message, 'error');
+        appReturnFailed = false;
         authErrorFromUrl = '';
       }
       return;
@@ -249,11 +287,42 @@
     setConnection("Connection unavailable", 'open');
     loginSubmit.disabled = true;
     loginLinkSubmit.disabled = true;
+    signupSubmit.disabled = true;
     passwordSubmit.disabled = true;
     pageCreateButton.disabled = true;
     setMessage(loginStatus, window.FFE_SUPABASE_ERROR || "Sign-in could not be started.", 'error');
     return;
   }
+
+  const signupPanel = document.getElementById('konto-start');
+  const signupOpen = signupPanel.dataset.signupOpen === 'true';
+  signupPanel.open = location.hash === '#konto-start';
+  signupForm.hidden = !signupOpen;
+  document.getElementById('signup-pending').hidden = signupOpen;
+  function rememberSynergy() {
+    try {
+      if (validSynergy(synergy)) sessionStorage.setItem(entryKey, synergy);
+      else sessionStorage.removeItem(entryKey);
+    } catch { /* Account creation still works. */ }
+  }
+  signupForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!signupOpen || signupSubmit.disabled) return;
+    signupSubmit.disabled = true;
+    setMessage(signupStatus, "Requesting your link …");
+    try {
+      rememberSynergy();
+      const email = document.getElementById('signup-email').value.trim();
+      await authFlow.requestEmailLogin(client, { email, redirectTo: appAuth?.redirectTo || 'https://gemden.red/konto/', createAccount: true });
+      setMessage(signupStatus, appAuth
+        ? "Open the link from your email on this device. It takes you back to the app."
+        : "Check your inbox and open the link to access your account.", 'success');
+    } catch (error) {
+      setMessage(signupStatus, authFlow.describeAuthError(error, "Account setup is temporarily unavailable."), 'error');
+    } finally {
+      signupSubmit.disabled = false;
+    }
+  });
 
   loginForm.addEventListener('submit', async event => {
     event.preventDefault();
@@ -262,7 +331,7 @@
     const password = document.getElementById('login-password').value;
     if (!email) {
       emailInput.focus();
-      setMessage(loginStatus, "Please enter the email address you were invited with.", 'error');
+      setMessage(loginStatus, "Enter your email address.", 'error');
       return;
     }
 
@@ -284,16 +353,19 @@
     const email = document.getElementById('login-email').value.trim();
     if (!email) {
       document.getElementById('login-email').focus();
-      setMessage(loginStatus, "Please enter the email address you were invited with.", 'error');
+      setMessage(loginStatus, "Enter your email address.", 'error');
       return;
     }
 
     loginLinkSubmit.disabled = true;
     setMessage(loginStatus, "Requesting the one-time sign-in link …");
     try {
-      const redirectTo = new URL('/konto/', location.href).href;
+      rememberSynergy();
+      const redirectTo = appAuth?.redirectTo || new URL('/konto/', location.href).href;
       await authFlow.requestEmailLogin(client, { email, redirectTo });
-      setMessage(loginStatus, "If the address has been invited, the one-time link will arrive in the inbox shortly. Open it on one device, then set a password in your account.", 'success');
+      setMessage(loginStatus, appAuth
+        ? "If an account exists for that address, check your inbox for the link and open it on this device."
+        : "If an account exists for that address, you will find a one-time link in your inbox.", 'success');
     } catch (error) {
       setMessage(loginStatus, authFlow.describeAuthError(error, "The link could not be sent."), 'error');
     } finally {
@@ -403,7 +475,17 @@
     window.setTimeout(() => renderSession(session), 0);
   });
 
-  client.auth.getSession()
+  async function initialSession() {
+    const callback = appAuth?.takeReturn();
+    if (callback?.code) {
+      const result = await client.auth.exchangeCodeForSession(callback.code);
+      if (!result.error && result.data?.session) return result;
+    }
+    appReturnFailed = Boolean(callback);
+    return client.auth.getSession();
+  }
+
+  initialSession()
     .then(({ data, error }) => {
       if (error) throw error;
       renderSession(data.session);

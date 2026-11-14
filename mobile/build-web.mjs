@@ -26,7 +26,7 @@ const routesScript = await readFile(path.join(mobile, 'native-routes.js'), 'utf8
 function bundlePage(html, file) {
   return html.replaceAll(/(<script\s+src=")https:\/\/cdn\.jsdelivr\.net\/npm\/@supabase\/supabase-js@2\.117\.3(?:\/dist\/umd\/supabase\.js)?(")/g,
     '$1/assets/mobile-supabase.js$2')
-    .replace(/<head(?:\s[^>]*)?>/i, '$&<script src="/assets/mobile-routes.js" defer></script>')
+    .replace(/<head(?:\s[^>]*)?>/i, '$&<script src="/assets/mobile-routes.js" defer></script><script src="/assets/mobile-auth.js" defer></script>')
     .replaceAll(/(<a\b[^>]*?\bhref=")([^"]+)(")/gi, (match, start, value, end) => {
       if (!value || /^(?:#|[a-z][a-z0-9+.-]*:|\/\/)/i.test(value)) return match;
       const url = new URL(value.replaceAll('&amp;', '&'), origin + '/' + file);
@@ -60,5 +60,6 @@ for (const file of files) {
   await writeFile(dest, html);
 }
 await copyFile(path.join(mobile, 'node_modules/@supabase/supabase-js/dist/umd/supabase.js'), path.join(target, 'assets/mobile-supabase.js'));
+await copyFile(path.join(mobile, 'native-auth.js'), path.join(target, 'assets/mobile-auth.js'));
 await writeFile(path.join(target, 'assets/mobile-routes.js'), routesScript.replace('__BUNDLED_ROUTES__', JSON.stringify([...routes].sort())));
 console.log(`GemDen web bundle ready (${files.length} files, ${routes.size} routes)`);

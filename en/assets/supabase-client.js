@@ -11,6 +11,7 @@
     return;
   }
 
+  const appAuth = window.FFE_APP_AUTH;
   window.FFE_SUPABASE_CLIENT = window.supabase.createClient(
     config.url,
     config.publishableKey,
@@ -18,7 +19,8 @@
       auth: {
         persistSession: true,
         autoRefreshToken: true,
-        detectSessionInUrl: true
+        flowType: appAuth ? 'pkce' : 'implicit',
+        detectSessionInUrl: !appAuth
       }
     }
   );

@@ -52,7 +52,17 @@
               <h3>Sign in securely</h3>
             </div>
           </div>
-          <p class="account-copy">Sign in with the password you set yourself. You can also use a one-time email link for your first sign-in.</p>
+          <details class="source-fold" id="konto-start" data-signup-open="true">
+            <summary>Create an account</summary>
+            <p id="signup-pending">Email sign-up is being set up. In the meantime, feel free to look around as a guest. If you already have an account, you can sign in below.</p>
+            <form class="form-grid" id="signup-form" hidden>
+              <p>Confirm your email to get a nickname. You can change your name and profile at any time. Your profile starts out private.</p>
+              <div class="field"><label for="signup-email">Email address</label><input id="signup-email" type="email" autocomplete="email" maxlength="254" required></div>
+              <button id="signup-submit" class="button" type="submit">Send account link</button>
+              <p id="signup-status" class="form-status" role="status"></p>
+            </form>
+          </details>
+          <p class="account-copy">Already have an account? Sign in with a password or one-time link.</p>
           <details class="source-fold"><summary>First sign-in with an invitation?</summary><p>Request a one-time link for the email address on your invitation and open it on your device. Then set your own password in your account so you can sign in directly next time.</p></details>
           <form class="form-grid" id="login-form">
             <div class="field">
@@ -78,6 +88,7 @@
             <span aria-hidden="true">◆</span>
             <div><strong>Your Rubybubys welcome</strong><p>Choose a name, a style and the groups that interest you. Together they shape your own page.</p><a class="button" href="/en/willkommen/">Start my portfolio</a></div>
           </aside>
+          <p id="signup-return" hidden><a class="button secondary" id="signup-return-link">Back to your request</a></p>
           <nav class="account-view-nav" aria-label="Your account area"><a href="#konto-uebersicht" aria-current="page">Overview</a><a href="#konto-profil">Profile &amp; page</a><a href="#konto-zusammenarbeit">Collaboration</a><a href="#konto-kontakte">Contacts &amp; care</a><a href="#konto-einstellungen">Settings</a></nav>
 
           <section id="konto-uebersicht" class="account-view" data-account-view aria-labelledby="overview-title">
@@ -186,7 +197,7 @@
                     <select id="field-boundaries-visibility" data-visibility-select></select>
                   </div>
                 </div>
-                <fieldset class="choice-fieldset">
+                <fieldset class="choice-fieldset" id="profil-synergien">
                   <legend>Interests and membership</legend>
                   <div id="profile-rubybubys-join" hidden>
                     <p>You are part of the Rubybubys.</p>
@@ -249,6 +260,13 @@
                 <button class="button" id="profile-fields-submit" type="submit">Save profile fields as a draft</button>
                 <p class="form-status" id="profile-fields-status" role="status" aria-live="polite"></p>
               </form>
+            </details>
+
+            <details class="workspace-block" open>
+              <summary>My requests to get to know a Synergy</summary>
+              <p id="profile-synergy-request-status" class="account-copy" role="status">Loading your requests …</p>
+              <ul id="profile-synergy-requests" class="account-copy"></ul>
+              <p><a href="/en/tickets/#ticket-list-title">Read replies in my tickets</a></p>
             </details>
 
             <details class="workspace-block" open>
@@ -636,16 +654,17 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2" defer></script>
   <script src="/en/assets/supabase-config.js" defer></script>
   <script src="/en/assets/supabase-client.js" defer></script>
+  <script src="/en/assets/synergy-profile.js?v=20261114-1" defer></script>
   <script src="/en/assets/member-page-template.js?v=20260926-1" defer></script>
-  <script src="/en/konto/auth-flow.js" defer></script>
+  <script src="/en/konto/auth-flow.js?v=20261114-1" defer></script>
   <script src="/en/konto/page-bootstrap.js?v=20260926-1" defer></script>
-  <script src="/en/konto/profile-workspace.js?v=20261109-3" defer></script>
+  <script src="/en/konto/profile-workspace.js?v=20261114-1" defer></script>
   <script src="/en/konto/publication-center.js?v=20261109-2" defer></script>
   <script src="/en/assets/opportunity-entry.js?v=20261019-1" defer></script>
   <script src="/en/konto/opportunity-workspace.js?v=20261016-2" defer></script>
   <script src="/en/konto/resonance-workspace.js?v=20261016-1" defer></script>
   <script src="/en/konto/care-entry.js?v=20261027-1" defer></script>
   <script src="/en/konto/account-views.js?v=20261027-1" defer></script>
-  <script src="/en/konto/konto.js?v=20261109-2" defer></script>
+  <script src="/en/konto/konto.js?v=20261114-1" defer></script>
 </body>
 </html>

@@ -3,6 +3,6 @@
   "appName": "GemDen",
   "webDir": "www",
   "server": {
-    "appStartPath": "/gassi/index.html"
+    "appStartPath": "/index.html"
   }
 }
