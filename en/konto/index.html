@@ -7,7 +7,7 @@
   <title>Account · GemDen</title>
   <link rel="stylesheet" href="/en/assets/site.css?v=20261020-2">
   <link rel="stylesheet" href="/en/assets/blob.css?v=20261016-1">
-  <link rel="stylesheet" href="/en/konto/konto.css?v=20261115-2">
+  <link rel="stylesheet" href="/en/konto/konto.css?v=20261115-3">
   <link rel="stylesheet" href="/en/assets/worlds.css?v=20261011-1">
 <!-- gemden-language:start -->
 <meta name="gemden-languages" content="/ /404.html /community/ /community/dynastien/rubybubys/ /community/kieze/p-hain/ /community/kieze/travelkiez/ /community/mitglieder/julius/ /community/mitglieder/profil/ /community/orte/threeden/ /community/synergien/aktive/ /community/synergien/alternative/ /community/synergien/connaisseurs/ /community/synergien/hexen/ /community/synergien/hooligans/ /community/synergien/kuenstler/ /community/synergien/macher/ /community/synergien/moderne/ /community/synergien/nerds/ /community/synergien/promillanten/ /community/synergien/visionaere/ /entwuerfe/blob-waschbaer/ /entwuerfe/herz-gassi/ /entwuerfe/moeglichkeiten/ /entwuerfe/obdachlosenhilfe/ /gassi/ /gestalten/ /hilfe/ /impressum/ /info/ /julius/ /kalender/ /kalender/verbinden/ /konto/ /leistungen/ /leistungen/rubybubys-herz-und-schnauze/ /leistungen/rubybubys-herz-und-schnauze/betreuung/ /leistungen/rubybubys-herz-und-schnauze/gassihilfe/ /leistungen/rubybubys-herz-und-schnauze/gastgeber/ /leistungen/rubybubys-herz-und-schnauze/lernen/ /leistungen/rubybubys-herz-und-schnauze/lernen/alleinbleiben/ /leistungen/rubybubys-herz-und-schnauze/lernen/begegnungen/ /leistungen/rubybubys-herz-und-schnauze/lernen/belohnung/ /leistungen/rubybubys-herz-und-schnauze/lernen/betreuung/ /leistungen/rubybubys-herz-und-schnauze/lernen/fell/ /leistungen/rubybubys-herz-und-schnauze/lernen/geschirr/ /leistungen/rubybubys-herz-und-schnauze/lernen/hilfe/ /leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel-video/ /leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel/ /leistungen/rubybubys-herz-und-schnauze/lernen/koerpersprache/ /leistungen/rubybubys-herz-und-schnauze/lernen/krallen/ /leistungen/rubybubys-herz-und-schnauze/lernen/leine/ /leistungen/rubybubys-herz-und-schnauze/lernen/ohren/ /leistungen/rubybubys-herz-und-schnauze/lernen/pfoten/ /leistungen/rubybubys-herz-und-schnauze/lernen/ressourcen/ /leistungen/rubybubys-herz-und-schnauze/lernen/rueckruf/ /leistungen/rubybubys-herz-und-schnauze/lernen/ruhe/ /leistungen/rubybubys-herz-und-schnauze/lernen/stubenrein/ /leistungen/rubybubys-herz-und-schnauze/lernen/welpen/ /leistungen/rubybubys-herz-und-schnauze/lernen/welpenbeissen/ /leistungen/rubybubys-herz-und-schnauze/lernen/zaehne/ /leistungen/rubybubys-obdachlosenhilfe/ /leistungen/smart-home/ /system/ /tickets/ /treffpunkte/ /verwaltung/mitglieder/ /willkommen/">
@@ -649,6 +649,13 @@
             <button class="button secondary" id="password-submit" type="submit">Save password securely</button>
             <p class="form-status" id="password-status" role="status" aria-live="polite"></p>
           </form></div></details>
+            <details class="account-fold" id="account-profile-blocks">
+              <summary><span><b>Blocked profiles</b></span><i aria-hidden="true">＋</i></summary>
+              <div class="account-fold-body">
+                <p class="form-status" role="status" aria-live="polite"></p>
+                <ul class="account-profile-block-list"></ul>
+              </div>
+            </details>
             <details class="account-fold" id="konto-loeschen">
               <summary><span><b>Delete account</b><small>Request deletion and view its status</small></span><i aria-hidden="true">＋</i></summary>
               <div class="account-fold-body">
@@ -685,6 +692,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js" defer></script>
   <script src="/en/assets/supabase-config.js" defer></script>
   <script src="/en/assets/supabase-client.js" defer></script>
+  <script src="/en/assets/profile-moderation.js?v=20261115-3" defer></script>
   <script src="/en/assets/member-page-template.js?v=20260926-1" defer></script>
   <script src="/en/konto/auth-flow.js?v=20261114-1" defer></script>
   <script src="/en/konto/account-deletion.js?v=20261115-1" defer></script>
