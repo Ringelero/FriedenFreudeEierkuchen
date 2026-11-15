@@ -10,8 +10,6 @@
 @media(prefers-reduced-motion:reduce){.places-page{scroll-behavior:auto}.places-page *{scroll-behavior:auto!important}}
 
 .places-suggestions{border-top:1px solid var(--line);padding:12px 4px}.places-pager{display:flex;flex-wrap:wrap;gap:10px}.places-pager:has(button[hidden]):not(:has(button:not([hidden]))){display:none}.places-suggestions .place-event label{margin-top:12px}.places-admin .place-event button{margin:10px 8px 0 0}.place-entry-fields~label{max-width:580px}
-.places-mobile-nav{display:none}
-@media(max-width:620px){.places-mobile-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:fixed;inset:auto 0 0;z-index:9999;height:calc(76px + env(safe-area-inset-bottom));padding:10px 82px calc(10px + env(safe-area-inset-bottom)) 10px;border-top:1px solid var(--line);background:#fcf8f3}.places-mobile-nav button{border:0;font-size:.77rem;padding:8px 5px;background:transparent}.places-mobile-nav [aria-pressed=true]{background:#f0e2db}.places-mobile-nav span{position:absolute;right:14px;width:46px;bottom:calc(4px + env(safe-area-inset-bottom));text-align:center;font-size:.62rem;color:var(--muted)}.places-page #blob-character,.places-page #blob-character.mode-social{width:46px!important;height:44px!important;right:14px!important;bottom:calc(22px + env(safe-area-inset-bottom))!important}.places-page #blob-chat{bottom:calc(86px + env(safe-area-inset-bottom));max-height:calc(100dvh - 110px)}.places-page .footer{padding-bottom:160px}.places-page main{scroll-padding-bottom:90px}}
 
 .places-page .place-dog-rule{width:fit-content;max-width:100%;padding:6px 10px;border-radius:10px;font:650 .78rem/1.5 system-ui;overflow-wrap:anywhere;margin:6px 0}
 .places-page .place-dog-rule.is-prohibited{color:#952d30;background:#fbe6e2;border:1px solid #e9bbb4}
@@ -29,3 +27,40 @@
 @media(max-width:620px){.places-map-tools{align-items:stretch}.places-map-tools label,.places-map-tools button{width:100%}}
 
 .places-map-share{display:flex;flex-wrap:wrap;gap:10px;align-items:end;padding:14px;background:#fffaf4;border:1px solid var(--line);border-radius:14px;margin:10px 0}.places-map-share label{display:grid;gap:5px;flex:1 1 260px;font-size:.82rem}.places-map-share input{min-width:0;width:100%;font:inherit;padding:11px;border:1px solid var(--line);border-radius:9px}.places-map-share a{min-height:44px;display:inline-flex;align-items:center;padding:8px;color:var(--ruby);font-size:.82rem}
+
+/* The map is the main surface of the public atlas. */
+.places-page:not(.gassi-kiez) .site-shell{max-width:1370px}
+.places-page:not(.gassi-kiez) main{gap:12px}
+.places-page:not(.gassi-kiez) .places-hero{grid-template-columns:minmax(0,1fr) 100px;min-height:110px;padding:0 10px;gap:20px}
+.places-page:not(.gassi-kiez) .places-hero h1{margin:0;font-size:clamp(2.4rem,4.5vw,3.8rem)}
+.places-page:not(.gassi-kiez) .places-lead{margin:8px 0 0;max-width:none}
+.places-page:not(.gassi-kiez) .places-illustration{display:block;margin:0;opacity:.9}
+.places-search.places-discovery-controls{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:8px;align-items:center;margin:0 0 10px}
+.places-discovery-controls input{font-size:1rem;min-width:0}
+.places-discovery-controls .places-map-switch{margin:0;gap:4px}
+.places-page:not(.gassi-kiez) .places-map{height:clamp(320px,57dvh,650px);border:1px solid #c3a99e;box-shadow:0 8px 24px #51223812}
+.places-map-caption{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;padding:8px 0}
+.places-map-caption button{flex:none}
+.places-options{border:1px solid var(--line);border-radius:13px;background:#fffaf4;padding:0 13px}
+.places-options>summary{padding:12px 0;font-size:.88rem;font-weight:700;cursor:pointer}
+.places-options[open]{padding-bottom:10px}
+.places-options .places-topline{margin:0 0 8px}
+.places-options .places-phone{max-width:none}
+@media(min-width:980px){
+ .places-page:not(.gassi-kiez) .places-workspace:has(.place-detail:not([hidden])){display:grid;grid-template-columns:minmax(0,1.6fr) minmax(320px,1fr);align-items:start;gap:18px}
+ .places-page:not(.gassi-kiez) .places-workspace>.place-detail{position:sticky;top:14px;max-height:calc(100dvh - 28px);overflow:auto}
+ .places-page:not(.gassi-kiez) .places-workspace:has(.place-detail:not([hidden])) .places-list{grid-template-columns:1fr}
+}
+@media(max-width:680px){
+ .places-page:not(.gassi-kiez) .places-hero{padding:8px 4px;grid-template-columns:minmax(0,1fr) 62px;gap:9px;min-height:0}
+ .places-page:not(.gassi-kiez) .places-hero h1{font-size:clamp(1.85rem,8vw,2.45rem)}
+ .places-page:not(.gassi-kiez) .places-lead{margin-top:6px}
+ .places-search.places-discovery-controls{grid-template-columns:minmax(0,1fr) auto;gap:7px}
+ .places-discovery-controls [data-nearby]{justify-self:start}
+ .places-discovery-controls .places-map-switch{justify-self:end}
+ .places-map-caption{flex-wrap:wrap;gap:4px}
+ .places-page:not(.gassi-kiez) .places-map{height:clamp(320px,51dvh,520px)}
+}
+@media(max-width:350px){
+ .places-discovery-controls button{padding-inline:9px;font-size:.76rem}
+}
