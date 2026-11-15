@@ -294,6 +294,9 @@
     const start = parseJson(state.fields.find(item => item.field_key === 'rubybubys_start')?.value_text, {});
     const value = record ? parseJson(record.value_text, []) : start.synergy_ids;
     const selected = new Set(Array.isArray(value) ? value : []);
+    window.dispatchEvent(new CustomEvent('gemden:profile-synergy-interests', {
+      detail: { userId: state.profile.id, ids: [...selected] }
+    }));
     if (!state.synergies?.length) {
       list.textContent = 'Synergien können gerade nicht geladen werden.';
       byId('field-synergy_interests-visibility').disabled = true;
