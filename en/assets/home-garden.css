@@ -327,3 +327,90 @@
  .garden-home .world-portal .blob-home-explainer {margin:0 auto;padding-inline:0}
 }
 @media(max-width:650px){.garden-home {--home-mobile-gutter:12px}}
+
+.garden-home .home-guest-paths { display: none; }
+
+@media (max-width:760px) {
+  .garden-home .home-guest-welcome { display: none; }
+  .garden-home .home-story {
+    padding-top: clamp(72px, 16vw, 126px);
+  }
+  .garden-home .home-story > .eyebrow {
+    text-shadow: 0 0 7px #fff1d6, 0 1px 3px #fff1d6;
+  }
+  .garden-home .home-story .display {
+    position: relative;
+    isolation: isolate;
+  }
+  .garden-home .home-story .display::before {
+    content: '';
+    position: absolute;
+    inset: -11px -8px;
+    z-index: -1;
+    background: radial-gradient(ellipse at center, #fff0cde8 39%, #fff0cdb0 67%, transparent 82%);
+    pointer-events: none;
+  }
+  .garden-home .home-guest-paths {
+    display: grid;
+    gap: 8px;
+    width: min(100%, 24rem);
+    margin: 0 auto 10px;
+    text-align: left;
+  }
+  .garden-home .home-guest-paths a {
+    --path-paper: #fbedd2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 56px;
+    padding: 9px 16px;
+    color: #322b21;
+    text-decoration: none;
+    background: var(--path-paper);
+    border: 1px solid #53473865;
+    border-radius: 17px 24px 18px 21px / 18px 16px 22px 16px;
+    box-shadow: 2px 3px 0 #4f38262b;
+  }
+  .garden-home .home-guest-paths a:nth-of-type(2) {
+    --path-paper: #edf1d2;
+    border-radius: 23px 16px 22px 14px / 17px 22px 17px 20px;
+  }
+  .garden-home .home-guest-paths a:nth-of-type(3) {
+    --path-paper: #f0e3ec;
+    border-radius: 15px 23px 17px 25px / 23px 17px 17px 17px;
+  }
+  .garden-home .home-guest-paths a:focus-visible {
+    outline: 3px solid #303f24;
+    outline-offset: 2px;
+  }
+  .garden-home .home-guest-paths strong,
+  .garden-home .home-guest-paths small { display: block; }
+  .garden-home .home-guest-paths strong {
+    font: 700 clamp(1rem, 4.7vw, 1.28rem)/1.2 Georgia, serif;
+  }
+  .garden-home .home-guest-paths small {
+    margin-top: 3px;
+    font: 600 .75rem/1.3 ui-sans-serif, system-ui, sans-serif;
+  }
+  .garden-home .guest-path-arrow {
+    display: grid;
+    place-items: center;
+    flex: 0 0 32px;
+    min-height: 32px;
+    border: 1px solid #5d493777;
+    border-radius: 48% 45% 49% 43%;
+    font: 700 1.1rem/1 ui-sans-serif, system-ui, sans-serif;
+  }
+  .garden-home .home-guest-paths p {
+    justify-self: center;
+    margin: 4px 0 0;
+    padding: 4px 10px;
+    color: #322b21;
+    background: #fff4dee8;
+    border-radius: 12px;
+    font: 650 .77rem/1.4 ui-sans-serif, system-ui, sans-serif;
+    text-align: center;
+    text-wrap: balance;
+  }
+}

@@ -1,7 +1,14 @@
 (function(){
   function monthRange(value){if(!/^\d{4}-\d{2}$/.test(value))throw Error("Please choose a month.");const [y,m]=value.split('-').map(Number);if(y<1970||y>2200||m<1||m>12)throw Error("Please choose a valid month.");return {start:new Date(y,m-1,1),end:new Date(y,m,1)};}
   function localDay(value){const d=new Date(value);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
-  function calendarRange(period,month,day,now=new Date()){if(period!=='upcoming'){if(day){const start=new Date(day+'T00:00');return {start,end:new Date(start.getFullYear(),start.getMonth(),start.getDate()+1)};}return monthRange(month);}const start=new Date(now.getFullYear(),now.getMonth(),now.getDate());return {start,end:new Date(start.getFullYear(),start.getMonth(),start.getDate()+30)};}
+  function calendarRange(period,month,day,now=new Date()){
+    const startsToday=period==='today'||period==='upcoming';
+    if(!startsToday&&!day)return monthRange(month);
+    const date=startsToday?now:new Date(day+'T00:00');
+    const start=new Date(date.getFullYear(),date.getMonth(),date.getDate());
+    const days=period==='upcoming'?30:1;
+    return {start,end:new Date(start.getFullYear(),start.getMonth(),start.getDate()+days)};
+  }
   function eventFilter(value){return ['besuch','veranstaltung','event-zeitfenster'].includes(value)?value:'alle';}
   function matchesFilter(e,value){return value==='besuch'?e.kind==='visit'||e.kind==='availability'&&e.availability_kind==='visit':value==='veranstaltung'?e.kind==='event':value==='event-zeitfenster'?e.kind==='availability'&&e.availability_kind==='event':true;}
   function visibleEvents(events,filter,period,now=Date.now()){return events.filter(e=>matchesFilter(e,filter)&&(period!=='upcoming'||e.native_unexpanded||Date.parse(e.ends_at||e.starts_at)>now));}
@@ -12,12 +19,19 @@
   const kinds={event:"Event",visit:"Visiting hours",availability:"Available to request",block:"Busy"};
   const purposes={walk:"Walk the dog",care:"Care",visit:"Visit",event:"Your own event"};
   const descriptions={RUBYBUBYS:"Shared Rubybubys events and meetups.",TRAVELKIEZ:"Shared events in Travelkiez — including approved ThreeDen events.",THREEDEN:"Visiting times, events and requestable time windows for your own events.",CICEK:"Time with Çiçek: arrange dog walks and care together."};
-  let user=null,selected=new URLSearchParams(location.search).get('kalender'),month=localDay(new Date()).slice(0,7),day=null,workspace=null,editing=null,eventId=null,requestsPage=0,serial=0,loadController=null;
-  let period='upcoming',filter=eventFilter(new URLSearchParams(location.search).get('art'));
+  const query=new URLSearchParams(location.search);
+  let user=null,selected=query.get('kalender'),month=localDay(new Date()).slice(0,7),day=null,workspace=null,editing=null,eventId=null,requestsPage=0,serial=0,loadController=null;
+  let period=query.get('zeitraum')==='heute'?'today':'upcoming',filter=eventFilter(query.get('art'));
   $('calendar-month').value=month;$('event-zone').value=zone;
   $('calendar-filter').value=filter;
-  function updateUrl(){const url=new URL(location.href);url.searchParams.set('kalender',selected);if(filter==='alle')url.searchParams.delete('art');else url.searchParams.set('art',filter);history.replaceState(null,'',url);}
-  function updatePeriod(){document.querySelectorAll('[data-calendar-period]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.calendarPeriod===period)));$('calendar-month-panel').open=period==='month';}
+  function updateUrl(){
+    const url=new URL(location.href);
+    if(selected)url.searchParams.set('kalender',selected);
+    if(filter==='alle')url.searchParams.delete('art');else url.searchParams.set('art',filter);
+    if(period==='today')url.searchParams.set('zeitraum','heute');else url.searchParams.delete('zeitraum');
+    if(url.href!==location.href)history.replaceState(null,'',url);
+  }
+  function updatePeriod(){document.querySelectorAll('[data-calendar-period]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.calendarPeriod===period)));$('calendar-month-panel').open=period==='month';updateUrl();}
   function node(tag,text,cls){const el=document.createElement(tag);if(text!==undefined)el.textContent=text;if(cls)el.className=cls;return el;}
   function status(el,text,state){el.textContent=text;el.dataset.state=state||'';}
   function errorMessage(e){return ['22023','42501','40001','54000','P0002'].includes(e?.code)?e.message:e instanceof Error&&!e.code?e.message:"The connection is currently unavailable. Your input will be kept.";}
@@ -63,8 +77,17 @@
       let events=[...data.events,...data.linked_events],warnings=[];if(events.some(e=>e.is_recurring||e.is_all_day)){const native=await import('./native-events.mjs?v=20261019-1');({events,warnings}=await native.expandNativeEvents(events,start,end,signal));if(token!==serial)return;}
       events=visibleEvents(events,filter,period);events.sort((a,b)=>Number(Boolean(a.native_unexpanded))-Number(Boolean(b.native_unexpanded))||Date.parse(a.starts_at)-Date.parse(b.starts_at));renderDays(events);const target=$('calendar-events');target.replaceChildren();let previous='';
       for(const e of events){const key=e.native_unexpanded?'unexpanded':localDay(e.starts_at);if(previous!==key){target.append(node('h3',e.native_unexpanded?"More calendar app entries":new Date(e.starts_at).toLocaleDateString("en-GB",{weekday:'long',day:'numeric',month:'long'}),'calendar-day-heading'));previous=key;}target.append(eventCard(e));}
-      if(!events.length){const empty=node('div',undefined,'calendar-empty');empty.append(node('strong',"A little more free time."),document.createTextNode(filter==='alle'?"No entries are visible here for this period.":"Nothing of this entry type is visible here for the selected period yet."));if(filter!=='alle')empty.append(button("Show all entries",()=>{filter='alle';$('calendar-filter').value=filter;updateUrl();load();}));target.append(empty);}
-      $('calendar-range-label').textContent=period==='upcoming'?"Next 30 days · "+start.toLocaleDateString("en-GB",{day:'numeric',month:'short'})+' – '+new Date(end.getTime()-1).toLocaleDateString("en-GB",{day:'numeric',month:'short'}):day?new Date(day+'T12:00').toLocaleDateString("en-GB",{dateStyle:'long'}):start.toLocaleDateString("en-GB",{month:'long',year:'numeric'});
+      if(!events.length){
+        const empty=node('div',undefined,'calendar-empty');
+        empty.append(node('strong',"A little more free time."),document.createTextNode(filter==='alle'?"No entries are visible here for this period.":"Nothing of this entry type is visible here for the selected period yet."));
+        if(filter!=='alle')empty.append(button("Show all entries",()=>{filter='alle';$('calendar-filter').value=filter;updateUrl();load();}));
+        if(period==='today')empty.append(button("See upcoming events",()=>{period='upcoming';updatePeriod();load();}));
+        target.append(empty);
+      }
+      const rangeLabel=period==='upcoming'
+        ? "Next 30 days · "+start.toLocaleDateString("en-GB",{day:'numeric',month:'short'})+' – '+new Date(end.getTime()-1).toLocaleDateString("en-GB",{day:'numeric',month:'short'})
+        : start.toLocaleDateString("en-GB",period==='today'||day?{dateStyle:'long'}:{month:'long',year:'numeric'});
+      $('calendar-range-label').textContent=rangeLabel;
       const count=events.filter(e=>!e.native_unexpanded).length;status($('calendar-status'),(data.has_more?"There are many entries here. Choose an individual day for a clearer overview.":`${count} ${count===1?"Entry":"Entries"}`)+(warnings.length?' · '+warnings.join(' '):''));renderRequests(data);
     }catch(error){if(token===serial){$('calendar-events').replaceChildren();$('calendar-requests').replaceChildren();$('calendar-new').hidden=true;status($('calendar-status'),errorMessage(error),'error');}}
     finally{if(token===serial)$('calendar-reload').disabled=false;}
@@ -84,5 +107,6 @@
   $('calendar-filter').addEventListener('change',()=>{filter=eventFilter($('calendar-filter').value);updateUrl();load();});
   $('month-prev').addEventListener('click',()=>changeMonth(-1));$('month-next').addEventListener('click',()=>changeMonth(1));$('calendar-month').addEventListener('change',()=>{month=$('calendar-month').value;day=null;period='month';updatePeriod();load();});$('calendar-today').addEventListener('click',()=>{month=localDay(new Date()).slice(0,7);day=localDay(new Date());period='month';updatePeriod();$('calendar-month').value=month;load();});$('calendar-all-days').addEventListener('click',()=>{day=null;period='month';updatePeriod();load();});$('requests-next').addEventListener('click',()=>{requestsPage++;load();});$('requests-prev').addEventListener('click',()=>{requestsPage=Math.max(0,requestsPage-1);load();});
   window.addEventListener('pageshow',event=>{if(event.persisted)location.reload();});
+  if(period==='today')updatePeriod();
   (async()=>{try{if(!client||!dates)throw Error("The calendar connection could not be loaded.");const {data,error}=await client.auth.getSession();if(error)throw error;user=data.session?.user||null;selected=selected|| (user?'PERSONAL':'RUBYBUBYS');client.auth.onAuthStateChange((_event,session)=>{if((session?.user?.id||null)!==(user?.id||null)){document.querySelector('main').hidden=true;setTimeout(()=>location.reload(),0);}});await load();}catch(error){status($('calendar-status'),errorMessage(error),'error');}})();
 })();
