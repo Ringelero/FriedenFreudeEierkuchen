@@ -63,6 +63,7 @@
             </form>
           </details>
           <p class="account-copy">Du hast bereits ein Konto? Melde dich per Passwort oder Einmal-Link an.</p>
+          <p class="account-copy" id="deletion-login-note" hidden>Für einen Löschantrag melde dich an und öffne in den Einstellungen „Konto löschen“.</p>
           <details class="source-fold"><summary>Erster Zugang mit einer Einladung?</summary><p>Fordere den einmaligen Link für die E-Mail-Adresse deiner Einladung an und öffne ihn auf deinem Gerät. Setze anschließend im Konto ein eigenes Passwort, damit du dich künftig direkt anmelden kannst.</p></details>
           <form class="form-grid" id="login-form">
             <div class="field">
@@ -78,6 +79,7 @@
               <button class="button secondary" id="login-link-submit" type="button">Einmaligen Link senden</button>
             </div>
             <p class="form-status" id="login-status" role="status" aria-live="polite"></p>
+            <p id="app-auth-retry" hidden><a href="#login-email" class="button secondary">Neuen Anmeldelink anfordern</a></p>
           </form>
         </article>
 
@@ -630,6 +632,18 @@
             <button class="button secondary" id="password-submit" type="submit">Passwort sicher speichern</button>
             <p class="form-status" id="password-status" role="status" aria-live="polite"></p>
           </form></div></details>
+            <details class="account-fold" id="konto-loeschen">
+              <summary><span><b>Konto löschen</b><small>Löschung beantragen und Status ansehen</small></span><i aria-hidden="true">＋</i></summary>
+              <div class="account-fold-body">
+                <p>Beantrage die dauerhafte Löschung deines GemDen-Kontos und der zugehörigen Daten. Das GemDen-Team bearbeitet den Antrag und zeigt dir hier den Stand.</p>
+                <p id="deletion-request-status" class="form-status" role="status" aria-live="polite"></p>
+                <p id="deletion-request-response" class="account-copy" hidden></p>
+                <form class="form-grid" id="account-deletion-form" hidden>
+                  <label><input id="account-deletion-confirm" type="checkbox" required> Ich bestätige die Löschung meines eigenen Kontos.</label>
+                  <button class="button secondary" type="submit">Kontolöschung beantragen</button>
+                </form>
+              </div>
+            </details>
             <div class="account-management"><a class="button secondary" id="member-admin-link" href="../verwaltung/mitglieder/" hidden>Mitglieder verwalten</a><a href="../kalender/verbinden/">Kalender auf dem Handy · in Vorbereitung →</a></div>
           </section>
 
@@ -651,12 +665,13 @@
   <script>window.BLOB_CONFIG={autoGreet:false,mode:"guide",root:"../"};</script>
   <script src="../assets/site.js?v=20261020-1" defer></script>
   <script src="../assets/blob.js?v=20261027-4" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js" defer></script>
   <script src="../assets/supabase-config.js" defer></script>
   <script src="../assets/supabase-client.js" defer></script>
   <script src="../assets/synergy-profile.js?v=20261114-1" defer></script>
   <script src="../assets/member-page-template.js?v=20260926-1" defer></script>
   <script src="./auth-flow.js?v=20261114-1" defer></script>
+  <script src="./account-deletion.js?v=20261115-1" defer></script>
   <script src="./page-bootstrap.js?v=20260926-1" defer></script>
   <script src="./profile-workspace.js?v=20261114-1" defer></script>
   <script src="./publication-center.js?v=20261109-2" defer></script>
@@ -665,6 +680,6 @@
   <script src="./resonance-workspace.js?v=20261016-1" defer></script>
   <script src="./care-entry.js?v=20261027-1" defer></script>
   <script src="./account-views.js?v=20261027-1" defer></script>
-  <script src="./konto.js?v=20261114-1" defer></script>
+  <script src="./konto.js?v=20261115-1" defer></script>
 </body>
 </html>

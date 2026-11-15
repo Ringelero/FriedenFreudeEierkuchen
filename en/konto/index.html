@@ -63,6 +63,7 @@
             </form>
           </details>
           <p class="account-copy">Already have an account? Sign in with a password or one-time link.</p>
+          <p class="account-copy" id="deletion-login-note" hidden>To request deletion, sign in and open “Delete account” in your settings.</p>
           <details class="source-fold"><summary>First sign-in with an invitation?</summary><p>Request a one-time link for the email address on your invitation and open it on your device. Then set your own password in your account so you can sign in directly next time.</p></details>
           <form class="form-grid" id="login-form">
             <div class="field">
@@ -78,6 +79,7 @@
               <button class="button secondary" id="login-link-submit" type="button">Send one-time link</button>
             </div>
             <p class="form-status" id="login-status" role="status" aria-live="polite"></p>
+            <p id="app-auth-retry" hidden><a href="#login-email" class="button secondary">Request a new sign-in link</a></p>
           </form>
         </article>
 
@@ -630,6 +632,18 @@
             <button class="button secondary" id="password-submit" type="submit">Save password securely</button>
             <p class="form-status" id="password-status" role="status" aria-live="polite"></p>
           </form></div></details>
+            <details class="account-fold" id="konto-loeschen">
+              <summary><span><b>Delete account</b><small>Request deletion and view its status</small></span><i aria-hidden="true">＋</i></summary>
+              <div class="account-fold-body">
+                <p>Request permanent deletion of your GemDen account and its associated data. The GemDen team processes the request and shows its status here.</p>
+                <p id="deletion-request-status" class="form-status" role="status" aria-live="polite"></p>
+                <p id="deletion-request-response" class="account-copy" hidden></p>
+                <form class="form-grid" id="account-deletion-form" hidden>
+                  <label><input id="account-deletion-confirm" type="checkbox" required> I confirm that I want to delete my own account.</label>
+                  <button class="button secondary" type="submit">Request account deletion</button>
+                </form>
+              </div>
+            </details>
             <div class="account-management"><a class="button secondary" id="member-admin-link" href="/en/verwaltung/mitglieder/" hidden>Manage members</a><a href="/en/kalender/verbinden/">Calendar on your phone · in preparation →</a></div>
           </section>
 
@@ -651,12 +665,13 @@
   <script>window.BLOB_CONFIG={autoGreet:false,mode:"guide",root:"../"};</script>
   <script src="/en/assets/site.js?v=20261020-1" defer></script>
   <script src="/en/assets/blob.js?v=20261027-4" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js" defer></script>
   <script src="/en/assets/supabase-config.js" defer></script>
   <script src="/en/assets/supabase-client.js" defer></script>
   <script src="/en/assets/synergy-profile.js?v=20261114-1" defer></script>
   <script src="/en/assets/member-page-template.js?v=20260926-1" defer></script>
   <script src="/en/konto/auth-flow.js?v=20261114-1" defer></script>
+  <script src="/en/konto/account-deletion.js?v=20261115-1" defer></script>
   <script src="/en/konto/page-bootstrap.js?v=20260926-1" defer></script>
   <script src="/en/konto/profile-workspace.js?v=20261114-1" defer></script>
   <script src="/en/konto/publication-center.js?v=20261109-2" defer></script>
@@ -665,6 +680,6 @@
   <script src="/en/konto/resonance-workspace.js?v=20261016-1" defer></script>
   <script src="/en/konto/care-entry.js?v=20261027-1" defer></script>
   <script src="/en/konto/account-views.js?v=20261027-1" defer></script>
-  <script src="/en/konto/konto.js?v=20261114-1" defer></script>
+  <script src="/en/konto/konto.js?v=20261115-1" defer></script>
 </body>
 </html>

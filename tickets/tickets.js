@@ -87,7 +87,8 @@
   function renderTicket(item){
     const card=element('details',undefined,'ticket-card');
     const summary=element('summary');const meta=element('div',undefined,'ticket-meta');
-    meta.append(element('span',`${kinds[item.kind]||'Ticket'} · ${new Date(item.created_at).toLocaleDateString('de-DE')}`));
+    const category = item.request_type === 'account_deletion' ? 'Kontolöschung' : kinds[item.kind] || 'Ticket';
+    meta.append(element('span',`${category} · ${new Date(item.created_at).toLocaleDateString('de-DE')}`));
     const badge=element('span',states[item.state]||item.state,'ticket-badge');badge.dataset.state=item.state;meta.append(badge);
     const body = String(item.body || '');
     const attached = user && fileReference(body, item.id);

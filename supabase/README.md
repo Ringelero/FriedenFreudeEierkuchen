@@ -190,7 +190,13 @@ Für die weitere kontrollierte Pilotfreigabe bleiben:
 - ob und wann neben der kontrollierten Einladung jemals eine offene Registrierung nötig ist
 - wer das erste erweiterte Recht legitim vergibt
 - genaue Standardsichtbarkeit der späteren P-Hain-Module
-- Kontolöschung, vollständiger Kontoexport und Aufbewahrungsfristen
+- Löschanträge, Datenbereinigung, vollständiger Kontoexport und Aufbewahrungsfristen
+
+### Löschanträge
+
+Unter `/konto/#konto-loeschen` können angemeldete Personen mit bestätigter E-Mail-Adresse die Löschung ihres eigenen Kontos beantragen. Der Antrag erscheint in der privaten Ticketverwaltung als strukturierte Kontolöschung. Status und Rückmeldung sind im Konto sichtbar. Mehrere Bestätigungen erzeugen höchstens einen offenen Antrag.
+
+Das Team prüft den Antrag und bestätigt den Eingang sowie die voraussichtliche Bearbeitungsdauer im Ticket. Vor der eigentlichen Löschung prüft das Team die Eigentümerschaft und alle zugehörigen Daten, insbesondere Seiten und Revisionen, private Dateiuploads sowie gemeinsam genutzte Inhalte. Eine Sperre oder Archivierung ersetzt die Löschung nicht. Die Datenbereinigung, gegebenenfalls notwendige Aufbewahrung und der Bestätigungsweg nach Abschluss müssen vor der Store-Einreichung festgelegt und geprüft werden.
 - eigene produktive Auth-Domain
 - bestätigte Beiträge weiterer Projektmitglieder
 
