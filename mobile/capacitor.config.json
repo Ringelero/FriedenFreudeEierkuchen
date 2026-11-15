@@ -1,8 +1,0 @@
-{
-  "appId": "red.gemden.app",
-  "appName": "GemDen",
-  "webDir": "www",
-  "server": {
-    "appStartPath": "/index.html"
-  }
-}

@@ -20,11 +20,11 @@ async function collect(directory) {
 await Promise.all(roots.map(collect));
 const routes = new Set(files.filter(file => file.endsWith('index.html')).map(file => '/' + file.slice(0, -'index.html'.length)));
 const origin = 'https://gemden.red';
-const supabaseUrl = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3';
+const supabaseUrl = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js';
 const routesScript = await readFile(path.join(mobile, 'native-routes.js'), 'utf8');
 
 function bundlePage(html, file) {
-  return html.replaceAll(/(<script\s+src=")https:\/\/cdn\.jsdelivr\.net\/npm\/@supabase\/supabase-js@2\.117\.3(?:\/dist\/umd\/supabase\.js)?(")/g,
+  return html.replaceAll(/(<script\s+src=")https:\/\/cdn\.jsdelivr\.net\/npm\/@supabase\/supabase-js@2(?:\.\d+){0,2}(?:\/dist\/umd\/supabase\.js)?(")/g,
     '$1/assets/mobile-supabase.js$2')
     .replace(/<head(?:\s[^>]*)?>/i, '$&<script src="/assets/mobile-routes.js" defer></script><script src="/assets/mobile-auth.js" defer></script>')
     .replaceAll(/(<a\b[^>]*?\bhref=")([^"]+)(")/gi, (match, start, value, end) => {

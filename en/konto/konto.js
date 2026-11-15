@@ -17,6 +17,7 @@
   const signupForm = document.getElementById('signup-form');
   const signupSubmit = document.getElementById('signup-submit');
   const signupStatus = document.getElementById('signup-status');
+  const appAuthRetry = document.getElementById('app-auth-retry');
   const accountDataStatus = document.getElementById('account-data-status');
   const profileForm = document.getElementById('profile-form');
   const profileSubmit = document.getElementById('profile-submit');
@@ -258,6 +259,7 @@
           ? "Open the latest sign-in link on the device where you requested it in the GemDen app."
           : authFlow.describeAuthError(authErrorFromUrl);
         setMessage(loginStatus, message, 'error');
+        if (appReturnFailed) appAuthRetry.hidden = false;
         appReturnFailed = false;
         authErrorFromUrl = '';
       }
@@ -358,6 +360,7 @@
     }
 
     loginLinkSubmit.disabled = true;
+    appAuthRetry.hidden = true;
     setMessage(loginStatus, "Requesting the one-time sign-in link …");
     try {
       rememberSynergy();
@@ -478,8 +481,12 @@
   async function initialSession() {
     const callback = appAuth?.takeReturn();
     if (callback?.code) {
-      const result = await client.auth.exchangeCodeForSession(callback.code);
-      if (!result.error && result.data?.session) return result;
+      try {
+        const result = await client.auth.exchangeCodeForSession(callback.code);
+        if (!result.error && result.data?.session) return result;
+      } catch {
+        // Preserve the current account and let the person request another link.
+      }
     }
     appReturnFailed = Boolean(callback);
     return client.auth.getSession();
