@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">GemDen</string>
+    <string name="title_activity_main">GemDen</string>
+    <string name="package_name">red.gemden.app</string>
+    <string name="custom_url_scheme">red.gemden.app</string>
+</resources>

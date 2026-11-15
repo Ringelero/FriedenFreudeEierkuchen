@@ -16,7 +16,10 @@
  function entryView(favorites,requested){return requested==='discover'||requested==='favorites'?requested:ids(favorites).length?'favorites':'discover';}
  function boundedBounds(b){return {south:Math.max(-85,b.south),north:Math.min(85,b.north),west:Math.max(-180,b.west),east:Math.min(180,b.east)};}
  function regionBounds(region){return region==='berlin'?{south:52.33,north:52.69,west:13.08,east:13.77}:null;}
- function mapAssets(pageUrl,ruby=false){const origin=new URL(pageUrl).origin;return {css:origin+'/assets/vendor/leaflet-1.9.4/leaflet.css',script:origin+'/assets/vendor/leaflet-1.9.4/leaflet.js',manifest:origin+'/treffpunkte/'+(ruby?'herz-schnauze.webmanifest':'manifest.webmanifest')};}
+ function mapAssets(pageUrl,ruby=false){
+  const asset=path=>new URL(path,pageUrl).href;
+  return {css:asset('/assets/vendor/leaflet-1.9.4/leaflet.css'),script:asset('/assets/vendor/leaflet-1.9.4/leaflet.js'),manifest:asset('/treffpunkte/'+(ruby?'herz-schnauze.webmanifest':'manifest.webmanifest'))};
+ }
  function mapViewFromUrl(pageUrl){const raw=new URL(pageUrl).searchParams.get('ausschnitt');if(!raw||!/^[-\d.]+,[-\d.]+,\d+$/.test(raw))return null;const [latitude,longitude,zoom]=raw.split(',').map(Number);return Number.isFinite(latitude)&&Number.isFinite(longitude)&&Math.abs(latitude)<=85&&Math.abs(longitude)<=180&&zoom>=2&&zoom<=19?{latitude,longitude,zoom}:null;}
  function mapShareUrl(pageUrl,service,center,zoom,offLeashOnly=false){const u=new URL(pageUrl);u.search='';u.hash='';if(service)u.searchParams.set('leistung',service);u.searchParams.set('ansicht','entdecken');u.searchParams.set('darstellung','karte');u.searchParams.set('ausschnitt',[center.lat.toFixed(5),center.lng.toFixed(5),Math.round(zoom)].join(','));if(offLeashOnly&&service===RUBY)u.searchParams.set('hundeauslauf','1');return u.href;}
  function visibleMapPoints(points,offLeashOnly=false){return points.map(p=>({...p,visible_count:offLeashOnly?(p.count>1?Math.max(0,Math.min(Number(p.count)||0,Number(p.off_leash_count)||0)):p.dog_access==='designated_off_leash'?1:0):Math.max(0,Number(p.count)||1)})).filter(p=>p.visible_count>0);}
