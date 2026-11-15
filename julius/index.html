@@ -7,7 +7,7 @@
   <title>Julius · GemDen</title>
   <link rel="stylesheet" href="../assets/site.css?v=20261020-2">
   <link rel="stylesheet" href="../assets/blob.css?v=20261012-1">
-  <link rel="stylesheet" href="../assets/julius-portfolio.css?v=20261105-1">
+  <link rel="stylesheet" href="../assets/julius-portfolio.css?v=20261115-3">
 <!-- gemden-language:start -->
 <meta name="gemden-languages" content="/ /404.html /community/ /community/dynastien/rubybubys/ /community/kieze/p-hain/ /community/kieze/travelkiez/ /community/mitglieder/julius/ /community/mitglieder/profil/ /community/orte/threeden/ /community/synergien/aktive/ /community/synergien/alternative/ /community/synergien/connaisseurs/ /community/synergien/hexen/ /community/synergien/hooligans/ /community/synergien/kuenstler/ /community/synergien/macher/ /community/synergien/moderne/ /community/synergien/nerds/ /community/synergien/promillanten/ /community/synergien/visionaere/ /entwuerfe/blob-waschbaer/ /entwuerfe/herz-gassi/ /entwuerfe/moeglichkeiten/ /entwuerfe/obdachlosenhilfe/ /gassi/ /gestalten/ /hilfe/ /impressum/ /info/ /julius/ /kalender/ /kalender/verbinden/ /konto/ /leistungen/ /leistungen/rubybubys-herz-und-schnauze/ /leistungen/rubybubys-herz-und-schnauze/betreuung/ /leistungen/rubybubys-herz-und-schnauze/gassihilfe/ /leistungen/rubybubys-herz-und-schnauze/gastgeber/ /leistungen/rubybubys-herz-und-schnauze/lernen/ /leistungen/rubybubys-herz-und-schnauze/lernen/alleinbleiben/ /leistungen/rubybubys-herz-und-schnauze/lernen/begegnungen/ /leistungen/rubybubys-herz-und-schnauze/lernen/belohnung/ /leistungen/rubybubys-herz-und-schnauze/lernen/betreuung/ /leistungen/rubybubys-herz-und-schnauze/lernen/fell/ /leistungen/rubybubys-herz-und-schnauze/lernen/geschirr/ /leistungen/rubybubys-herz-und-schnauze/lernen/hilfe/ /leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel-video/ /leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel/ /leistungen/rubybubys-herz-und-schnauze/lernen/koerpersprache/ /leistungen/rubybubys-herz-und-schnauze/lernen/krallen/ /leistungen/rubybubys-herz-und-schnauze/lernen/leine/ /leistungen/rubybubys-herz-und-schnauze/lernen/ohren/ /leistungen/rubybubys-herz-und-schnauze/lernen/pfoten/ /leistungen/rubybubys-herz-und-schnauze/lernen/ressourcen/ /leistungen/rubybubys-herz-und-schnauze/lernen/rueckruf/ /leistungen/rubybubys-herz-und-schnauze/lernen/ruhe/ /leistungen/rubybubys-herz-und-schnauze/lernen/stubenrein/ /leistungen/rubybubys-herz-und-schnauze/lernen/welpen/ /leistungen/rubybubys-herz-und-schnauze/lernen/welpenbeissen/ /leistungen/rubybubys-herz-und-schnauze/lernen/zaehne/ /leistungen/rubybubys-obdachlosenhilfe/ /leistungen/smart-home/ /system/ /tickets/ /treffpunkte/ /verwaltung/mitglieder/ /willkommen/">
 <link rel="alternate" hreflang="de" href="https://gemden.red/julius/">
@@ -23,9 +23,9 @@
     <nav class="site-nav" data-site-nav data-root="../" aria-label="Hauptnavigation"></nav>
     <main id="inhalt" class="julius-canvas">
       <header class="julius-hero">
-        <picture class="julius-painting">
-          <source media="(max-width: 640px)" srcset="../assets/art/julius/mobile-v1.webp" width="900" height="1125">
-          <img src="../assets/art/julius/desktop-v1.webp" width="1672" height="941" alt="" fetchpriority="high" decoding="async">
+        <picture class="julius-painting" aria-hidden="true">
+          <source media="(max-width: 720px)" srcset="../assets/art/julius/waschbaer-v2-handy-480.webp 480w, ../assets/art/julius/waschbaer-v2-handy-840.webp 840w" sizes="100vw">
+          <img src="../assets/art/julius/waschbaer-v2-1680.webp" srcset="../assets/art/julius/waschbaer-v2-960.webp 960w, ../assets/art/julius/waschbaer-v2-1680.webp 1680w" sizes="(max-width:1800px) 100vw, 1800px" width="1680" height="717" alt="" fetchpriority="high" decoding="async">
         </picture>
         <div class="julius-intro"><h1>Julius</h1><p>Ein Berliner mit Herz.</p></div>
       </header>
@@ -35,18 +35,67 @@
         <a id="tab-wuensche" href="#wuensche">Wünsche</a>
       </nav>
       <div class="julius-paper">
+        <picture class="julius-content-art" aria-hidden="true">
+          <source media="(max-width: 720px)" srcset="../assets/art/julius/pinselfluss-v2-handy-480.webp 480w, ../assets/art/julius/pinselfluss-v2-handy-840.webp 840w" sizes="100vw">
+          <img src="../assets/art/julius/pinselfluss-v2-1680.webp" srcset="../assets/art/julius/pinselfluss-v2-960.webp 960w, ../assets/art/julius/pinselfluss-v2-1680.webp 1680w" sizes="(max-width:1800px) 100vw, 1800px" width="1680" height="730" alt="" decoding="async">
+        </picture>
         <section class="julius-panel" id="faehigkeiten" aria-labelledby="title-faehigkeiten">
-          <h2 class="sr-only" id="title-faehigkeiten">Meine Fähigkeiten</h2>
-          <p class="julius-pending">Hier sind noch keine Fähigkeiten eingetragen.</p>
+          <h2 id="title-faehigkeiten">Meine Fähigkeiten</h2>
+          <div class="julius-skill-levels">
+            <div class="julius-skill-level">
+              <h3>Selbstbewusst</h3>
+              <ul>
+                <li>Robotik</li>
+                <li>Automatik</li>
+                <li>Elektronik</li>
+                <li>Programmieren</li>
+                <li>Malern</li>
+                <li>Lackieren</li>
+                <li>Kinder- und Jugendarbeit</li>
+              </ul>
+            </div>
+            <div class="julius-skill-level">
+              <h3>Befriedigend</h3>
+              <ul>
+                <li>Klempnern</li>
+                <li>Tischlern</li>
+                <li>Workshops geben</li>
+              </ul>
+            </div>
+            <div class="julius-skill-level">
+              <h3>Notwendig</h3>
+              <ul>
+                <li>Silikon verlegen</li>
+                <li>Nähen</li>
+                <li>Bürokratie</li>
+              </ul>
+            </div>
+          </div>
         </section>
         <section class="julius-panel" id="synergien" aria-labelledby="title-synergien">
           <h2 id="title-synergien">Was mich verbindet.</h2>
-          <p class="julius-pending">Meine Synergien ergänze ich nach und nach.</p>
+          <div class="julius-synergies">
+            <div class="julius-synergy">
+              <h3><a href="../community/synergien/aktive/">Die Aktiven <span aria-hidden="true">↗</span></a></h3>
+              <ul><li>Fußballspielen</li><li>Capoeira</li></ul>
+            </div>
+            <div class="julius-synergy">
+              <h3><a href="../leistungen/rubybubys-herz-und-schnauze/">Schnauzis <span aria-hidden="true">↗</span></a></h3>
+              <ul><li>Hundebesitzer</li></ul>
+            </div>
+            <div class="julius-synergy">
+              <h3><a href="../community/synergien/nerds/">Nerds <span aria-hidden="true">↗</span></a></h3>
+              <ul><li>Star Wars</li><li>Marvel</li></ul>
+            </div>
+          </div>
+          <div class="julius-interests">
+            <h3>Persönliche Interessen</h3>
+            <ul><li>Poker</li><li>Spieleabende</li><li>Geschichte</li><li>Philosophie</li><li>Wellness</li></ul>
+          </div>
           <a class="julius-connection" href="../community/dynastien/rubybubys/"><span><small>Meine Dynastie</small><strong>Rubybubys</strong></span><span aria-hidden="true">↗</span></a>
         </section>
         <section class="julius-panel" id="wuensche" aria-labelledby="title-wuensche">
-          <h2 id="title-wuensche">Was noch wachsen darf.</h2>
-          <p class="julius-pending">Hier ist Platz für meine nächsten Wünsche und Ideen.</p>
+          <h2 id="title-wuensche">Wünsche</h2>
         </section>
       </div>
     </main>
