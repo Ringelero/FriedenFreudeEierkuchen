@@ -3,6 +3,20 @@ const assert = require('node:assert/strict');
 const home = require('../assets/blob-garden-home.js');
 const knowledge = require('../assets/blob-knowledge.js');
 
+test('the welcome is shown once per fresh guest browser and skipped for a stored session', () => {
+  const url = 'https://fixture.supabase.co';
+  const visits = new Map();
+  const storage = {getItem:key => visits.get(key),setItem:(key,value) => visits.set(key,value)};
+  assert.equal(home.firstGuestVisit(storage,url), true);
+  assert.equal(home.firstGuestVisit(storage,url), false);
+  visits.clear();
+  visits.set('sb-fixture-auth-token','fixture-session');
+  assert.equal(home.firstGuestVisit(storage,url), false);
+  visits.delete('sb-fixture-auth-token');
+  assert.equal(home.firstGuestVisit(storage,url), false);
+  assert.equal(home.firstGuestVisit({getItem:() => { throw Error('disabled'); }},url), false);
+});
+
 test('Blob stays in his home while the seat is fully visible', () => {
   assert.equal(home.placement({top:200,bottom:282,left:650,width:88},{width:1280,height:720}).edge,'home');
 });
