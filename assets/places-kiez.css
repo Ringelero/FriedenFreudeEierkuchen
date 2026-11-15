@@ -1,0 +1,72 @@
+/* Approved walking design: the neighborhood courtyard. */
+.places-page.gassi-kiez{--ink:#183c31;--ruby:#8e243b;--muted:#657061;--line:#d9cdab;--green:#1f5546;background:radial-gradient(ellipse at 50% 0,#456a4d,#173e33 950px);color:var(--ink)}
+.gassi-kiez .site-shell{max-width:1320px;padding:22px 24px 0}
+.gassi-kiez .site-nav{border:1px solid #c3a76e;border-radius:14px 14px 0 0;background:#fff6e2;color:var(--ink);margin-bottom:0;padding:12px 24px;box-shadow:none}
+.gassi-kiez .site-mark{font-family:Georgia,serif;color:var(--ink);letter-spacing:0}.gassi-kiez .nav-links a{color:var(--ink)}.gassi-kiez .nav-links a[aria-current=page],.gassi-kiez .nav-toggle[aria-expanded=true]{background:var(--green);color:#fff6e2}.gassi-kiez .nav-toggle{color:var(--green);background:#fff8e8;border-color:#c6b486}
+.gassi-kiez main{gap:0;background:#fff5df;border:1px solid #c3a76e;border-top:0;border-radius:0 0 18px 18px;padding:0 24px 24px;box-shadow:0 12px 40px #082b2540}
+.gassi-kiez .places-hero{position:relative;isolation:isolate;margin:0 -24px 0;min-height:410px;height:clamp(360px,32vw,440px);padding:0;display:block;overflow:hidden}
+.places-kiez-art{display:none}.gassi-kiez .places-kiez-art{display:block;position:absolute;inset:0;z-index:-1}
+.places-kiez-art img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 15%}
+.gassi-kiez .places-hero>div:not(.places-illustration){position:absolute;left:5.2%;top:32%;width:44%;max-width:560px}
+.gassi-kiez .places-illustration,.gassi-kiez .places-eyebrow{display:none}
+.gassi-kiez .places-back{display:inline-block;color:var(--green);font-size:.75rem;margin:0 0 13px}
+.gassi-kiez .places-hero h1{font-size:clamp(2.5rem,4.6vw,4rem);letter-spacing:-.035em;line-height:1.02;color:#13382b;text-wrap:balance}
+.gassi-kiez .places-hero h1 em{font-style:normal;color:inherit;font-weight:500}
+.gassi-kiez .places-lead{font-family:Georgia,serif;color:#264733;font-size:1.08rem;line-height:1.4;max-width:400px;margin-top:14px}
+.gassi-kiez .places-topline{padding:16px 0 10px}.gassi-kiez .places-phone summary{color:var(--green)}.gassi-kiez .places-service select{background:#fffaf0;border-color:#c7b68e}
+.gassi-kiez .places-tabs{margin:0 0 10px;background:#ecebd9;border:1px solid #d8d0ae;border-radius:13px;padding:4px}
+.gassi-kiez .places-tabs [aria-pressed=true],.gassi-kiez .places-map-switch [aria-pressed=true]{background:var(--green);color:#fff8e8}
+.gassi-kiez .places-feedback{font-size:.78rem;padding:0 2px 12px}
+.places-workspace,.places-results{min-width:0}
+.gassi-kiez .places-search{gap:8px}.gassi-kiez .places-search label{font-weight:500;font-size:.75rem}.gassi-kiez input,.gassi-kiez select,.gassi-kiez textarea{background:#fffaf0;border-color:#d1c29c;color:var(--ink)}
+.gassi-kiez button,.gassi-kiez .place-link{background:#fffaf0;border-color:#d5c6a3;color:var(--green);border-radius:10px;font-weight:600}
+.gassi-kiez button:focus-visible,.gassi-kiez a:focus-visible{outline:3px solid #9e4354;outline-offset:3px}
+.gassi-kiez .places-map-switch{flex-wrap:wrap}.gassi-kiez .places-map-switch [data-berlin-view]{margin-right:auto}
+.gassi-kiez .places-map-tools label{font-size:.75rem}.gassi-kiez .places-map-tools button{font-size:.75rem}.gassi-kiez .places-check input{accent-color:var(--green)}
+.gassi-kiez .places-map{height:480px;min-height:300px;border:1px solid #b5c29e;border-radius:15px;background:#dce5d1}
+.gassi-kiez .places-map .leaflet-control-zoom a{color:#214f3c;background:#fff9e9;border-color:#d5c6a3}
+.gassi-kiez .places-map-status{line-height:1.5}
+.gassi-kiez .place-card{background:linear-gradient(120deg,#fffbed,#fff5dc);border:1px solid #d5c6a3;border-radius:12px;box-shadow:0 2px 5px #715b2410}
+.gassi-kiez .place-card .place-open{color:var(--ink);font-size:1.35rem}
+.gassi-kiez .place-star{color:#9c283f}.gassi-kiez .place-card:has(.place-star[aria-pressed=true]){border-color:#759c7c;box-shadow:inset 3px 0 #2b654c}
+.gassi-kiez .place-detail{padding:20px;background:#fff9e9;border:1px solid #c7b27c;border-radius:13px;box-shadow:0 4px 14px #79633216}
+.gassi-kiez .place-detail-header h2{font:500 1.85rem/1.12 Georgia,serif;color:var(--ink)}
+.gassi-kiez .place-detail-header button{padding:5px 9px;min-height:40px;font-size:.7rem}
+.gassi-kiez .place-tools{gap:7px;flex-wrap:wrap}.gassi-kiez .place-tools button,.gassi-kiez .place-link{font-size:.73rem;padding:8px 10px}
+.place-about{margin:12px 0;border-block:1px solid var(--line);font-size:.85rem}.place-about>summary{font-size:.8rem}.place-about h3{font-size:1rem}.place-about[open]{padding-bottom:12px}
+.place-quick-slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:12px 0}
+.gassi-kiez .place-quick-slots button{font-variant-numeric:tabular-nums;padding:10px 6px;min-height:46px}
+.gassi-kiez .place-quick-slots button[aria-pressed=true]{color:#fff8e8;background:var(--green);border-color:var(--green)}
+.gassi-kiez .place-actions .place-primary{background:#ab253c;color:#fff9e9;border-color:#a12339;min-height:48px;padding:12px 20px;flex:1}
+.gassi-kiez .place-event{background:#f0ead6;border:1px solid #dfd4b5;border-radius:10px}
+.gassi-kiez .place-roster li{border-color:#d5c6a3;background:#faf3df}
+.gassi-kiez .place-window-title{color:var(--green)}.gassi-kiez .places-source-note{background:#faf1d9;border-color:#dacba5;border-radius:10px;margin:16px 0}.gassi-kiez .places-source-note summary,.gassi-kiez .places-source-note a{color:#315d43}.gassi-kiez .places-source-note p,.gassi-kiez .places-source-note li{color:#63715f}
+.gassi-kiez main>details{margin-top:16px;background:#fffaed;padding:0 15px;border:1px solid #dfd3b2;border-radius:10px}
+.gassi-kiez .places-map-share{background:#f8f0d8}.gassi-kiez .places-map-empty{border:1px solid #c7b27c;border-radius:13px;background:#fff9e9;overflow:hidden}
+.places-map-empty{display:none}.places-map-empty-art{height:170px;background:url('/assets/herz-gassi/kiez-mobile-480.webp') center 40%/cover}.places-map-empty>div:last-child{padding:21px}.places-map-empty h2{font:500 1.6rem/1.2 Georgia,serif;margin:0 0 10px}.places-map-empty p{font-size:.9rem;line-height:1.6;margin:0;color:var(--muted)}
+.gassi-kiez .footer{color:#f0e4c9;padding:24px 8px 100px}.gassi-kiez .footer a{color:#ffe5a8}.gassi-kiez .site-help-links{border-color:#769079}
+@media(min-width:980px){
+ .gassi-kiez .places-workspace:has(.place-detail:not([hidden])),.gassi-kiez .places-workspace:has([data-map-wrap]:not([hidden])){display:grid;grid-template-columns:minmax(0,1.65fr) minmax(330px,1fr);gap:22px;align-items:start}
+ .gassi-kiez .places-workspace:has([data-map-wrap]:not([hidden])):not(:has(.place-detail:not([hidden]))) .places-map-empty{display:block}
+ .gassi-kiez .places-workspace>.place-detail{position:sticky;top:18px;max-height:calc(100dvh - 36px);overflow-y:auto;overscroll-behavior:contain}
+ .gassi-kiez .places-workspace:has(.place-detail:not([hidden])) .places-list{grid-template-columns:1fr}
+ .gassi-kiez .place-detail .place-slot-picker{grid-template-columns:1fr}
+}
+@media(max-width:760px){.gassi-kiez .site-shell{padding:10px 10px 0}.gassi-kiez .site-nav{padding:10px 14px}.gassi-kiez .nav-links{background:#fff8e7}.gassi-kiez main{padding:0 14px 18px}.gassi-kiez .places-hero{margin:0 -14px}.gassi-kiez .places-topline{gap:8px}.gassi-kiez .places-service{font-size:.72rem}.gassi-kiez .places-service select{font-size:.78rem;padding:9px 6px}.gassi-kiez .places-phone{font-size:.72rem}.gassi-kiez .places-phone summary{padding:6px 0}.gassi-kiez .places-map{height:370px;min-height:280px}.gassi-kiez .places-list{grid-template-columns:1fr}.gassi-kiez .place-detail{margin-top:16px}.gassi-kiez .places-mobile-nav{background:#fff4dc;border-top-color:#c6b487}.gassi-kiez .places-mobile-nav [aria-pressed=true]{background:#dce5d3;color:var(--green)}.gassi-kiez .places-mobile-nav span{color:var(--green)}}
+@media(max-width:620px){
+ .gassi-kiez .places-hero{height:285px;min-height:0}.gassi-kiez .places-kiez-art img{object-position:50% 20%;object-fit:cover}
+ .gassi-kiez .places-hero>div:not(.places-illustration){left:5.5%;top:36%;width:53%}
+ .gassi-kiez .places-back{font-size:.62rem;margin-bottom:8px;max-width:100%}
+ .gassi-kiez .places-hero h1{font-size:clamp(1.65rem,7.4vw,2.5rem);line-height:1.03;letter-spacing:-.04em}.gassi-kiez .places-hero h1 br{display:block}.gassi-kiez .places-hero h1 em::before{content:none}
+ .gassi-kiez .places-lead{font-size:.8rem;line-height:1.35;margin-top:9px;max-width:190px}
+ .gassi-kiez .places-topline{padding-top:12px}.gassi-kiez .places-tabs{width:100%;margin-bottom:8px}.gassi-kiez .places-tabs button{min-height:44px}.gassi-kiez .places-search{margin-bottom:10px}.gassi-kiez .places-map-switch{gap:6px}.gassi-kiez .places-map-switch button{padding:9px 11px;font-size:.74rem}.gassi-kiez .places-map-tools{gap:8px}.gassi-kiez .places-map-tools button{width:auto}.gassi-kiez .places-map-tools label{width:100%}.gassi-kiez .places-source-note{padding:0 10px}.gassi-kiez .places-feedback{font-size:.73rem;padding-bottom:10px}.gassi-kiez .place-detail{padding:16px}.gassi-kiez .place-detail-header h2{font-size:1.55rem}.gassi-kiez .place-quick-slots button{font-size:.75rem}.gassi-kiez .footer{padding-bottom:155px}
+}
+
+@media(max-width:620px){
+ .gassi-kiez .places-hero::after{content:'';position:absolute;inset:32% 23% 0 0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,#fff2d7f2,#fff2d7e8 70%,#fff2d700);border-radius:0 30px 0 0}
+ .gassi-kiez .places-hero>div:not(.places-illustration){width:66%;top:36%}
+ .gassi-kiez .places-hero h1{font-size:clamp(1.6rem,7.3vw,2.4rem);max-width:230px}
+ .gassi-kiez .places-lead{max-width:210px;font-size:.76rem}
+}
+
+@media(max-width:620px){.gassi-kiez .places-hero::after{mask-image:linear-gradient(180deg,transparent,#000 18%,#000 88%,transparent)}}

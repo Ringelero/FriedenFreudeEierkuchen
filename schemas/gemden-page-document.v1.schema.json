@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gemden.red/schemas/gemden-page-document.v1.schema.json",
+  "title": "GemDen Page Document v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "subject", "status", "visibility", "ffe_refs", "capability_context", "data_sources", "bindings", "theme", "regions"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema_version": { "const": "1.0.0" },
+    "id": { "type": "string", "pattern": "^PAGE-[A-Z0-9-]+$" },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "enum": ["member", "dynasty", "kiez", "project", "system"] },
+        "id": { "type": "string", "pattern": "^[A-Z][A-Z0-9-]+$" }
+      }
+    },
+    "status": { "enum": ["draft", "pilot", "published", "archived"] },
+    "visibility": { "enum": ["public", "members", "scope_members", "managers", "private"] },
+    "ffe_refs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^(?:OP-)?[A-Z][0-9]{2}$" },
+      "uniqueItems": true
+    },
+    "capability_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["human_skill_refs", "ai_operation_refs", "module_permission_grants"],
+      "properties": {
+        "human_skill_refs": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^SKILL-[A-Z0-9-]+$" },
+          "uniqueItems": true
+        },
+        "ai_operation_refs": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^OP-[A-Z][0-9]{2}$" },
+          "uniqueItems": true
+        },
+        "module_permission_grants": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^module:[a-z0-9.*:-]+$" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "data_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "type", "url", "classification", "collections"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*$" },
+          "type": { "const": "json" },
+          "url": { "type": "string", "minLength": 1 },
+          "classification": { "enum": ["public", "members", "scope_members", "managers", "private"] },
+          "collections": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/binding" }
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preset", "tokens", "motion"],
+      "properties": {
+        "preset": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+        "tokens": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "accent": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+            "accent_deep": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+            "surface": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+            "radius": { "type": "string", "pattern": "^[0-9]{1,2}px$" }
+          }
+        },
+        "motion": { "enum": ["none", "gentle", "expressive"] }
+      }
+    },
+    "regions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "layout", "modules"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "layout": { "enum": ["flow", "grid", "two-column"] },
+          "modules": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/moduleInstance" }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "binding": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "source", "collection", "id"],
+          "properties": {
+            "kind": { "const": "entity" },
+            "source": { "type": "string" },
+            "collection": { "type": "string" },
+            "id": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "source", "collection", "ids_from"],
+          "properties": {
+            "kind": { "const": "related" },
+            "source": { "type": "string" },
+            "collection": { "type": "string" },
+            "ids_from": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["binding", "field"],
+              "properties": {
+                "binding": { "type": "string" },
+                "field": { "type": "string" }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "moduleInstance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "version", "bindings", "props", "appearance"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+        "type": { "type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)+$" },
+        "version": { "type": "integer", "minimum": 1 },
+        "bindings": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "props": { "type": "object" },
+        "appearance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tone", "motion"],
+          "properties": {
+            "tone": { "enum": ["neutral", "ruby", "gold", "mint"] },
+            "motion": { "enum": ["none", "fade", "rise", "float", "pulse"] }
+          }
+        }
+      }
+    }
+  }
+}

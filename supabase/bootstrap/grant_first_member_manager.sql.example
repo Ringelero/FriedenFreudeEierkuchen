@@ -1,0 +1,59 @@
+-- EXAMPLE ONLY. This file is not a migration and is never run automatically.
+--
+-- Replace the UUID and legitimate authority after the responsible person has
+-- explicitly confirmed who may invite members, assign stable IDs and manage
+-- scoped Kiez permissions. The transaction aborts while placeholders remain.
+
+begin;
+
+do $bootstrap$
+declare
+  manager_user_id constant uuid := '00000000-0000-0000-0000-000000000001';
+  granting_authority constant text := '__LEGITIME_STELLE_EINTRAGEN__';
+begin
+  if manager_user_id = '00000000-0000-0000-0000-000000000001'::uuid
+    or left(granting_authority, 2) = '__'
+  then
+    raise exception 'Bootstrap placeholders must be replaced before execution.';
+  end if;
+
+  if not exists (
+    select 1
+    from public.profiles as profile
+    where profile.id = manager_user_id
+      and profile.stable_id is not null
+      and profile.account_status = 'active'
+  ) then
+    raise exception 'The selected manager needs an active profile and confirmed MEM-* ID.';
+  end if;
+
+  insert into public.permission_grants (
+    grantee_user_id,
+    permission_key,
+    scope_type,
+    scope_id,
+    granted_by_authority,
+    reason
+  )
+  select
+    manager_user_id,
+    'manage_members',
+    'platform',
+    'GemDen',
+    granting_authority,
+    'Erstfreigabe für die technisch geschützte GemDen-Mitgliederverwaltung.'
+  where not exists (
+    select 1
+    from public.permission_grants as existing_grant
+    where existing_grant.grantee_user_id = manager_user_id
+      and existing_grant.permission_key = 'manage_members'
+      and existing_grant.scope_type = 'platform'
+      and existing_grant.scope_id = 'GemDen'
+      and existing_grant.starts_at <= now()
+      and (existing_grant.ends_at is null or existing_grant.ends_at > now())
+      and existing_grant.revoked_at is null
+  );
+end;
+$bootstrap$;
+
+commit;

@@ -1,0 +1,212 @@
+/* Die schwebende Therme: Panorama und bebilderte Wege durch die Community. */
+.community-overview {
+  --community-ink:#254e48; --community-muted:#526b62; --community-line:#ced7bf;
+  --ink:#254e48; --muted:#526b62; --line:#ced7bf; --ruby:#8b2d4a; --ruby-deep:#70213b;
+  background:linear-gradient(180deg,#faf3e5 0%,#edf1e6 43%,#faf2e1 100%);
+  color:var(--community-ink);
+}
+.community-overview .site-shell {width:min(1560px,100%);max-width:none;padding:18px 32px 100px}
+.community-overview .site-nav {margin-bottom:0;position:relative;z-index:2}
+.community-hero {position:relative;isolation:isolate;display:flex;align-items:center;min-height:640px;padding:64px 42px 90px;margin:0 -20px}
+.community-hero-art {position:absolute;inset:0 -20px;z-index:-1;pointer-events:none;mask-image:linear-gradient(#000 88%,transparent)}
+.community-hero-art img {display:block;width:100%;height:100%;object-fit:cover;object-position:64% center}
+.community-hero-art:after {content:"";position:absolute;inset:0;background:linear-gradient(90deg,#faf3e52e,transparent 45%)}
+.community-hero-copy {max-width:470px;min-width:0;position:relative}
+.community-hero-copy .eyebrow {margin:0 0 18px;color:#4f6b5d;letter-spacing:.18em;font-size:.74rem}
+.community-hero-copy h1 {font:500 clamp(3.5rem,5vw,4.9rem)/1.02 Georgia,serif;letter-spacing:-.055em;color:var(--community-ink);margin:0 0 23px}
+.community-hero-copy>p:not(.eyebrow) {max-width:370px;font-size:1rem;line-height:1.7;margin:0 0 25px;color:#435f55}
+.community-hero-copy .button-row {gap:10px}
+.community-overview .community-hero-copy .button {min-height:47px;padding:13px 18px;border-radius:12px;font-size:.83rem;background:#8b2d4a;color:#fff9ed;box-shadow:0 6px 18px #70213b10;gap:12px}
+.community-overview .community-hero-copy .button.secondary {background:#fffaf0e8;color:#254e48;border:1px solid #a7b797;box-shadow:none}
+.community-overview .community-hero-copy .button:hover {background:#70213b}
+.community-overview .community-hero-copy .button.secondary:hover {background:#e5eddd}
+.community-portals {position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:-26px 0 28px;scroll-margin-top:24px}
+.community-portal {position:relative;display:grid;grid-template-rows:180px 1fr;gap:0;padding:0;border:1px solid #c4cfb3;border-radius:25px;overflow:hidden;background:#fffaf0;box-shadow:0 10px 26px #36543c0b;color:#254e48;text-decoration:none;min-width:0;transition:transform .16s,border-color .16s}
+.community-portal:hover {transform:translateY(-3px);border-color:#6f8b69}
+.community-portal-art {display:block;position:relative;width:100%;height:180px;overflow:hidden;background:#d6e2d0}
+.community-portal-art img {display:block;width:100%;height:100%;object-fit:cover}
+.portal-kieze .community-portal-art img {object-position:center 62%}
+.portal-dynastien .community-portal-art img {object-position:center 55%}
+.portal-leistungen .community-portal-art img {object-position:center 52%}
+.portal-leistungen {background:#f5e9cb;border-color:#b69a65;color:#27494c}
+.portal-leistungen .community-portal-copy strong {font-size:clamp(1.45rem,2.2vw,1.95rem)}
+.portal-leistungen .community-portal-copy small {color:#6d6147}
+.portal-menschen .community-portal-art img {object-position:center 58%}
+.community-portal-copy {display:grid;align-content:start;gap:9px;min-width:0;padding:21px 22px 26px}
+.community-portal-copy strong {font:500 clamp(1.6rem,2.5vw,2.15rem)/1.12 Georgia,serif;letter-spacing:-.035em}
+.community-portal-copy>span {font-size:.88rem;line-height:1.55;padding-right:5px}
+.community-portal-copy small {font-size:.76rem;line-height:1.5;color:#5c725f;padding:4px 17px 0 0}
+.community-portal-arrow {position:absolute;bottom:22px;right:17px;font-size:1.1rem;color:#526f55}
+.community-sections {max-width:1400px;margin:0 auto 4px;top:8px;padding:6px;border:1px solid #b5c09f;background:#e7ecdcf5;backdrop-filter:blur(10px);border-radius:17px}
+.community-sections a {border-radius:11px;background:#fffaf0;font-size:.88rem;font-weight:650;color:#315c4e}
+.community-sections a:hover {background:#d3e0c9}
+.community-overview .section {max-width:1400px;margin-inline:auto;padding-top:44px;scroll-margin-top:92px}
+.community-overview .section-head {margin-bottom:22px}
+.community-overview .section-head h2 {font-weight:400}
+.community-overview .section-head .eyebrow {color:#647953}
+.community-overview .section-head p:not(.eyebrow) {color:#526b62;max-width:760px}
+.community-neighborhoods {gap:18px}
+.community-kiez-card {grid-template-columns:minmax(0,.9fr) minmax(0,1.2fr);gap:0;padding:0;min-height:238px;border-radius:26px;border-color:#bfceaf;background:#e2ebd8;overflow:hidden}
+.community-kiez-card-travel {background:#f2e4c9;border-color:#d7c098;color:#675135}
+.community-kiez-card .community-card-art {display:block;position:relative;align-self:stretch;width:100%;height:auto;min-height:238px}
+.community-kiez-card .community-card-art img {position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center 62%}
+.community-kiez-card-travel .community-card-art img {object-position:42% center}
+.community-kiez-card .community-card-copy {padding:27px 25px;gap:12px}
+.community-kiez-card .community-card-copy h3 {font-size:2rem}
+.community-kiez-card .community-card-copy>span {font-size:.91rem}
+.community-kiez-card .community-card-copy>b {font-size:.85rem}
+.community-location {margin-top:15px;padding:20px 24px;border-radius:19px;border-color:#c8d1b9;background:#fff8e9;min-height:76px}
+.community-location strong {font-size:1.45rem}
+.community-location small {font-size:.84rem}
+.community-dynasty {border-radius:28px;border-color:#87425a;background:#82324b}
+.community-dynasty-main {grid-template-columns:1fr 1fr;min-height:280px;gap:0;padding:0}
+.community-dynasty-main:hover {background:#762c43}
+.community-dynasty-main .community-card-copy {padding:38px;gap:16px}
+.community-dynasty-main .community-card-copy h3 {font-size:clamp(2.5rem,4vw,3.6rem)}
+.community-dynasty-main .community-card-copy>span {font-size:1rem;color:#fae8e4}
+.community-dynasty-main .community-card-copy>b {font-size:.9rem}
+.community-ruby-art {display:block;position:relative;align-self:stretch;min-height:280px;overflow:hidden}
+.community-ruby-art img {position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center 55%;mask-image:linear-gradient(90deg,transparent,#000 18%)}
+.community-dynasty-service {padding:12px 30px;background:#6c253d}
+.community-dynasty-service>span {font-size:.83rem}
+.community-dynasty-service a {font-size:.95rem}
+.community-overview #leistungen {margin-top:38px;padding:32px;border:1px solid #c6d3b8;border-radius:29px;background:linear-gradient(125deg,#e3eddb,#fbf4e5)}
+.community-overview .service-card {background:#fffaf0;border-color:#d1d2b9;border-radius:23px}
+.community-overview .service-category {background:#e1ead7;color:#456540}
+/* Compact catalog: details live in Möglichkeiten, provider links stay discoverable. */
+.community-service-list {list-style:none;padding:0;margin:0;display:grid;gap:0;background:#fffaf0;border:1px solid #c9d1b8;border-radius:19px;overflow:hidden}
+.service-list-item {display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:10px 22px;padding:22px 25px;min-width:0}
+.service-list-item+.service-list-item {border-top:1px solid #d7dcc8}
+.service-list-identity {min-width:0}
+.service-list-identity h3 {font:500 clamp(1.2rem,2vw,1.5rem)/1.3 Georgia,serif;letter-spacing:-.02em;margin:0 0 6px}
+.service-list-identity h3 a {color:#254e48;text-underline-offset:4px;text-decoration-thickness:1px}
+.service-list-item .service-providers {font-size:.8rem;color:#526b62;margin:0;line-height:1.65}
+.service-list-item .service-providers a {color:inherit;text-underline-offset:3px}
+.service-list-item .service-card-head {justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.service-list-item .status-chip {font-size:.72rem}
+.service-list-action {justify-self:start;display:inline-flex;align-items:center;min-height:44px;font-size:.82rem;font-weight:700;color:#315c4e;text-underline-offset:4px}
+.community-service-routes {gap:9px}
+.community-service-routes a {background:#fff9ec;border-color:#bbc8ab;min-height:46px;font-size:.84rem}
+.community-member {background:#fffaf0;border-color:#c7d1b5;padding:26px;border-radius:24px}
+.community-member-art {padding:4px;border-radius:50%;background:#e6eddb}
+.community-own-page {padding:29px 30px;margin-top:17px;background:#e4ecda;border:1px solid #c8d3b9;border-radius:25px}
+.community-own-page strong {font-size:1.65rem}
+.community-own-page p {font-size:.94rem}
+.community-own-page .button {background:#8b2d4a;color:#fff9ed;border-color:#8b2d4a}
+.community-own-page .button.secondary {background:#fffaf0;color:#254e48;border-color:#b1bf9d}
+.community-overview .community-background {padding-top:28px}
+.community-overview .source-fold {background:#f9f3e6;border-color:#c9cfb5}
+.community-overview .footer {max-width:1400px;margin-inline:auto;border-color:#b9c6a7}
+@media(min-width:761px) {.community-hero{overflow:clip}}
+@media(min-width:1450px) {.community-hero{min-height:690px}}
+@media(max-width:1100px) and (min-width:761px) {
+  .service-list-item{grid-template-columns:minmax(0,1fr) auto}
+  .service-list-action{grid-column:1/-1}
+  .community-overview .site-shell{padding-inline:22px}
+  .community-hero{min-height:570px;padding:52px 27px 78px;margin-inline:-12px}
+  .community-hero-copy{max-width:390px}
+  .community-hero-copy h1{font-size:3.7rem}
+  .community-hero-copy>p:not(.eyebrow){max-width:320px;font-size:.94rem}
+  .community-hero-art:after{background:linear-gradient(90deg,#faf3e577,transparent 62%)}
+  .community-portals{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+  .community-portal{grid-template-rows:170px 1fr}
+  .community-portal-art{height:170px}
+  .community-portal-copy{padding:20px 22px}
+  .community-kiez-card{grid-template-columns:minmax(0,.8fr) minmax(0,1.1fr)}
+  .community-kiez-card .community-card-copy{padding:23px 19px}
+  .community-kiez-card .community-card-copy h3{font-size:1.8rem}
+  .community-kiez-card .community-card-copy>span{font-size:.85rem}
+}
+@media(max-width:760px) {
+  .community-overview .site-shell{padding:10px 14px 100px}
+  .community-hero{display:flex;flex-direction:column;align-items:stretch;min-height:0;padding:0;margin:0 0 31px}
+  .community-hero-art{position:relative;inset:auto;z-index:auto;height:405px;margin:0 -14px;mask-image:linear-gradient(#000 64%,#000b 78%,transparent)}
+  .community-hero-art img{object-position:center 47%}
+  .community-hero-art:after{display:none}
+  .community-hero-copy{position:relative;max-width:560px;padding:0 7px;margin-top:-87px}
+  .community-hero-copy .eyebrow{font-size:.67rem;letter-spacing:.14em;margin-bottom:13px;display:table;padding:5px 8px;margin-left:-8px;border-radius:6px;background:#faf3e5eb}
+  .community-hero-copy h1{font-size:clamp(2.7rem,10.8vw,3.8rem);line-height:1.02;margin-bottom:18px}
+  .community-hero-copy>p:not(.eyebrow){max-width:450px;font-size:.94rem;line-height:1.65;margin-bottom:20px}
+  .community-hero-copy .button-row{display:grid;grid-template-columns:1.15fr .85fr;gap:9px}
+  .community-overview .community-hero-copy .button{width:100%;padding:12px 10px;min-height:47px;font-size:.78rem;gap:7px;justify-content:center}
+  .community-portals{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 24px}
+  .community-portal{grid-template-rows:136px 1fr;border-radius:21px}
+  .community-portal-art{height:136px}
+  .community-portal-copy{padding:16px 14px 21px;gap:8px}
+  .community-portal-copy strong{font-size:1.65rem}
+  .community-portal-copy>span{font-size:.82rem;padding:0}
+  .community-portal-copy small{font-size:.73rem;padding:2px 9px 0 0}
+  .community-portal-arrow{bottom:15px;right:12px;font-size:.98rem}
+  .community-sections{top:5px;gap:4px;padding:5px;border-radius:14px}
+  .community-sections a{min-height:46px;padding:9px 3px;font-size:.77rem;border-radius:9px}
+  .community-overview .section{padding-top:33px}
+  .community-neighborhoods{grid-template-columns:1fr;gap:14px}
+  .community-kiez-card{grid-template-columns:minmax(0,.7fr) minmax(0,1.1fr);min-height:206px}
+  .community-kiez-card .community-card-art{width:100%;min-height:206px;justify-self:stretch}
+  .community-kiez-card .community-card-copy{padding:22px 20px;gap:10px}
+  .community-kiez-card .community-card-copy h3{font-size:1.85rem}
+  .community-kiez-card .community-card-copy>span{font-size:.85rem;line-height:1.6}
+  .community-kiez-card .community-card-copy>b{font-size:.8rem}
+  .community-location{padding:18px 20px}
+  .community-location strong{font-size:1.35rem}
+  .community-location small{font-size:.8rem}
+  .community-dynasty-main{grid-template-columns:1fr;min-height:0}
+  .community-ruby-art{order:-1;height:195px;min-height:195px}
+  .community-ruby-art img{mask-image:linear-gradient(#000 88%,transparent);object-position:center 58%}
+  .community-dynasty-main .community-card-copy{padding:25px;gap:12px}
+  .community-dynasty-main .community-card-copy h3{font-size:2.55rem}
+  .community-dynasty-main .community-card-copy>span{font-size:.93rem}
+  .community-dynasty-service{padding:12px 24px;gap:3px}
+  .community-dynasty-service>span{font-size:.78rem}
+  .community-overview #leistungen{margin-top:29px;padding:25px 19px;border-radius:24px}
+  .community-overview .service-card{padding:21px}
+  .service-list-item{grid-template-columns:minmax(0,1fr);padding:18px 17px;gap:12px}
+  .service-list-item .service-card-head{justify-content:flex-start}
+  .service-list-action{font-size:.8rem}
+  .community-service-routes a{font-size:.79rem}
+  .community-member{padding:21px;gap:16px}
+  .community-own-page{padding:24px;margin-top:14px}
+  .community-own-page strong{font-size:1.5rem}
+  .community-own-page p{font-size:.88rem}
+  .community-own-page .button-row{width:100%}
+  .community-own-page .button{font-size:.82rem}
+}
+@media(max-width:480px) {
+  .community-hero-art{height:370px}
+  .community-hero-copy{margin-top:-75px;padding-inline:5px}
+  .community-hero-copy h1{font-size:clamp(2.55rem,11.3vw,3.1rem)}
+  .community-hero-copy>p:not(.eyebrow){font-size:.9rem}
+  .community-overview .community-hero-copy .button{font-size:.73rem;padding-inline:8px}
+  .community-portal{grid-template-rows:119px 1fr}
+  .community-portal-art{height:119px}
+  .community-portal-copy{padding:15px 13px 20px;gap:7px}
+  .community-portal-copy strong{font-size:1.43rem}
+  .portal-leistungen .community-portal-copy strong{font-size:1.19rem}
+  .community-portal-copy>span{font-size:.8rem}
+  .community-portal-copy small{font-size:.71rem}
+}
+@media(max-width:359px) {
+  .community-hero-art{height:335px}
+  .community-hero-copy{margin-top:-65px;padding-inline:3px}
+  .community-hero-copy h1{font-size:2.5rem}
+  .community-hero-copy .eyebrow{font-size:.62rem}
+  .community-hero-copy>p:not(.eyebrow){font-size:.87rem}
+  .community-overview .community-hero-copy .button{font-size:.67rem;gap:4px;padding-inline:5px}
+  .community-portals{gap:9px}
+  .community-portal{grid-template-rows:105px 1fr;border-radius:18px}
+  .community-portal-art{height:105px}
+  .community-portal-copy{padding:13px 11px 18px}
+  .community-portal-copy strong{font-size:1.28rem}
+  .portal-leistungen .community-portal-copy strong{font-size:1.04rem}
+  .community-portal-copy>span{font-size:.76rem}
+  .community-portal-copy small{font-size:.68rem}
+  .community-sections a{font-size:.7rem}
+  .community-kiez-card .community-card-copy{padding:21px 15px}
+  .community-kiez-card .community-card-copy h3{font-size:1.6rem}
+  .community-kiez-card .community-card-copy>span{font-size:.81rem}
+  .community-member{padding:18px}
+}
+@media(prefers-reduced-motion:reduce) {
+  .community-portal{transition:none}
+  .community-portal:hover{transform:none}
+}

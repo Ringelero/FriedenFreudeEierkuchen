@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="neighborhood" viewBox="0 0 400 240">
+    <ellipse cx="202" cy="218" rx="164" ry="15" fill="#99c3af"/>
+    <path d="M42 104 117 68 185 101v109H42Z" fill="#ffeed0"/>
+    <path d="M42 104 117 68v137l-75 5Z" fill="#ffdbb0"/>
+    <path d="m117 68 68 33v109l-68-5Z" fill="#fff4dd"/>
+    <path d="m42 104 75-48 68 45-68-25Z" fill="#276455"/>
+    <path d="M177 73 260 37 329 73v137H177Z" fill="#e7808f"/>
+    <path d="m177 73 83-36v173h-83Z" fill="#b7506b"/>
+    <path d="m260 37 69 36v137h-69Z" fill="#eb8c98"/>
+    <path d="m177 73 83-51 69 51-69-21Z" fill="#683247"/>
+    <g fill="#fff3ca"><path d="M195 90h15v23h-15zm30-13h15v23h-15zm-30 60h15v23h-15zm30-13h15v23h-15zm54-35h15v23h-15zm0 48h15v23h-15z"/></g>
+    <g fill="#4f8070"><path d="M61 118h14v21H61zm28-13h14v21H89zm-28 47h14v21H61zm28-13h14v21H89zm46-33h14v21h-14zm25 11h12v21h-12z"/></g>
+    <path d="M88 185q0-18 13-18t13 18v25H88Z" fill="#386658"/>
+    <path d="M236 182q0-18 14-18t14 18v28h-28Z" fill="#793047"/>
+    <path d="m250 222-35 15h-39l26-23" fill="#f7edcf"/>
+    <path d="M34 183v31m307-45v43" stroke="#42634a" stroke-width="7"/>
+    <circle cx="34" cy="170" r="25" fill="#508f69"/><circle cx="341" cy="158" r="30" fill="#568e6c"/>
+    <circle cx="363" cy="182" r="19" fill="#6aa27a"/>
+    <path d="M111 32h22m-11-11v22" stroke="#fff9e6" stroke-width="3"/>
+  </symbol>
+  <symbol id="ruby" viewBox="0 0 240 260">
+    <circle cx="120" cy="130" r="106" fill="none" stroke="#ed849a" stroke-opacity=".45"/>
+    <circle cx="120" cy="130" r="82" fill="none" stroke="#ffdca4" stroke-opacity=".45"/>
+    <path d="m120 46 58 33 19 70-38 61H81l-38-61 19-70Z" fill="#f75487"/>
+    <path d="m120 46-24 79-34-46Z" fill="#ffe2dc"/>
+    <path d="m120 46 58 33-37 46Z" fill="#ffa2b8"/>
+    <path d="m96 125 45 0-21 85Z" fill="#f9b5c0"/>
+    <path d="m43 149 53-24 24 85H81Z" fill="#c52259"/>
+    <path d="m141 125 56 24-38 61h-39Z" fill="#5f1234"/>
+    <path d="m62 79 34 46-53 24Z" fill="#ff83a7"/>
+    <path d="m178 79 19 70-56-24Z" fill="#e82a62"/>
+    <path d="M34 57h16m-8-8v16m150 149h18m-9-9v18" stroke="#ffe7b7" stroke-width="3"/>
+  </symbol>
+  <symbol id="member" viewBox="0 0 240 240">
+    <circle cx="120" cy="120" r="94" fill="none" stroke="#b8853e" stroke-opacity=".45"/>
+    <path d="m52 64 68 56 66-57m-66 57-22 73m22-73 70 54" fill="none" stroke="#c59959" stroke-width="2"/>
+    <circle cx="52" cy="64" r="11" fill="#3a826e"/><circle cx="186" cy="63" r="8" fill="#c90046"/>
+    <circle cx="98" cy="193" r="9" fill="#3a826e"/><circle cx="190" cy="174" r="12" fill="#ce8055"/>
+    <path d="m120 79 33 25-11 43h-44l-11-43Z" fill="#c90046"/>
+    <path d="m120 79-11 35-22-10Z" fill="#ffbac8"/><path d="m120 79 33 25-22 10Z" fill="#ff7d9e"/>
+    <path d="m109 114 22 0-11 33Z" fill="#ef618c"/><path d="m131 114 22-10-11 43h-22Z" fill="#850736"/>
+  </symbol>
+</svg>

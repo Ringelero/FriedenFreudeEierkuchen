@@ -1,0 +1,78 @@
+{
+  "$schema": "../../schemas/gemden-capability.v1.schema.json",
+  "schema_version": "1.0.0",
+  "namespaces": [
+    {
+      "prefix": "SKILL-",
+      "kind": "human_skill",
+      "source": "community-v0.1.json and K05",
+      "meaning": "Eine konkrete, belegbare Fähigkeit eines Menschen oder Teams. Sie ist keine technische Berechtigung und kein Gesamtwert des Menschen."
+    },
+    {
+      "prefix": "OP-",
+      "kind": "ai_operation",
+      "source": "ffe-systemindex-v0.6.json",
+      "meaning": "Ein operatives Profil, das der KI Prüffragen, Grenzen, Wege und Eskalationen für eine Situation vorgibt. Es ist keine politische Letztentscheidung."
+    },
+    {
+      "prefix": "module:",
+      "kind": "module_permission",
+      "source": "capabilities.v1.json",
+      "meaning": "Eine eng begrenzte technische Fähigkeit eines Seitenmoduls. Sie ersetzt niemals Supabase RLS oder ein legitimes permission_grant."
+    }
+  ],
+  "non_escalation_rules": [
+    {
+      "id": "CAP-RULE-SKILL-NOT-PERMISSION",
+      "rule": "Ein menschlicher Skill erteilt niemals automatisch ein technisches Schreib-, Verwaltungs- oder Datenzugriffsrecht.",
+      "ffe_refs": ["K05", "T05"]
+    },
+    {
+      "id": "CAP-RULE-AI-NOT-AUTHORITY",
+      "rule": "Ein operatives KI-Profil strukturiert Navigation und Prüfung, erteilt aber weder politische Autorität noch Datenzugriff.",
+      "ffe_refs": ["K10", "T05"]
+    },
+    {
+      "id": "CAP-RULE-RUNTIME-NOT-RLS",
+      "rule": "Eine Modulfreigabe steuert nur den Seiten-Renderer. Backend-Zugriff bleibt zusätzlich durch Anmeldung, permission_grants und Row Level Security geschützt.",
+      "ffe_refs": ["F04", "T05", "T06"]
+    },
+    {
+      "id": "CAP-RULE-NO-CROSS-KIND-INFERENCE",
+      "rule": "Zwischen human_skill, ai_operation und module_permission gibt es keine stillschweigende oder transitive Rechtevererbung.",
+      "ffe_refs": ["K05", "K10", "T05"]
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "module:data.public.community.read",
+      "kind": "module_permission",
+      "version": 1,
+      "title": "Öffentliche Communitydaten lesen",
+      "description": "Liest ausdrücklich veröffentlichte Community-Testdaten aus einer erlaubten Same-Origin-JSON-Quelle.",
+      "scope": "public community collections declared by the page document",
+      "status": "pilot",
+      "ffe_refs": ["F04", "T05"]
+    },
+    {
+      "id": "module:navigation.internal",
+      "kind": "module_permission",
+      "version": 1,
+      "title": "Interne Navigation anbieten",
+      "description": "Erzeugt geprüfte Links innerhalb der Website; Skript- und Daten-URLs bleiben gesperrt.",
+      "scope": "same-origin and relative navigation",
+      "status": "pilot",
+      "ffe_refs": ["K10", "T06"]
+    },
+    {
+      "id": "module:ui.motion.decorative",
+      "kind": "module_permission",
+      "version": 1,
+      "title": "Dekorative Bewegung verwenden",
+      "description": "Aktiviert nur registrierte Animationsmuster und respektiert reduzierte Bewegung des Betriebssystems.",
+      "scope": "declarative presentation only",
+      "status": "pilot",
+      "ffe_refs": ["F08", "T10"]
+    }
+  ]
+}

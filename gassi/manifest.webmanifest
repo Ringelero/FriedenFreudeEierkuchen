@@ -1,0 +1,14 @@
+{
+  "id": "/gassi/",
+  "name": "GemDen · Jetzt Gassi",
+  "short_name": "Jetzt Gassi",
+  "start_url": "/gassi/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#263f2d",
+  "background_color": "#fbf1e1",
+  "icons": [
+    { "src": "../assets/places-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "../assets/places-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

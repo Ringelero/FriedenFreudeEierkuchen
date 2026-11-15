@@ -1,0 +1,53 @@
+/* One live guide, two painted interpretations. The face remains live HTML. */
+.blob-residence{--resident-w:100px;--resident-h:125px}
+.community-sketch.blob-residence{--resident-w:104px;--resident-h:130px}
+.blob-residence .blob-home-seat{width:calc(var(--resident-w) + 10px);height:calc(var(--resident-h) + 4px)}
+.community-sketch .community-blob-seat{position:absolute;left:21.3%;top:10.5%;transform:translate(-50%,-50%);z-index:5}
+.community-sketch .community-blob-seat:before{display:none}
+.blob-residence.blob-balloon #blob-character.blob-home-resident{width:var(--resident-w);height:var(--resident-h);padding:0;border:0;border-radius:0;background:none!important;box-shadow:none!important;overflow:visible;transform:none;animation:none;transition:width .25s ease,height .25s ease;touch-action:pan-y}
+.blob-residence.blob-balloon #blob-character.is-chat-open{width:calc(var(--resident-w)*1.15);height:calc(var(--resident-h)*1.15)}
+.blob-residence.blob-balloon #blob-character :is(.blob-home-limb,.blob-home-foot){display:none}
+.blob-balloon-figure{position:absolute;inset:0;display:block;transform-origin:50% 65%;transition:transform .18s ease;pointer-events:none}
+.blob-balloon-frame{position:absolute;inset:0;display:block;background-image:url('/assets/community/blob-ballon-20261104-448.webp');background-image:image-set(url('/assets/community/blob-ballon-20261104-448.webp') 1x,url('/assets/community/blob-ballon-20261104-672.webp') 2x);background-size:200% 200%;background-repeat:no-repeat;transition:opacity .12s ease}
+.community-sketch .blob-balloon-frame.is-rest{background-position:0 0}
+.community-sketch .blob-balloon-frame.is-wave{background-position:100% 0}
+.garden-home .blob-balloon-frame.is-rest{background-position:0 100%}
+.garden-home .blob-balloon-frame.is-wave{background-position:100% 100%}
+.blob-balloon-frame.is-wave{opacity:0}
+.is-home-waving .blob-balloon-frame.is-wave{opacity:1}
+.is-home-waving .blob-balloon-frame.is-rest{opacity:0}
+.blob-residence.blob-balloon #blob-character .blob-face{position:absolute;left:29%;top:23%;width:44%;height:20%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:0;transform:rotate(-10deg);z-index:1}
+.blob-residence.blob-balloon #blob-character .blob-eyes{display:flex;align-items:center;justify-content:center;gap:14px;transform:translate(var(--look-x,0),var(--look-y,0));height:8px;transition:transform .18s ease}
+.blob-residence.blob-balloon #blob-character .blob-eye{width:5px;height:7px;background:#254639;border-radius:55% 45% 48% 52%;box-shadow:none;transform:rotate(6deg)}
+.garden-home.blob-residence.blob-balloon #blob-character .blob-eye{background:#51323b}
+.blob-residence.blob-balloon #blob-character.blink .blob-eye{height:2px;transform:translateY(3px)!important}
+.blob-residence.blob-balloon #blob-character .blob-mouth{width:13px;height:6px;margin-top:5px;border:0;border-bottom:1.7px solid #254639;border-radius:0 0 55% 45%;background:none}
+.garden-home.blob-residence.blob-balloon #blob-character .blob-mouth{border-bottom-color:#51323b}
+.blob-residence.blob-balloon #blob-character:hover .blob-balloon-figure{transform:translateY(-2px)}
+.blob-residence.blob-balloon #blob-character.is-home-waving .blob-balloon-figure{animation:balloonHello 1.8s ease-in-out both}
+@keyframes balloonHello{0%,100%{transform:rotate(0)}20%,55%{transform:rotate(-4deg) translateY(-2px)}38%,73%{transform:rotate(3deg) translateY(-1px)}}
+.blob-residence #blob-chat.blob-home-chat{right:calc(var(--resident-w)*1.15 + 40px);background:#fcf5e4;border-color:#99a583;border-radius:30px 23px 35px 24px;box-shadow:0 15px 45px #29402b29,0 0 0 3px #fcf5e480}
+.blob-residence .blob-home-chat-head{background:#fcf5e4}
+.community-sketch .blob-home-categories button{border-radius:20px 15px 23px 17px;background:#f2edda;font-family:Georgia,serif;font-weight:500;font-size:.94rem}
+.community-sketch .blob-home-introduce{font-family:Georgia,serif;font-size:1rem;font-weight:500}
+.community-sketch #blob-chat .blob-home-controls{margin:0;justify-content:flex-end}
+.garden-home.blob-residence #blob-chat.blob-home-chat{--blob-ink:#51323b;--blob-muted:#795954;background:#fff0da;border-color:#bb886e;box-shadow:0 15px 45px #6b39432b,0 0 0 3px #fff0da80}
+.garden-home.blob-residence .blob-home-chat-head{background:#fff0da}
+.garden-home.blob-residence .blob-home-categories button{background:#f6e5cb;border-color:#c89977;color:#643c42;border-radius:23px 15px 22px 18px;font-family:Georgia,serif;font-weight:500;font-size:.94rem}
+.garden-home.blob-residence .blob-home-categories svg{color:#915644}
+.garden-home.blob-residence .blob-home-chat-head button{background:#f6e4ce;border-color:#c89977;color:#643c42}
+.garden-home.blob-residence .blob-home-introduce{font-family:Georgia,serif;font-size:1rem;font-weight:500}
+.garden-home.blob-residence #blob-chat #blob-knowledge button[type=submit]{background:#91534c;border-color:#91534c}
+.blob-residence.home-motion-paused .blob-balloon-figure,.blob-residence.home-motion-paused .blob-balloon-frame{animation:none!important;transition:none!important}
+@media(max-width:850px){
+ .community-sketch.blob-residence{--resident-w:72px;--resident-h:90px}
+ .community-sketch .community-blob-seat{left:22%;top:5.7%}
+}
+@media(max-width:760px){
+ .garden-home.blob-residence{--resident-w:86px;--resident-h:107.5px}
+ .blob-residence #blob-chat.blob-home-chat{left:12px;right:12px;bottom:calc(var(--resident-h)*1.15 + 36px);width:auto;max-height:calc(100dvh - var(--resident-h)*1.15 - 62px);padding:18px}
+ .blob-residence.blob-balloon #blob-character .blob-eyes{gap:10px;height:7px}
+ .blob-residence.blob-balloon #blob-character .blob-eye{width:4px;height:6px}
+ .blob-residence.blob-balloon #blob-character .blob-mouth{width:11px;height:5px;margin-top:4px}
+}
+@media(prefers-reduced-motion:reduce){.blob-balloon-figure,.blob-balloon-frame{animation:none!important;transition:none!important}}

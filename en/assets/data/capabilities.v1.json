@@ -1,0 +1,101 @@
+{
+  "$schema": "../../schemas/gemden-capability.v1.schema.json",
+  "schema_version": "1.0.0",
+  "namespaces": [
+    {
+      "prefix": "SKILL-",
+      "kind": "human_skill",
+      "source": "community-v0.1.json and K05",
+      "meaning": "A specific, demonstrable skill of a person or team. It is not a technical permission or an overall rating of the person."
+    },
+    {
+      "prefix": "OP-",
+      "kind": "ai_operation",
+      "source": "ffe-systemindex-v0.6.json",
+      "meaning": "An operational profile that gives the AI questions, limits, paths and escalation steps for a situation. It is not a final political decision."
+    },
+    {
+      "prefix": "module:",
+      "kind": "module_permission",
+      "source": "capabilities.v1.json",
+      "meaning": "A narrowly limited technical capability of a page module. It never replaces Supabase RLS or a legitimate permission_grant."
+    }
+  ],
+  "non_escalation_rules": [
+    {
+      "id": "CAP-RULE-SKILL-NOT-PERMISSION",
+      "rule": "A human skill never automatically grants technical write, administration or data access permissions.",
+      "ffe_refs": [
+        "K05",
+        "T05"
+      ]
+    },
+    {
+      "id": "CAP-RULE-AI-NOT-AUTHORITY",
+      "rule": "An AI operational profile structures navigation and checks, but grants neither political authority nor data access.",
+      "ffe_refs": [
+        "K10",
+        "T05"
+      ]
+    },
+    {
+      "id": "CAP-RULE-RUNTIME-NOT-RLS",
+      "rule": "A module permission controls only the page renderer. Backend access remains additionally protected by sign-in, permission_grants and Row Level Security.",
+      "ffe_refs": [
+        "F04",
+        "T05",
+        "T06"
+      ]
+    },
+    {
+      "id": "CAP-RULE-NO-CROSS-KIND-INFERENCE",
+      "rule": "There is no implicit or transitive inheritance of permissions between human_skill, ai_operation and module_permission.",
+      "ffe_refs": [
+        "K05",
+        "K10",
+        "T05"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "module:data.public.community.read",
+      "kind": "module_permission",
+      "version": 1,
+      "title": "Read public Community data",
+      "description": "Reads explicitly published Community test data from an approved same-origin JSON source.",
+      "scope": "public community collections declared by the page document",
+      "status": "pilot",
+      "ffe_refs": [
+        "F04",
+        "T05"
+      ]
+    },
+    {
+      "id": "module:navigation.internal",
+      "kind": "module_permission",
+      "version": 1,
+      "title": "Offer internal navigation",
+      "description": "Generates validated links within the website; script and data URLs remain blocked.",
+      "scope": "same-origin and relative navigation",
+      "status": "pilot",
+      "ffe_refs": [
+        "K10",
+        "T06"
+      ]
+    },
+    {
+      "id": "module:ui.motion.decorative",
+      "kind": "module_permission",
+      "version": 1,
+      "title": "Use decorative motion",
+      "description": "Activates registered animation patterns only and respects the operating system's reduced-motion preference.",
+      "scope": "declarative presentation only",
+      "status": "pilot",
+      "ffe_refs": [
+        "F08",
+        "T10"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "ical.js",
+  "version": "2.2.1",
+  "source": "https://registry.npmjs.org/ical.js/-/ical.js-2.2.1.tgz",
+  "integrity": "sha512-yK/UlPbEs316igb/tjRgbFA8ZV75rCsBJp/hWOatpyaPNlgw0dGDmU+FoicOcwX4xXkeXOkYiOmCqNPFpNPkQg==",
+  "original_file": "package/dist/ical.min.js",
+  "file": "ical.min.mjs",
+  "sha256": "6643f20634241dc040e02c2f10e3c48cf9bcda4b3180f4321a3d05a3a83dfe52",
+  "license": "MPL-2.0"
+}

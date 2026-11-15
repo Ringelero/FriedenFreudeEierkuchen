@@ -1,0 +1,86 @@
+-- EXAMPLE ONLY. This file is not a migration and is never run automatically.
+--
+-- Replace both UUIDs and the legitimate granting authority before execution.
+-- The transaction deliberately aborts while any placeholder remains. Create or
+-- invite the two Auth users first; do not create production users by editing
+-- auth.users directly.
+
+begin;
+
+do $bootstrap$
+declare
+  julius_user_id constant uuid := '00000000-0000-0000-0000-000000000001';
+  leni_user_id constant uuid := '00000000-0000-0000-0000-000000000002';
+  granting_authority constant text := '__LEGITIME_STELLE_EINTRAGEN__';
+  affected_rows integer;
+begin
+  if julius_user_id in (
+      '00000000-0000-0000-0000-000000000001'::uuid,
+      '00000000-0000-0000-0000-000000000002'::uuid
+    )
+    or leni_user_id in (
+      '00000000-0000-0000-0000-000000000001'::uuid,
+      '00000000-0000-0000-0000-000000000002'::uuid
+    )
+    or left(granting_authority, 2) = '__'
+  then
+    raise exception 'Bootstrap placeholders must be replaced before execution.';
+  end if;
+
+  if julius_user_id = leni_user_id then
+    raise exception 'Julius and Leni must reference different Auth users.';
+  end if;
+
+  update public.profiles
+  set stable_id = 'MEM-JULIUS',
+      display_name = 'Julius'
+  where id = julius_user_id;
+
+  get diagnostics affected_rows = row_count;
+  if affected_rows <> 1 then
+    raise exception 'Julius profile was not found exactly once.';
+  end if;
+
+  update public.profiles
+  set stable_id = 'MEM-LENI',
+      display_name = 'Leni'
+  where id = leni_user_id;
+
+  get diagnostics affected_rows = row_count;
+  if affected_rows <> 1 then
+    raise exception 'Leni profile was not found exactly once.';
+  end if;
+
+  if not exists (select 1 from public.kieze where id = 'KIEZ-P-HAIN') then
+    raise exception 'KIEZ-P-HAIN is missing; apply the foundation migration first.';
+  end if;
+
+  insert into public.permission_grants (
+    grantee_user_id,
+    permission_key,
+    scope_type,
+    scope_id,
+    granted_by_authority,
+    reason
+  )
+  select
+    leni_user_id,
+    'manage_kiez',
+    'kiez',
+    'KIEZ-P-HAIN',
+    granting_authority,
+    'Zeitlich unbefristeter, auf P-Hain begrenzter Pilotzugriff.'
+  where not exists (
+    select 1
+    from public.permission_grants as existing_grant
+    where existing_grant.grantee_user_id = leni_user_id
+      and existing_grant.permission_key = 'manage_kiez'
+      and existing_grant.scope_type = 'kiez'
+      and existing_grant.scope_id = 'KIEZ-P-HAIN'
+      and existing_grant.revoked_at is null
+      and (existing_grant.ends_at is null or existing_grant.ends_at > now())
+  );
+end;
+$bootstrap$;
+
+commit;
