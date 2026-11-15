@@ -1,114 +1,333 @@
-.ruby-wonderland{--ink:#173f34;--muted:#52695e;--ruby:#b81938;--ruby-deep:#8c142d;--line:#31584d30;--ruby-cream:#fff5df;--ruby-gold:#d8a22e;background:radial-gradient(ellipse at 50% 12%,#d8f0f8,transparent 53rem),linear-gradient(145deg,#99cce6,#b9e2ee 50%,#9bcfe5);background-attachment:scroll}
-.ruby-wonderland .site-shell{--content:1240px;padding-bottom:90px}.ruby-wonderland main{min-width:0}
-.ruby-wonderland .site-nav{background:var(--ruby-cream);border:1px solid #536c5c7a;border-radius:22px;box-shadow:0 6px 20px #244b4220;backdrop-filter:none}
-.ruby-wonderland .site-mark{font:700 1.6rem/1 Georgia,serif;letter-spacing:-.05em;padding-block:10px}.ruby-wonderland .site-mark::before{content:'✦';color:var(--ruby);font:1.6rem Georgia,serif}
-.ruby-wonderland .nav-links a{font-size:.83rem;color:var(--ink)}.ruby-wonderland .nav-links a:hover,.ruby-wonderland .nav-links a[aria-current=page]{color:#fff9ec;background:var(--ruby)}.ruby-wonderland .nav-toggle{color:var(--ruby-deep);background:#fffaf0;border-color:var(--line)}
-.ruby-breadcrumb{font-size:.73rem;margin:3px 5px 15px;color:#244e42}.ruby-breadcrumb a{color:#244e42}
-.ruby-hero{position:relative;isolation:isolate;overflow:hidden;border:1px solid #536c5c7a;border-radius:27px;background:var(--ruby-cream);box-shadow:0 12px 35px #244b4228;min-height:clamp(390px,43vw,548px)}
-.ruby-hero-art{position:absolute;inset:0;z-index:-1;display:block}.ruby-hero-art img{display:block;width:100%;height:100%;object-fit:cover}
-.ruby-hero-copy{display:flex;flex-direction:column;align-items:center;justify-content:center;width:52%;margin-left:18%;min-height:inherit;padding:55px 0 75px;text-align:center}
-.ruby-eyebrow{color:#315948;font-size:.71rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;line-height:1.6;margin:0}
-.ruby-hero-copy .ruby-eyebrow{letter-spacing:.08em;font-size:.66rem}.ruby-hero-copy .ruby-eyebrow span{margin:0 8px;color:var(--ruby)}
-.ruby-hero h1{margin:16px 0 18px;color:#a41230;font:500 clamp(3.3rem,7.6vw,6.3rem)/1 Georgia,'Times New Roman',serif;letter-spacing:-.055em}
-.ruby-hero-lead{margin:0;font-size:clamp(.95rem,1.55vw,1.1rem);line-height:1.6;color:#173f34}.ruby-hero .button-row{justify-content:center;gap:12px;margin-top:23px}
-.ruby-wonderland .button{min-height:46px;gap:12px;padding:13px 20px;background:var(--ruby);color:#fff9ec;border:1px solid var(--ruby);border-radius:999px;box-shadow:none;font-size:.86rem;font-weight:750;line-height:1.4;letter-spacing:0;min-width:0}.ruby-wonderland .button:hover{background:#97132d;color:#fff9ec}
-.ruby-wonderland .button.secondary{background:#fff7e5e8;color:#173f34;border-color:#173f34}.ruby-wonderland .button.secondary:hover{background:#fffdf7}.ruby-mobile-break{display:none}
-.ruby-section{padding:37px 4px 0;scroll-margin-top:20px}.ruby-section-head{text-align:center;display:grid;gap:11px;margin-bottom:24px}
-.ruby-section-head h2,.ruby-together h2{font:500 clamp(1.85rem,3.2vw,2.8rem)/1.13 Georgia,serif;letter-spacing:-.035em;color:var(--ink);margin:0}.ruby-section-head>p:not(.ruby-eyebrow){font-size:.89rem;line-height:1.6;color:#34594b;margin:0}
-.ruby-flourish{display:flex;align-items:center;justify-content:center;gap:14px;color:var(--ruby);font-size:1.05rem}.ruby-flourish span{display:block;width:43px;border-top:1px solid var(--ruby-gold)}
-.ruby-entries{display:grid;grid-template-columns:1.3fr 1fr;gap:20px}
-.ruby-entry{position:relative;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.2fr);align-items:stretch;min-width:0;min-height:213px;border:2px solid var(--ruby);border-radius:24px;overflow:hidden;background:var(--ruby-cream);text-decoration:none;color:var(--ink);box-shadow:0 5px 0 #31584d12;transition:box-shadow .2s ease}
-.ruby-entry::before,.ruby-entry::after{position:absolute;z-index:1;font:1.55rem/1 Georgia,serif;color:var(--ruby);pointer-events:none}.ruby-entry::before{content:'♣';left:12px;top:10px}.ruby-entry::after{content:'♣';right:10px;bottom:9px;transform:rotate(180deg)}
-.ruby-entry-people{border-color:#c98b20}.ruby-entry-people::before,.ruby-entry-people::after{color:#b27a14}.ruby-entry:hover{box-shadow:0 5px 0 #31584d12,inset 0 0 0 1px currentColor}
-.ruby-entry-art{display:block;min-width:0;overflow:hidden;background:#fff4dd}.ruby-entry-art img{display:block;width:100%;height:100%;object-fit:cover;object-position:18% center}.ruby-entry-people .ruby-entry-art img{object-position:12% center}
-.ruby-entry-copy{align-self:center;display:grid;gap:10px;padding:25px 22px 30px 19px;min-width:0}.ruby-entry-copy small{font-size:.65rem;font-weight:750;line-height:1.55;color:#60715a}.ruby-entry-copy strong{font:500 clamp(1.65rem,2.8vw,2.55rem)/1.06 Georgia,serif;letter-spacing:-.035em;overflow-wrap:normal}.ruby-entry-copy>span{font-size:.82rem;line-height:1.5;color:#4c6254}
-.ruby-entry-copy b{display:flex;gap:10px;font-size:.77rem;line-height:1.5;color:var(--ruby);font-weight:800}.ruby-entry-people .ruby-entry-copy b{color:#825510}
-.ruby-availability{margin:18px 4px 15px;font-size:.78rem;line-height:1.65;text-align:center;color:#2c5144}
-.ruby-details{border:1px solid #42664d4a;border-radius:19px;background:#fff7e5e8;color:var(--ink);padding:0 21px}.ruby-details>summary{min-height:52px;padding:15px 0;cursor:pointer;font-size:.86rem;font-weight:750;line-height:1.65}.ruby-details[open]>summary{border-bottom:1px solid #42664d24;margin-bottom:17px}
-.ruby-catalog .service-list{padding-bottom:20px}.ruby-catalog .service-card{padding:20px;border-color:#d7dcbf;background:#fffaf0;border-radius:17px;gap:12px}.ruby-catalog .service-card h3{font:500 clamp(1.5rem,3.2vw,2.2rem)/1.12 Georgia,serif;letter-spacing:-.03em}.ruby-catalog .service-card p{font-size:.86rem}.ruby-catalog .service-availability{background:#eef0df;border-color:#d4d9bf}.ruby-catalog .service-card-action{font-size:.84rem;min-height:44px}
-.ruby-member-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.ruby-member{display:grid;grid-template-columns:66px minmax(0,1fr);gap:20px;align-items:start;padding:27px;border:1px solid #43725b50;border-radius:23px;background:#fff7e7;color:var(--ink);text-decoration:none;min-width:0}
-.ruby-monogram{display:grid;place-items:center;width:66px;aspect-ratio:1;border-radius:45% 55% 53% 47%;border:1px solid #c79584;background:#f5d8cc;color:#981f3d;font:500 2.3rem Georgia,serif}.ruby-member-invitation .ruby-monogram{background:#e5eacb;border-color:#aebc8d;color:#4c704b}
-.ruby-member h3{font:500 1.8rem/1.15 Georgia,serif;letter-spacing:-.025em;margin:1px 0 10px}.ruby-member p{font-size:.86rem;line-height:1.65;color:#52675a;margin:0 0 12px}.ruby-member b,.ruby-member a{display:inline-flex;align-items:center;gap:10px;min-height:44px;font-size:.8rem;font-weight:800;color:var(--ruby);text-underline-offset:4px}
-.ruby-together{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:28px 4px 20px;padding:26px 29px;border:1px solid #c8a24f;border-radius:23px;background:#f8e8bd;position:relative;overflow:hidden}.ruby-together::after{content:'';position:absolute;bottom:0;left:0;right:0;height:6px;background:repeating-linear-gradient(90deg,#254f3d 0 10px,#fff5df 10px 20px);opacity:.6}
-.ruby-together h2{font-size:clamp(1.65rem,2.7vw,2.15rem);margin:8px 0}.ruby-together p:not(.ruby-eyebrow){color:#56614b;font-size:.86rem;line-height:1.6;margin:0}.ruby-together .button{flex-shrink:0}
-.ruby-culture{margin:0 4px}.ruby-culture-body{padding:2px 0 22px}.ruby-culture-body h2{font:500 1.7rem/1.2 Georgia,serif;letter-spacing:-.02em;margin:0 0 12px}.ruby-culture-body p{font-size:.86rem;line-height:1.75;color:#52675a;margin:0 0 16px;max-width:900px}
-.ruby-culture-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.ruby-culture-grid ul{padding-left:20px;font-size:.86rem;line-height:1.8;margin:0 0 17px}.ruby-culture-body .ruby-culture-note{border-top:1px solid #42664d24;padding-top:14px;margin-bottom:0;font-size:.8rem}
-.ruby-wonderland .footer{margin-top:31px;padding-top:21px;font-size:.76rem;color:#315646;line-height:1.6}.ruby-wonderland .footer>a{color:#244a3a;display:inline-flex;align-items:center;min-height:44px}.ruby-wonderland .footer .site-help-links a{background:#fff7e9}
-.ruby-wonderland a:focus-visible,.ruby-wonderland summary:focus-visible{outline:3px solid #173f34;outline-offset:4px}
-@media(min-width:761px) and (max-width:1000px){.ruby-hero-copy{width:57%;margin-left:14%}.ruby-hero h1{font-size:7.1vw}.ruby-hero .button-row{gap:8px}.ruby-hero .button{padding:12px 14px;font-size:.77rem}.ruby-entry-copy{padding:22px 17px 25px 13px}.ruby-entry-copy strong{font-size:1.8rem}.ruby-entry-copy small{font-size:.6rem}}
-@media(max-width:760px){
-.ruby-hero{min-height:0;border-radius:24px}.ruby-hero-art{position:relative;inset:auto;z-index:auto;height:clamp(195px,48vw,330px)}.ruby-hero-art img{object-position:center 47%}
-.ruby-hero-copy{width:auto;margin:0;min-height:0;padding:22px 23px 29px;background:var(--ruby-cream)}.ruby-hero h1{font-size:clamp(3.1rem,9.8vw,4.4rem);margin:9px 0 11px}.ruby-hero-copy .ruby-eyebrow{font-size:.61rem}.ruby-hero-lead{font-size:.95rem;line-height:1.55}
-.ruby-hero .button-row{margin-top:18px;width:100%;max-width:420px;gap:9px}.ruby-hero .button{flex:1 1 160px}
-.ruby-section{padding-top:30px}.ruby-section-head{margin-bottom:21px;gap:10px}.ruby-entries{grid-template-columns:1fr;gap:13px}.ruby-entry{min-height:176px;grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr);border-radius:22px}.ruby-entry-copy{gap:8px;padding:23px 23px 24px 19px}.ruby-entry-copy strong{font-size:2rem}
-.ruby-member-grid{grid-template-columns:1fr;gap:13px}.ruby-together{align-items:flex-start;flex-direction:column;gap:18px;padding:23px}.ruby-together .button{width:100%}
+.ruby-wonderland {
+  --ruby-paper: #f9e9c1;
+  --ruby-ink: #213923;
+  --ruby-red: #9f322a;
+  --ruby-forest: #183821;
+  --ruby-line: #b68348;
+  margin: 0;
+  background: #f7edd6;
+  color: var(--ruby-ink);
+  font-family: Georgia, "Times New Roman", serif;
 }
-@media(max-width:550px){
-.ruby-wonderland .site-shell{padding:10px 12px 85px}.ruby-wonderland .site-nav{border-radius:19px;margin-bottom:11px;padding:6px 8px;gap:8px}.ruby-wonderland .site-mark{font-size:1.43rem;padding:8px 7px}.ruby-wonderland .site-mark::before{font-size:1.5rem}
-.ruby-breadcrumb{font-size:.65rem;gap:5px;margin:5px 5px 11px}.ruby-hero-art{height:clamp(182px,54vw,280px)}.ruby-hero-copy{padding:18px 19px 25px}.ruby-hero h1{font-size:clamp(2.9rem,12vw,3.9rem);letter-spacing:-.055em}
-.ruby-mobile-break{display:block}.ruby-hero-lead .ruby-mobile-break{display:none}.ruby-hero-lead{font-size:.85rem}.ruby-hero-copy .ruby-eyebrow{font-size:.56rem;letter-spacing:.07em}.ruby-hero-copy .ruby-eyebrow span{margin:0 6px}
-.ruby-hero .button-row{gap:8px;margin-top:17px}.ruby-hero .button{flex-basis:100%;min-height:44px;padding:12px 14px;font-size:.81rem}
-.ruby-section{padding-inline:0;padding-top:28px}.ruby-section-head h2{font-size:1.9rem;line-height:1.13}.ruby-section-head .ruby-eyebrow{font-size:.62rem}.ruby-section-head>p:not(.ruby-eyebrow){font-size:.81rem;max-width:290px;justify-self:center}
-.ruby-entry{min-height:170px;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr)}.ruby-entry-copy{gap:7px;padding:20px 19px 24px 13px}.ruby-entry-copy small{font-size:.59rem;line-height:1.5}.ruby-entry-copy strong{font-size:1.77rem;line-height:1.1}.ruby-entry-copy>span{font-size:.75rem}.ruby-entry-copy b{font-size:.71rem;gap:7px}
-.ruby-entry::before,.ruby-entry::after{font-size:1.25rem}.ruby-entry::before{left:9px;top:8px}.ruby-entry::after{right:8px;bottom:7px}
-.ruby-availability{font-size:.74rem;margin:15px 5px 13px}.ruby-details{padding:0 15px;border-radius:17px}.ruby-details>summary{font-size:.77rem;min-height:50px;padding-block:13px}
-.ruby-catalog .service-card{padding:17px}.ruby-catalog .service-card h3{font-size:1.6rem}.ruby-catalog .service-card p{font-size:.81rem}.ruby-catalog .status-chip{font-size:.69rem}
-.ruby-member{grid-template-columns:49px minmax(0,1fr);gap:15px;padding:21px}.ruby-monogram{width:49px;font-size:1.9rem}.ruby-member h3{font-size:1.55rem}.ruby-member p{font-size:.8rem}.ruby-member b,.ruby-member a{font-size:.76rem}
-.ruby-together{margin:24px 0 17px;padding:22px}.ruby-together .ruby-eyebrow{font-size:.62rem}.ruby-together h2{font-size:1.8rem}.ruby-together p:not(.ruby-eyebrow){font-size:.82rem}.ruby-culture{margin-inline:0}
-.ruby-culture-body h2{font-size:1.5rem}.ruby-culture-body p,.ruby-culture-grid ul{font-size:.8rem}.ruby-culture-grid{grid-template-columns:1fr;gap:0}.ruby-wonderland .footer{gap:9px;margin-top:22px;font-size:.72rem}
-}
-@media(prefers-reduced-motion:reduce){.ruby-wonderland *{scroll-behavior:auto!important;transition:none!important}}
 
-/* Community story, places, rituals and the first friendship-tree branch. */
-.ruby-about{margin-top:26px;padding:30px clamp(22px,5vw,64px);border:1px solid #c79c51;border-radius:26px;background:#fff5df;text-align:center}
-.ruby-about h2,.ruby-projects h2{font:500 clamp(1.85rem,3.2vw,2.7rem)/1.15 Georgia,serif;letter-spacing:-.035em;margin:12px 0 17px;color:var(--ink)}
-.ruby-about-copy{max-width:780px;margin:0 auto;color:#34594b;font-size:1rem;line-height:1.85;text-wrap:pretty}
-.ruby-talents{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;list-style:none;padding:0;margin:23px 0 0}
-.ruby-talents li{padding:8px 14px;border:1px solid #b8c6a4;border-radius:999px;background:#eef0d9;font-size:.78rem;color:#315646}
-.ruby-chapters{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:20px 0 0}
-.ruby-chapters a{display:flex;align-items:center;justify-content:center;min-height:44px;padding:9px 15px;background:#fff8e8;border:1px solid #c6b487;border-radius:999px;color:#284e40;font-size:.8rem;font-weight:700;text-decoration:none}
-.ruby-chapters a:hover{background:#f9e2b5}
-.ruby-place{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:center;border:1px solid #b58947;border-radius:26px;overflow:hidden;background:#fff3d9}
-.ruby-place-art{position:relative;align-self:stretch;min-height:320px;overflow:hidden;background:#dce5bf}
-.ruby-place-art img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center}
-.ruby-place-copy{padding:30px clamp(22px,4vw,45px)}
-.ruby-place h3,.ruby-ritual h3,.ruby-friendship h3{font:500 clamp(1.6rem,2.8vw,2.2rem)/1.16 Georgia,serif;letter-spacing:-.025em;margin:11px 0 14px;color:var(--ink)}
-.ruby-place-copy>p:not(.ruby-eyebrow),.ruby-ritual>p:not(.ruby-eyebrow),.ruby-friendship-intro>p:not(.ruby-eyebrow),.ruby-projects>p:not(.ruby-eyebrow){color:#42604f;font-size:.9rem;line-height:1.8}
-.ruby-place-copy .button-row{gap:9px;margin:20px 0 8px}
-.ruby-text-link{display:inline-flex;align-items:center;gap:9px;min-height:44px;color:#8c1733;font-size:.8rem;font-weight:750;text-underline-offset:4px}
-.ruby-ritual-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.ruby-ritual{position:relative;padding:29px clamp(22px,3vw,35px);border:1px solid #b79d5d;border-radius:24px;background:#fff5df}
-.ruby-ritual:nth-child(2){background:#f4e5d7;border-color:#bf9b9b}
-.ruby-ritual-symbol{display:block;color:var(--ruby);font:2.4rem/1 Georgia,serif;margin-bottom:16px}
-.ruby-section-note{margin:18px auto 0;max-width:740px;text-align:center;color:#486351;font-size:.79rem;line-height:1.75}
-.ruby-friendship{border:1px solid #94ad8b;border-radius:26px;background:linear-gradient(160deg,#f5f1d9,#e5ebcf);padding:29px clamp(20px,3vw,35px)}
-.ruby-friendship-intro{max-width:760px;text-align:center;margin:0 auto}
-.ruby-friendship-branches{position:relative;padding-top:40px;margin-top:12px}
-.ruby-friendship-branches:before{content:'';position:absolute;left:25%;right:25%;top:13px;height:27px;border:2px solid #a7884d;border-bottom:0;border-radius:19px 19px 0 0;pointer-events:none}
-.ruby-friendship-branches:after{content:'';position:absolute;left:50%;top:0;height:15px;border-left:2px solid #a7884d;pointer-events:none}
-.ruby-friendship .ruby-member{background:#fff9e9;position:relative;padding:23px;gap:15px}
-.ruby-friendship .ruby-member h3{font-size:clamp(1.5rem,2.5vw,1.95rem);overflow-wrap:anywhere}
-.ruby-friendship .ruby-member-role{margin:1px 0 7px;font-size:.67rem;font-weight:800;line-height:1.5;letter-spacing:.05em;text-transform:uppercase;color:#806027}
-.ruby-friendship .ruby-member p:not(.ruby-member-role){font-size:.83rem}
-.ruby-projects{padding:29px clamp(22px,5vw,64px);border:1px dashed #947c4c;border-radius:25px;background:#fff4df;text-align:center}
-.ruby-projects>p{max-width:720px;margin-inline:auto}
-@media(max-width:760px){
-.ruby-place{grid-template-columns:1fr}.ruby-place-art{min-height:0;aspect-ratio:16/9}
-.ruby-place-copy{padding:25px}.ruby-ritual-grid{grid-template-columns:1fr}
-.ruby-friendship-branches{margin-top:18px;padding:0 0 0 18px;gap:16px}
-.ruby-friendship-branches:before{left:0;right:auto;top:24px;bottom:24px;width:2px;height:auto;border:0;border-left:2px solid #a7884d;border-radius:0}
-.ruby-friendship-branches:after{display:none}
-.ruby-friendship-branches>.ruby-member:before{content:'';position:absolute;left:-18px;top:24px;width:17px;border-top:2px solid #a7884d}
+.ruby-wonderland .site-shell { width: min(100%, 1800px); max-width: none; padding: 0; }
+.ruby-wonderland .site-nav {
+  position: relative;
+  z-index: 4;
+  margin: 0;
+  padding: 14px clamp(1rem, 4vw, 4.5rem);
+  border: 0;
+  border-radius: 0;
+  background: #f8ead0;
+  color: var(--ruby-ink);
+  box-shadow: none;
 }
-@media(max-width:550px){
-.ruby-about{margin-top:21px;padding:24px 20px;border-radius:23px}.ruby-about-copy{font-size:.87rem;line-height:1.85}
-.ruby-about h2,.ruby-projects h2{font-size:1.85rem}.ruby-talents{gap:7px;margin-top:19px}.ruby-talents li{font-size:.7rem;padding:7px 11px}
-.ruby-chapters{gap:7px;margin-top:16px}.ruby-chapters a{font-size:.73rem;padding:8px 12px}
-.ruby-place-copy{padding:23px}
-.ruby-place h3,.ruby-ritual h3{font-size:1.8rem}.ruby-place-copy>p:not(.ruby-eyebrow),.ruby-ritual>p:not(.ruby-eyebrow),.ruby-friendship-intro>p:not(.ruby-eyebrow),.ruby-projects>p:not(.ruby-eyebrow){font-size:.83rem}
-.ruby-place-copy .button-row{align-items:stretch;flex-direction:column}.ruby-place-copy .button{width:100%}
-.ruby-ritual{padding:24px}.ruby-section-note{font-size:.75rem}
-.ruby-friendship{padding:23px 16px}.ruby-friendship h3{font-size:1.85rem}.ruby-friendship .ruby-member{grid-template-columns:1fr;padding:18px;gap:11px}
-.ruby-friendship .ruby-member h3{font-size:1.55rem;overflow-wrap:normal}.ruby-friendship .ruby-member p:not(.ruby-member-role){font-size:.8rem}
-.ruby-projects{padding:24px 21px}
+.ruby-wonderland .site-mark { font: bold clamp(1.65rem, 3vw, 2.6rem)/1.12 Georgia, serif; }
+.ruby-wonderland :is(.site-mark, .nav-links a, .footer a) { color: var(--ruby-ink); }
+.ruby-wonderland .nav-links a[aria-current="page"] { background: #efdbb5; }
+.ruby-wonderland .language-switcher { background: #f9eed9; }
+.ruby-wonderland .language-switcher a[aria-current="true"] { color: #fff7e2; background: var(--ruby-forest); }
+.ruby-wonderland .footer {
+  margin: 0;
+  padding: 1.5rem clamp(1rem, 4vw, 4.5rem);
+  background: #f7edd6;
+  color: var(--ruby-ink);
+  border: 0;
+}
+.ruby-wonderland [hidden] { display: none !important; }
+.ruby-wonderland .skip-link:not(:focus) { clip-path: inset(50%); }
+.ruby-wonderland :focus-visible { outline: 3px solid #2a5940; outline-offset: 4px; }
+
+.ruby-world {
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
+  background: var(--ruby-forest);
+}
+.ruby-world::before {
+  position: absolute;
+  z-index: -1;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 72%;
+  content: "";
+  background: linear-gradient(180deg, #183821 0%, #18382121 38%, #18382104 90%), url("/assets/art/garden/landschaft-v3-desktop-20261030-1254.webp") center 69% / cover;
+  pointer-events: none;
+}
+.ruby-hero { position: relative; isolation: isolate; width: 100%; min-height: 320px; aspect-ratio: 3 / 1; }
+.ruby-hero-art { position: absolute; inset: 0; display: block; z-index: -1; }
+.ruby-hero-art::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 12%;
+  background: linear-gradient(transparent, #183821aa);
+  content: "";
+}
+.ruby-hero-art img { display: block; width: 100%; height: 100%; object-fit: fill; }
+.ruby-hero-copy {
+  position: absolute;
+  top: 17%;
+  left: 24.5%;
+  width: 43%;
+  text-align: left;
+  color: var(--ruby-ink);
+}
+.ruby-hero h1 {
+  margin: 0 0 .14em;
+  color: inherit;
+  font: 600 clamp(3.25rem, 7.65cqw, 9.2rem)/.99 Georgia, serif;
+  letter-spacing: -.067em;
+}
+.ruby-hero-copy p {
+  max-width: min(95%, 30ch);
+  margin: .64em 0 0;
+  color: inherit;
+  font: 600 clamp(.98rem, 2.03cqw, 2.13rem)/1.28 Georgia, serif;
+  text-wrap: pretty;
+}
+
+.ruby-scenes { position: relative; margin-top: -5.6cqw; padding: 0 0 clamp(1.5rem, 5cqw, 5.5rem); }
+.ruby-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: min(74%, 1030px);
+  gap: clamp(.35rem, 1cqw, 1rem);
+  align-items: center;
+  margin: 0 auto clamp(1.15rem, 2.1cqw, 2.1rem);
+}
+.ruby-card {
+  --tilt: 0deg;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  justify-items: center;
+  gap: .2em;
+  min-width: 0;
+  padding: clamp(.58rem, 1.15cqw, 1.2rem) .38rem clamp(.6rem, 1.2cqw, 1.25rem);
+  border: 2px solid var(--ruby-line);
+  border-radius: 13% 10% 12% 11% / 10% 12% 10% 12%;
+  box-shadow: 0 6px 0 #80492e, 0 11px 17px #17321eb3, inset 0 0 0 4px #fff2c4, inset 0 0 0 5px #bb8a4b;
+  background: var(--ruby-paper);
+  color: var(--ruby-ink);
+  font: 700 clamp(1rem, 2.23cqw, 2.15rem)/1.18 Georgia, serif;
+  letter-spacing: -.035em;
+  text-align: center;
+  text-decoration: none;
+  transform: rotate(var(--tilt));
+  transition: transform .22s ease, border-color .22s ease;
+}
+.ruby-card:nth-child(1) { --tilt: -7deg; }
+.ruby-card:nth-child(2) { --tilt: -2deg; }
+.ruby-card:nth-child(3) { --tilt: 4deg; }
+.ruby-card:nth-child(4) { --tilt: 8deg; }
+.ruby-card:is(:hover, :focus-visible, [aria-selected="true"]) { transform: translateY(-.36em) rotate(var(--tilt)); }
+.ruby-card[aria-selected="true"] {
+  z-index: 2;
+  border-color: var(--ruby-red);
+  box-shadow: 0 6px 0 #80492e, 0 11px 17px #17321eb3, inset 0 0 0 4px #fff2c4, inset 0 0 0 6px var(--ruby-red);
+}
+.ruby-scenes:not(:has([role="tablist"])) .ruby-card:first-child { border-color: var(--ruby-red); }
+.ruby-suit {
+  position: absolute;
+  top: .47em;
+  left: .62em;
+  color: var(--ruby-forest);
+  font-size: .85em;
+}
+.ruby-suit:last-child { inset: auto .65em .43em auto; font-size: .65em; transform: rotate(180deg); }
+.ruby-card:nth-child(-n+2) .ruby-suit { color: var(--ruby-red); }
+.ruby-card .ruby-symbol { width: min(100%, 180px); }
+.ruby-symbol {
+  display: block;
+  aspect-ratio: 1;
+  background: url("/assets/rubybubys/kartensymbole-800.webp") 0 0 / 200% 200% no-repeat;
+  border-radius: 20%;
+  mix-blend-mode: darken;
+  mask-image: linear-gradient(90deg, transparent, #000 10% 90%, transparent), linear-gradient(transparent, #000 8% 92%, transparent);
+  mask-composite: intersect;
+}
+#ruby-card-orte .ruby-symbol, .ruby-place .ruby-symbol { background-position: 100% 0; }
+#ruby-card-rituale .ruby-symbol { background-position: 0 100%; }
+#ruby-card-leistungen .ruby-symbol { background-position: 100% 100%; }
+
+.ruby-panel {
+  position: relative;
+  width: min(83%, 1210px);
+  margin: 0 auto 1rem;
+  padding: clamp(1.15rem, 2.7cqw, 3rem);
+  border: 2px solid #9e4a32;
+  border-radius: 4% 6% 4% 4% / 6% 7% 5% 8%;
+  background: var(--ruby-paper);
+  box-shadow: 0 8px 0 #703b26, 0 14px 35px #102d22a0, inset 0 0 0 5px #fbecc9, inset 0 0 0 6px #c28f53;
+  scroll-margin-top: 1rem;
+}
+.ruby-panel h2 {
+  margin: 0 0 .32em;
+  color: var(--ruby-ink);
+  font: 600 clamp(1.83rem, 4.2cqw, 4.25rem)/1.08 Georgia, serif;
+  letter-spacing: -.048em;
+  text-align: center;
+  text-wrap: balance;
+}
+.ruby-panel h3 { color: inherit; font: 600 clamp(1.12rem, 2.35cqw, 2rem)/1.16 Georgia, serif; }
+.ruby-panel p { margin: 0; }
+.ruby-panel a { color: #24452b; text-underline-offset: .18em; }
+.ruby-panel a:hover { color: var(--ruby-red); }
+.ruby-tree { position: relative; }
+.ruby-tree img {
+  width: 100%;
+  height: auto;
+  display: block;
+  mix-blend-mode: darken;
+  mask-image: linear-gradient(90deg, transparent, #000 6% 94%, transparent), linear-gradient(transparent, #000 7% 93%, transparent);
+  mask-composite: intersect;
+  border-radius: 2rem;
+}
+.ruby-tree .ruby-founder, .ruby-member {
+  background: #fbebc4;
+  border: 2px solid #9d5e32;
+  border-radius: 48% 45% 47% 43% / 48% 48% 43% 45%;
+  box-shadow: 0 2px 0 #883d29;
+  font-weight: 700;
+  text-decoration: none;
+}
+.ruby-tree .ruby-founder {
+  position: absolute;
+  top: 53%;
+  left: 43%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: .55em;
+  min-height: 44px;
+  padding: .42em .9em;
+  font-size: clamp(1rem, 2.2cqw, 1.9rem);
+  line-height: 1.06;
+  text-align: center;
+}
+.ruby-friendship-branches {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .8rem;
+  margin-block: 1rem;
+}
+.ruby-friendship-branches:empty { display: none; }
+.ruby-member { display: inline-flex; align-items: center; gap: .55em; min-height: 44px; padding: .5em 1em; overflow-wrap: anywhere; }
+.ruby-monogram { display: grid; place-items: center; width: 1.65em; height: 1.65em; border-radius: 50%; background: #36603c; color: #fff6df; }
+.ruby-panel .ruby-tree-note { margin: .9rem 0 .1rem; font-size: .91rem; line-height: 1.35; text-align: center; color: #4c5037; }
+.ruby-tree-note a { white-space: nowrap; }
+
+.ruby-place {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+  gap: clamp(.7rem, 3cqw, 3rem);
+  align-items: center;
+}
+.ruby-place-art .ruby-symbol { width: min(100%, 330px); margin-inline: auto; }
+.ruby-place h2 { text-align: left; }
+.ruby-place p { max-width: 34ch; font-size: clamp(1rem, 1.5cqw, 1.35rem); line-height: 1.42; }
+.ruby-place .ruby-link { display: inline-flex; align-items: center; gap: .45em; min-height: 44px; font-weight: 700; font-size: clamp(1.08rem, 1.8cqw, 1.45rem); }
+.ruby-place-links { display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; }
+.ruby-place-links a { display: inline-flex; align-items: center; min-height: 40px; }
+
+.ruby-stories { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(.7rem, 2cqw, 1.8rem); }
+.ruby-story, .ruby-services .service-card {
+  display: grid;
+  gap: .45rem;
+  align-content: start;
+  min-width: 0;
+  margin: 0;
+  padding: .44rem;
+  border: 1px solid #b88957;
+  border-radius: 1rem;
+  background: #fbefce;
+  color: inherit;
+  box-shadow: none;
+}
+.ruby-story-copy { padding: .25rem .48rem .52rem; }
+.ruby-story-copy h3, .ruby-services .service-card h3 { margin: 0; }
+.ruby-story-copy p { margin-top: .35rem; font-size: 1rem; line-height: 1.35; }
+.ruby-vignette, .ruby-services .service-card::before {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  border-radius: .67rem;
+  background: #f2dca8 url("/assets/rubybubys/kartengeschichten-1080.webp") 0 0 / 200% 200% no-repeat;
+}
+.ruby-silvester { background-position: 100% 0; }
+.ruby-services .service-card { position: relative; padding-bottom: .55rem; }
+.ruby-services .service-card[data-service-id="SERVICE-RUBYBUBYS-HERZ-SCHNAUZE"]::before { content: ""; background-position: 0 100%; }
+.ruby-services .service-card[data-service-id="SERVICE-RUBYBUBYS-OBDACHLOSENHILFE"]::before { content: ""; background-position: 100% 100%; }
+.ruby-services .service-card h3 { grid-row: 2; padding-inline: .45rem; font-size: clamp(1.12rem, 2cqw, 1.8rem); overflow-wrap: anywhere; }
+.ruby-services .service-card-head { grid-row: 3; padding-inline: .45rem; }
+.ruby-services .status-chip { margin: 0; padding: .18rem .45rem; color: #3b4c2e; background: #eee0b6; font: 600 .79rem/1.25 Georgia, serif; }
+.ruby-services .service-card :is(.service-category, .service-summary, .service-availability, .service-providers, .service-location, .service-card-action) { display: none; }
+.ruby-services .service-card h3 a::after { position: absolute; inset: 0; content: ""; }
+.ruby-services .service-card h3 a::before { content: " →"; float: right; margin-inline-start: .28em; }
+.ruby-services .service-card:has(h3 a:focus-visible) { outline: 3px solid #2a5940; outline-offset: 3px; }
+
+.ruby-calendar-row { width: min(83%, 1210px); margin: clamp(1.25rem, 3cqw, 2.5rem) auto 0; display: flex; justify-content: flex-end; }
+.ruby-calendar {
+  display: inline-flex;
+  gap: .5em;
+  align-items: center;
+  min-height: 44px;
+  padding: .55em 1em;
+  border: 2px solid #a9743d;
+  border-radius: 33% 28% 32% 29% / 40% 39% 38% 39%;
+  background: #fcecc7;
+  color: #24452b;
+  font: 700 clamp(1.06rem, 1.8cqw, 1.6rem)/1.12 Georgia, serif;
+  text-decoration: none;
+  box-shadow: 0 4px 0 #86502f;
+}
+.ruby-calendar:hover { background: #ffefce; text-decoration: underline; }
+
+@media (max-width: 1000px) {
+  .ruby-hero-copy { top: 17%; }
+  .ruby-hero h1 { font-size: clamp(3.25rem, 8cqw, 7rem); }
+  .ruby-cards { width: 75%; }
+}
+@media (max-width: 700px) {
+  .ruby-wonderland .site-nav { padding: 11px 1rem; }
+  .ruby-world::before {
+    background-image: linear-gradient(180deg, #183821 0%, #18382117 27%), url("/assets/art/garden/landschaft-v3-mobile-secondary-20261030-420.webp");
+  }
+  .ruby-hero { aspect-ratio: 1.04; min-height: 0; }
+  .ruby-hero-art img { object-fit: cover; object-position: center 52%; }
+  .ruby-hero-copy { top: 13%; left: 16%; width: 68%; text-align: center; }
+  .ruby-hero h1 { font-size: clamp(2.8rem, 12.9cqw, 5.75rem); }
+  .ruby-hero-copy p { margin-inline: auto; max-width: 22ch; font-size: clamp(.96rem, 4cqw, 1.55rem); }
+  .ruby-scenes { margin-top: -6cqw; }
+  .ruby-cards {
+    width: min(82%, 408px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .7rem;
+    margin-bottom: 1.1rem;
+  }
+  .ruby-card { font-size: clamp(1.05rem, 4.7cqw, 1.35rem); padding: .45rem .28rem .58rem; }
+  .ruby-card .ruby-symbol { width: min(88%, 115px); }
+  .ruby-card:nth-child(odd) { --tilt: -3deg; }
+  .ruby-card:nth-child(even) { --tilt: 3deg; }
+  .ruby-panel { width: 92%; padding: 1.05rem .8rem; }
+  .ruby-tree img { height: clamp(155px, 49cqw, 250px); object-fit: cover; object-position: 34% center; }
+  .ruby-tree .ruby-founder { left: 46%; max-width: 13ch; }
+  .ruby-place { grid-template-columns: 1fr; gap: .15rem; text-align: center; }
+  .ruby-place h2 { text-align: center; }
+  .ruby-place p { margin-inline: auto; }
+  .ruby-place-art .ruby-symbol { width: min(58%, 195px); }
+  .ruby-place-links { justify-content: center; }
+  .ruby-stories { grid-template-columns: 1fr; }
+  .ruby-story-copy { padding: .3rem .45rem .46rem; }
+  .ruby-services .service-card { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); column-gap: .65rem; }
+  .ruby-services .service-card::before { grid-row: 1 / span 2; align-self: center; }
+  .ruby-services .service-card h3 { grid-column: 2; grid-row: 1; padding: .1rem 0 0; align-self: end; }
+  .ruby-services .service-card-head { grid-column: 2; grid-row: 2; padding: 0; }
+  .ruby-calendar-row { justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ruby-card { transition: none; }
 }
