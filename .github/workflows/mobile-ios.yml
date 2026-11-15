@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "mobile/**"
+      - "konto/**"
+      - "en/konto/**"
       - ".github/workflows/mobile-ios.yml"
   workflow_dispatch:
 
