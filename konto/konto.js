@@ -4,6 +4,7 @@
   const appAuth = window.FFE_APP_AUTH;
   const pageBootstrap = window.FFE_PAGE_BOOTSTRAP;
   const profileWorkspace = window.FFE_PROFILE_WORKSPACE;
+  const accountOverview = window.GemDenAccountOverview;
   const publicationCenter = window.FFE_PUBLICATION_CENTER;
   const opportunityWorkspace = window.FFE_OPPORTUNITY_WORKSPACE;
   const resonanceWorkspace = window.FFE_RESONANCE_WORKSPACE;
@@ -165,6 +166,7 @@
     }
     if (currentUser?.id !== user.id) return;
     currentProfile = profile;
+    if (profile.account_status === 'active' && profile.stable_id) accountOverview?.load(client, user.id);
     document.getElementById('rubybubys-start-card').hidden = !(
       user.app_metadata?.gemden_rubybubys_invited === true && profile.account_status === 'active' && profile.stable_id
     );
@@ -232,6 +234,7 @@
 
   async function renderSession(session) {
     const nextUser = session?.user || null;
+    accountOverview?.reset();
     // A fresh document discards every workspace, form and pending request of the previous account.
     if (renderedAccountId && renderedAccountId !== nextUser?.id) {
       signedInPanel.hidden = true;
