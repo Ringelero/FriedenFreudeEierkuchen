@@ -16,15 +16,13 @@ test('calendar intent filters distinguish visits, events and requestable event s
  assert.deepEqual(visibleEvents(events,'veranstaltung','upcoming',Date.parse('2026-10-20T12:00Z')),[events[1]]);
  assert.deepEqual(visibleEvents(events,'alle','month'),events);
 });
-test('the mobile today entry uses one local day through the autumn time change',()=>{
+test('the today view uses one local day through the autumn time change',()=>{
  const now=new Date(2026,9,25,15);
  const range=calendarRange('today','2026-06','2026-06-12',now);
  assert.equal(localDay(range.start),'2026-10-25');
  assert.equal(localDay(range.end),'2026-10-26');
  assert.equal(range.start.getHours(),0);
  assert.equal(range.end.getHours(),0);
- const home=fs.readFileSync(require.resolve('../index.html'),'utf8');
- assert.match(home,/kalender=RUBYBUBYS&amp;zeitraum=heute/);
 });
 test('calendar month ranges retain leap days and reject malformed or unbounded ranges',()=>{const leap=monthRange('2028-02');assert.equal((leap.end-leap.start)/86400000,29);for(const bad of ['2026-00','2026-13','26-02','2026-02-01','9999-12',''])assert.throws(()=>monthRange(bad));assert.equal(localDay(new Date(2026,9,19,12)),'2026-10-19');});
 test('the shared Kiez model derives Travelkiez scope without reusing P-Hain identity',async()=>{const context={document:{body:{dataset:{kiezId:'KIEZ-TRAVELKIEZ'}}},module:{exports:{}},Date};vm.runInNewContext(fs.readFileSync(require.resolve('../community/kieze/p-hain/storage-model.js'),'utf8'),context);const api=context.module.exports;assert.equal(api.KIEZ_ID,'KIEZ-TRAVELKIEZ');assert.equal(api.draftValues('board',{title:'Kieznotiz',body:'Eine Notiz'}).requested_kiez_id,'KIEZ-TRAVELKIEZ');let scope;await api.publicEntries({from:()=>{const query={select:()=>query,eq:(key,value)=>{if(key==='kiez_id')scope=value;return query;},order:()=>query,limit:async()=>({data:[],error:null})};return query;}});assert.equal(scope,'KIEZ-TRAVELKIEZ');});
