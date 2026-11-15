@@ -139,6 +139,7 @@
     "en/kalender/verbinden/index.html",
     "en/kalender/verbinden/verbinden.css",
     "en/kalender/verbinden/verbinden.js",
+    "en/konto/account-deletion.js",
     "en/konto/account-views.js",
     "en/konto/auth-flow.js",
     "en/konto/care-entry.js",

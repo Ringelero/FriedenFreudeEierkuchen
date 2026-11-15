@@ -1,6 +1,7 @@
 (function () {
   const client = window.FFE_SUPABASE_CLIENT;
   const authFlow = window.FFE_AUTH_FLOW;
+  const appAuth = window.FFE_APP_AUTH;
   const pageBootstrap = window.FFE_PAGE_BOOTSTRAP;
   const profileWorkspace = window.FFE_PROFILE_WORKSPACE;
   const publicationCenter = window.FFE_PUBLICATION_CENTER;
@@ -16,6 +17,7 @@
   const signupForm = document.getElementById('signup-form');
   const signupSubmit = document.getElementById('signup-submit');
   const signupStatus = document.getElementById('signup-status');
+  const appAuthRetry = document.getElementById('app-auth-retry');
   const accountDataStatus = document.getElementById('account-data-status');
   const profileForm = document.getElementById('profile-form');
   const profileSubmit = document.getElementById('profile-submit');
@@ -29,6 +31,7 @@
   const memberAdminLink = document.getElementById('member-admin-link');
   const logoutButton = document.getElementById('logout-button');
   let authErrorFromUrl = authFlow?.authErrorFromLocation(location) || '';
+  let appReturnFailed = false;
   let currentUser = null;
   let currentProfile = null;
   let renderedAccountId = null;
@@ -250,9 +253,14 @@
 
     if (!currentUser) {
       setConnection('Bereit zur Anmeldung', 'open');
-      if (authErrorFromUrl) {
+      if (appReturnFailed || authErrorFromUrl) {
         cleanAuthAddress();
-        setMessage(loginStatus, authFlow.describeAuthError(authErrorFromUrl), 'error');
+        const message = appReturnFailed
+          ? 'Öffne den neuesten Anmeldelink auf dem Gerät, auf dem du ihn in der GemDen-App angefordert hast.'
+          : authFlow.describeAuthError(authErrorFromUrl);
+        setMessage(loginStatus, message, 'error');
+        if (appReturnFailed) appAuthRetry.hidden = false;
+        appReturnFailed = false;
         authErrorFromUrl = '';
       }
       return;
@@ -307,8 +315,10 @@
     try {
       rememberSynergy();
       const email = document.getElementById('signup-email').value.trim();
-      await authFlow.requestEmailLogin(client, { email, redirectTo: 'https://gemden.red/konto/', createAccount: true });
-      setMessage(signupStatus, 'Schau in dein Postfach und öffne den Link, um in dein Konto zu kommen.', 'success');
+      await authFlow.requestEmailLogin(client, { email, redirectTo: appAuth?.redirectTo || 'https://gemden.red/konto/', createAccount: true });
+      setMessage(signupStatus, appAuth
+        ? 'Öffne den Link aus der Mail auf diesem Gerät. Er führt dich zurück in die App.'
+        : 'Schau in dein Postfach und öffne den Link, um in dein Konto zu kommen.', 'success');
     } catch (error) {
       setMessage(signupStatus, authFlow.describeAuthError(error, 'Der Kontostart ist gerade nicht verfügbar.'), 'error');
     } finally {
@@ -350,12 +360,15 @@
     }
 
     loginLinkSubmit.disabled = true;
+    appAuthRetry.hidden = true;
     setMessage(loginStatus, 'Der einmalige Anmeldelink wird angefordert …');
     try {
       rememberSynergy();
-      const redirectTo = new URL('./', location.href).href;
+      const redirectTo = appAuth?.redirectTo || new URL('./', location.href).href;
       await authFlow.requestEmailLogin(client, { email, redirectTo });
-      setMessage(loginStatus, 'Wenn zu der Adresse ein Konto besteht, findest du den Einmal-Link im Postfach.', 'success');
+      setMessage(loginStatus, appAuth
+        ? 'Wenn zu der Adresse ein Konto besteht, findest du den Link im Postfach. Öffne ihn auf diesem Gerät.'
+        : 'Wenn zu der Adresse ein Konto besteht, findest du den Einmal-Link im Postfach.', 'success');
     } catch (error) {
       setMessage(loginStatus, authFlow.describeAuthError(error, 'Der Link konnte nicht gesendet werden.'), 'error');
     } finally {
@@ -465,7 +478,21 @@
     window.setTimeout(() => renderSession(session), 0);
   });
 
-  client.auth.getSession()
+  async function initialSession() {
+    const callback = appAuth?.takeReturn();
+    if (callback?.code) {
+      try {
+        const result = await client.auth.exchangeCodeForSession(callback.code);
+        if (!result.error && result.data?.session) return result;
+      } catch {
+        // Preserve the current account and let the person request another link.
+      }
+    }
+    appReturnFailed = Boolean(callback);
+    return client.auth.getSession();
+  }
+
+  initialSession()
     .then(({ data, error }) => {
       if (error) throw error;
       renderSession(data.session);
