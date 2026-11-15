@@ -127,11 +127,6 @@
   .possibilities-page .workshop-hero-copy > p:not(.eyebrow) {
     max-width:38ch;font-size:clamp(1rem,1.05vw,1.22rem);line-height:1.75;
   }
-  .possibilities-page .workshop-entryways {margin-top:-34px;gap:clamp(16px,1.4vw,32px)}
-  .possibilities-page .workshop-entryways > a {
-    grid-template-rows:clamp(165px,12vw,265px) auto;
-    padding:20px clamp(24px,2vw,44px) 32px;
-  }
   .possibilities-page .workshop-entry-art {height:clamp(165px,12vw,265px)}
   .possibilities-page .workshop-entry-copy strong {font-size:clamp(1.8rem,2vw,2.7rem)}
   .possibilities-page .workshop-entry-copy small {font-size:clamp(.82rem,.85vw,1rem)}
