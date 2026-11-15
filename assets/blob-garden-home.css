@@ -1,4 +1,24 @@
 /* Shared residence and conversation styling for homepage and Community. */
+.garden-home .blob-first-welcome {
+  position:fixed;
+  z-index:10003;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 44px;
+  align-items:start;
+  width:min(309px,calc(100vw - 20px));
+  padding:6px 3px 6px 13px;
+  background:#fff3d9;
+  color:#264432;
+  border:1px solid #9d986d;
+  border-radius:21px 17px 20px 16px;
+  box-shadow:0 5px 14px #46361b25;
+}
+.garden-home .blob-first-welcome[hidden]{display:none}
+.garden-home .blob-first-welcome p{margin:3px 0 0;font:.88rem/1.42 Georgia,serif}
+.garden-home .blob-first-welcome button{width:44px;height:44px;padding:0;border:0;border-radius:50%;background:transparent;color:inherit;font:1.24rem/1 Georgia,serif}
+.garden-home .blob-first-welcome button:focus-visible{outline:2px solid #36583c;outline-offset:-5px}
+.garden-home .blob-first-welcome::after{content:'';pointer-events:none;position:absolute;left:var(--welcome-tail,50%);bottom:-5px;width:9px;height:9px;background:#fff3d9;border:solid #9d986d;border-width:0 1px 1px 0;transform:translateX(-50%) rotate(45deg)}
+.garden-home .blob-first-welcome.is-below::after{top:-5px;bottom:auto;transform:translateX(-50%) rotate(225deg)}
 :is(.garden-home,.community-sketch) .blob-home-scene {position:relative}
 :is(.garden-home,.community-sketch) .blob-home-seat {position:absolute;left:53%;top:66%;width:88px;height:82px;transform:translate(-50%,-50%);z-index:3}
 :is(.garden-home,.community-sketch) .blob-home-seat::before {content:'';position:absolute;bottom:0;left:13px;width:62px;height:10px;border-radius:50%;background:#183c3540;filter:blur(4px);pointer-events:none}

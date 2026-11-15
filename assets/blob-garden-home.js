@@ -88,6 +88,61 @@
   function animationEnabled({reduced = false, paused = false, hidden = false} = {}) {
     return !reduced && !paused && !hidden;
   }
+  const WELCOME_SEEN = 'gemden_blob_welcome_seen_v1';
+  function sessionKey(url) {
+    return 'sb-' + new URL(url).hostname.split('.')[0] + '-auth-token';
+  }
+  function firstGuestVisit(storage, projectUrl) {
+    try {
+      if (!projectUrl || storage.getItem(WELCOME_SEEN)) return false;
+      // The stored session only suppresses an optional greeting.
+      const signedIn = Boolean(storage.getItem(sessionKey(projectUrl)));
+      storage.setItem(WELCOME_SEEN, '1');
+      return !signedIn;
+    } catch {
+      return false;
+    }
+  }
+  function mountWelcome(character, chat) {
+    const bubble = document.querySelector('[data-blob-first-welcome]');
+    const projectUrl = window.FFE_SUPABASE_CONFIG?.url;
+    if (!bubble || !projectUrl) return () => {};
+    let pending = true;
+    const close = () => { bubble.hidden = true; };
+    bubble.querySelector('button').addEventListener('click', () => {
+      close();
+      character.focus({preventScroll:true});
+    });
+    window.addEventListener('blob:visibility', event => {
+      if (event.detail?.open) close();
+    });
+    window.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !bubble.hidden) close();
+    });
+    const authKey = sessionKey(projectUrl);
+    window.addEventListener('storage', event => {
+      if (event.key === authKey && event.newValue) close();
+    });
+    return () => {
+      if (pending && !document.hidden) {
+        pending = false;
+        try {
+          if (firstGuestVisit(window.localStorage, projectUrl) && !chat.classList.contains('open')) bubble.hidden = false;
+        } catch { /* The browser has disabled local storage. */ }
+      }
+      if (bubble.hidden) return;
+      const anchor = character.getBoundingClientRect();
+      const width = document.documentElement.clientWidth || innerWidth;
+      const left = clamp(anchor.left + (anchor.width - bubble.offsetWidth) / 2, 10, width - bubble.offsetWidth - 10);
+      const above = anchor.top - bubble.offsetHeight - 10;
+      const below = above < 10;
+      const top = below ? anchor.bottom + 10 : above;
+      bubble.style.left = left + 'px';
+      bubble.style.top = clamp(top, 10, innerHeight - bubble.offsetHeight - 10) + 'px';
+      bubble.style.setProperty('--welcome-tail', clamp(anchor.left + anchor.width / 2 - left, 14, bubble.offsetWidth - 14) + 'px');
+      bubble.classList.toggle('is-below', below);
+    };
+  }
   function mount() {
     const residence = window.BLOB_CONFIG?.residence;
     if (!(residence === 'garden' && document.body.classList.contains('garden-home')) && !(residence === 'sketch' && document.body.classList.contains('community-sketch'))) return;
@@ -187,6 +242,7 @@
     controls.hidden = false;
     const media = matchMedia('(prefers-reduced-motion: reduce)');
     const key = 'gemden_blob_home_motion_paused';
+    const positionWelcome = mountWelcome(character, chat);
     let paused = false, active = true, phase = '', frame = 0, lookFrame = 0, blinkTimer = 0, blinkEnd = 0, waveEnd = 0, morph = null, panelMotion = null;
     let pointer = {x:0,y:0}, positionStamp = '';
     try { paused = localStorage.getItem(key) === 'true'; } catch {}
@@ -246,7 +302,7 @@
       const place = placement(rect,{width:document.documentElement.clientWidth || innerWidth,height:innerHeight},{width:character.offsetWidth,height:character.offsetHeight});
       const next = open ? 'open' : place.edge;
       const stamp = next === 'home' || open ? next+'|'+innerWidth+'|'+innerHeight : next+'|'+place.x+'|'+place.y;
-      if (stamp === positionStamp) return;
+      if (stamp === positionStamp) { positionWelcome(); return; }
       positionStamp = stamp;
       const previous = character.getBoundingClientRect();
       if (next !== 'home') {character.style.removeProperty('--look-x');character.style.removeProperty('--look-y');}
@@ -276,6 +332,7 @@
         morph = character.animate(near ? [{transform:`translate(${dx}px,${dy}px)`,opacity:.7},{transform:'translate(0,0)',opacity:1}] : [{opacity:.55},{opacity:1}],{duration:280,easing:'cubic-bezier(.2,.7,.2,1)'});
       }
       phase = next;
+      positionWelcome();
     }
     function queue() { if (!frame) frame = requestAnimationFrame(locate); }
     window.addEventListener('scroll',queue,{passive:true});
@@ -300,7 +357,7 @@
         character.style.setProperty('--look-y',clamp((pointer.y-rect.top-rect.height/2)/90,-3,3)+'px');
       });
     },{passive:true});
-    document.addEventListener('visibilitychange',applyMotion);
+    document.addEventListener('visibilitychange',() => {applyMotion(); queue();});
     media.addEventListener('change',applyMotion);
     window.addEventListener('pagehide',() => {active=false;stopMotion();cancelAnimationFrame(frame);cancelAnimationFrame(lookFrame);frame=lookFrame=0;});
     window.addEventListener('pageshow',() => {active=true;applyMotion();queue();});
@@ -308,5 +365,5 @@
     new MutationObserver(tuneContents).observe(chat,{childList:true,subtree:true});
     applyMotion(); queue();
   }
-  return {HOME_PATHS,CATEGORIES,INTRODUCTION,catalogEntries,categoryLinks,placement,animationEnabled,mount};
+  return {HOME_PATHS,CATEGORIES,INTRODUCTION,catalogEntries,categoryLinks,placement,animationEnabled,firstGuestVisit,mount};
 });
