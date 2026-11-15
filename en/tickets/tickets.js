@@ -87,14 +87,15 @@
   function renderTicket(item){
     const card=element('details',undefined,'ticket-card');
     const summary=element('summary');const meta=element('div',undefined,'ticket-meta');
-    const category = item.request_type === 'account_deletion' ? "Account deletion" : kinds[item.kind] || 'Ticket';
+    const labels = { account_deletion: "Account deletion", profile_report: "Profile report" };
+    const category = labels[item.request_type] || kinds[item.kind] || 'Ticket';
     meta.append(element('span',`${category} · ${new Date(item.created_at).toLocaleDateString("en-GB")}`));
     const badge=element('span',states[item.state]||item.state,'ticket-badge');badge.dataset.state=item.state;meta.append(badge);
     const body = String(item.body || '');
     const attached = user && fileReference(body, item.id);
     const reference = attached ? -1 : body.lastIndexOf(photoMarker);
     const photo = reference >= 0 ? photoLink(body.slice(reference + photoMarker.length)) : '';
-    summary.append(meta,element('h3',item.title));
+    summary.append(meta,element('h3',item.request_type === 'profile_report' ? "Member profile reported" : item.title));
     const visibleBody = attached ? body.slice(0, attached.marker) : photo ? body.slice(0, reference) : body;
     card.append(summary,element('p',visibleBody.startsWith(synergyMarker) ? visibleBody.slice(synergyMarker.length) : visibleBody,'ticket-content'));
     if (photo) {
@@ -104,7 +105,13 @@
       link.rel = 'noopener noreferrer';
       card.append(link);
     }
-    const safePath=cleanPath(item.page_path);if(safePath){const p=element('p',undefined,'quiet');const a=element('a',safePath);a.href=safePath;p.append("Page: ",a);card.append(p);}
+    if (item.request_type === 'profile_report' && /^MEM-[A-Z0-9][A-Z0-9-]*$/.test(item.reported_member_id || '')) {
+      const link = element('a', "Open reported profile");
+      link.href = '../community/mitglieder/profil/?' + new URLSearchParams({ mitglied: item.reported_member_id });
+      card.append(link);
+    } else {
+      const safePath=cleanPath(item.page_path);if(safePath){const p=element('p',undefined,'quiet');const a=element('a',safePath);a.href=safePath;p.append("Page: ",a);card.append(p);}
+    }
     if(item.response){const p=element('p',undefined,'ticket-response');p.append(element('strong',"Feedback"),document.createTextNode(item.response));card.append(p);}
     const localStatus=element('p','','feedback-status');localStatus.setAttribute('role','status');
     if (attached) {

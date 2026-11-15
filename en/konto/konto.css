@@ -534,6 +534,8 @@ body.account-home .account-view-heading h3{font-size:clamp(1.45rem,3vw,2rem);lin
 .account-synergy-history>li{padding-block:5px;overflow-wrap:anywhere}
 .account-synergy-history details>p{white-space:pre-wrap;margin:.4em 0 .2em 1em}
 .account-synergy-history details{scroll-margin-top:6rem}
+.account-profile-block-list{list-style:none;padding:0;margin:0}
+.account-profile-block-list>li{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;margin:8px 0}
 .account-route{--route-bg:#edf2e9;--route-ink:#305c4a;position:relative;display:flex;flex-wrap:wrap;align-content:start;align-items:center;gap:14px;min-width:0;min-height:164px;padding:19px;border:1px solid #dfd9ce;border-radius:20px;background:#fffefb;text-decoration:none;transition:border-color .15s,transform .15s}
 .account-route:hover{border-color:var(--route-ink);transform:translateY(-2px)}
 .account-route-icon{display:grid;place-items:center;flex:0 0 43px;height:43px;border-radius:14px;background:var(--route-bg);color:var(--route-ink)}.account-route-icon svg{width:25px;height:25px}

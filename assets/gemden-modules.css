@@ -164,6 +164,13 @@
   50% { transform: translateY(-16px) rotateY(18deg) rotateZ(3deg); }
 }
 
+.gdm-profile-actions{max-width:44rem;margin:1.5rem auto;padding:1rem 1.25rem;overflow-wrap:anywhere}
+.gdm-profile-actions summary{cursor:pointer;font-weight:650}
+.gdm-profile-actions p{margin:.7rem 0}
+.gdm-profile-actions form{margin-top:1rem}
+.gdm-profile-actions label,.gdm-profile-actions textarea{display:block;width:100%}
+.gdm-profile-actions textarea{margin-top:.4rem;min-width:0;box-sizing:border-box}
+
 @media (prefers-reduced-motion: reduce) {
   .gdm-page *,
   .gdm-page *::before,
