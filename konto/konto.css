@@ -518,16 +518,7 @@ body.account-home [data-account-view][hidden]{display:none!important}
 body.account-home .account-view-heading h3{font-size:clamp(1.45rem,3vw,2rem);line-height:1.18;letter-spacing:-.03em;margin:0 0 10px;color:#3d312e}
 .account-view-heading>p:last-child{font-size:.92rem;line-height:1.6;margin:0;max-width:660px;color:#72645f}
 .account-routes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:6px}
-.account-today{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:10px;margin:0 0 16px}
-.account-today[hidden],.account-today-card[hidden],.account-synergy-states[hidden]{display:none}
-.account-today-card{display:grid;align-content:start;gap:3px;min-height:100%;padding:13px 15px;border:1px solid #d7c7b9;border-radius:16px;background:#f4eee7;color:#45342f;text-decoration:none;overflow-wrap:anywhere}
-.account-today-card.is-mint{background:#edf3eb}
-.account-today-card.is-gold{background:#faf0dc}
-.account-today-card.is-lavender{background:#f2ecf7}
-.account-today-card:is(:hover,:focus-visible){text-decoration:none;border-color:#836955}
-.account-today-card strong{font-size:1rem;line-height:1.3}
-.account-today-card>span{font-size:.8rem;line-height:1.4;color:#5d4941}
-.account-today-card .account-today-label{font-weight:700}
+.account-synergy-states[hidden]{display:none}
 .account-synergy-states,.account-synergy-history{display:grid;gap:8px;list-style:none;padding:0}
 .account-synergy-states>li{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 10px}
 .account-synergy-badge{border:1px solid #dacbc1;border-radius:100px;padding:2px 8px;background:#f3ece6;color:#514039;font-size:.8rem}
