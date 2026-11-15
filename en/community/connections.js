@@ -48,6 +48,7 @@
   const paintedRoots = [...world.querySelectorAll('[data-root-toggle]')];
   const nodeElements = new Map();
   let catalogue = null, loading = null, opened = new Set(), graph = null, paused = false;
+  let highlighted = null;
   let drawnKeys = new Set(), frame = 0, lastSize = '', animateNext = false;
   const canMove = () => !paused && !media.matches && !document.hidden;
   const localPath = path => document.documentElement.lang === 'en' ? '/en' + path : path;
@@ -68,8 +69,9 @@
     }).then(sanitiseCatalogue).then(value => {catalogue = value; return value;}).finally(() => {loading = null;});
     return loading;
   }
-  function nodeControl(node, expandable) {
-    const control = document.createElement(expandable ? 'button' : 'a');
+  function nodeControl(node, expandable, existing) {
+    if (existing) return existing;
+    const control = document.createElement(node.public_path ? 'a' : 'button');
     control.className = 'connection-node-control'; control.id = 'connection-control-' + node.id;
     const art = document.createElement('span'); art.className = 'connection-node-art'; art.setAttribute('aria-hidden','true');
     const motif = motifs[node.id] ?? 5;
@@ -77,20 +79,21 @@
     const copy = document.createElement('span'); copy.className = 'connection-node-copy';
     const name = document.createElement('span'); name.className = 'connection-node-name'; name.textContent = node.name;
     const action = document.createElement('span'); action.className = 'connection-node-action';
-    const actionLabel = document.createElement('span');
-    actionLabel.textContent = expandable ? (opened.has(node.id) ? "Close" : "Discover") : "View";
-    const symbol = document.createElement('span'); symbol.className = 'connection-node-symbol'; symbol.setAttribute('aria-hidden','true'); symbol.textContent = expandable ? (opened.has(node.id) ? '−' : '+') : '→';
+    const actionLabel = document.createElement('span'); actionLabel.dataset.nodeAction = '';
+    const symbol = document.createElement('span'); symbol.className = 'connection-node-symbol'; symbol.setAttribute('aria-hidden','true');
     action.append(actionLabel, symbol); copy.append(name, action); control.append(art, copy);
+    if (node.public_path) control.href = localPath(node.public_path);
+    else if (expandable) control.type = 'button';
+    else control.disabled = true;
     if (expandable) {
-      control.type = 'button'; control.dataset.connectionToggle = node.id;
-      control.setAttribute('aria-expanded', String(opened.has(node.id)));
+      control.dataset.connectionToggle = node.id;
       control.setAttribute('aria-controls', 'connection-layers');
-    } else control.href = localPath(node.public_path);
+    }
     return control;
   }
   function render(trigger = null) {
     const focused = document.activeElement?.closest?.('[data-connection-node]')?.dataset.connectionNode;
-    const previous = new Set(nodeElements.keys());
+    const previous = new Map(nodeElements);
     graph = visibleGraph(catalogue, opened);
     const visible = new Set(graph.nodes.map(node => node.id));
     for (const id of opened) if (!visible.has(id)) opened.delete(id);
@@ -118,11 +121,20 @@
         const expandable = catalogue.links.some(edge => edge.from === node.id);
         if (expandable) element.classList.add('is-expandable');
         element.dataset.motif = String(motifs[node.id] ?? 5);
-        element.append(nodeControl(node, expandable));
-        if (expandable && node.public_path) {
-          const link = document.createElement('a'); link.className = 'connection-profile'; link.href = localPath(node.public_path); link.textContent = "Visit page";
-          const arrow = document.createElement('span'); arrow.textContent = '↗'; arrow.setAttribute('aria-hidden','true'); link.append(arrow);
-          link.setAttribute('aria-label', node.name + ' – ' + "Visit page"); link.title = node.name; element.append(link);
+        const control = nodeControl(node, expandable, previous.get(node.id)?.firstElementChild);
+        const isOpen = expandable && opened.has(node.id);
+        const goesToPage = node.public_path && (!expandable || isOpen);
+        control.querySelector('[data-node-action]').textContent = goesToPage ? "Open page" : isOpen ? "Close" : expandable ? "Show connections" : '';
+        control.querySelector('.connection-node-symbol').textContent = goesToPage ? '↗' : isOpen ? '−' : expandable ? '+' : '';
+        if (expandable) control.setAttribute('aria-expanded', String(isOpen));
+        element.classList.toggle('is-active-branch', isOpen && highlighted === node.id);
+        element.append(control);
+        if (isOpen && node.public_path) {
+          const close = document.createElement('button');
+          close.type = 'button'; close.className = 'connection-branch-close'; close.dataset.connectionClose = node.id;
+          close.setAttribute('aria-label', node.name + ' – ' + "Hide connections");
+          close.textContent = '−';
+          element.append(close);
         }
         (branches.get(branchRoot) || row).append(element); nodeElements.set(node.id, element);
       }
@@ -160,7 +172,9 @@
         const mid = sy + (ey-sy)/2; pathText = 'M '+sx+' '+sy+' C '+sx+' '+mid+', '+ex+' '+mid+', '+ex+' '+ey;
       }
       const key = edge.from + ':' + edge.to; nextKeys.add(key);
-      const group = document.createElementNS('http://www.w3.org/2000/svg','g'); group.setAttribute('class','connection-stem'+((incoming.get(edge.to)||0)>1?' is-shared':'')); svg.append(group);
+      const group = document.createElementNS('http://www.w3.org/2000/svg','g');
+      group.setAttribute('class','connection-stem'+((incoming.get(edge.to)||0)>1?' is-shared':'')+(edge.from===highlighted?' is-active-branch':''));
+      svg.append(group);
       const path = document.createElementNS('http://www.w3.org/2000/svg','path'); path.setAttribute('class','connection-line'+((incoming.get(edge.to)||0)>1?' is-shared':'')); path.setAttribute('d',pathText); path.dataset.connection = key; group.append(path);
       const inner = path.cloneNode(); inner.removeAttribute('data-connection'); inner.setAttribute('class','connection-line-inner'); group.append(inner);
       const length = path.getTotalLength();
@@ -189,7 +203,13 @@
     explorer.hidden = false; explorer.setAttribute('aria-busy','true'); status.textContent = catalogue ? '' : "Loading connections …"; fallback.hidden = true;
     try {
       await loadCatalogue(); if (!catalogue.nodes.has(id)) return;
-      if (opened.has(id)) opened.delete(id); else opened.add(id);
+      if (opened.has(id)) {
+        opened.delete(id);
+        if (highlighted === id) highlighted = null;
+      } else {
+        opened.add(id);
+        if (!ROOTS.includes(id)) highlighted = id;
+      }
       render(id);
       if (fromPainting && opened.has(id)) {
         const targetId = graph.links.find(edge => edge.from === id)?.to;
@@ -200,7 +220,16 @@
     finally {explorer.setAttribute('aria-busy','false');}
   }
   paintedRoots.forEach(button => button.addEventListener('click',event => {event.preventDefault(); toggle(button.dataset.rootToggle,true);}));
-  explorer.addEventListener('click',event => {const button = event.target.closest('[data-connection-toggle]'); if (button) toggle(button.dataset.connectionToggle);});
+  explorer.addEventListener('click', event => {
+    const close = event.target.closest('[data-connection-close]');
+    if (close) { toggle(close.dataset.connectionClose); return; }
+    const control = event.target.closest('[data-connection-toggle]');
+    if (!control || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const id = control.dataset.connectionToggle;
+    if (control.matches('a') && (opened.has(id) || event.detail > 1)) return;
+    event.preventDefault();
+    toggle(id);
+  });
   pause.addEventListener('click',() => {
     paused = !paused; pause.setAttribute('aria-pressed',String(paused));
     const label = paused ? "Enable movement" : "Pause movement"; pause.setAttribute('aria-label',label); pause.title = label;

@@ -64,8 +64,6 @@
 .connection-node-control:hover{color:#985132;border-bottom-color:#985132}
 .connection-node-control[aria-expanded=true]{color:#985132}
 .connection-node-symbol{font:400 .7em/1 Georgia,serif;opacity:.7}
-.connection-profile{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:28px;font:400 1.2rem/1 Georgia,serif;color:var(--ink);text-decoration:none}
-.connection-profile:hover{color:#985132}
 .connection-node.is-shared .connection-node-control{border-bottom-color:#b0613e;color:#84472e}
 .connection-motion{display:flex;align-items:center;justify-content:center;position:absolute;right:4%;bottom:20px;width:44px;height:44px;border:1px solid #a0aa8c;border-radius:50%;background:#f9efd9;color:#476044}
 .connection-motion svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round}
@@ -95,8 +93,6 @@
  .connection-layer{gap:15px}
  .connection-layer+.connection-layer{margin-top:85px}
  .connection-node-control{font-size:clamp(1.02rem,4.5cqw,1.4rem);padding:9px 3px}
- .connection-profile{min-width:22px;font-size:1rem}
- .connection-layer[data-depth="1"] .connection-profile{position:absolute;right:-2px;top:-24px;min-height:32px;min-width:28px}
  .connection-layer[data-depth="1"] .connection-node-control{overflow-wrap:normal}
  .connection-layer[data-depth="1"] .connection-node-symbol{display:none}
  .connection-layer[data-depth="2"],.connection-layer[data-depth="3"]{display:flex;flex-direction:column;align-items:center;gap:60px;margin-inline:25px}
@@ -119,7 +115,6 @@
 .connection-node-control:hover .connection-node-art{transform:translateY(-3px) rotate(-1deg);filter:drop-shadow(0 3px 3px #566a4036)}
 .connection-node-control[aria-expanded=true] .connection-node-art{filter:drop-shadow(0 3px 3px #a86a3e3d)}
 .connection-node-control[aria-expanded=true] .connection-node-action{color:#8c4e31;font-style:italic}
-.connection-profile{position:relative;display:inline-flex;gap:8px;align-items:center;justify-content:center;min-height:44px;min-width:80px;padding:3px 10px;margin-top:-12px;font:400 .86rem/1.2 Georgia,serif;color:var(--ink);text-decoration:underline;text-underline-offset:4px;z-index:2}
 .connection-node[data-motif="1"] .connection-node-copy{transform:rotate(-5deg);inset:39% 10% 21%}
 .connection-node[data-motif="2"] .connection-node-copy{transform:rotate(2deg);inset:34% 17% 25%}
 .connection-node[data-motif="3"] .connection-node-copy{transform:rotate(-2deg);inset:34% 15% 24%}
@@ -146,7 +141,6 @@
  .connection-node-action{font-size:.75rem;gap:5px}
  .connection-layer[data-depth="1"] .connection-node-action{font-size:clamp(.66rem,2.9cqw,.82rem)}
  .connection-layer[data-depth="1"] .connection-node-symbol{display:inline}
- .connection-layer[data-depth="1"] .connection-profile{position:relative;right:auto;top:auto;min-height:44px;min-width:80px;font-size:.8rem;margin-top:-5px}
  .connection-layer+.connection-layer{margin-top:75px}
  .connection-layer[data-depth="2"],.connection-layer[data-depth="3"]{gap:35px;margin-inline:0}
  .connection-layer[data-depth="2"] .connection-node-control,.connection-layer[data-depth="3"] .connection-node-control{padding:0;font-size:inherit}
@@ -161,3 +155,11 @@
 .connection-branch .connection-node-control,.connection-branch .connection-node.is-expandable .connection-node-control{width:min(100%,245px)}
 .connection-layer[data-depth="1"] .connection-branch .connection-node-name{font-size:clamp(.9rem,8cqw,1.35rem)}
 @media(max-width:850px){.connection-branch{grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr));gap:14px 10px}.connection-layer[data-depth="1"]{gap:15px}.connection-branch .connection-node-copy{inset:34% 8% 24%}}
+
+.connection-node{position:relative}
+.connection-node-action{max-width:100%;text-align:center;justify-content:center;white-space:normal}
+.connection-branch-close{position:absolute;top:7%;right:6%;z-index:2;display:grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid #a97a4b;border-radius:50%;background:#f8e7bd;color:#613b23;font:1.25rem/1 Georgia,serif}
+.connection-branch-close:hover{background:#ebd3a0}
+.connection-node.is-active-branch .connection-node-art{filter:drop-shadow(0 1px 6px #b9793f80)}
+.connection-stem.is-active-branch .connection-line,.connection-stem.is-active-branch .connection-rung{stroke:#98552e}
+.connection-stem.is-active-branch .connection-line-inner{stroke:#f0cb86}
