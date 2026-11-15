@@ -7,7 +7,7 @@
   <title>Account · GemDen</title>
   <link rel="stylesheet" href="/en/assets/site.css?v=20261020-2">
   <link rel="stylesheet" href="/en/assets/blob.css?v=20261016-1">
-  <link rel="stylesheet" href="/en/konto/konto.css?v=20261027-1">
+  <link rel="stylesheet" href="/en/konto/konto.css?v=20261115-2">
   <link rel="stylesheet" href="/en/assets/worlds.css?v=20261011-1">
 <!-- gemden-language:start -->
 <meta name="gemden-languages" content="/ /404.html /community/ /community/dynastien/rubybubys/ /community/kieze/p-hain/ /community/kieze/travelkiez/ /community/mitglieder/julius/ /community/mitglieder/profil/ /community/orte/threeden/ /community/synergien/aktive/ /community/synergien/alternative/ /community/synergien/connaisseurs/ /community/synergien/hexen/ /community/synergien/hooligans/ /community/synergien/kuenstler/ /community/synergien/macher/ /community/synergien/moderne/ /community/synergien/nerds/ /community/synergien/promillanten/ /community/synergien/visionaere/ /entwuerfe/blob-waschbaer/ /entwuerfe/herz-gassi/ /entwuerfe/moeglichkeiten/ /entwuerfe/obdachlosenhilfe/ /gassi/ /gestalten/ /hilfe/ /impressum/ /info/ /julius/ /kalender/ /kalender/verbinden/ /konto/ /leistungen/ /leistungen/rubybubys-herz-und-schnauze/ /leistungen/rubybubys-herz-und-schnauze/betreuung/ /leistungen/rubybubys-herz-und-schnauze/gassihilfe/ /leistungen/rubybubys-herz-und-schnauze/gastgeber/ /leistungen/rubybubys-herz-und-schnauze/lernen/ /leistungen/rubybubys-herz-und-schnauze/lernen/alleinbleiben/ /leistungen/rubybubys-herz-und-schnauze/lernen/begegnungen/ /leistungen/rubybubys-herz-und-schnauze/lernen/belohnung/ /leistungen/rubybubys-herz-und-schnauze/lernen/betreuung/ /leistungen/rubybubys-herz-und-schnauze/lernen/fell/ /leistungen/rubybubys-herz-und-schnauze/lernen/geschirr/ /leistungen/rubybubys-herz-und-schnauze/lernen/hilfe/ /leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel-video/ /leistungen/rubybubys-herz-und-schnauze/lernen/hundespiel/ /leistungen/rubybubys-herz-und-schnauze/lernen/koerpersprache/ /leistungen/rubybubys-herz-und-schnauze/lernen/krallen/ /leistungen/rubybubys-herz-und-schnauze/lernen/leine/ /leistungen/rubybubys-herz-und-schnauze/lernen/ohren/ /leistungen/rubybubys-herz-und-schnauze/lernen/pfoten/ /leistungen/rubybubys-herz-und-schnauze/lernen/ressourcen/ /leistungen/rubybubys-herz-und-schnauze/lernen/rueckruf/ /leistungen/rubybubys-herz-und-schnauze/lernen/ruhe/ /leistungen/rubybubys-herz-und-schnauze/lernen/stubenrein/ /leistungen/rubybubys-herz-und-schnauze/lernen/welpen/ /leistungen/rubybubys-herz-und-schnauze/lernen/welpenbeissen/ /leistungen/rubybubys-herz-und-schnauze/lernen/zaehne/ /leistungen/rubybubys-obdachlosenhilfe/ /leistungen/smart-home/ /system/ /tickets/ /treffpunkte/ /verwaltung/mitglieder/ /willkommen/">
@@ -95,6 +95,23 @@
 
           <section id="konto-uebersicht" class="account-view" data-account-view aria-labelledby="overview-title">
             <header class="account-view-heading"><p class="eyebrow">Your shortcuts</p><h3 id="overview-title">What&#39;s coming up for you?</h3><p>Go straight to what you need right now.</p></header>
+            <section class="account-today" id="account-today" aria-label="What&#39;s new in your account" hidden>
+              <a class="account-today-card is-mint" id="account-next-event" href="/en/kalender/?kalender=PERSONAL" hidden>
+                <span class="account-today-label">Your next event</span>
+                <strong data-account-card-value></strong>
+                <span data-account-card-detail></span>
+              </a>
+              <a class="account-today-card is-gold" id="account-saved-walk" href="/en/gassi/" hidden>
+                <span class="account-today-label">Your saved dog-walking spot</span>
+                <strong data-account-card-value></strong>
+                <span data-account-card-detail></span>
+              </a>
+              <a class="account-today-card is-lavender" id="account-new-reply" href="#account-synergy-history" hidden>
+                <span class="account-today-label">New reply to your intro request</span>
+                <strong data-account-card-value></strong>
+                <span data-account-card-detail></span>
+              </a>
+            </section>
             <div class="account-routes"><a class="account-route is-mint" href="/en/kalender/?kalender=PERSONAL"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="4"/><path d="M8 3v4m8-4v4M4 11h16m-12 4h3m3 0h2"/></svg></span><span class="account-route-copy"><strong>My calendar</strong><span>Appointments and your own requests</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a>
 <a class="account-route is-gold" href="/en/treffpunkte/?leistung=SERVICE-RUBYBUBYS-HERZ-SCHNAUZE"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17c-3-5 0-11 5-11s8 6 5 11c-2 4-8 4-10 0Z"/><path d="M9 15c0-4 6-4 6 0m-9-7L4 4m14 4 2-4"/></svg></span><span class="account-route-copy"><strong>My meeting places</strong><span>Favourite places and dog-walking time slots</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a>
 <a class="account-route is-rose" href="#konto-kontakte"><span class="account-route-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6c-4-4-8 1-8 1S8 2 4 6c-4 5 8 13 8 13S24 11 20 6Z"/></svg></span><span class="account-route-copy"><strong>Contacts &amp; care</strong><span>Trusted people and support</span></span><span class="account-route-arrow" aria-hidden="true">↗</span></a>
@@ -264,11 +281,11 @@
               </form>
             </details>
 
-            <details class="workspace-block" open>
-              <summary>My requests to get to know a Synergy</summary>
+            <details class="workspace-block" id="account-synergy-history" open>
+              <summary>My Synergies &amp; intro requests</summary>
+              <ul id="account-synergy-states" class="account-synergy-states" hidden></ul>
               <p id="profile-synergy-request-status" class="account-copy" role="status">Loading your requests …</p>
-              <ul id="profile-synergy-requests" class="account-copy"></ul>
-              <p><a href="/en/tickets/#ticket-list-title">Read replies in my tickets</a></p>
+              <ul id="profile-synergy-requests" class="account-copy account-synergy-history"></ul>
             </details>
 
             <details class="workspace-block" open>
@@ -668,18 +685,18 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js" defer></script>
   <script src="/en/assets/supabase-config.js" defer></script>
   <script src="/en/assets/supabase-client.js" defer></script>
-  <script src="/en/assets/synergy-profile.js?v=20261114-1" defer></script>
   <script src="/en/assets/member-page-template.js?v=20260926-1" defer></script>
   <script src="/en/konto/auth-flow.js?v=20261114-1" defer></script>
   <script src="/en/konto/account-deletion.js?v=20261115-1" defer></script>
   <script src="/en/konto/page-bootstrap.js?v=20260926-1" defer></script>
-  <script src="/en/konto/profile-workspace.js?v=20261114-1" defer></script>
+  <script src="/en/konto/profile-workspace.js?v=20261115-2" defer></script>
   <script src="/en/konto/publication-center.js?v=20261109-2" defer></script>
   <script src="/en/assets/opportunity-entry.js?v=20261019-1" defer></script>
   <script src="/en/konto/opportunity-workspace.js?v=20261016-2" defer></script>
   <script src="/en/konto/resonance-workspace.js?v=20261016-1" defer></script>
   <script src="/en/konto/care-entry.js?v=20261027-1" defer></script>
   <script src="/en/konto/account-views.js?v=20261027-1" defer></script>
-  <script src="/en/konto/konto.js?v=20261115-1" defer></script>
+  <script src="/en/konto/account-overview.js?v=20261115-2" defer></script>
+  <script src="/en/konto/konto.js?v=20261115-2" defer></script>
 </body>
 </html>
