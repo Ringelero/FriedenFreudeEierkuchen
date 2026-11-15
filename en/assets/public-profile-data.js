@@ -3,6 +3,7 @@
   const client = window.FFE_SUPABASE_CLIENT;
   const modules = window.GemDenModules;
   const memberTemplate = window.GemDenMemberPageTemplate;
+  const moderation = window.GemDenProfileModeration;
   if (!root) return;
 
   // Prevent the generic renderer from mounting the repository prototype before
@@ -135,6 +136,12 @@
 
   async function hydratePublishedProfile() {
     try {
+      const safety = await moderation.profileState(memberId);
+      if (safety === 'blocked') {
+        moderation.showBlocked(root);
+        return;
+      }
+      if (!['visible', 'guest', 'own'].includes(safety)) return;
       const profile = await query(client
         .from('profiles')
         .select('stable_id,display_name,visibility,publication_status,account_status')
@@ -212,6 +219,7 @@
         root.dataset.gemdenRenderState = 'ready';
         root.dataset.publicDataSource = 'supabase-published';
         document.title = `${profile.display_name} · Member · GemDen`;
+        moderation.mount(root, memberId, safety);
       }
     } catch (error) {
       root.dataset.gemdenRenderState = 'closed';
