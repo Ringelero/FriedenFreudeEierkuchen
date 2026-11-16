@@ -7,9 +7,10 @@
   const storageKey = 'gemden_language_v1';
   const englishPath = path => path === '/en' || path.startsWith('/en/');
   function canonicalPath(path) { return englishPath(path) ? path.slice(3) || '/' : path; }
-  function languageUrl(input, language, origin) {
-    const url = new URL(input, origin);
-    if (url.origin !== new URL(origin).origin || !['de', 'en'].includes(language)) return url.href;
+  function languageUrl(input, language, base) {
+    const url = new URL(input, base);
+    const baseUrl = new URL(base);
+    if (url.protocol !== baseUrl.protocol || url.host !== baseUrl.host || !['de', 'en'].includes(language)) return url.href;
     url.searchParams.delete('lang');
     const path = canonicalPath(url.pathname);
     url.pathname = language === 'en' ? '/en' + (path.startsWith('/') ? path : '/' + path) : path;
@@ -31,7 +32,7 @@
     if (target && target !== language && routeExists(location.pathname)) {
       current.searchParams.delete('lang');
       try { window.localStorage.setItem(storageKey, target); } catch (_) {}
-      const redirect = new URL(languageUrl(current.href, target, location.origin));
+      const redirect = new URL(languageUrl(current.href, target, location.href));
       redirect.searchParams.set('lang', target);
       location.replace(redirect.href);
       return;
@@ -50,7 +51,9 @@
       const href = link.getAttribute('href');
       if (!href || href.startsWith('#') || /^(?:mailto:|tel:|data:|javascript:)/i.test(href)) return;
       let url; try { url = new URL(href, location.href); } catch (_) { return; }
-      if (url.origin === location.origin && routeExists(url.pathname)) link.href = languageUrl(url.href, language, location.origin);
+      if (url.protocol === current.protocol && url.host === current.host && routeExists(url.pathname)) {
+        link.href = languageUrl(url.href, language, location.href);
+      }
     }
     function scan(node) {
       if (node.nodeType !== 1 && node.nodeType !== 9) return;
@@ -64,7 +67,7 @@
       nav.setAttribute('aria-label', language === 'en' ? 'Website language' : 'Sprache der Website');
       for (const code of ['de', 'en']) {
         const link = document.createElement('a');
-        const destinationFor = () => { const url = new URL(languageUrl(location.href, code, location.origin)); url.searchParams.set('lang', code); return url.href; };
+        const destinationFor = () => { const url = new URL(languageUrl(location.href, code, location.href)); url.searchParams.set('lang', code); return url.href; };
         link.href = destinationFor();
         link.lang = code; link.hreflang = code; link.textContent = code.toUpperCase();
         link.setAttribute('aria-label', code === 'de' ? 'Deutsch' : 'English');
@@ -85,7 +88,7 @@
         for (const change of changes) for (const node of change.addedNodes) scan(node);
       }).observe(document.body, { childList: true, subtree: true });
     }
-    window.GemDenLanguage = { language, locale: language === 'en' ? 'en-GB' : 'de-DE', languageUrl: url => languageUrl(url, language, location.origin) };
+    window.GemDenLanguage = { language, locale: language === 'en' ? 'en-GB' : 'de-DE', languageUrl: url => languageUrl(url, language, location.href) };
     if (document.readyState !== 'complete') document.addEventListener('DOMContentLoaded', render, { once: true }); else render();
   }
   return { canonicalPath, languageUrl, mount };
