@@ -54,8 +54,8 @@
   aspect-ratio: 2.33;
   background: #f4cfad;
 }
-.julius-painting, .julius-content-art { position: absolute; inset: 0; z-index: -1; display: block; }
-.julius-painting img, .julius-content-art img { display: block; width: 100%; height: 100%; object-fit: fill; }
+.julius-painting { position: absolute; inset: 0; z-index: -1; display: block; }
+.julius-painting img { display: block; width: 100%; height: 100%; object-fit: fill; }
 .julius-painting::after {
   content: "";
   position: absolute;
@@ -141,19 +141,55 @@
 
 .julius-paper { margin-top: -3.3cqw; }
 .julius-panel {
+  --panel-art: var(--art-wide);
+  --top-slice: 23%;
+  --bottom-slice: 54%;
+  --frame-top: 10cqw;
+  --frame-bottom: 23.46cqw;
   position: relative;
   isolation: isolate;
   min-height: clamp(410px, 46cqw, 690px);
-  padding: clamp(4.25rem, 8cqw, 8.75rem) 0 clamp(7rem, 14cqw, 13rem);
+  padding: clamp(4.25rem, 8cqw, 8.75rem) 0 max(7rem, calc(var(--frame-bottom) - 4.6cqw));
   background: var(--julius-cream);
   scroll-margin-top: 1.25rem;
 }
-.julius-content-art::after {
+.julius-panel::before, .julius-panel::after {
   content: "";
   position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+/* The painted corners keep their proportions as the text changes height. */
+.julius-panel::before {
+  inset: 0;
+  border: 1px solid transparent;
+  border-image: var(--panel-art) var(--top-slice) 25% var(--bottom-slice) 25% fill /
+    var(--frame-top) 25cqw var(--frame-bottom) 25cqw stretch;
+}
+.julius-panel::after {
   inset: 0 0 auto;
   height: clamp(1.6rem, 3.4cqw, 3.8rem);
   background: linear-gradient(var(--julius-ribbon), transparent);
+}
+#faehigkeiten {
+  --art-wide: url("/assets/art/julius/tab-faehigkeiten-1680.webp");
+  --art-medium: url("/assets/art/julius/tab-faehigkeiten-960.webp");
+  --art-mobile: url("/assets/art/julius/tab-faehigkeiten-handy-840.webp");
+  --art-small: url("/assets/art/julius/tab-faehigkeiten-handy-480.webp");
+}
+#synergien {
+  --art-wide: url("/assets/art/julius/tab-synergien-1680.webp");
+  --art-medium: url("/assets/art/julius/tab-synergien-960.webp");
+  --art-mobile: url("/assets/art/julius/tab-synergien-handy-840.webp");
+  --art-small: url("/assets/art/julius/tab-synergien-handy-480.webp");
+}
+#wuensche {
+  --art-wide: url("/assets/art/julius/tab-wuensche-1680.webp");
+  --art-medium: url("/assets/art/julius/tab-wuensche-960.webp");
+  --art-mobile: url("/assets/art/julius/tab-wuensche-handy-840.webp");
+  --art-small: url("/assets/art/julius/tab-wuensche-handy-480.webp");
+  min-height: max(310px, calc(var(--frame-top) + var(--frame-bottom) + 1.25rem));
+  padding: 0;
 }
 .julius-panel-body {
   width: min(74%, 1130px);
@@ -166,7 +202,6 @@
   font: 700 clamp(1.42rem, 2.58cqw, 2.42rem)/1.07 var(--julius-lettering);
   letter-spacing: -.014em;
 }
-#wuensche { min-height: clamp(310px, 39cqw, 565px); padding: 0; }
 .julius-skill-levels, .julius-synergies {
   display: grid;
   grid-template-columns: 1.28fr 1fr 1fr;
@@ -175,7 +210,7 @@
   align-items: start;
 }
 .julius-skill-level, .julius-synergy { min-width: 0; }
-.julius-skill-level h2::after, .julius-synergy h2::after, .julius-interests h2::after {
+.julius-skill-level h2::after, .julius-synergy h2::after {
   content: "";
   display: block;
   width: min(90%, 8.8em);
@@ -184,10 +219,10 @@
   border-radius: 85% 32% 74% 45%;
   background: linear-gradient(90deg, #b95145, #d98464 62%, transparent);
 }
-.julius-skill-level:nth-child(2) h2::after, .julius-synergy:nth-child(2) h2::after {
+.julius-skill-level:nth-child(2) h2::after, .julius-synergy:nth-child(3n+2) h2::after {
   background: linear-gradient(90deg, #6e7637, #9a9c55 62%, transparent);
 }
-.julius-skill-level:nth-child(3) h2::after, .julius-synergy:nth-child(3) h2::after {
+.julius-skill-level:nth-child(3) h2::after, .julius-synergy:nth-child(3n) h2::after {
   background: linear-gradient(90deg, #825065, #b8787f 62%, transparent);
 }
 .julius-panel ul { display: grid; gap: .35em; margin: 0; padding: 0; list-style: none; }
@@ -211,12 +246,11 @@
 .julius-synergy h2 a { color: inherit; text-underline-offset: .15em; text-decoration-thickness: .05em; }
 .julius-synergy h2 a:hover, .julius-connection:hover { color: #8b3645; }
 .julius-synergy h2 a span { font-size: .65em; }
-.julius-interests { margin: clamp(1.55rem, 4cqw, 3.5rem) 0 1.6rem; }
-.julius-interests ul { display: flex; flex-wrap: wrap; gap: .35em 1.1em; }
 .julius-connection {
   display: inline-flex;
   align-items: baseline;
   gap: .52em;
+  margin-top: clamp(1.35rem, 3cqw, 2.75rem);
   color: var(--ink);
   font-size: clamp(1.02rem, 1.8cqw, 1.5rem);
   text-decoration-thickness: .06em;
@@ -238,6 +272,9 @@
   #faehigkeiten .julius-panel-body { width: min(66%, 1130px); }
   #synergien .julius-panel-body { width: min(69%, 1130px); }
 }
+@media (min-width: 721px) and (max-width: 960px) and (max-resolution: 1dppx) {
+  .julius-panel { --panel-art: var(--art-medium); }
+}
 @media (max-width: 720px) {
   .julius-portfolio .site-nav { padding: 11px 1rem; }
   .julius-hero { min-height: 0; aspect-ratio: .8; }
@@ -247,18 +284,26 @@
   .julius-sections { width: 94%; gap: .24rem; margin-top: -7.2cqw; }
   .julius-sections a { font-size: clamp(.99rem, 5.1cqw, 1.65rem); }
   .julius-paper { margin-top: -1.5rem; }
-  .julius-panel { padding: 4.5rem 0 13.5rem; min-height: 400px; }
-  #faehigkeiten { padding-bottom: 17rem; }
-  #wuensche { min-height: max(350px, 113cqw); }
+  .julius-panel {
+    --panel-art: var(--art-mobile);
+    --top-slice: 15%;
+    --bottom-slice: 39%;
+    --frame-top: 25cqw;
+    --frame-bottom: 65cqw;
+    min-height: 400px;
+    padding: max(4.5rem, 21cqw) 0 max(10rem, 60cqw);
+  }
   .julius-panel-body { width: min(70%, 440px); }
   .julius-skill-levels, .julius-synergies { grid-template-columns: 1fr; gap: 1.5rem; }
   .julius-skill-level:first-child ul { columns: 2; display: block; column-gap: .8rem; }
   .julius-skill-level:first-child li { break-inside: avoid; margin-bottom: .35em; }
 }
+@media (max-width: 480px) and (max-resolution: 1dppx) {
+  .julius-panel { --panel-art: var(--art-small); }
+}
 @media (max-width: 380px) {
   .julius-panel-body { width: 71%; }
   .julius-skill-level:first-child ul { columns: 1; }
-  #faehigkeiten { padding-bottom: 18.5rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .julius-sections a { transition: none; }

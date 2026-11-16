@@ -11,6 +11,11 @@
   'use strict';
   const HOME_PATHS = Object.freeze(['community/','leistungen/','konto/','treffpunkte/?ansicht=entdecken&darstellung=karte','kalender/','system/','community/#dynastien','community/#synergien']);
   const INTRODUCTION = "Aren't you tired of big corporations ripping us all off? Let's build a community. Let's be there for each other. Free from dependence on the wealthy. Independent!";
+  const COMMUNITY_GUIDE = [
+    ["Dynasties", "A dynasty is a large circle of friends or family. The Rubybubys, for example, share a place called ThreeDen and offer services of their own."],
+    ["Synergies", "A synergy forms wherever people have something in common. That might be a hobby, culture or shared traits. For example, the Nerds bring people from different dynasties together around a love of games, comics or technology."],
+    ["Titles in synergies", "Each synergy decides which titles it awards and what earns them. Someone who helped found the Nerds could be called an Ur-Nerd, meaning an original Nerd. Later contributions can earn recognition too, such as sharing ideas, adding content to the group's page or organising meetups."]
+  ];
   const CATEGORIES = Object.freeze([
     {id:'services',title:"Services",icon:'sprout'},
     {id:'account',title:"My account",icon:'person'},
@@ -146,6 +151,7 @@
   function mount() {
     const residence = window.BLOB_CONFIG?.residence;
     if (!(residence === 'garden' && document.body.classList.contains('garden-home')) && !(residence === 'sketch' && document.body.classList.contains('community-sketch'))) return;
+    const community = residence === 'sketch';
     const seat = document.querySelector('[data-blob-seat]');
     const character = document.getElementById('blob-character');
     const chat = document.getElementById('blob-chat');
@@ -178,9 +184,21 @@
       character.focus({preventScroll:true});
     });
     const intro = document.createElement('section'); intro.id = 'blob-introduction'; intro.className = 'blob-home-introduction'; intro.hidden = true; intro.setAttribute('aria-labelledby','blob-intro-toggle');
-    const introText = document.createElement('p'); introText.textContent = INTRODUCTION; intro.append(introText);
     const introToggle = header.querySelector('.blob-home-introduce');
     function showIntroduction(open) { intro.hidden = !open; introToggle.setAttribute('aria-expanded',String(open)); }
+    if (community) {
+      introToggle.querySelector('span:nth-child(2)').textContent = "Understanding the community";
+      const guide = document.createElement('dl'); guide.className = 'blob-community-guide';
+      for (const [title, text] of COMMUNITY_GUIDE) {
+        const term = document.createElement('dt'); term.textContent = title;
+        const definition = document.createElement('dd'); definition.textContent = text;
+        guide.append(term, definition);
+      }
+      intro.append(guide);
+      showIntroduction(true);
+    } else {
+      const introText = document.createElement('p'); introText.textContent = INTRODUCTION; intro.append(introText);
+    }
     introToggle.addEventListener('click',() => showIntroduction(intro.hidden));
     const searchAnchor = document.createElement('span'); searchAnchor.dataset.blobSearchAnchor = ''; searchAnchor.hidden = true;
     const nav = document.createElement('nav'); nav.className = 'blob-home-categories'; nav.setAttribute('aria-label',"Explore areas");

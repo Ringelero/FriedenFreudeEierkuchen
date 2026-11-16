@@ -12,6 +12,10 @@
 .community-sketch a:focus-visible,.community-sketch button:focus-visible{outline:3px solid #315c4a;outline-offset:5px}
 .community-sketch .footer{max-width:1500px;margin:0 auto;padding:25px clamp(20px,4vw,70px) 45px;border:0;background:#f5ecd4;color:var(--ink)}
 .community-sketch .footer a{color:var(--ink)}
+.blob-community-guide{margin:0;color:var(--ink)}
+.blob-community-guide dt{font:700 1rem/1.25 Georgia,serif}
+.blob-community-guide dd{margin:.25rem 0 0;font:.93rem/1.42 Georgia,serif}
+.blob-community-guide dd+dt{margin-top:.8rem}
 
 .synergy-page .synergy-main{max-width:1000px;padding:clamp(30px,6vw,85px) clamp(22px,5vw,60px);margin:auto}
 .synergy-heading{padding:45px 30px;background:#fbf2dd;border-radius:28% 16% 22% 13%/12% 16% 20% 16%;margin-bottom:40px}

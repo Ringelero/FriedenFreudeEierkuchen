@@ -257,6 +257,30 @@
       "public_path": "/community/synergien/aktive/"
     },
     {
+      "id": "SYN-STREBER",
+      "slug": "streber",
+      "name": "Die Streber",
+      "status": "building",
+      "description": "Für alle, die gerne lesen, Fragen stellen und sich in Geschichte, Philosophie oder Erdkunde vertiefen.",
+      "public_path": "/community/synergien/streber/"
+    },
+    {
+      "id": "SYN-ZOCKER",
+      "slug": "zocker",
+      "name": "Die Zocker",
+      "status": "building",
+      "description": "Poker, Brettspiele und gemeinsame Spielabende – am Tisch oder online.",
+      "public_path": "/community/synergien/zocker/"
+    },
+    {
+      "id": "SYN-MEDITANTEN",
+      "slug": "meditanten",
+      "name": "Die Meditanten",
+      "status": "building",
+      "description": "Meditation, Sauna, Massage und alles, wobei du dich wohlfühlst.",
+      "public_path": "/community/synergien/meditanten/"
+    },
+    {
       "id": "SYN-SCHNAUZIS",
       "slug": "schnauzis",
       "name": "Schnauzis",

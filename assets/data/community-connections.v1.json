@@ -105,6 +105,24 @@
       "public_path": "/community/synergien/aktive/"
     },
     {
+      "id": "SYN-STREBER",
+      "kind": "synergy",
+      "name": "Die Streber",
+      "public_path": "/community/synergien/streber/"
+    },
+    {
+      "id": "SYN-ZOCKER",
+      "kind": "synergy",
+      "name": "Die Zocker",
+      "public_path": "/community/synergien/zocker/"
+    },
+    {
+      "id": "SYN-MEDITANTEN",
+      "kind": "synergy",
+      "name": "Die Meditanten",
+      "public_path": "/community/synergien/meditanten/"
+    },
+    {
       "id": "SYN-SCHNAUZIS",
       "kind": "synergy",
       "name": "Schnauzis",
@@ -185,6 +203,18 @@
     {
       "from": "ROOT-SYNERGIES",
       "to": "SYN-AKTIVE"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-STREBER"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-ZOCKER"
+    },
+    {
+      "from": "ROOT-SYNERGIES",
+      "to": "SYN-MEDITANTEN"
     },
     {
       "from": "ROOT-SYNERGIES",

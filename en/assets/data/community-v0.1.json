@@ -257,6 +257,30 @@
       "public_path": "/community/synergien/aktive/"
     },
     {
+      "id": "SYN-STREBER",
+      "slug": "streber",
+      "name": "The Swots",
+      "status": "building",
+      "description": "For anyone who loves reading, asking questions and exploring history, philosophy or geography.",
+      "public_path": "/community/synergien/streber/"
+    },
+    {
+      "id": "SYN-ZOCKER",
+      "slug": "zocker",
+      "name": "The Gamers",
+      "status": "building",
+      "description": "Poker, board games and game nights around the table or online.",
+      "public_path": "/community/synergien/zocker/"
+    },
+    {
+      "id": "SYN-MEDITANTEN",
+      "slug": "meditanten",
+      "name": "The Meditants",
+      "status": "building",
+      "description": "Meditation, sauna, massage and whatever helps you feel good.",
+      "public_path": "/community/synergien/meditanten/"
+    },
+    {
       "id": "SYN-SCHNAUZIS",
       "slug": "schnauzis",
       "name": "Schnauzis",
