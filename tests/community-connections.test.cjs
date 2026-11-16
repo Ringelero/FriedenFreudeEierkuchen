@@ -30,7 +30,7 @@ test('initial view has only the two entries; expansion reveals the selected rela
   assert.deepEqual(graph.links.filter(l => l.to === shared).map(l => l.from).sort(), ['DYN-RUBYBUBYS', 'SYN-ALTERNATIVE']);
 });
 
-test('only an opened dynasty shows its own places and services', () => {
+test('each branch can reveal the places or services it links to', () => {
   const dynasties = visibleGraph(catalogue, new Set([roots[0], 'DYN-RUBYBUBYS', 'SYN-ALTERNATIVE']));
   assert.deepEqual(dynasties.nodes.filter(node => node.depth > 0).map(node => node.id), [
     'DYN-RUBYBUBYS','PLACE-THREEDEN',shared,'SERVICE-RUBYBUBYS-HERZ-SCHNAUZE'
@@ -38,7 +38,8 @@ test('only an opened dynasty shows its own places and services', () => {
   assert.deepEqual(dynasties.links.filter(link => link.to === shared), [{from:'DYN-RUBYBUBYS',to:shared}]);
   const synergies = visibleGraph(catalogue, new Set([roots[1], 'DYN-RUBYBUBYS', 'SYN-ALTERNATIVE']));
   assert.equal(synergies.nodes.filter(node => node.kind === 'synergy').length, 16);
-  assert.ok(!synergies.nodes.some(node => node.kind === 'service' || node.kind === 'place'));
+  assert.deepEqual(synergies.nodes.filter(node => node.kind === 'service').map(node => node.id),[shared]);
+  assert.ok(!synergies.nodes.some(node => node.kind === 'place'));
 });
 
 test('invalid and duplicate links are ignored; cyclic extensions terminate without duplicate nodes', () => {
@@ -51,18 +52,17 @@ test('invalid and duplicate links are ignored; cyclic extensions terminate witho
   assert.equal(graph.links.length, raw.links.length + 1);
 });
 
-test('each support link needs the providing dynasty and that specific synergy open', () => {
+test('revealed dynasty services connect to visible synergies even before the synergies are expanded', () => {
   const dynasty = 'DYN-RUBYBUBYS';
   const alternatives = 'SYN-ALTERNATIVE';
   const connaisseurs = 'SYN-CONNAISSEURS';
   const dogService = 'SERVICE-RUBYBUBYS-HERZ-SCHNAUZE';
   const crossLinks = selection => visibleGraph(catalogue, new Set([...roots, ...selection])).links.filter(
     link => [alternatives, connaisseurs].includes(link.from));
-  assert.deepEqual(crossLinks([dynasty]), []);
-  assert.deepEqual(crossLinks([alternatives, connaisseurs]), []);
-  assert.deepEqual(crossLinks([dynasty, alternatives]), [{from:alternatives,to:shared}]);
-  assert.deepEqual(crossLinks([connaisseurs, dynasty]), [{from:connaisseurs,to:dogService}]);
-  assert.deepEqual(crossLinks([connaisseurs, alternatives, dynasty]), [
-    {from:alternatives,to:shared}, {from:connaisseurs,to:dogService}
-  ]);
+  const expected = [{from:alternatives,to:shared}, {from:connaisseurs,to:dogService}];
+  assert.deepEqual(crossLinks([]), []);
+  assert.deepEqual(crossLinks([dynasty]), expected);
+  assert.deepEqual(crossLinks([alternatives, connaisseurs]), expected);
+  assert.deepEqual(crossLinks([connaisseurs]), [{from:connaisseurs,to:dogService}]);
+  assert.deepEqual(crossLinks([connaisseurs, alternatives, dynasty]), expected);
 });

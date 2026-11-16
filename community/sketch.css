@@ -59,9 +59,6 @@
 .connection-line{stroke:#556e43;stroke-width:1.6;stroke-linecap:round;fill:none}
 .connection-line.is-shared{stroke:#b0613e;stroke-width:2.4}
 .connection-leaf{fill:#556e43;opacity:.8}
-.connection-layer{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;align-items:start;min-height:75px}
-.connection-layer+.connection-layer{margin-top:110px;grid-template-columns:repeat(var(--node-count,3),minmax(0,1fr))}
-.connection-layer.is-many{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 .connection-node{position:relative;min-width:0;display:flex;justify-content:center;align-items:center;gap:2px;text-align:center;isolation:isolate}
 .connection-node:before{content:'';position:absolute;inset:-18px -5px;z-index:-1;border-radius:48%;background:#fbefd5c9;filter:blur(10px);pointer-events:none}
 .connection-node-control{display:inline-flex;gap:9px;align-items:center;justify-content:center;min-height:48px;max-width:100%;padding:10px 8px;border:0;border-bottom:1px solid #6f8056a6;border-radius:0 0 35% 25%;background:none;color:var(--ink);font:500 clamp(1.1rem,2.05cqw,2rem)/1.25 Georgia,serif;text-decoration:none;overflow-wrap:anywhere}
@@ -95,14 +92,7 @@
  .sketch-synergies .contour-edge{width:7%;height:4.8em}
  .connection-garden{margin-top:-13cqw;padding:35px 9% 80px;min-height:280px}
  .connection-garden:before{background-image:url('/assets/community/bildfluss-garden-20261104-800.webp');background-size:auto 100%;mask-image:linear-gradient(transparent,#000 60px,#000 calc(100% - 30px),transparent)}
- .connection-layer{gap:15px}
- .connection-layer+.connection-layer{margin-top:85px}
  .connection-node-control{font-size:clamp(1.02rem,4.5cqw,1.4rem);padding:9px 3px}
- .connection-layer[data-depth="1"] .connection-node-control{overflow-wrap:normal}
- .connection-layer[data-depth="1"] .connection-node-symbol{display:none}
- .connection-layer[data-depth="2"],.connection-layer[data-depth="3"]{display:flex;flex-direction:column;align-items:center;gap:60px;margin-inline:25px}
- .connection-layer[data-depth="2"] .connection-node,.connection-layer[data-depth="3"] .connection-node{width:100%}
- .connection-layer[data-depth="2"] .connection-node-control,.connection-layer[data-depth="3"] .connection-node-control{font-size:1.25rem}
 }
 @media(prefers-reduced-motion:reduce){.community-sketch *{scroll-behavior:auto!important}}
 
@@ -126,7 +116,6 @@
 .connection-node[data-motif="3"] .connection-node-name{font-size:clamp(.9rem,1.55cqw,1.4rem)}
 .connection-node[data-motif="4"] .connection-node-copy{transform:rotate(2deg);inset:32% 18% 24%}
 .connection-node.is-shared .connection-node-name{color:#884a30}
-.connection-layer+.connection-layer{margin-top:85px}
 .connection-stem .connection-line{stroke:#59694b;stroke-width:5.2;stroke-linecap:round;fill:none}
 .connection-stem .connection-line-inner{stroke:#eddfbd;stroke-width:3;stroke-linecap:round;fill:none}
 .connection-stem.is-shared .connection-line{stroke:#a56b46}
@@ -142,26 +131,12 @@
  .connection-node-control{width:min(62cqw,210px)}
  .connection-node.is-expandable .connection-node-control{width:100%}
  .connection-node-name{font-size:clamp(1rem,4.5cqw,1.3rem)}
- .connection-layer[data-depth="1"] .connection-node-name{font-size:clamp(.87rem,4cqw,1.55rem)}
- .connection-layer[data-depth="1"] .connection-node[data-motif="1"] .connection-node-name{font-size:clamp(.82rem,3.8cqw,1.45rem)}
  .connection-node-copy{gap:5px}
  .connection-node-action{font-size:.75rem;gap:5px}
- .connection-layer[data-depth="1"] .connection-node-action{font-size:clamp(.66rem,2.9cqw,.82rem)}
- .connection-layer[data-depth="1"] .connection-node-symbol{display:inline}
- .connection-layer+.connection-layer{margin-top:75px}
- .connection-layer[data-depth="2"],.connection-layer[data-depth="3"]{gap:35px;margin-inline:0}
- .connection-layer[data-depth="2"] .connection-node-control,.connection-layer[data-depth="3"] .connection-node-control{padding:0;font-size:inherit}
 }
 @media(prefers-reduced-motion:reduce){.connection-node-art{transition:none!important}.connection-node-control:hover .connection-node-art{transform:none}}
 
-/* Existing painted objects arranged within their opened branch. */
-.connection-layer[data-depth="1"]{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:clamp(20px,4vw,65px)}
-.connection-layer[data-depth="1"].is-single-branch{grid-template-columns:minmax(0,1fr);max-width:1100px;width:100%;margin-inline:auto}
-.connection-branch{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:18px 12px;align-items:start;justify-items:center;min-width:0}
-.connection-branch>.connection-node{width:100%;min-width:0;container-type:inline-size}
-.connection-branch .connection-node-control,.connection-branch .connection-node.is-expandable .connection-node-control{width:min(100%,245px)}
-.connection-layer[data-depth="1"] .connection-branch .connection-node-name{font-size:clamp(.9rem,8cqw,1.35rem)}
-@media(max-width:850px){.connection-branch{grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr));gap:14px 10px}.connection-layer[data-depth="1"]{gap:15px}.connection-branch .connection-node-copy{inset:34% 8% 24%}}
+
 
 .connection-node{position:relative}
 .connection-node-action{max-width:100%;text-align:center;justify-content:center;white-space:normal}
@@ -170,3 +145,128 @@
 .connection-node.is-active-branch .connection-node-art{filter:drop-shadow(0 1px 6px #b9793f80)}
 .connection-stem.is-active-branch .connection-line,.connection-stem.is-active-branch .connection-rung{stroke:#98552e}
 .connection-stem.is-active-branch .connection-line-inner{stroke:#f0cb86}
+
+/* The catalog opens as two painted branches below the entrance illustration. */
+.connection-canvas{width:min(100%,1280px);margin-inline:auto}
+[data-connection-layers]{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:clamp(36px,6cqw,92px)}
+[data-connection-layers].is-two-branches{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}
+.connection-branch{display:flex;flex-direction:column;gap:clamp(18px,2.7cqw,35px);min-width:0}
+.connection-tree-row{display:grid;grid-template-columns:repeat(var(--columns),minmax(0,1fr));gap:clamp(11px,2cqw,25px);align-items:center}
+.connection-tree-row.is-single{display:flex;justify-content:center}
+.connection-tree-row.is-single>.connection-node{width:min(100%,220px)}
+.connection-offshoot{display:grid;gap:clamp(16px,2cqw,26px)}
+.connection-node{container-type:inline-size}
+.connection-node-control,.connection-node.is-expandable .connection-node-control{width:min(100%,254px)}
+.connection-node-name{font-size:clamp(.8rem,10.5cqw,1.48rem);overflow-wrap:normal;hyphens:auto}
+.connection-node[data-motif="3"] .connection-node-name{font-size:clamp(.75rem,9.4cqw,1.26rem)}
+.connection-node-action{font-size:clamp(.68rem,5.7cqw,.83rem)}
+.connection-node[data-plate] .connection-node-control{aspect-ratio:360/258}
+.connection-node[data-plate] .connection-node-art{background-position:center;background-size:contain}
+.connection-node[data-plate] .connection-node-copy{inset:auto;width:var(--label-width,68%);left:var(--label-x,50%);top:var(--label-y,59%);transform:translate(-50%,-50%);gap:3px}
+.connection-node[data-plate] [data-node-action]{display:none}
+.connection-node[data-plate="streber"]{--label-y:54%;--label-width:70%}
+.connection-node[data-plate="zocker"]{--label-y:49%;--label-width:59%}
+.connection-node[data-plate="meditanten"]{--label-y:71%;--label-width:71%}
+.connection-node[data-plate="moderne"]{--label-y:53%;--label-width:71%}
+.connection-node[data-plate="macher"]{--label-y:53%;--label-width:61%}
+.connection-node[data-plate="connaisseurs"]{--label-x:44%;--label-y:59%;--label-width:65%}
+.connection-node[data-plate="promillanten"]{--label-x:55%;--label-y:64%;--label-width:62%}
+.connection-node[data-plate="meditanten"] .connection-node-name,
+.connection-node[data-plate="promillanten"] .connection-node-name,
+.connection-node[data-plate="moderne"] .connection-node-name{font-size:clamp(.73rem,9.6cqw,1.26rem)}
+.connection-node[data-plate="nerds"]{--label-y:68%;--label-width:60%}
+.connection-node[data-plate="visionaere"]{--label-y:70%;--label-width:64%}
+.connection-node[data-plate="hooligans"]{--label-y:59%;--label-width:60%}
+.connection-node[data-plate="kuenstler"]{--label-y:61%;--label-width:66%}
+.connection-node[data-plate="hexen"]{--label-x:55%;--label-y:61%;--label-width:62%}
+.connection-node[data-plate="aktive"]{--label-y:59%;--label-width:66%}
+.connection-node[data-plate="schnauzis"]{--label-y:60%;--label-width:59%}
+.connection-node[data-plate="streuner"]{--label-y:54%;--label-width:62%}
+.connection-branch-close{top:0;right:0}
+.connection-stem.is-tree-trunk .connection-line{stroke:#536544;stroke-width:8}
+.connection-stem.is-tree-trunk .connection-line-inner{stroke:#e1d4ab;stroke-width:5}
+.connection-stem.is-cross-link .connection-line{stroke:#a76749;stroke-width:3.9}
+.connection-stem.is-cross-link .connection-line-inner{stroke:#f8dec4;stroke-width:1.8}
+.connection-stem.is-cross-link.is-active-branch .connection-line{stroke:#88482b;stroke-width:5}
+@media(max-width:850px){
+ [data-connection-layers].is-two-branches{grid-template-columns:minmax(0,1fr);gap:48px}
+ .connection-branch{gap:22px}
+ .connection-tree-row{gap:clamp(28px,10cqw,62px)}
+ .connection-tree-row:not(.is-single)>.connection-node:nth-child(2){margin-top:11px}
+ .connection-tree-row.is-single>.connection-node{width:min(100%,185px)}
+ .connection-offshoot>.connection-tree-row.is-single:not(:only-child){display:grid}
+ .connection-offshoot>.connection-tree-row.is-single:not(:only-child)>.connection-node{width:100%}
+ .connection-garden::before{background-size:118% 100%}
+ .connection-node-name{font-size:clamp(.78rem,11cqw,1.45rem)}
+ .connection-node[data-motif="3"] .connection-node-name{font-size:clamp(.75rem,9.5cqw,1.25rem)}
+}
+
+/* Paper, painted edges and the growing tree are separate layers. */
+.connection-garden{overflow:clip;padding-top:clamp(37px,5.4cqw,81px);padding-bottom:clamp(88px,10cqw,152px);background:linear-gradient(transparent 0,#fae8c0 135px,#f9ebc9 calc(100% - 35px),transparent 100%)}
+.connection-garden::before,.connection-garden::after{position:absolute;inset-inline:0;z-index:-1;pointer-events:none}
+.connection-garden::before{inset-block:0 auto;width:100%;height:auto;aspect-ratio:1440/614;background:url('/assets/community/bachlandschaft/pc-baume.webp') center/100% auto no-repeat;mask-image:linear-gradient(transparent,#000 19%,#000 71%,transparent)}
+.connection-garden::after{content:'';bottom:0;width:100%;height:auto;aspect-ratio:1440/432;background:url('/assets/community/bachlandschaft/pc-bach.webp') center/100% auto no-repeat;mask-image:linear-gradient(transparent,#000 34%,#000 84%,transparent)}
+[data-connection-layers]{gap:clamp(24px,3.6cqw,64px)}
+[data-connection-layers].has-clearing{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+[data-connection-layers].is-two-branches.has-clearing{grid-template-columns:minmax(0,.23fr) minmax(0,.28fr) minmax(0,.49fr)}
+.connection-branch,.connection-clearing{position:relative;min-width:0;isolation:isolate}
+.connection-branch-title{position:relative;isolation:isolate;margin:0;text-align:center;color:#274731;font:500 clamp(1rem,2.3cqw,2.1rem)/1.1 Georgia,serif;letter-spacing:-.018em}
+.connection-branch-title::before{content:'';position:absolute;z-index:-1;inset-block:-.35em;inset-inline-start:50%;width:7.9em;transform:translateX(-50%);background:radial-gradient(ellipse,#fff0cbef 20%,#fff1cdbb 47%,transparent 74%);pointer-events:none}
+.connection-branch[data-branch="ROOT-SYNERGIES"] .connection-branch-title{text-align:left;padding-inline-start:7px}
+.connection-branch[data-branch="ROOT-SYNERGIES"] .connection-branch-title::before{inset-inline-start:2.13em}
+.connection-branch[data-branch="ROOT-DYNASTIES"] .connection-branch-title{color:#59452b}
+.connection-clearing{padding:clamp(24px,4cqw,48px) 3px}
+.connection-clearing::before{content:'';position:absolute;inset:0 -10%;z-index:-1;background:radial-gradient(ellipse at center,#fff7d7b8,transparent 69%);pointer-events:none}
+.connection-bubbles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,1.7cqw,22px) 7px;align-items:center;justify-items:center}
+.connection-bubbles.is-one-bubble{grid-template-columns:minmax(0,1fr)}
+.connection-bubble{width:min(100%,178px);padding:3px}
+.connection-bubble:nth-child(3n+1):not(:only-child){grid-column:1 / -1}
+.connection-bubble:nth-child(2){margin-top:9px}
+.connection-bubble:nth-child(3){margin-top:-9px}
+.connection-bubble::before{content:'';display:block;position:absolute;inset:7% 5% 8%;z-index:-1;border:1px solid #8161409d;border-radius:51% 46% 49% 44%/50% 47% 49% 45%;background:radial-gradient(ellipse at 35% 26%,#fffdf0 3%,#ffefbfdf 64%,#8db3a699 100%);box-shadow:0 6px 12px #79613338,inset -3px -2px 7px #fffce5;filter:none}
+.connection-bubble .connection-node-name{font-size:clamp(.78rem,10.15cqw,1.45rem)}
+.connection-bubble .connection-node-action{font-size:clamp(.68rem,6cqw,.84rem)}
+.connection-bubble.is-shared::before{border-color:#a55c47}
+.connection-stem.is-tree-trunk .connection-line{stroke:#406143;stroke-width:7}
+.connection-stem.is-tree-trunk .connection-line-inner{stroke:#c8c17f;stroke-width:4.2}
+.connection-stem.is-clearing-branch .connection-line{stroke:#8b643d;stroke-width:4}
+.connection-stem.is-clearing-branch .connection-line-inner{stroke:#f6d99f;stroke-width:2}
+.connection-stem.is-cross-link .connection-line{stroke:#914e3e}
+.connection-stem.is-cross-link .connection-line-inner{stroke:#f3c1a2}
+@media(min-width:851px){
+ .connection-canvas:has(.has-clearing)::before,.connection-canvas:has(.has-clearing)::after{content:'';position:absolute;z-index:-1;pointer-events:none;background-position:center;background-size:contain;background-repeat:no-repeat}
+ .connection-canvas:has(.has-clearing)::before{inset-inline-start:-8%;top:clamp(214px,42%,505px);width:clamp(105px,14cqw,230px);aspect-ratio:354/720;transform:rotate(-5deg);background-image:url('/assets/community/bachlandschaft/korallenranke.webp')}
+ .connection-canvas:has(.has-clearing)::after{inset-inline-end:-8%;top:47%;width:clamp(93px,11cqw,175px);aspect-ratio:345/720;transform:rotate(7deg);background-image:url('/assets/community/bachlandschaft/faecherzweig.webp')}
+ .connection-bubbles{display:flex;flex-direction:column;gap:9px}
+ .connection-bubble{width:min(66%,173px);margin-top:0}
+ .connection-bubble:nth-child(3n+2){align-self:flex-start;margin-inline-start:9%}
+ .connection-bubble:nth-child(3n+3){align-self:flex-end;margin-inline-end:9%}
+}
+
+@media(max-width:850px){
+ .connection-garden{margin-top:-12cqw;padding:34px clamp(17px,6cqw,48px) 75px;background:linear-gradient(transparent,#fae8bf 75px,#f9ebc9 calc(100% - 27px),transparent)}
+ .connection-garden::before,.connection-garden::after{content:none}
+ [data-connection-layers].is-two-branches,[data-connection-layers].has-clearing,[data-connection-layers].is-two-branches.has-clearing{grid-template-columns:minmax(0,1fr);gap:clamp(14px,4cqw,42px)}
+ .connection-branch{padding-top:25px;padding-bottom:20px}
+ .connection-branch-title,.connection-branch[data-branch="ROOT-SYNERGIES"] .connection-branch-title{text-align:center;padding:0;margin:0;font-size:clamp(1.35rem,5.5cqw,2.35rem);text-shadow:0 1px 8px #fff5d8}
+ .connection-branch[data-branch="ROOT-SYNERGIES"] .connection-branch-title::before{inset-inline-start:50%}
+ .connection-branch[data-branch="ROOT-DYNASTIES"]{padding-bottom:65px;min-height:230px}
+ .connection-branch::before,.connection-clearing::before{content:'';position:absolute;inset-inline:-8cqw auto;width:calc(100% + 16cqw);height:auto;z-index:-1;pointer-events:none;background-position:center;background-size:100% auto;background-repeat:no-repeat;mask-image:linear-gradient(transparent,#000 19%,#000 73%,transparent)}
+ .connection-branch[data-branch="ROOT-DYNASTIES"]::before{inset-block:auto 8px;aspect-ratio:760/406;background-image:url('/assets/community/bachlandschaft/handy-hoehle.webp');mask-image:linear-gradient(transparent,#000 14%,#000 79%,transparent)}
+ .connection-branch[data-branch="ROOT-SYNERGIES"]::before{inset-block:0 auto;aspect-ratio:760/428;background-image:url('/assets/community/bachlandschaft/handy-faecher.webp')}
+ .connection-clearing{padding:40px 4px 22px;min-height:0}
+ .connection-clearing::before{inset-block:49% auto;aspect-ratio:760/399;transform:translateY(-50%);background-image:url('/assets/community/bachlandschaft/handy-bach.webp');mask-image:linear-gradient(transparent,#000 22%,#000 75%,transparent)}
+ .connection-bubbles{max-width:510px;margin:auto;gap:9px clamp(13px,5cqw,37px)}
+ .connection-bubble{width:min(100%,153px)}
+ .connection-bubble:nth-child(3n+1):not(:only-child){grid-column:auto}
+ .connection-bubble:last-child:nth-child(odd){grid-column:1 / -1;margin-top:-7px}
+ .connection-bubble:nth-child(2){margin-top:-15px}
+ .connection-branch[data-branch="ROOT-DYNASTIES"] .connection-tree-row.is-single{justify-content:flex-end;padding-inline-end:10%}
+ .connection-branch[data-branch="ROOT-DYNASTIES"] .connection-branch-title{text-align:right;padding-inline-end:16%}
+ .connection-branch[data-branch="ROOT-DYNASTIES"] .connection-branch-title::before{inset-inline:auto 8%;transform:none}
+ .connection-branch[data-branch="ROOT-SYNERGIES"]>.connection-tree-row{position:relative;isolation:isolate}
+ .connection-branch[data-branch="ROOT-SYNERGIES"]>.connection-tree-row::before{position:absolute;top:-19%;z-index:-1;width:clamp(65px,22cqw,162px);pointer-events:none;background-size:contain;background-repeat:no-repeat}
+ .connection-branch[data-branch="ROOT-SYNERGIES"]>.connection-tree-row:nth-of-type(4)::before{content:'';inset-inline-start:-13cqw;aspect-ratio:354/720;background-image:url('/assets/community/bachlandschaft/korallenranke.webp')}
+ .connection-branch[data-branch="ROOT-SYNERGIES"]>.connection-tree-row:nth-of-type(6)::before{content:'';inset-inline-end:-14cqw;aspect-ratio:345/720;background-image:url('/assets/community/bachlandschaft/faecherzweig.webp')}
+ .connection-branch[data-branch="ROOT-SYNERGIES"]>.connection-tree-row:nth-of-type(8)::before{content:'';inset-inline-start:-14cqw;aspect-ratio:380/588;background-image:url('/assets/community/bachlandschaft/wasserblumen.webp')}
+}
