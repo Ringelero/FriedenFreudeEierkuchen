@@ -21,15 +21,25 @@
   }
   function visibleGraph(catalogue, opened) {
     const depths = new Map(ROOTS.map(id => [id,0])), queue = [...ROOTS], processed = new Set(), links = [];
+    const kind = id => catalogue.nodes.get(id).kind;
+    const providers = new Set(catalogue.links.filter(({from, to}) => kind(from) === 'dynasty' && kind(to) === 'service'));
+    const services = new Set([...providers].map(link => link.to));
+    const crossLinks = new Set(catalogue.links.filter(({from, to}) => kind(from) === 'synergy' && services.has(to)));
     while (queue.length) {
       const id = queue.shift();
       if (processed.has(id)) continue;
       processed.add(id);
       if (!opened.has(id)) continue;
       for (const edge of catalogue.links.filter(link => link.from === id)) {
+        if (crossLinks.has(edge)) continue;
         links.push(edge);
         if (!depths.has(edge.to)) {depths.set(edge.to,depths.get(id)+1);queue.push(edge.to);}
       }
+    }
+    // A supporting synergy connects to a service only once both sides have been opened.
+    const visibleServices = new Set(links.filter(link => providers.has(link)).map(link => link.to));
+    for (const link of crossLinks) {
+      if (processed.has(link.from) && opened.has(link.from) && visibleServices.has(link.to)) links.push(link);
     }
     return {nodes:[...depths].map(([id,depth]) => ({...catalogue.nodes.get(id),depth})),links};
   }
@@ -146,58 +156,147 @@
       for (const [id, element] of nodeElements) if (!previous.has(id)) element.animate([{opacity:0,filter:'blur(8px)'},{opacity:1,filter:'blur(0)'}], {duration:600, easing:'ease-out'});
     }
   }
+  const svgNS = 'http://www.w3.org/2000/svg';
+
+  function svgElement(tag, attributes) {
+    const element = document.createElementNS(svgNS, tag);
+    for (const [name, value] of Object.entries(attributes)) element.setAttribute(name, value);
+    return element;
+  }
+
+  function coordinates(...values) {return values.join(' ');}
+
+  function paintStem(layer, key, pathText, style, nextKeys) {
+    nextKeys.add(key);
+    const group = svgElement('g', {});
+    group.classList.add('connection-stem');
+    if (style.shared) group.classList.add('is-shared');
+    if (style.highlighted) group.classList.add('is-active-branch');
+    if (style.twig) group.classList.add('is-root-branch');
+    layer.append(group);
+    const path = svgElement('path', {class:'connection-line', d:pathText});
+    path.dataset.connection = key;
+    const inner = svgElement('path', {class:'connection-line-inner', d:pathText});
+    group.append(path, inner);
+    const length = path.getTotalLength();
+    const marks = Math.min(style.twig ? 4 : 18, Math.max(1, Math.floor(length/(style.twig ? 70 : 48))));
+    const details = svgElement('g', {class:'connection-stem-details'});
+    group.append(details);
+    for (let i = 1; i < marks; i++) {
+      const distance = length*i/marks;
+      const point = path.getPointAtLength(distance), next = path.getPointAtLength(Math.min(length, distance+2));
+      const dx = next.x-point.x, dy = next.y-point.y, norm = Math.hypot(dx,dy) || 1;
+      const nx = -dy/norm, ny = dx/norm;
+      const x = point.x, y = point.y;
+      details.append(svgElement('path', {class:'connection-rung', d:coordinates('M', x-nx*2.6, y-ny*2.6, 'Q', x+1, y+1, x+nx*2.6, y+ny*2.6)}));
+      if (i === Math.floor(marks*.45) || (!style.twig && i === Math.floor(marks*.75))) {
+        const side = i%2 ? 1 : -1;
+        const tipX = x+nx*side*12-dx/norm*6, tipY = y+ny*side*12-dy/norm*6;
+        details.append(svgElement('path', {class:'connection-bud', d:coordinates('M',x,y,'Q',x+nx*side*2-dx/norm*11,y+ny*side*2-dy/norm*11,tipX,tipY,'Q',x+nx*side*11+dx/norm*2,y+ny*side*11+dy/norm*2,x,y)}));
+      }
+    }
+    if (animateNext && !drawnKeys.has(key) && canMove()) {
+      for (const stroke of [path, inner]) {
+        stroke.style.strokeDasharray = String(length);
+        const animation = stroke.animate([{strokeDashoffset:length},{strokeDashoffset:0}], {duration:850, easing:'ease-out'});
+        animation.onfinish = () => {stroke.style.strokeDasharray = '';};
+      }
+      details.animate([{opacity:0},{opacity:0,offset:.5},{opacity:1}], {duration:900,easing:'ease-out'});
+    }
+  }
+
   function draw() {
-    frame = 0; const box = world.getBoundingClientRect(); lastSize = box.width + ':' + box.height;
-    svg.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height); svg.replaceChildren();
+    frame = 0;
+    const box = world.getBoundingClientRect();
+    lastSize = box.width + ':' + box.height;
+    svg.setAttribute('viewBox', coordinates(0, 0, box.width, box.height));
+    svg.replaceChildren();
     if (!graph || explorer.hidden) {drawnKeys.clear(); return;}
-    const nextKeys = new Set(), incoming = new Map(); graph.links.forEach(edge => incoming.set(edge.to,(incoming.get(edge.to)||0)+1));
-    for (const edge of graph.links) {
-      const root = paintedRoots.find(button => button.dataset.rootToggle === edge.from);
-      const fromNode = root || nodeElements.get(edge.from);
-      const toNode = nodeElements.get(edge.to)?.querySelector('button,a');
-      if (!fromNode || !toNode) continue;
-      const from = fromNode.getBoundingClientRect(), to = toNode.getBoundingClientRect();
-      const sx = from.left + from.width/2 - box.left, sy = from.bottom - box.top + 3;
-      let ex = to.left + to.width/2 - box.left, ey = to.top + to.height*.045 - box.top, pathText;
-      if (root) {
-        const lane = box.width * (edge.from === ROOTS[0] ? .055 : .945);
-        const bend = Math.min(sy + 65, ey - 35);
-        pathText = 'M '+sx+' '+sy+' C '+sx+' '+bend+', '+lane+' '+bend+', '+lane+' '+(bend+35)+' C '+lane+' '+(ey-40)+', '+ex+' '+(ey-55)+', '+ex+' '+ey;
-      } else if (box.width <= 850 && graph.nodes.find(node => node.id === edge.to).depth >= 2) {
-        const left = sx < box.width/2, lane = box.width * (left ? .045 : .955);
-        ex = (left ? to.left+to.width*.08 : to.right-to.width*.08) - box.left; ey = to.top + to.height*.52 - box.top;
-        const elbow = Math.min(sy + 36, ey - 35), mid = sy + (ey-sy)/2;
-        pathText = 'M '+sx+' '+sy+' C '+sx+' '+elbow+', '+lane+' '+elbow+', '+lane+' '+(elbow+18)+' C '+(lane-7)+' '+mid+', '+(lane+9)+' '+ey+', '+ex+' '+ey;
-      } else {
-        const mid = sy + (ey-sy)/2; pathText = 'M '+sx+' '+sy+' C '+sx+' '+mid+', '+ex+' '+mid+', '+ex+' '+ey;
+
+    const relative = element => {
+      const rect = element.getBoundingClientRect();
+      return {left:rect.left-box.left, right:rect.right-box.left, top:rect.top-box.top,
+        bottom:rect.bottom-box.top, width:rect.width, height:rect.height};
+    };
+    const cards = new Map([...nodeElements].map(([id, element]) => [id, relative(element.querySelector('.connection-node-control'))]));
+    const center = rect => (rect.left + rect.right) / 2;
+    const bounds = relative(layers);
+    const outside = (left, inset) => left ? Math.max(8, bounds.left-inset) : Math.min(box.width-8, bounds.right+inset);
+
+    // Mask the painted objects and their labels even at intermediate widths.
+    const maskId = 'community-clear-illustrations';
+    const defs = svgElement('defs', {});
+    const mask = svgElement('mask', {id:maskId, maskUnits:'userSpaceOnUse', x:0, y:0, width:box.width, height:box.height});
+    mask.append(svgElement('rect', {x:0,y:0,width:box.width,height:box.height,fill:'#fff'}));
+    for (const rect of cards.values()) {
+      mask.append(svgElement('rect', {x:rect.left-2,y:rect.top-2,width:rect.width+4,height:rect.height+4,rx:8,fill:'#000'}));
+    }
+    defs.append(mask);
+    const stems = svgElement('g', {mask:'url(#'+maskId+')'});
+    svg.append(defs, stems);
+    const nextKeys = new Set();
+    const incoming = new Map();
+    for (const edge of graph.links) incoming.set(edge.to, (incoming.get(edge.to)||0)+1);
+
+    // One continuous stem supplies the short branches above the existing rows.
+    for (const root of paintedRoots) {
+      const id = root.dataset.rootToggle;
+      const links = graph.links.filter(edge => edge.from === id && cards.has(edge.to));
+      if (!links.length) continue;
+      const from = relative(root), startY = from.bottom+4, startX = center(from);
+      const left = id === ROOTS[0], lane = outside(left, 18);
+      const rows = new Map();
+      for (const edge of links) {
+        const rect = cards.get(edge.to), y = rect.top - 8;
+        if (!rows.has(y)) rows.set(y, []);
+        rows.get(y).push({edge, rect});
       }
-      const key = edge.from + ':' + edge.to; nextKeys.add(key);
-      const group = document.createElementNS('http://www.w3.org/2000/svg','g');
-      group.setAttribute('class','connection-stem'+((incoming.get(edge.to)||0)>1?' is-shared':'')+(edge.from===highlighted?' is-active-branch':''));
-      svg.append(group);
-      const path = document.createElementNS('http://www.w3.org/2000/svg','path'); path.setAttribute('class','connection-line'+((incoming.get(edge.to)||0)>1?' is-shared':'')); path.setAttribute('d',pathText); path.dataset.connection = key; group.append(path);
-      const inner = path.cloneNode(); inner.removeAttribute('data-connection'); inner.setAttribute('class','connection-line-inner'); group.append(inner);
-      const length = path.getTotalLength();
-      const rungs = Math.min(18,Math.max(3,Math.floor(length/34)));
-      const details = document.createElementNS('http://www.w3.org/2000/svg','g'); details.setAttribute('class','connection-stem-details'); group.append(details);
-      for (let i=1;i<rungs;i++) {
-        const distance = length*i/rungs, point = path.getPointAtLength(distance), next = path.getPointAtLength(Math.min(length,distance+2));
-        const dx=next.x-point.x,dy=next.y-point.y,norm=Math.hypot(dx,dy)||1,nx=-dy/norm,ny=dx/norm;
-        const rung = document.createElementNS('http://www.w3.org/2000/svg','path');
-        rung.setAttribute('class','connection-rung'); rung.setAttribute('d','M '+(point.x-nx*2.8)+' '+(point.y-ny*2.8)+' Q '+(point.x+Math.sin(i)*1.4)+' '+(point.y+Math.cos(i)*1.2)+', '+(point.x+nx*2.8)+' '+(point.y+ny*2.8)); details.append(rung);
-        if (i===Math.floor(rungs*.35) || i===Math.floor(rungs*.7)) {
-          const side=i%2?1:-1,leaf = document.createElementNS('http://www.w3.org/2000/svg','path');
-          const tipX=point.x+nx*side*14-dx/norm*6,tipY=point.y+ny*side*14-dy/norm*6;
-          leaf.setAttribute('class','connection-bud'); leaf.setAttribute('d','M '+point.x+' '+point.y+' Q '+(point.x+nx*side*3-dx/norm*13)+' '+(point.y+ny*side*3-dy/norm*13)+', '+tipX+' '+tipY+' Q '+(point.x+nx*side*13+dx/norm*2)+' '+(point.y+ny*side*13+dy/norm*2)+', '+point.x+' '+point.y); details.append(leaf);
-        }
+      const first = Math.min(...rows.keys());
+      const elbow = Math.min(first-4, startY+62);
+      paintStem(stems, id, coordinates('M',startX,startY,'C',startX,startY+24,lane,elbow-25,lane,elbow,'V',Math.max(...rows.keys())), {}, nextKeys);
+      for (const [y, row] of rows) {
+        const turns = row.map(({rect}) => center(rect)+(left ? -7 : 7));
+        const end = left ? Math.max(...turns) : Math.min(...turns);
+        paintStem(stems, id+':row:'+row[0].edge.to, coordinates('M',lane,y,'H',end), {twig:true}, nextKeys);
+        row.forEach(({edge, rect}, index) => {
+          const x = center(rect);
+          paintStem(stems, id+':'+edge.to, coordinates('M',turns[index],y,'Q',x,y,x,rect.top-3), {twig:true}, nextKeys);
+        });
       }
-      if (animateNext && !drawnKeys.has(key) && canMove()) {
-        for (const stroke of [path,inner]) {stroke.style.strokeDasharray=String(length); const movement=stroke.animate([{strokeDashoffset:length},{strokeDashoffset:0}],{duration:900,easing:'ease-out'}); movement.onfinish=()=>{stroke.style.strokeDasharray='';};}
-        details.animate([{opacity:0,offset:0},{opacity:0,offset:.55},{opacity:1}],{duration:1000,easing:'ease-out'});
+    }
+
+    const supportSources = [...new Set(graph.links.filter(({from, to}) =>
+      cards.has(to) && catalogue.nodes.get(from).kind === 'synergy'
+    ).map(link => link.from))];
+    for (const {from:source, to:target} of graph.links) {
+      const from = cards.get(source), to = cards.get(target);
+      if (!from || !to) continue;
+      const down = centerY(from) <= centerY(to), direction = down ? 1 : -1;
+      const dynasty = catalogue.nodes.get(source).kind === 'dynasty';
+      const shared = incoming.get(target) > 1;
+      const sx = center(from), sy = down ? from.bottom+4 : from.top-4;
+      const ex = center(to) + (shared ? (dynasty ? -10 : 10) : 0);
+      const ey = down ? to.top-4 : to.bottom+4;
+      const middle = (sy+ey)/2;
+      const blocked = [...cards].some(([id,rect]) => id !== source && id !== target &&
+        rect.bottom > Math.min(sy,ey) && rect.top < Math.max(sy,ey) &&
+        rect.right > Math.min(sx,ex)-6 && rect.left < Math.max(sx,ex)+6);
+      let route = coordinates('M',sx,sy,'C',sx,middle,ex,middle,ex,ey);
+      if (blocked) {
+        const spacing = dynasty ? 8 : 4 + 10*supportSources.indexOf(source)/Math.max(supportSources.length-1, 1);
+        const lane = outside(dynasty, spacing);
+        const bend = lane + (dynasty ? 9 : -9);
+        const gap = Math.min(25, Math.abs(ey-sy)/4);
+        const leave = sy+direction*gap, arrive = ey-direction*gap;
+        route = coordinates('M',sx,sy,'C',sx,leave,bend,sy+direction*5,lane,leave,
+          'V',arrive,'C',bend,ey-direction*5,ex,arrive,ex,ey);
       }
+      paintStem(stems, source+':'+target, route, {shared, highlighted:source===highlighted}, nextKeys);
     }
     drawnKeys = nextKeys; animateNext = false;
   }
+
+  function centerY(rect) {return (rect.top+rect.bottom)/2;}
   function scheduleDraw() {if (!frame) frame = requestAnimationFrame(draw);}
   async function toggle(id, fromPainting = false) {
     explorer.hidden = false; explorer.setAttribute('aria-busy','true'); status.textContent = catalogue ? '' : "Loading connections …"; fallback.hidden = true;

@@ -130,6 +130,8 @@
 .connection-stem .connection-line{stroke:#59694b;stroke-width:5.2;stroke-linecap:round;fill:none}
 .connection-stem .connection-line-inner{stroke:#eddfbd;stroke-width:3;stroke-linecap:round;fill:none}
 .connection-stem.is-shared .connection-line{stroke:#a56b46}
+.connection-stem.is-root-branch .connection-line{stroke-width:3.25}
+.connection-stem.is-root-branch .connection-line-inner{stroke-width:1.75}
 .connection-stem .connection-rung{stroke:#59694b;stroke-width:1;stroke-linecap:round;fill:none}
 .connection-stem.is-shared .connection-rung{stroke:#9a623e}
 .connection-bud{fill:#b3bc8b;stroke:#59694b;stroke-width:.85;stroke-linejoin:round}

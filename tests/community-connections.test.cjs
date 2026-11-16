@@ -30,16 +30,15 @@ test('initial view has only the two entries; expansion reveals the selected rela
   assert.deepEqual(graph.links.filter(l => l.to === shared).map(l => l.from).sort(), ['DYN-RUBYBUBYS', 'SYN-ALTERNATIVE']);
 });
 
-test('closing either root retains the shared service through the other root', () => {
-  for (const [root, group, hidden] of [
-    [roots[0], 'DYN-RUBYBUBYS', 'SYN-ALTERNATIVE'],
-    [roots[1], 'SYN-ALTERNATIVE', 'DYN-RUBYBUBYS']
-  ]) {
-    const graph = visibleGraph(catalogue, new Set([root, 'DYN-RUBYBUBYS', 'SYN-ALTERNATIVE']));
-    assert.ok(graph.nodes.some(n => n.id === shared));
-    assert.ok(!graph.nodes.some(n => n.id === hidden));
-    assert.deepEqual(graph.links.filter(l => l.to === shared), [{from: group, to: shared}]);
-  }
+test('only an opened dynasty shows its own places and services', () => {
+  const dynasties = visibleGraph(catalogue, new Set([roots[0], 'DYN-RUBYBUBYS', 'SYN-ALTERNATIVE']));
+  assert.deepEqual(dynasties.nodes.filter(node => node.depth > 0).map(node => node.id), [
+    'DYN-RUBYBUBYS','PLACE-THREEDEN',shared,'SERVICE-RUBYBUBYS-HERZ-SCHNAUZE'
+  ]);
+  assert.deepEqual(dynasties.links.filter(link => link.to === shared), [{from:'DYN-RUBYBUBYS',to:shared}]);
+  const synergies = visibleGraph(catalogue, new Set([roots[1], 'DYN-RUBYBUBYS', 'SYN-ALTERNATIVE']));
+  assert.equal(synergies.nodes.filter(node => node.kind === 'synergy').length, 16);
+  assert.ok(!synergies.nodes.some(node => node.kind === 'service' || node.kind === 'place'));
 });
 
 test('invalid and duplicate links are ignored; cyclic extensions terminate without duplicate nodes', () => {
@@ -50,4 +49,20 @@ test('invalid and duplicate links are ignored; cyclic extensions terminate witho
   assert.equal(graph.nodes.length, new Set(graph.nodes.map(n => n.id)).size);
   assert.equal(graph.nodes.length, raw.nodes.length);
   assert.equal(graph.links.length, raw.links.length + 1);
+});
+
+test('each support link needs the providing dynasty and that specific synergy open', () => {
+  const dynasty = 'DYN-RUBYBUBYS';
+  const alternatives = 'SYN-ALTERNATIVE';
+  const connaisseurs = 'SYN-CONNAISSEURS';
+  const dogService = 'SERVICE-RUBYBUBYS-HERZ-SCHNAUZE';
+  const crossLinks = selection => visibleGraph(catalogue, new Set([...roots, ...selection])).links.filter(
+    link => [alternatives, connaisseurs].includes(link.from));
+  assert.deepEqual(crossLinks([dynasty]), []);
+  assert.deepEqual(crossLinks([alternatives, connaisseurs]), []);
+  assert.deepEqual(crossLinks([dynasty, alternatives]), [{from:alternatives,to:shared}]);
+  assert.deepEqual(crossLinks([connaisseurs, dynasty]), [{from:connaisseurs,to:dogService}]);
+  assert.deepEqual(crossLinks([connaisseurs, alternatives, dynasty]), [
+    {from:alternatives,to:shared}, {from:connaisseurs,to:dogService}
+  ]);
 });
