@@ -10,12 +10,12 @@
 #blob-character.blob-raccoon.raccoon-art-ready.raccoon-expanded>.blob-raccoon-body{opacity:1;transform:none}
 .blob-raccoon-sitting,.blob-raccoon-wave{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;transition:opacity .18s ease}
 .blob-raccoon-wave{opacity:0}.is-waving .blob-raccoon-wave{opacity:1}.is-waving .blob-raccoon-sitting{opacity:0}
-.blob-raccoon-paw{transform-box:view-box;transform-origin:29.86% 56.63%}.is-waving .blob-raccoon-paw{animation:raccoon-wave 1.2s ease-in-out 2}
+.blob-raccoon-paw{transform-box:view-box;transform-origin:37.3% 53.5%}.is-waving .blob-raccoon-paw{animation:raccoon-wave 1.2s ease-in-out 2}
 .raccoon-expanded.raccoon-motion-active .blob-raccoon-sitting{transform-origin:50% 100%;animation:raccoon-breathe 3.4s ease-in-out 2;animation-delay:2.6s}
 .raccoon-motion-active.raccoon-curious>.blob-raccoon-head{animation:raccoon-curious 1.2s ease}
 .raccoon-motion-active.raccoon-joy>.blob-raccoon-body{animation:raccoon-joy .9s ease}
 .raccoon-motion-active.raccoon-stretch>.blob-raccoon-body{animation:raccoon-stretch 1.6s ease}
-#blob-chat.blob-raccoon-chat{--blob-ink:#244333;--blob-muted:#657052;--blob-ruby:#982e43;--blob-border:#cfb37c;background:linear-gradient(110deg,#fff1cf,#fff8e7);border:1px solid #b49250;box-shadow:3px 3px 0 #a48249,0 18px 45px #0b2b3240;backdrop-filter:none;border-radius:5px 18px 18px 5px;right:140px;max-height:calc(100dvh - 40px)}
+#blob-chat.blob-raccoon-chat{--blob-ink:#2c4831;--blob-muted:#4a5b40;--blob-ruby:#912c3c;--blob-border:#c3ad79;background:#fbf1d9;border:1px solid #a89055;box-shadow:0 14px 38px #18342630;backdrop-filter:none;border-radius:28px 32px 24px 30px / 24px 34px 30px 35px;right:140px;max-height:calc(100dvh - 40px)}
 .blob-raccoon-chat #blob-meta{display:none}.blob-raccoon-chat #blob-line{font-size:.8rem;color:#5a664e;line-height:1.5}
 .blob-raccoon-controls{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}.blob-raccoon-controls button{min-height:36px;padding:6px 10px;font-size:.7rem;border:1px solid #c7a76e;border-radius:8px;background:#fff6df;color:#79374a;cursor:pointer}.blob-raccoon-controls button:disabled{opacity:.5;cursor:default}
 #blob-character.blob-raccoon:focus-visible,.blob-raccoon-controls button:focus-visible{outline:3px solid #a4485d;outline-offset:4px}

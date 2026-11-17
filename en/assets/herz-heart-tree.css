@@ -77,7 +77,6 @@
 .herz-tree .herz-care-option strong { font: 500 1.55rem/1.2 Georgia,serif; }
 .herz-tree .herz-cicek { margin-bottom: 0; background: #f4e7ca; border-left-color: #a13a42; }
 .herz-tree .herz-cicek > span { color: #526249; }
-.herz-tree #lernen { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(0,.75fr); align-items: center; gap: 25px; }
 .herz-tree .tree-learning-copy > p { font-size: .9rem; line-height: 1.75; }
 .herz-tree .tree-learning-copy .button { margin-top: 9px; }
 .herz-tree .tree-learning-art { min-width: 0; width: 100%; }
@@ -105,7 +104,6 @@
   .herz-tree .tree-outdoors { grid-template-columns: 1fr; }
   .herz-tree .tree-outdoors-art { max-height: 240px; }
   .herz-tree .tree-outdoors-art img { height: 240px; object-position: center 55%; }
-  .herz-tree #lernen { grid-template-columns: 1fr; gap: 12px; }
   .herz-tree .tree-learning-art { max-width: 290px; justify-self: center; }
 }
 @media(max-width:600px) {

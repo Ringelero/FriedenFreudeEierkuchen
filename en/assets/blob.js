@@ -49,10 +49,10 @@
     // The small theme module is needed only in the service and its shared views.
     if (/^\/(?:en\/)?(?:leistungen\/rubybubys-herz-und-schnauze(?:\/|$)|treffpunkte\/|kalender\/)/.test(location.pathname)) {
       const style = document.createElement('link');
-      style.rel = 'stylesheet'; style.href = root + 'assets/blob-raccoon.css?v=20261027-2';
+      style.rel = 'stylesheet'; style.href = root + 'assets/blob-raccoon.css?v=20261117-1';
       document.head.append(style);
       const script = document.createElement('script');
-      script.src = root + 'assets/blob-raccoon.js?v=20261027-2';
+      script.src = root + 'assets/blob-raccoon.js?v=20261117-1';
       script.onload = () => window.GemDenBlobRaccoon.mount({root,chat,character});
       script.onerror = () => { script.remove(); style.remove(); };
       document.head.append(script);

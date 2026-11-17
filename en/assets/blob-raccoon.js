@@ -15,14 +15,14 @@
   const animationEnabled=({reduced=false,paused=false}={})=>!reduced&&!paused;
   function mount({root:relativeRoot,chat,character}){
     if(character.querySelector('.blob-raccoon-body'))return;
-    const assets=new URL('/assets/blob-waschbaer/',new URL(relativeRoot,location.href)).href;
+    const assets=new URL('/assets/blob-waschbaer/pinsel/',new URL(relativeRoot,location.href)).href;
     const media=window.matchMedia('(prefers-reduced-motion: reduce)');
     let paused=false;try{paused=localStorage.getItem(motionKey)==='off';}catch{}
     let active=false,open=chat.classList.contains('open'),failed=false,epoch=0,poseLoading=null,posesReady=false;
     const timers=new Set();
     const head=document.createElement('img');head.className='blob-raccoon-head';head.alt='';head.width=160;head.height=138;head.draggable=false;head.hidden=true;
     const body=document.createElement('span');body.className='blob-raccoon-body';body.hidden=true;body.setAttribute('aria-hidden','true');
-    body.innerHTML='<img class="blob-raccoon-sitting" alt="" width="234" height="256" draggable="false"><svg class="blob-raccoon-wave" viewBox="0 0 710 800" aria-hidden="true" focusable="false"><defs><clipPath id="blob-raccoon-body"><path clip-rule="evenodd" fill-rule="evenodd" d="M0 0H710V800H0Z M13 209L126 209L146 336L168 378L220 427L241 454L223 508L114 494L48 426L13 350Z"/></clipPath><clipPath id="blob-raccoon-paw"><path d="M13 209L126 209L146 336L168 378L220 427L241 454L223 508L114 494L48 426L13 350Z"/></clipPath></defs><image data-raccoon-body width="710" height="800" clip-path="url(#blob-raccoon-body)"/><g class="blob-raccoon-paw"><image data-raccoon-paw width="710" height="800" clip-path="url(#blob-raccoon-paw)"/></g></svg>';
+    body.innerHTML='<img class="blob-raccoon-sitting" alt="" width="234" height="256" draggable="false"><svg class="blob-raccoon-wave" viewBox="0 0 710 800" aria-hidden="true" focusable="false"><defs><clipPath id="blob-raccoon-body"><path clip-rule="evenodd" fill-rule="evenodd" d="M0 0H710V800H0Z M60 254L148 254L168 296L164 338L180 374L204 400L254 406L274 436L232 456L166 440L118 410L88 368L56 320Z"/></clipPath><clipPath id="blob-raccoon-paw"><path d="M60 254L148 254L168 296L164 338L180 374L204 400L254 406L274 436L232 456L166 440L118 410L88 368L56 320Z"/></clipPath></defs><image data-raccoon-body width="710" height="800" clip-path="url(#blob-raccoon-body)"/><g class="blob-raccoon-paw"><image data-raccoon-paw width="710" height="800" clip-path="url(#blob-raccoon-paw)"/></g></svg>';
     character.append(head,body);
     const sitting=body.querySelector('.blob-raccoon-sitting');
     const controls=document.createElement('div');controls.className='blob-raccoon-controls';controls.hidden=true;
@@ -53,7 +53,7 @@
     function loadImage(src){return new Promise((resolve,reject)=>{const image=new Image();image.onload=resolve;image.onerror=reject;image.src=src;});}
     function loadPoses(){
       if(poseLoading)return poseLoading;
-      const sittingSrc=assets+'sitzend-256.webp',waveSrc=assets+'winkend-256.webp';
+      const sittingSrc=assets+'sitzend.webp',waveSrc=assets+'winkend.webp';
       poseLoading=Promise.all([loadImage(sittingSrc),loadImage(waveSrc)]).then(()=>{
         sitting.src=sittingSrc;body.querySelector('[data-raccoon-body]').setAttribute('href',waveSrc);body.querySelector('[data-raccoon-paw]').setAttribute('href',waveSrc);posesReady=true;
       }).catch(()=>{poseLoading=null;});
@@ -75,7 +75,7 @@
       active=enabled;character.classList.toggle('blob-raccoon',active);chat.classList.toggle('blob-raccoon-chat',active);
       head.hidden=body.hidden=controls.hidden=!active;
       if(active){
-        head.src=assets+'gesicht-160.webp';if(line.textContent===originalLine)line.textContent=welcome;
+        head.src=assets+'gesicht.webp';if(line.textContent===originalLine)line.textContent=welcome;
         applyMotion();pose();if(open)showBody(true);
       }else{
         stopMotion();character.classList.remove('raccoon-motion-active','raccoon-expanded');
