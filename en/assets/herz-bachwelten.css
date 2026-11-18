@@ -196,7 +196,7 @@
   }
   .herz-copy-inner {
     min-width: 0;
-    padding: calc(100vw * 320 / 760) 22% 22px;
+    padding: calc(100vw * 320 / 760) 30% 22px 22%;
   }
   .herz-copy-inner::after {
     content: "";
