@@ -185,12 +185,12 @@
   .herz-tabs a { font-size: clamp(.76rem, 3.35vw, 1.25rem); }
   .herz-tabs a span { padding-inline: 4px; }
 
-  #treffen { --clearing: url("/assets/herz-schnauze/verbunden/gassi-lichtung.webp"); --shore: url("/en/assets/herz-schnauze/verbunden/gassi-ufer.svg"); }
-  #lernen { --clearing: url("/assets/herz-schnauze/verbunden/lernen-lichtung.webp"); --shore: url("/en/assets/herz-schnauze/verbunden/lernen-ufer.svg"); }
-  #unterstuetzen { --clearing: url("/assets/herz-schnauze/verbunden/freunde-lichtung.webp"); --shore: url("/en/assets/herz-schnauze/verbunden/freunde-ufer.svg"); }
-  .herz-event-landscape { --clearing: url("/assets/herz-schnauze/verbunden/termine-lichtung.webp"); --shore: url("/en/assets/herz-schnauze/verbunden/termine-ufer.svg"); }
-  .herz-host-landscape { --clearing: url("/assets/herz-schnauze/verbunden/gastgeber-lichtung.webp"); --shore: url("/en/assets/herz-schnauze/verbunden/gastgeber-ufer.svg"); }
-  .herz-outro-landscape { --clearing: url("/assets/herz-schnauze/verbunden/ausklang-lichtung.webp"); --shore: url("/en/assets/herz-schnauze/verbunden/ausklang-ufer.svg"); }
+  #treffen { --clearing: url("/assets/herz-schnauze/verbunden/lichtung-warm.webp"); --shore: url("/en/assets/herz-schnauze/verbunden/ufer-warm.svg"); }
+  #lernen { --clearing: url("/assets/herz-schnauze/verbunden/lichtung-warm.webp"); --shore: url("/en/assets/herz-schnauze/verbunden/ufer-warm.svg"); }
+  #unterstuetzen { --clearing: url("/assets/herz-schnauze/verbunden/lichtung-warm.webp"); --shore: url("/en/assets/herz-schnauze/verbunden/ufer-warm.svg"); }
+  .herz-event-landscape { --clearing: url("/assets/herz-schnauze/verbunden/lichtung-warm.webp"); --shore: url("/en/assets/herz-schnauze/verbunden/ufer-warm.svg"); }
+  .herz-host-landscape { --clearing: url("/assets/herz-schnauze/verbunden/lichtung-warm.webp"); --shore: url("/en/assets/herz-schnauze/verbunden/ufer-warm.svg"); }
+  .herz-outro-landscape { --clearing: url("/assets/herz-schnauze/verbunden/lichtung-warm.webp"); --shore: url("/en/assets/herz-schnauze/verbunden/ufer-warm.svg"); }
 
   .herz-scene, .herz-landscape { display: flex; flex-direction: column; min-height: 0; padding: 0; }
   /* Grid tracks cannot carry the junction's negative outer height. */
@@ -278,16 +278,16 @@
   }
   .herz-scene-art img { width: 100%; height: auto; object-fit: contain; }
   .herz-trail-page {
-    --entrance-seam: url("/en/assets/herz-schnauze/verbunden/eingang-gassi.svg?v=20261118-2");
-    --event-seam: url("/en/assets/herz-schnauze/verbunden/gassi-termine.svg?v=20261118-2");
+    --entrance-seam: url("/en/assets/herz-schnauze/verbunden/eingang-gassi.svg?v=20261118-3");
+    --event-seam: url("/en/assets/herz-schnauze/verbunden/gassi-termine.svg?v=20261118-3");
   }
   .herz-trail-page[data-herz-active="lernen"] {
-    --entrance-seam: url("/en/assets/herz-schnauze/verbunden/eingang-lernen.svg?v=20261118-2");
-    --event-seam: url("/en/assets/herz-schnauze/verbunden/lernen-termine.svg?v=20261118-2");
+    --entrance-seam: url("/en/assets/herz-schnauze/verbunden/eingang-lernen.svg?v=20261118-3");
+    --event-seam: url("/en/assets/herz-schnauze/verbunden/lernen-termine.svg?v=20261118-3");
   }
   .herz-trail-page[data-herz-active="unterstuetzen"] {
-    --entrance-seam: url("/en/assets/herz-schnauze/verbunden/eingang-freunde.svg?v=20261118-2");
-    --event-seam: url("/en/assets/herz-schnauze/verbunden/freunde-termine.svg?v=20261118-2");
+    --entrance-seam: url("/en/assets/herz-schnauze/verbunden/eingang-freunde.svg?v=20261118-3");
+    --event-seam: url("/en/assets/herz-schnauze/verbunden/freunde-termine.svg?v=20261118-3");
   }
   .herz-mobile-entrance-join, .herz-painted-junction {
     display: block;
@@ -303,8 +303,8 @@
   }
   .herz-mobile-entrance-join { background-image: var(--entrance-seam); }
   .herz-trails + .herz-painted-junction { background-image: var(--event-seam); }
-  .herz-event-landscape + .herz-painted-junction { background-image: url("/en/assets/herz-schnauze/verbunden/termine-gastgeber.svg?v=20261118-2"); }
-  .herz-host-landscape + .herz-painted-junction { background-image: url("/en/assets/herz-schnauze/verbunden/gastgeber-ausklang.svg?v=20261118-2"); }
+  .herz-event-landscape + .herz-painted-junction { background-image: url("/en/assets/herz-schnauze/verbunden/termine-gastgeber.svg?v=20261118-3"); }
+  .herz-host-landscape + .herz-painted-junction { background-image: url("/en/assets/herz-schnauze/verbunden/gastgeber-ausklang.svg?v=20261118-3"); }
 
   .herz-trail-page .herz-landscape :is(.service-meetings, #pfotenpatron, .herz-background) {
     width: 100%;

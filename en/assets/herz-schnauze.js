@@ -17,6 +17,8 @@
       tab.tabIndex = active ? 0 : -1;
       panels[current].hidden = !active;
     });
+    const art = panels[index].querySelector('picture img');
+    if (art) art.loading = 'eager';
     layoutShores();
   }
 
