@@ -144,7 +144,7 @@
 .gassi-kiez .places-hero { max-width:none; height:clamp(280px,33.333vw,540px); margin:0; }
 .gassi-kiez .places-kiez-art { inset:0; width:100%; mask-image:linear-gradient(#000 94%,transparent); mix-blend-mode:multiply; }
 .gassi-kiez .places-kiez-art img { object-position:center; object-fit:cover; }
-.gassi-kiez .places-hero > div:not(.places-illustration) { left:max(calc(var(--bank) + 16px),calc((100% - 1360px)/2)); top:24%; width:38%; }
+.gassi-kiez .places-hero > div:not(.places-illustration) { left:max(calc(var(--bank) + 48px),calc((100% - 1360px)/2)); top:24%; width:38%; }
 .gassi-kiez .places-tabs { margin-top:-10px; position:relative; }
 .gassi-kiez .places-garden-rest { width:100%; max-width:none; margin:0; aspect-ratio:3.05; mix-blend-mode:multiply; mask-image:linear-gradient(transparent,#000 27%); }
 .gassi-kiez .footer { width:min(calc(100% - var(--bank)*2 - 24px),1360px); }
@@ -153,6 +153,7 @@
 .gassi-kiez .footer { padding-bottom:10px; }
 .gassi-kiez .places-suggest-link { border:0; background:transparent; padding:6px 0; font-weight:600; text-align:left; }
 .gassi-kiez .places-pick-cancel { margin-bottom:12px; }
+.gassi-kiez .places-map-wrap > .places-options { border:0; border-block:1px solid var(--line); border-radius:0; padding-inline:0; background:transparent; }
 .places-page .places-borough { min-width:0; border:0; border-bottom:1px solid var(--line); }
 .places-page .places-borough > summary { display:flex; align-items:center; gap:12px; padding:18px 0; list-style:none; font:500 clamp(1.1rem,2vw,1.5rem)/1.25 Georgia,serif; color:var(--ink); }
 .places-page .places-borough > summary::-webkit-details-marker { display:none; }
