@@ -134,6 +134,7 @@
 @media (min-width: 981px) {
   .herz-painted-entrance { margin-top: 0; }
   .herz-painted-junction { margin: -4vw 0; }
+  .herz-trails + .herz-painted-junction { z-index: 0; }
   .herz-scene > .herz-scene-art { clip-path: inset(0 0 4vw); }
   .herz-landscape {
     display: grid;
