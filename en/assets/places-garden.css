@@ -1,0 +1,136 @@
+/* A working walking atlas within the painted Herz landscape. */
+.places-page .places-favorite-tools { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 10px; }
+.places-page [hidden] { display:none!important; }
+.places-page .places-list { grid-template-columns:1fr; gap:0; }
+.places-page .place-card { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:5px 12px; padding:15px 45px 15px 8px; border:0; border-bottom:1px solid var(--line); border-radius:0; background:transparent; box-shadow:none; }
+.places-page .place-card .place-open { grid-column:1/-1; max-width:100%; min-height:0; color:var(--ink); font:500 1.25rem/1.2 Georgia,serif; }
+.places-page .place-card .place-open::after { content:''; position:absolute; inset:0; }
+.places-page .place-card .place-open:focus-visible::after { outline:3px solid #9c263e; outline-offset:-3px; border-radius:6px; }
+.places-page .place-card .place-star,.places-page .place-order button { z-index:2; }
+.places-page .place-order button { position:relative; }
+.places-page .place-card .place-locality { font-size:.875rem; align-self:center; }
+.places-page .place-card .place-dog-rule { margin:0; padding:3px 7px; font-size:.875rem; border-radius:6px; }
+.places-page .place-meta { grid-column:1/-1; gap:4px 12px; font-size:.875rem; font-weight:500; }
+.places-page .place-meta .is-empty { color:var(--muted); }
+.places-page .place-meta .is-here { color:#275942; }
+.places-page .place-card .place-star { top:6px; right:0; min-height:44px; }
+.places-page .place-order { grid-column:1/-1; }
+.places-page .place-order button { font-size:.875rem; }
+.places-page .places-pager { margin-top:12px; }
+.places-page .places-favorite-tools button { font-size:.875rem; min-height:44px; }
+.places-page .places-feedback { font-size:.875rem; padding:0 0 10px; }
+.places-page .places-feedback:empty { display:none; }
+.places-page .places-search.places-discovery-controls { grid-template-columns:minmax(120px,1fr) auto auto auto auto; align-items:center; }
+.places-page .places-suggest-link { display:inline-flex; align-items:center; min-height:44px; padding:6px; white-space:nowrap; font-size:.875rem; }
+.places-page .places-search input { min-height:46px; font-size:1rem; }
+.places-page .places-search button { font-size:.875rem; min-height:44px; }
+.places-page .place-detail-header { position:sticky; top:-20px; z-index:3; padding:14px 0 10px; background:#fff3d6; }
+.places-page .place-detail-header h2 { margin:0; font:500 clamp(1.5rem,2vw,2rem)/1.12 Georgia,serif; }
+.places-page .place-detail-header .places-hint { margin:6px 0 0; font-size:.875rem; }
+.places-page .place-tools { margin:10px 0 16px; gap:8px; }
+.places-page .place-tools :is(a,button) { min-height:44px; font-size:.875rem; }
+.places-page .place-schedule { display:flex; gap:10px; align-items:end; justify-content:space-between; margin:15px 0 10px; }
+.places-page .place-schedule label { min-width:150px; font-size:.875rem; }
+.places-page .place-schedule select { font-size:1rem; min-height:46px; }
+.places-page .place-schedule .places-hint { max-width:15ch; margin:0 0 9px; font-size:.875rem; text-align:right; }
+.places-page .place-quick-slots { display:flex; overflow-x:auto; gap:8px; padding:2px 2px 8px; margin:0 0 12px; overscroll-behavior-x:contain; }
+.places-page .place-quick-slots button { flex:0 0 auto; min-height:46px; padding:10px 13px; font-size:1rem; }
+.places-page .place-quick-slots small { display:block; margin-top:4px; font-size:.875rem; }
+.places-page .place-actions { position:relative; display:flex; gap:8px; margin:16px 0 10px; }
+.places-page .place-actions button { font-size:1rem; min-height:48px; }
+.places-page .place-actions .place-primary { flex:1; background:#9c263e; color:#fff8e6; border-color:#9c263e; }
+.places-page .place-roster { grid-template-columns:1fr; gap:0; margin:12px 0; }
+.places-page .place-roster li { border:0; border-bottom:1px solid var(--line); border-radius:0; background:transparent; padding:11px 0; }
+.places-page .place-presence { display:inline; margin-left:8px; font-size:.875rem; }
+.places-page .place-entry-fields { padding:8px 0; }
+.places-page .place-entry-fields summary,.places-page .place-about summary { min-height:44px; padding:11px 0; font-size:1rem; }
+.places-page .place-about { margin:12px 0 0; border-bottom:0; }
+.places-page .places-hint,.places-page .place-detail .place-description { font-size:1rem; line-height:1.55; }
+.places-page .places-form label { font-size:1rem; }
+.places-page .places-form :is(input,textarea,select) { font-size:1rem; }
+.places-page .place-entry-fields .places-hint { font-size:.875rem; }
+.places-page .place-backdrop { position:fixed; inset:0; width:100%; height:100%; padding:0; border:0; border-radius:0; background:#193d35a6; z-index:10010; }
+.places-page .places-account-settings-link { font-size:1rem; }
+.places-page.gassi-kiez { --ink:#274a38; --muted:#5e6655; --ruby:#9c263e; --line:#cbb684; background:#ffedc5; }
+.gassi-kiez .site-shell { width:100%; max-width:none; padding:0; }
+.gassi-kiez .site-nav { width:min(calc(100% - 32px),1480px); margin:0 auto; padding:12px 0; background:transparent; border:0; border-radius:0; }
+.gassi-kiez main { border:0; border-radius:0; background:transparent; box-shadow:none; padding:0; }
+.gassi-kiez main > :not(.places-hero):not(.places-garden-rest) { width:min(calc(100% - 40px),1440px); margin-inline:auto; }
+.gassi-kiez .places-hero { width:100%; max-width:1600px; min-height:0; height:clamp(185px,19vw,275px); margin:0 auto 8px; overflow:visible; }
+.gassi-kiez .places-hero::after { display:none; }
+.gassi-kiez .places-kiez-art { inset:0 0 0 auto; width:72%; mask-image:linear-gradient(to right,transparent,#000 15%); }
+.gassi-kiez .places-kiez-art img { object-fit:cover; object-position:right bottom; }
+.gassi-kiez .places-hero > div:not(.places-illustration) { left:max(24px,calc((100% - 1440px)/2)); top:17%; width:42%; max-width:520px; }
+.gassi-kiez .places-back { font-size:.875rem; margin-bottom:12px; }
+.gassi-kiez .places-hero h1 { max-width:none; margin:0; font:500 clamp(2rem,4vw,3.8rem)/1.03 Georgia,serif; }
+.gassi-kiez .places-lead { margin-top:10px; max-width:32ch; font-size:1rem; }
+.gassi-kiez .places-tabs { padding:0; gap:18px; border:0; border-radius:0; background:transparent; margin-bottom:8px; }
+.gassi-kiez .places-tabs button { min-height:48px; border:0; border-bottom:3px solid transparent; border-radius:0; background:transparent; font-size:1rem; padding:10px 5px; color:var(--ink); }
+.gassi-kiez .places-tabs button[aria-pressed=true] { color:#8b2438; border-color:#a02d44; background:transparent; }
+.gassi-kiez .places-list .place-card:has(.place-star[aria-pressed=true]) { box-shadow:none; border-color:#9aaf87; }
+.gassi-kiez .places-map { height:clamp(320px,54dvh,650px); border-radius:22px 8px 24px 10px; border:1px solid #8ca080; box-shadow:0 5px 18px #30573b18; }
+.gassi-kiez .place-detail { padding:6px 20px 20px; background:#fff3d6; border:1px solid #d3bc83; border-radius:24px 8px 24px 8px; box-shadow:none; }
+.gassi-kiez .place-detail-header button { font-size:.875rem; min-height:44px; }
+.gassi-kiez .places-source-note { margin-top:22px; border:0; border-top:1px solid var(--line); background:transparent; border-radius:0; padding-inline:0; }
+.gassi-kiez main > details { border:0; border-top:1px solid var(--line); border-radius:0; background:transparent; padding:0; }
+.gassi-kiez .places-general-options { display:none; }
+.gassi-kiez .places-options summary,.gassi-kiez .places-suggestions summary,.gassi-kiez .places-settings summary,.gassi-kiez .places-source-note summary { font-size:1rem; min-height:46px; }
+.gassi-kiez .places-map-caption { align-items:center; padding:8px 0; }
+.places-legend { display:flex; flex-wrap:wrap; gap:7px 16px; font-size:.875rem; padding:7px 0; }
+.places-legend span::before { content:'●'; margin-right:6px; color:#276777; }
+.places-legend .legend-unknown::before { color:#861e43; }
+.places-legend .legend-here::before { color:#3b6a42; }
+.places-legend .legend-prohibited::before { content:'×'; color:#b23435; }
+.places-garden-rest { display:none; }
+.gassi-kiez .places-garden-rest { display:block; width:100%; max-width:1600px; margin:16px auto 0; aspect-ratio:3.05; background:url('/assets/places-garden/rastplatz-1600.webp') center bottom/100% auto no-repeat; mask-image:linear-gradient(to bottom,transparent,#000 16%); }
+.gassi-kiez .footer { width:min(calc(100% - 40px),1440px); margin:auto; padding:20px 0 80px; color:var(--ink); }
+.gassi-kiez .footer a { color:#7e273a; }
+@media(min-width:980px) {
+ .places-page.gassi-kiez .places-workspace:not(:has(.place-detail:not([hidden]))) { display:block; }
+ .places-page .places-workspace:has(.place-detail:not([hidden])) { display:grid; grid-template-columns:minmax(0,1.65fr) minmax(350px,1fr); gap:24px; align-items:start; }
+ .places-page .places-workspace > .place-detail { position:sticky; top:16px; max-height:calc(100dvh - 32px); overflow-y:auto; overscroll-behavior:contain; }
+}
+@media(max-width:979px) {
+ body.places-sheet-open { overflow:hidden; }
+ .places-page .places-workspace { display:block!important; }
+ .places-page .place-detail { position:fixed; z-index:10011; inset:auto 0 0; width:100%; max-width:720px; max-height:92dvh; margin:0 auto!important; padding:0 20px max(24px,env(safe-area-inset-bottom)); overflow-y:auto; overscroll-behavior:contain; border-radius:24px 24px 0 0; border:0; background:#fff3d6; box-shadow:0 -12px 50px #193d3540; animation:place-rise .2s ease-out; }
+ .places-page .place-detail-header { top:0; padding:18px 0 12px; }
+ body.places-sheet-open #blob-character,body.places-sheet-open #blob-panel { visibility:hidden; }
+ .places-page .place-actions { flex-wrap:wrap; }
+ .places-page .place-actions .place-primary { min-width:45%; }
+ .places-page .places-search.places-discovery-controls { grid-template-columns:minmax(0,1fr) auto; gap:8px; }
+ .places-discovery-controls > label { grid-column:1/-1; }
+ .places-page .places-search-submit { display:none; }
+ .places-page .places-map-switch { justify-self:end; margin:0; }
+ .places-page .places-suggest-link { grid-column:1/-1; justify-self:start; }
+ .places-page .places-map { height:clamp(300px,49dvh,520px); min-height:300px; }
+}
+@media(max-width:620px) {
+ .gassi-kiez main > :not(.places-hero):not(.places-garden-rest) { width:calc(100% - 32px); }
+ .gassi-kiez .places-hero { height:182px; margin-bottom:4px; }
+ .gassi-kiez .places-kiez-art { inset:auto 0 0; width:100%; height:auto; aspect-ratio:3.2; mask-image:linear-gradient(to bottom,transparent,#000 14%); }
+ .gassi-kiez .places-kiez-art img { object-fit:contain; }
+ .gassi-kiez .places-hero > div:not(.places-illustration) { left:20px; top:4px; width:65%; }
+ .gassi-kiez .places-hero h1 { font-size:2rem; }
+ .gassi-kiez .places-back { margin-bottom:7px; font-size:.875rem; }
+ .gassi-kiez .places-lead { margin-top:7px; max-width:24ch; font-size:.875rem; }
+ .places-page .place-card { padding:13px 39px 13px 0; gap:5px 8px; }
+ .places-page .place-card .place-open { font-size:1.2rem; }
+ .places-page .place-card .place-locality { grid-column:1; }
+ .places-page .place-card .place-dog-rule { grid-column:2; align-self:center; padding:0; border:0; background:transparent; }
+ .places-page .place-card :is(.place-dog-rule.is-prohibited,.place-dog-rule.is-unknown) { grid-column:1/-1; }
+ .places-page .place-meta { font-size:.875rem; }
+ .gassi-kiez .places-tabs { gap:14px; }
+ .gassi-kiez .places-tabs button { flex:none; }
+ .places-page .places-map-caption { gap:8px; }
+ .places-page .places-map-caption .places-hint { font-size:.875rem; }
+ .places-page .place-schedule .places-hint { font-size:.875rem; }
+ .places-page .place-roster .place-presence { display:block; margin:5px 0 0; }
+ .gassi-kiez .places-garden-rest { background-image:url('/assets/places-garden/rastplatz-960.webp'); }
+}
+@media(max-width:350px) {
+ .places-page .place-schedule { align-items:start; flex-direction:column; }
+ .places-page .place-schedule .places-hint { max-width:none; text-align:left; margin:0; }
+}
+@keyframes place-rise { from { transform:translateY(28px); opacity:.7; } to { transform:translateY(0); opacity:1; } }
+@media(prefers-reduced-motion:reduce) { .places-page .place-detail { animation:none; } }

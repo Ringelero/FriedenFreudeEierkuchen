@@ -35,8 +35,8 @@
   serviceSelect.value=service||'';
   function presentService(){
    const ruby=service===RUBY,h=$('.places-hero h1');
-   if(ruby)h.replaceChildren(document.createTextNode('Wir sehen uns '),document.createElement('br'),node('em','draußen.'));else h.textContent='GemDen-Karte';
-   $('.places-lead').textContent=ruby?'Zwei Stunden Zeit. Komm, wann es passt.':'Treffpunkte in Berlin entdecken und Lieblingsorte merken.';
+   h.textContent=ruby?'Treffpunkte':'GemDen-Karte';
+   $('.places-lead').textContent=ruby?'Dein Ort. Dein Zeitfenster. Gemeinsam raus.':'Treffpunkte in Berlin entdecken und Lieblingsorte merken.';
    document.body.classList.toggle('gassi-kiez',ruby);
    const art=$('[data-kiez-art]');art.hidden=!ruby;
    if(ruby){for(const source of art.querySelectorAll('[data-kiez-srcset]')){if(!source.getAttribute('srcset'))source.setAttribute('srcset',source.dataset.kiezSrcset);}const image=art.querySelector('img');if(!image.getAttribute('src'))image.src=image.dataset.kiezSrc;}
@@ -46,6 +46,8 @@
   }
   presentService();
   let generation=0,listEpoch=0,detailEpoch=0,mapEpoch=0,authUser=null,authReady=false,access=null;
+  let listLimit=8,ordering=false,detailOrigin=null;
+  const mobileDetail=matchMedia('(max-width:979px)');
   const requestedView=url.searchParams.get('ansicht')==='entdecken'?'discover':null;
   const mode=url.searchParams.get('darstellung');
   let chosenView=null,view='discover',display=mode==='karte'||(!mode&&!service&&!url.searchParams.get('ort'))?'map':'list',search='',page=0,list=[],hasMore=false,detail=null,entryPage=0,activeSlot=null,detailDirty=false;
@@ -60,11 +62,14 @@
   }
   function guestPrefs(){const p=read(guestPrefsKey,{});return {favorites:ids(p.favorites),dog_names:Array.isArray(p.dog_names)?p.dog_names.filter(x=>typeof x==='string').slice(0,5):[],public_walks:p.public_walks===true,blob_shortcuts:p.blob_shortcuts!==false};}
   function prefs(){return authUser?(access||{favorites:[],dog_names:[],public_walks:false,blob_shortcuts:true}):guestPrefs();}
-  function status(message,error=false){$('[data-status]').textContent=message;$('[data-status]').classList.toggle('is-error',error);}
+  function status(message,error=false){$('[data-status]').textContent=message;$('[data-status]').classList.toggle('is-error',error);const note=$('[data-detail-status]');if(note){note.textContent=message;note.hidden=!message;note.classList.toggle('is-error',error);}}
   function updateUrl(){const u=new URL(location.href);if(service)u.searchParams.set('leistung',service);else u.searchParams.delete('leistung');if(detail)u.searchParams.set('ort',detail.place.id);else u.searchParams.delete('ort');history.replaceState(null,'',u);}
-  async function perform(fn){if(busy)return;busy=true;const g=generation;el.querySelectorAll('button').forEach(b=>b.disabled=true);try{await fn(g);}catch(e){if(g===generation)status(e.message||'Das hat gerade nicht geklappt. Bitte versuche es erneut.',true);}finally{busy=false;if(!disposed)el.querySelectorAll('button').forEach(b=>b.disabled=false);}}
+  const lockedButtons=new Map();
+  function lockButtons(){if(!busy)return;el.querySelectorAll('button:not([data-close-detail]):not([data-place-backdrop]),.place-schedule select,.place-entry-fields input,.place-entry-fields select,.place-entry-fields textarea').forEach(b=>{if(!lockedButtons.has(b))lockedButtons.set(b,b.disabled);b.disabled=true;});}
+  async function perform(fn){if(busy)return;busy=true;const g=generation;lockButtons();try{await fn(g);}catch(e){if(g===generation)status(e.message||'Das hat gerade nicht geklappt. Bitte versuche es erneut.',true);}finally{busy=false;for(const[b,disabled]of lockedButtons)if(b.isConnected)b.disabled=disabled;lockedButtons.clear();}}
   function fillPrefs(){const form=$('[data-preferences]'),p=prefs();form.elements.dog_names.value=p.dog_names.join(', ');form.elements.public_walks.checked=p.public_walks;form.elements.blob_shortcuts.checked=p.blob_shortcuts;
    $('[data-account-note]').textContent=authUser?'Deine Favoriten und Hundenamen werden in deinem Konto gespeichert.':'Ohne Anmeldung bleiben Favoriten und Hundenamen auf diesem Gerät. Mit Konto nimmst du deine Auswahl mit.';
+   $('.places-settings').hidden=!!authUser;$('.places-account-settings-link').hidden=!authUser;
    $('[data-account-link]').hidden=!!authUser;$('[data-manager]').hidden=!access?.can_manage;renderSuggestions();
    if(access?.can_manage)renderManager();else{$('[data-managed-places]').replaceChildren();$('[data-place-form]').reset();$('[data-place-form]').hidden=true;}
   }
@@ -80,7 +85,32 @@
    if('blob_shortcuts' in changes){write('gemden_blob_shortcuts_enabled',changes.blob_shortcuts);window.dispatchEvent(new CustomEvent('blob:shortcuts-changed'));}
    if('dog_names' in changes||'public_walks' in changes||'blob_shortcuts' in changes)fillPrefs();return true;
   }
-  async function identity(){if(disposed)return;const g=++generation;authReady=false;authUser=null;access=null;detail=null;activeSlot=null;picking=null;detailEpoch++;$('[data-place-detail]').hidden=true;$('[data-place-detail]').replaceChildren();$('[data-preferences]').reset();$('[data-suggestion-form]').reset();fillPrefs();destroyMap();
+
+  function titleOf(p){return p.name.replace(/^Hundeauslauf\s*·\s*/,'');}
+  function configureDetail(){
+   const root=$('[data-place-detail]'),sheet=!!detail&&mobileDetail.matches;
+   document.body.classList.toggle('places-sheet-open',sheet);
+   $('[data-place-backdrop]').hidden=!sheet;
+   if(sheet){root.setAttribute('role','dialog');root.setAttribute('aria-modal','true');}
+   else{root.removeAttribute('role');root.removeAttribute('aria-modal');}
+  }
+  function closePlace(restore=true,update=true){
+   const origin=detailOrigin;detail=null;activeSlot=null;detailEpoch++;detailDirty=false;detailOrigin=null;
+   const root=$('[data-place-detail]');root.hidden=true;root.replaceChildren();configureDetail();if(update)updateUrl();
+   if(restore&&origin){window.scrollTo({top:origin.scroll,behavior:'instant'});const target=origin.focus?.isConnected?origin.focus:el.querySelector('[data-view][aria-pressed="true"]');target?.focus({preventScroll:true});}
+  }
+  mobileDetail.addEventListener('change',configureDetail);
+  $('[data-place-backdrop]').addEventListener('click',()=>closePlace());
+  $('[data-place-detail]').addEventListener('keydown',event=>{
+   if(event.key==='Escape'){event.preventDefault();closePlace();return;}
+   if(event.key!=='Tab'||!mobileDetail.matches)return;
+   const items=[...$('[data-place-detail]').querySelectorAll('button,a[href],input,select,textarea,summary,[tabindex="0"]')].filter(e=>!e.disabled&&e.getClientRects().length);
+   if(!items.length)return;const first=items[0],last=items[items.length-1];
+   if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+   else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+  });
+
+  async function identity(){if(disposed)return;const g=++generation;closePlace(false,false);authReady=false;authUser=null;access=null;detail=null;activeSlot=null;picking=null;detailEpoch++;$('[data-place-detail]').hidden=true;$('[data-place-detail]').replaceChildren();$('[data-preferences]').reset();$('[data-suggestion-form]').reset();fillPrefs();destroyMap();
    try{
     if(!client?.auth?.getUser)throw new Error('Die Kontoverbindung ist gerade nicht verfügbar.');
     const r=await client.auth.getUser();if(g!==generation)return;
@@ -92,29 +122,38 @@
     if(place&&/^[a-f0-9-]{36}$/i.test(place))await openPlace(place,slot,false);
    }catch(e){if(g===generation){authReady=false;applyView('discover');status('Dein Kontostatus konnte nicht geprüft werden. Öffentliche Orte kannst du ansehen; versuche es vor dem Eintragen erneut.',true);await loadList(false);if(display==='map'&&view==='discover')await showMap();}}
   }
+
   function card(p,index){const c=node('article',undefined,'place-card');
-   const open=button(p.name,()=>openPlace(p.id), 'place-open');c.append(open,node('p',p.locality));
-   const rule=dogAccess(p);if(p.services.some(s=>s.id===RUBY)&&dogAccessLabel(rule))c.append(node('p',dogAccessLabel(rule),`place-dog-rule is-${rule}`));
-   const meta=node('div',undefined,'place-meta');if(p.services.some(s=>s.walks_enabled&&(!service||s.id===service)))meta.append(node('span',`${attendanceLabel(p.coming_count,p.companion_count)} angekündigt`),node('span',`${attendanceLabel(p.here_count,p.companion_here_count)} gerade da`));else meta.append(node('span','Ortsinformationen · keine Gassifenster'));c.append(meta);
+   const open=button(titleOf(p),()=>openPlace(p.id),'place-open');c.append(open,node('p',p.locality,'place-locality'));
+   const rule=dogAccess(p);if(p.services.some(s=>s.id===RUBY)&&dogAccessLabel(rule))c.append(node('p',rule==='designated_off_leash'?'Freilauf':dogAccessLabel(rule),`place-dog-rule is-${rule}`));
+   const meta=node('div',undefined,'place-meta');
+   if(p.services.some(s=>s.walks_enabled&&(!service||s.id===service))){
+    if(p.here_count||p.companion_here_count)meta.append(node('span',`${attendanceLabel(p.here_count,p.companion_here_count)} gerade da`,'is-here'));
+    if(p.coming_count||p.companion_count)meta.append(node('span',`${attendanceLabel(p.coming_count,p.companion_count)} angekündigt`));
+    if(!meta.children.length)meta.append(node('span','Noch keine Einträge','is-empty'));
+   }else meta.append(node('span','Ortsinfo · ohne Gassifenster','is-empty'));c.append(meta);
    const favorite=prefs().favorites.includes(p.id),star=button(favorite?'★':'☆',()=>perform(async g=>{const next=favorite?prefs().favorites.filter(id=>id!==p.id):[...prefs().favorites,p.id];if(next.length>40)throw new Error('Du kannst bis zu 40 Lieblingsorte speichern.');if(await savePrefs({favorites:next},g)){status(favorite?'Aus deinen Treffpunkten entfernt.':'Als Lieblingstreffpunkt gespeichert.');await loadList(false);}}),'place-star');star.setAttribute('aria-label',`${p.name}: ${favorite?'Favorit entfernen':'als Favorit speichern'}`);star.setAttribute('aria-pressed',String(favorite));c.append(star);
-   if(view==='favorites'&&prefs().favorites.length>1){const order=node('div',undefined,'place-order');for(const [label,delta] of [['Nach oben',-1],['Nach unten',1]]){const b=button(label,()=>perform(async g=>{const next=[...prefs().favorites],from=next.indexOf(p.id),to=next.indexOf(list[index+delta]?.id);if(to<0||to>=next.length)return;[next[from],next[to]]=[next[to],next[from]];if(await savePrefs({favorites:next},g))await loadList(false);}));b.disabled=index+delta<0||index+delta>=list.length;order.append(b);}c.append(order);}
+   if(view==='favorites'&&ordering&&prefs().favorites.length>1){const order=node('div',undefined,'place-order');for(const[label,delta]of[['Nach oben',-1],['Nach unten',1]]){const b=button(label,()=>perform(async g=>{const next=[...prefs().favorites],from=next.indexOf(p.id),to=next.indexOf(list[index+delta]?.id);if(to<0||to>=next.length)return;[next[from],next[to]]=[next[to],next[from]];if(await savePrefs({favorites:next},g))await loadList(false);}));b.disabled=index+delta<0||index+delta>=list.length;order.append(b);}c.append(order);}
    return c;
   }
-  function renderList(){const box=$('[data-place-list]');box.replaceChildren();if(!list.length){const empty=node('div',undefined,'places-empty');empty.append(node('h2',view==='favorites'?'Deine Runde beginnt hier.':'Hier entsteht ein neuer Treffpunkt.'));
-    empty.append(node('p',view==='favorites'?'Speichere Orte mit dem Stern. Hier siehst du dann mit einem Blick, wer unterwegs ist.':'Für diese Auswahl ist noch kein öffentlicher Treffpunkt eingetragen. Die Treffverwaltung kann die ersten Orte mit genauer Beschreibung hinzufügen.'));
+  function renderList(){const box=$('[data-place-list]');box.replaceChildren();if(!list.length){const empty=node('div',undefined,'places-empty');empty.append(node('h2',view==='favorites'?'Deine Lieblingsorte':'Keine passenden Orte'));
+    empty.append(node('p',view==='favorites'?'Merke Orte mit dem Stern. Hier findest du sie wieder.':'Versuche einen anderen Ort oder erweitere den Kartenausschnitt.'));
     if(view==='favorites')empty.append(button('Treffpunkte entdecken',()=>setView('discover')));box.append(empty);
-   }else list.forEach((p,i)=>box.append(card(p,i)));
-   $('[data-previous]').hidden=page===0||view==='favorites'||display==='map';$('[data-more]').hidden=!hasMore||view==='favorites'||display==='map';box.hidden=display==='map'&&view==='discover';
+   }else list.slice(0,listLimit).forEach((p,i)=>box.append(card(p,i)));
+   $('[data-favorite-tools]').hidden=view!=='favorites'||!list.length;
+   $('[data-order-toggle]').setAttribute('aria-pressed',String(ordering));
+   $('[data-order-toggle]').textContent=ordering?'Anordnung fertig':'Anordnung bearbeiten';
+   $('[data-previous]').hidden=true;$('[data-more]').hidden=!(listLimit<list.length||hasMore)||(display==='map'&&view==='discover');box.hidden=display==='map'&&view==='discover';lockButtons();
   }
-  async function loadList(showStatus=true,append=false){const g=generation,e=++listEpoch;if(showStatus)status('Treffpunkte werden geladen …');
-   try{const favoriteIds=prefs().favorites;if(view==='favorites'&&!favoriteIds.length){list=[];hasMore=false;renderList();if(showStatus)status('Wähle deine Lieblingsorte unter „Entdecken“.');return;}
+  async function loadList(showStatus=true,append=false){const g=generation,e=++listEpoch;if(!append)page=0;if(showStatus)status('Treffpunkte werden geladen …');
+   try{const favoriteIds=prefs().favorites;if(view==='favorites'&&!favoriteIds.length){list=[];hasMore=false;renderList();if(showStatus)status('');return;}
     const data=await rpc(client,'discover_places',{service,search:view==='discover'?search:'',ids:view==='favorites'?favoriteIds:null,bounds:view==='discover'?nearBounds:null,page:view==='favorites'?0:page});
-    if(g!==generation||e!==listEpoch)return;list=data.items;hasMore=data.has_more;
-    if(view==='favorites')list.sort((a,b)=>favoriteIds.indexOf(a.id)-favoriteIds.indexOf(b.id));renderList();if(showStatus)status(view==='favorites'?'Deine Lieblingsorte · unverbindlich vorbeischauen.':`${list.length} ${list.length===1?'Treffpunkt':'Treffpunkte'}${hasMore?' · weitere verfügbar':''}`);
+    if(g!==generation||e!==listEpoch)return;list=append?[...list,...data.items]:data.items;hasMore=data.has_more;
+    if(view==='favorites')list.sort((a,b)=>favoriteIds.indexOf(a.id)-favoriteIds.indexOf(b.id));renderList();if(showStatus)status(`${list.length} ${list.length===1?'Treffpunkt':'Treffpunkte'}${hasMore?' · weitere verfügbar':''}`);
    }catch(err){if(g===generation&&e===listEpoch)status(err.message||'Die Treffpunkte konnten nicht geladen werden.',true);}
   }
   function applyView(next){
-   view=next;page=0;el.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===view)));
+   if(next!==view)closePlace(false);view=next;page=0;listLimit=8;el.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===view)));
    $('[data-discovery]').hidden=view!=='discover';
    el.querySelectorAll('[data-display]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.display===display)));
    if(view==='favorites'){destroyMap();$('[data-map-wrap]').hidden=true;}
@@ -123,50 +162,68 @@
    chosenView=next;display=nextDisplay;applyView(next);await loadList();
    if(view==='discover'&&display==='map')await showMap();
   }
-  async function openPlace(id,slot=null,scroll=true,append=false,background=false){const g=generation,e=++detailEpoch;try{const data=await rpc(client,'get_place_walks',{place:id,service,chosen_slot:slot,guest_key:authUser?null:guestKey,page:append?entryPage:0});
-   if(g!==generation||e!==detailEpoch||background&&(detailDirty||$('[data-place-detail] details[open]')))return;if(append&&detail)data.entries=[...detail.entries,...data.entries];if(!append)entryPage=0;detail=data;activeSlot=data.slot_start;detailDirty=false;renderDetail();updateUrl();if(scroll)$('[data-place-detail]').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+
+  async function openPlace(id,slot=null,scroll=true,append=false,background=false){const g=generation,e=++detailEpoch;
+   const origin=detailOrigin||{focus:document.activeElement,scroll:window.scrollY};
+   try{const data=await rpc(client,'get_place_walks',{place:id,service,chosen_slot:slot,guest_key:authUser?null:guestKey,page:append?entryPage:0});
+    if(g!==generation||e!==detailEpoch||background&&(detailDirty||$('[data-place-detail] details[open]')))return;
+    const opening=!detail;detailOrigin=origin;if(append&&detail)data.entries=[...detail.entries,...data.entries];if(!append)entryPage=0;detail=data;activeSlot=data.slot_start;detailDirty=false;renderDetail();lockButtons();configureDetail();updateUrl();
+    if(opening&&mobileDetail.matches)$('[data-close-detail]').focus({preventScroll:true});
+    else if(scroll&&!mobileDetail.matches)$('[data-place-detail]').scrollIntoView({behavior:'auto',block:'nearest'});
    }catch(err){if(g===generation&&e===detailEpoch)status(err.message||'Dieser Treffpunkt konnte nicht geöffnet werden.',true);}}
+
   function renderDetail(){const d=detail,p=d.place,t=activeSlot,root=$('[data-place-detail]');root.hidden=false;root.replaceChildren();
-   const head=node('div',undefined,'place-detail-header');head.append(node('h2',p.name),button('Schließen',()=>{detail=null;activeSlot=null;detailEpoch++;root.hidden=true;root.replaceChildren();updateUrl();}));root.append(head,node('p',p.locality,'places-hint'));
+   const head=node('div',undefined,'place-detail-header'),heading=node('div');heading.append(node('h2',titleOf(p)),node('p',p.locality,'places-hint'));
+   const close=button('Schließen',()=>closePlace());close.dataset.closeDetail='';head.append(heading,close);root.append(head);
    const rule=dogAccess(p);if(p.services.some(s=>s.id===RUBY)&&dogAccessLabel(rule))root.append(node('p',dogAccessLabel(rule),`place-dog-rule is-${rule}`));
-   const about=document.createElement('details');about.className='place-about';about.append(node('summary','Ortsbeschreibung & Hinweise'),node('h3','Allgemein zum Ort'),node('p',p.description||'Für diesen Ort gibt es noch keine allgemeine Beschreibung.','place-description'));
+   const tools=node('div',undefined,'place-tools'),mapLink=node('a','Route','place-link');mapLink.href=mapsLink(p);mapLink.target='_blank';mapLink.rel='noopener';mapLink.setAttribute('aria-label','In Maps öffnen');tools.append(mapLink,button('Teilen',()=>share(location.href)));
+   const star=button(prefs().favorites.includes(p.id)?'★ Gemerkt':'☆ Merken',()=>perform(async g=>{const current=prefs().favorites,next=current.includes(p.id)?current.filter(id=>id!==p.id):[...current,p.id];if(next.length>40)throw new Error('Du kannst bis zu 40 Lieblingsorte speichern.');if(await savePrefs({favorites:next},g)){star.textContent=next.includes(p.id)?'★ Gemerkt':'☆ Merken';await loadList(false);status('Deine Favoritenauswahl wurde gespeichert.');}}));tools.append(star);root.append(tools);
+   const about=document.createElement('details');about.className='place-about';about.append(node('summary','Ortsinfo & Quellen'));if(p.description)about.append(node('p',p.description,'place-description'));
    const contextual=service?p.services.filter(s=>s.id===service):p.services;
    for(const info of contextual){if(info.description||info.source_url){about.append(node('h3',info.id===RUBY?'Mit Hund unterwegs':info.name));if(info.description)about.append(node('p',info.description,'place-description'));if(info.source_url&&/^https:\/\//.test(info.source_url)){const source=node('a','Quelle & weitere Informationen');source.href=info.source_url;source.target='_blank';source.rel='noopener';about.append(source);}}}
-   const tools=node('div',undefined,'place-tools'),mapLink=node('a','In Maps öffnen','place-link');mapLink.href=mapsLink(p);mapLink.target='_blank';mapLink.rel='noopener';tools.append(mapLink,button('Treffpunkt teilen',()=>share(location.href)));
-   const star=button(prefs().favorites.includes(p.id)?'★ Ort gespeichert':'☆ Ort merken',()=>perform(async g=>{const current=prefs().favorites,next=current.includes(p.id)?current.filter(id=>id!==p.id):[...current,p.id];if(next.length>40)throw new Error('Du kannst bis zu 40 Lieblingsorte speichern.');if(await savePrefs({favorites:next},g)){star.textContent=next.includes(p.id)?'★ Ort gespeichert':'☆ Ort merken';await loadList(false);status('Deine Favoritenauswahl wurde gespeichert.');}}));tools.append(star);root.append(tools,about);
    const walkService=p.services.find(s=>s.id===service&&s.walks_enabled);
-   if(!walkService){root.append(node('p',service?'Für dieses Angebot sind an diesem Ort keine Gassifenster freigeschaltet.':'Wähle ein Angebot an diesem Ort, um dessen Gassifenster zu öffnen.','places-hint'));for(const s of p.services){if(s.walks_enabled)root.append(button(s.name,async()=>{service=s.id;serviceSelect.value=service;presentService();await identity();await openPlace(p.id);}));}return;}
-   root.append(node('h3','Ein Zeitfenster, kein Termin.'),node('p','Komm irgendwann in diesen zwei Stunden vorbei. Du reservierst keinen Platz und musst keine Ankunftszeit angeben.','places-hint'));
-   const picker=node('div',undefined,'place-slot-picker'),dayLabel=node('label','Tag'),day=document.createElement('select'),timeLabel=node('label','Zeitfenster'),time=document.createElement('select');
+   if(!walkService){root.append(about,node('p',service?'Hier gibt es Ortsinformationen, aber keine Gassifenster.':'Wähle ein Angebot, um dessen Gassifenster zu öffnen.','places-hint'));for(const item of p.services)if(item.walks_enabled)root.append(button(item.name,async()=>{service=item.id;serviceSelect.value=service;presentService();await identity();await openPlace(p.id);}));return;}
+   const schedule=node('div',undefined,'place-schedule'),dayLabel=node('label','Tag'),day=document.createElement('select');
    const selectedDay=dateKey(t,p.time_zone),days=[...new Set(d.slots.map(s=>dateKey(s.start,p.time_zone)))];
-   for(const key of days){const sample=d.slots.find(s=>dateKey(s.start,p.time_zone)===key);day.add(new Option(new Intl.DateTimeFormat('de-DE',{timeZone:p.time_zone,weekday:'short',day:'numeric',month:'short'}).format(new Date(sample.start)),key));}day.value=selectedDay;
-   function fillTimes(){time.replaceChildren();d.slots.filter(s=>dateKey(s.start,p.time_zone)===day.value).forEach(s=>time.add(new Option(`${slotLabel(s.start,p.time_zone)} · ${attendanceLabel(s.coming_count,s.companion_count)}`,s.start)));if(Array.from(time.options).some(o=>new Date(o.value).getTime()===new Date(t).getTime()))time.value=Array.from(time.options).find(o=>new Date(o.value).getTime()===new Date(t).getTime()).value;}
-   fillTimes();day.addEventListener('change',()=>{fillTimes();entryPage=0;openPlace(p.id,time.value,false);});time.addEventListener('change',()=>{entryPage=0;openPlace(p.id,time.value,false);});day.setAttribute('aria-label','Tag auswählen');time.setAttribute('aria-label','Zeitfenster auswählen');dayLabel.append(day);timeLabel.append(time);picker.append(dayLabel,timeLabel);root.append(picker);
-   const sameDay=d.slots.filter(s=>dateKey(s.start,p.time_zone)===selectedDay),first=Math.max(0,sameDay.findIndex(s=>new Date(s.start).getTime()===new Date(t).getTime())),quick=node('div',undefined,'place-quick-slots');quick.setAttribute('aria-label','Schnelle Zeitfensterwahl');
-   for(const slot of sameDay.slice(first,first+3)){const selected=new Date(slot.start).getTime()===new Date(t).getTime(),b=button(slotLabel(slot.start,p.time_zone),()=>{entryPage=0;openPlace(p.id,slot.start,false);});b.setAttribute('aria-pressed',String(selected));quick.append(b);}root.append(quick);
-
-   root.append(node('p',`${slotLabel(t,p.time_zone)} Uhr`, 'place-window-title'),node('p',`Ortszeit ${p.time_zone} · „Gerade da“ wird nach spätestens 45 Minuten ausgeblendet.`, 'places-hint'));
+   for(const key of days){const sample=d.slots.find(s=>dateKey(s.start,p.time_zone)===key);day.add(new Option(new Intl.DateTimeFormat('de-DE',{timeZone:p.time_zone,weekday:'short',day:'numeric',month:'short'}).format(new Date(sample.start)),key));}day.value=selectedDay;day.setAttribute('aria-label','Tag auswählen');
+   day.addEventListener('change',()=>{const slot=d.slots.find(s=>dateKey(s.start,p.time_zone)===day.value);if(slot)openPlace(p.id,slot.start,false);});
+   dayLabel.append(day);schedule.append(dayLabel,node('span','Unverbindlich · zwei Stunden','places-hint'));root.append(schedule);
+   const quick=node('div',undefined,'place-quick-slots');quick.setAttribute('aria-label','Zeitfenster auswählen');
+   for(const slot of d.slots.filter(s=>dateKey(s.start,p.time_zone)===selectedDay)){
+    const selected=new Date(slot.start).getTime()===new Date(t).getTime(),b=button(slotLabel(slot.start,p.time_zone),()=>openPlace(p.id,slot.start,false));b.dataset.slot=slot.start;b.setAttribute('aria-pressed',String(selected));
+    if(slot.coming_count||slot.companion_count)b.append(node('small',attendanceLabel(slot.coming_count,slot.companion_count)));quick.append(b);
+   }root.append(quick);requestAnimationFrame(()=>{const selected=quick.querySelector('[aria-pressed="true"]');if(selected?.isConnected)quick.scrollLeft=Math.max(0,selected.offsetLeft-quick.offsetLeft-10);});
    for(const event of d.events){const box=node('article',undefined,`place-event${event.cancelled?' is-cancelled':''}`);box.append(node('h3',`${event.cancelled?'Abgesagt: ':''}${event.title}`),node('p',event.description),node('p',`Kontakt: ${event.contact}`));if(access?.can_manage&&event.service_id===service&&!event.cancelled)box.append(button('Treffen absagen',()=>perform(async()=>{await rpc(client,'save_place_slot_event',{place:p.id,service,t,event:event.id,expected:event.version,details:{cancelled:true}});await openPlace(p.id,t,false);status('Das besondere Treffen ist als abgesagt gekennzeichnet.');})));root.append(box);}
-   if(d.entries.length){const roster=node('ul',undefined,'place-roster');for(const entry of d.entries){const li=node('li');li.append(node('strong',entry.participation==='companion'?(entry.public_label||'Eine Begleitperson'):entry.dog_names.join(' & ')),node('span',entry.state==='here'?'● Gerade da':'○ Kommt vielleicht vorbei',`place-presence${entry.state==='here'?' is-here':''}`));li.append(node('span',entry.event_id?(d.events.find(v=>v.id===entry.event_id)?.title||'Besonderes Treffen'):'Freie Gassirunde','places-hint'));if(entry.comment)li.append(node('p',entry.comment));if(access?.can_manage&&entry.service_id===service)li.append(button('Eintrag ausblenden',()=>perform(async()=>{await rpc(client,'hide_place_walk',{entry:entry.id});await openPlace(p.id,t,false);status('Eintrag ausgeblendet.');})));roster.append(li);}root.append(roster);if(d.has_more)root.append(button('Weitere Teilnehmende',()=>{entryPage++;openPlace(p.id,t,false,true);}));}
-   else root.append(node('p','Hier hat sich noch niemand angekündigt. Vielleicht beginnt die nächste Begegnung mit dir.','places-hint'));
-   const own=d.mine,personal=prefs();if(own?.hidden){root.append(node('p','Dein Eintrag wurde von der Treffverwaltung ausgeblendet.','places-hint'));return;}
+   if(d.entries.length){const roster=node('ul',undefined,'place-roster');for(const entry of d.entries){const li=node('li');li.append(node('strong',entry.participation==='companion'?(entry.public_label||'Eine Begleitperson'):entry.dog_names.join(' & ')),node('span',entry.state==='here'?'● Gerade da':'○ Kommt vielleicht vorbei',`place-presence${entry.state==='here'?' is-here':''}`));if(entry.event_id)li.append(node('span',d.events.find(v=>v.id===entry.event_id)?.title||'Besonderes Treffen','places-hint'));if(entry.comment)li.append(node('p',entry.comment));if(access?.can_manage&&entry.service_id===service)li.append(button('Eintrag ausblenden',()=>perform(async()=>{await rpc(client,'hide_place_walk',{entry:entry.id});await openPlace(p.id,t,false);status('Eintrag ausgeblendet.');})));roster.append(li);}root.append(roster);if(d.has_more)root.append(button('Weitere Teilnehmende',()=>{entryPage++;openPlace(p.id,t,false,true);}));}
+   else root.append(node('p','In diesem Fenster gibt es noch keine Einträge.','places-hint'));
+   const own=d.mine,personal=prefs();if(own?.hidden){root.append(node('p','Dein Eintrag wurde von der Treffverwaltung ausgeblendet.','places-hint'),about);return;}
    const eventChoice=document.createElement('select');eventChoice.add(new Option('Freie Gassirunde',''));
    for(const event of d.events){const option=new Option((event.cancelled?'Abgesagt: ':'')+event.title,event.id);option.disabled=event.cancelled;eventChoice.add(option);}eventChoice.value=own?.event_id||'';
    if(d.events.length){const label=node('label','Wofür möchtest du vorbeikommen?');label.append(eventChoice);root.append(label);}
    if(own?.event_id&&d.events.some(e=>e.id===own.event_id&&e.cancelled))root.append(node('p','Dein besonderes Treffen wurde abgesagt. Du kannst deinen Eintrag entfernen oder ausdrücklich zur freien Gassirunde wechseln.','places-hint'));
-   const fields=document.createElement('details');fields.className='place-entry-fields';fields.open=!personal.public_walks;fields.append(node('summary',own?'Teilnahme & Kommentar bearbeiten':'Mit wem kommst du?'));
-   const roleLabel=node('label','Wie kommst du?'),role=document.createElement('select');role.add(new Option('Mit meinem Hund','dogs'));role.add(new Option('Ohne Hund mitgehen','companion'));role.value=own?.participation||(personal.dog_names.length?'dogs':'companion');roleLabel.append(role);root.append(roleLabel);
-   const publicLabel=node('label','Dein Rufname (optional)'),alias=document.createElement('input');alias.maxLength=60;alias.autocomplete='off';alias.value=own?.public_label||'';alias.placeholder='Sonst steht hier nur „Eine Begleitperson“';publicLabel.append(alias);
-   const form=node('form',undefined,'places-form'),nameLabel=node('label','Hundenamen'),names=document.createElement('input');names.value=(own?.dog_names||personal.dog_names).join(', ');names.maxLength=304;names.autocomplete='off';names.required=true;nameLabel.append(names);const commentLabel=node('label','Dein Kommentar (optional)'),comment=document.createElement('textarea');comment.value=own?.comment||'';comment.maxLength=400;comment.rows=2;comment.placeholder='Zum Beispiel: Wir suchen eine ruhige Runde.';commentLabel.append(comment);
+   const fields=document.createElement('details');fields.className='place-entry-fields';fields.append(node('summary',own?'Teilnahme & Kommentar bearbeiten':'Angaben & Kommentar'));
+   const form=node('form',undefined,'places-form'),roleLabel=node('label','Wie kommst du?'),role=document.createElement('select');role.add(new Option('Mit meinem Hund','dogs'));role.add(new Option('Ohne Hund mitgehen','companion'));role.value=own?.participation||(personal.dog_names.length?'dogs':'companion');roleLabel.append(role);form.append(roleLabel);
+   const publicLabel=node('label','Dein Rufname (optional)'),alias=document.createElement('input');alias.maxLength=60;alias.autocomplete='off';alias.value=own?.public_label||'';publicLabel.append(alias);
+   const nameLabel=node('label','Hundenamen'),names=document.createElement('input');names.value=(own?.dog_names||personal.dog_names).join(', ');names.maxLength=304;names.autocomplete='off';names.required=true;nameLabel.append(names);
+   const commentLabel=node('label','Dein Kommentar (optional)'),comment=document.createElement('textarea');comment.value=own?.comment||'';comment.maxLength=400;comment.rows=2;commentLabel.append(comment);
    const consentLabel=node('label',undefined,'places-check'),consent=document.createElement('input');consent.type='checkbox';consent.checked=personal.public_walks;consentLabel.append(consent,node('span','Meine Teilnahme, die hier eingetragenen Namen und mein Kommentar dürfen öffentlich in diesem Zeitfenster stehen. Bitte keine Kontaktdaten oder privaten Angaben eintragen.'));form.append(nameLabel,publicLabel,commentLabel,consentLabel);
-   function showRole(){const companion=role.value==='companion';nameLabel.hidden=companion;names.required=!companion;publicLabel.hidden=!companion;if(!own)fields.open=!personal.public_walks||!companion&&!personal.dog_names.length;}showRole();role.addEventListener('change',()=>{showRole();detailDirty=true;});form.addEventListener('submit',e=>e.preventDefault());fields.append(form);root.append(fields);
+   const confirm=node('button','Teilnahme bestätigen');confirm.type='submit';form.append(confirm);
+   if(!authUser)form.append(node('p','Ohne Konto: Zum Ändern oder Entfernen nutze denselben Browser und behalte die gespeicherten Website-Daten.','places-hint'));
+   let pendingAction='coming';
+   function showRole(){const companion=role.value==='companion';nameLabel.hidden=companion;names.required=!companion;publicLabel.hidden=!companion;}showRole();role.addEventListener('change',()=>{showRole();detailDirty=true;});
+   fields.append(form);
    const actions=node('div',undefined,'place-actions');
-   async function change(action){await perform(async g=>{if(!authReady)throw new Error('Bitte lade die Seite neu, damit dein Kontostatus geprüft werden kann.');if(!authUser&&(!guestKey||!guestStorage))throw new Error('Der Gastzugang kann auf diesem Gerät nicht gespeichert werden. Bitte melde dich im Konto an.');
-    let chosen=[];if(action!=='leave'){chosen=participationNames(role.value,names.value);if(!consent.checked){fields.open=true;consent.focus();throw new Error('Bitte bestätige die öffentliche Anzeige deiner Teilnahme.');}if(!personal.public_walks||JSON.stringify(chosen)!==JSON.stringify(personal.dog_names)){if(!await savePrefs({...role.value==='dogs'?{dog_names:chosen}:{},public_walks:true},g))return;}}
-    await rpc(client,'set_place_walk_participation',{participation:role.value,public_label:alias.value.trim(),place:p.id,service,t,guest_key:authUser?null:guestKey,action,names:chosen,message:comment.value,consent:consent.checked,event:eventChoice.value||null});if(g!==generation)return;await openPlace(p.id,t,false);await loadList(false);status(action==='leave'?'Dein Eintrag wurde entfernt.':action==='here'?'Du bist als „Gerade da“ sichtbar.':'Du bist unverbindlich angekündigt.');});}
+   async function change(action,confirmed=false){
+    if(action!=='leave'&&!confirmed&&(!consent.checked||role.value==='dogs'&&!names.value.trim())){pendingAction=action;fields.open=true;detailDirty=true;(role.value==='dogs'&&!names.value.trim()?names:role).focus({preventScroll:true});return;}
+    await perform(async g=>{if(!authReady)throw new Error('Bitte lade die Seite neu, damit dein Kontostatus geprüft werden kann.');if(!authUser&&(!guestKey||!guestStorage))throw new Error('Der Gastzugang kann auf diesem Gerät nicht gespeichert werden. Bitte melde dich im Konto an.');
+     let chosen=[];if(action!=='leave'){chosen=participationNames(role.value,names.value);if(!consent.checked){fields.open=true;consent.focus();throw new Error('Bitte bestätige die öffentliche Anzeige deiner Teilnahme.');}if(!personal.public_walks||JSON.stringify(chosen)!==JSON.stringify(personal.dog_names)){if(!await savePrefs({...role.value==='dogs'?{dog_names:chosen}:{},public_walks:true},g))return;}}
+     await rpc(client,'set_place_walk_participation',{participation:role.value,public_label:alias.value.trim(),place:p.id,service,t,guest_key:authUser?null:guestKey,action,names:chosen,message:comment.value,consent:consent.checked,event:eventChoice.value||null});if(g!==generation)return;if(detail?.place.id===p.id&&activeSlot===t)await openPlace(p.id,t,false);await loadList(false);status(action==='leave'?'Dein Eintrag wurde entfernt.':action==='here'?'Du bist als „Gerade da“ sichtbar.':'Du bist unverbindlich angekündigt.');});
+   }
+   form.addEventListener('submit',event=>{event.preventDefault();change(pendingAction,true);});
    const join=button(own?'Angabe aktualisieren':role.value==='companion'?'Ich gehe mit':'Komme vorbei',()=>change('coming'),'place-primary');actions.append(join);role.addEventListener('change',()=>{if(!own)join.textContent=role.value==='companion'?'Ich gehe mit':'Komme vorbei';});
-   if(new Date(t).getTime()<=Date.now())actions.append(button(own?.state==='here'?'Noch da · bestätigen':'Bin gerade da',()=>change('here')));
-   if(own)actions.append(button('Eintrag entfernen',()=>change('leave')));root.append(actions,node('p',authUser?'Mit oder ohne eigenen Hund: Du kannst deinen Eintrag jederzeit entfernen. Mitgehen ist noch keine Übernahme der Gassirunde.':'Ohne Konto kannst du dich ebenfalls eintragen. Zum Ändern oder Entfernen brauchst du denselben Browser; bitte behalte dessen gespeicherte Website-Daten.','places-hint'));
+   if(new Date(t).getTime()<=Date.now())actions.append(button(own?.state==='here'?'Noch da · 45 Min.':'Bin da · 45 Min.',()=>change('here')));
+   if(own)actions.append(button('Eintrag entfernen',()=>change('leave')));root.append(actions,fields);
+   const feedback=node('p','','places-feedback');feedback.dataset.detailStatus='';feedback.setAttribute('role','status');feedback.hidden=true;root.append(feedback,about);
    if(access?.can_manage){const management=document.createElement('details');management.append(node('summary','Besonderes Treffen in diesem Fenster'));const eventForm=node('form',undefined,'places-form');for(const [key,label,max] of [['title','Titel, z. B. Welpenrunde',120],['description','Absprachen, Teilnahme- und Kostenrahmen',1500],['contact','Öffentliche Ansprechperson / Kontakt',500]]){const l=node('label',label),input=document.createElement(key==='description'?'textarea':'input');input.name=key;input.maxLength=max;input.required=true;l.append(input);eventForm.append(l);}const submit=node('button','Treffen für dieses Zeitfenster veröffentlichen');submit.type='submit';eventForm.append(submit);eventForm.addEventListener('submit',event=>{event.preventDefault();perform(async g=>{const details=Object.fromEntries(new FormData(eventForm));await rpc(client,'save_place_slot_event',{place:p.id,service,t,event:null,expected:null,details});if(g!==generation)return;await openPlace(p.id,t,false);status('Das besondere Treffen ist veröffentlicht.');});});management.append(eventForm);root.append(management);}
   }
   function renderManager(){const box=$('[data-managed-places]');box.replaceChildren();for(const p of access.managed_places||[]){const row=node('div',undefined,'places-managed-item');row.append(node('span',`${p.name} · ${p.published?'öffentlich':'Entwurf'}`),button('Bearbeiten',()=>editPlace(p)));box.append(row);}}
@@ -199,7 +256,7 @@
      const marker=rule==='prohibited'?window.L.marker([point.latitude,point.longitude],{title,alt:title,icon:window.L.divIcon({className:'places-restricted-icon',html:'×',iconSize:[28,28]})}):window.L.circleMarker([point.latitude,point.longitude],{radius:9,color:'#fff5e9',weight:3,fillColor:point.here_count>0||point.companion_here_count>0?'#3b6a42':rule==='designated_off_leash'?'#276777':'#861e43',fillOpacity:1});
      const label=document.createElement('button');label.type='button';label.textContent=title;label.addEventListener('click',()=>openPlace(point.id));marker.bindPopup(label);marker.on('click',()=>{if(picking)applyPickedPoint(point.latitude,point.longitude);else openPlace(point.id,null,false);});mapGroup.addLayer(marker);
     }}
-     $('[data-map-status]').textContent=points.length?`Angezeigte Orte in diesem Ausschnitt: ${points.reduce((sum,p)=>sum+p.visible_count,0)}. `+(offLeashOnly?'Nur ausgewiesene Hundeausläufe. Zahlen fassen passende Orte zusammen; zum Auflösen hineinzoomen. Grün: gerade jemand da.':'×: Hunde nicht erlaubt · Blau: ausgewiesener Hundeauslauf · Violett: Hunde-Zugang ungeklärt · Grün: Hunde oder Begleitpersonen gerade da. Zahlen fassen Orte zusammen; ! kennzeichnet enthaltene Hundeverbotsorte.'):(offLeashOnly?'In diesem Ausschnitt sind keine ausgewiesenen Hundeausläufe eingetragen. Zoome heraus oder schalte den Filter aus.':'In diesem Ausschnitt sind noch keine Treffpunkte eingetragen.');
+     $('[data-map-status]').textContent=points.length?`${points.reduce((sum,p)=>sum+p.visible_count,0)} Orte im Ausschnitt${offLeashOnly?' · nur ausgewiesene Hundeausläufe':''}`:'Keine passenden Orte im Ausschnitt.';
    }catch(err){if(e===mapEpoch)$('[data-map-status]').textContent=err.message||'Die Kartenpunkte konnten nicht geladen werden.';}
   }
   async function showMap(){display='map';$('[data-map-wrap]').hidden=false;renderList();const g=generation;try{const L=await leaflet();if(g!==generation||view!=='discover'||display!=='map'||disposed)return;if(!map){const first=list[0],region=regionBounds(mapRegion);map=L.map($('[data-map]'),{preferCanvas:true,renderer:L.canvas({padding:0,tolerance:8}),attributionControl:false,worldCopyJump:false,maxBounds:[[-85,-180],[85,180]],minZoom:2,maxZoom:19,zoomAnimation:false,fadeAnimation:false}).setView(first?[first.latitude,first.longitude]:[51.2,10.4],first?13:5);L.control.attribution({position:'bottomleft'}).addTo(map);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',keepBuffer:0,updateWhenIdle:true,detectRetina:false,noWrap:true}).addTo(map);mapGroup=L.layerGroup().addTo(map);map.on('moveend',()=>{clearTimeout(mapDebounce);mapDebounce=setTimeout(mapPoints,300);});map.on('click',event=>{if(!picking)return;applyPickedPoint(event.latlng.lat,event.latlng.lng);});if(initialMapView){map.setView([initialMapView.latitude,initialMapView.longitude],initialMapView.zoom);initialMapView=null;}else if(nearBounds)map.fitBounds([[nearBounds.south,nearBounds.west],[nearBounds.north,nearBounds.east]]);else if(region)map.fitBounds([[region.south,region.west],[region.north,region.east]]);else if(list.length>1)map.fitBounds(list.map(p=>[p.latitude,p.longitude]),{padding:[22,22],maxZoom:13});}
@@ -208,13 +265,15 @@
   $('[data-off-leash]').addEventListener('change',()=>{offLeashOnly=service===RUBY&&$('[data-off-leash]').checked;const next=new URL(location.href);if(offLeashOnly)next.searchParams.set('hundeauslauf','1');else next.searchParams.delete('hundeauslauf');history.replaceState(null,'',next);mapPoints();});
   $('[data-share-map]').addEventListener('click',()=>{if(!map)return;const link=mapShareUrl(location.href,service,map.getCenter(),map.getZoom(),offLeashOnly);$('[data-map-link]').value=link;$('[data-open-map]').href=link;$('[data-map-share]').hidden=false;});
   $('[data-copy-map]').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('[data-map-link]').value);status('Link kopiert.');}catch{$('[data-map-link]').select();status('Bitte kopiere den markierten Kartenlink.');}});
-  $('[data-berlin-view]').addEventListener('click',async()=>{initialMapView=null;mapRegion='berlin';nearBounds=null;search='';page=0;detail=null;activeSlot=null;detailEpoch++;$('[data-place-detail]').hidden=true;$('[data-place-detail]').replaceChildren();$('[data-search-form]').elements.search.value='';const next=new URL(location.href);next.searchParams.delete('ort');next.searchParams.delete('ausschnitt');next.searchParams.set('gebiet','berlin');next.searchParams.set('ansicht','entdecken');next.searchParams.set('darstellung','karte');history.replaceState(null,'',next);await setView('discover','map');const b=regionBounds('berlin');if(map)map.fitBounds([[b.south,b.west],[b.north,b.east]]);});
+  $('[data-berlin-view]').addEventListener('click',async()=>{initialMapView=null;mapRegion='berlin';nearBounds=null;search='';page=0;listLimit=8;closePlace(false);$('[data-search-form]').elements.search.value='';const next=new URL(location.href);next.searchParams.delete('ort');next.searchParams.delete('ausschnitt');next.searchParams.set('gebiet','berlin');next.searchParams.set('ansicht','entdecken');next.searchParams.set('darstellung','karte');history.replaceState(null,'',next);await setView('discover','map');const b=regionBounds('berlin');if(map)map.fitBounds([[b.south,b.west],[b.north,b.east]]);});
   el.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
   el.querySelectorAll('[data-display]').forEach(b=>b.addEventListener('click',()=>{display=b.dataset.display;el.querySelectorAll('[data-display]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.display===display)));if(display==='map')showMap();else{destroyMap();$('[data-map-wrap]').hidden=true;renderList();}}));
-  $('[data-search-form]').addEventListener('submit',async e=>{e.preventDefault();search=new FormData(e.currentTarget).get('search').trim();mapRegion=null;nearBounds=null;page=0;await loadList();if(map){const p=list[0];if(p)map.setView([p.latitude,p.longitude],13);else status('Kein Treffpunkt für diese Suche gefunden.');}});
-  $('[data-nearby]').addEventListener('click',()=>{if(!navigator.geolocation){status('Dein Browser kann deinen Standort nicht bestimmen. Suche stattdessen nach einem Ort.',true);return;}status('Standort wird einmalig bestimmt …');navigator.geolocation.getCurrentPosition(async position=>{const lat=position.coords.latitude,lon=position.coords.longitude,span=0.08,lonSpan=span/Math.max(.1,Math.cos(lat*Math.PI/180));nearBounds=boundedBounds({south:lat-span,north:lat+span,west:lon-lonSpan,east:lon+lonSpan});page=0;search='';$('[data-search-form]').reset();await loadList();if(map)map.fitBounds([[nearBounds.south,nearBounds.west],[nearBounds.north,nearBounds.east]]);},()=>status('Der Standort ist nicht verfügbar. Du kannst weiter nach Ort oder Kiez suchen.',true),{enableHighAccuracy:false,maximumAge:300000,timeout:10000});});
+  $('[data-search-form]').addEventListener('submit',async e=>{e.preventDefault();closePlace(false);listLimit=8;search=new FormData(e.currentTarget).get('search').trim();mapRegion=null;nearBounds=null;page=0;await loadList();if(map){const p=list[0];if(p)map.setView([p.latitude,p.longitude],13);else status('Kein Treffpunkt für diese Suche gefunden.');}});
+  $('[data-nearby]').addEventListener('click',()=>{if(!navigator.geolocation){status('Dein Browser kann deinen Standort nicht bestimmen. Suche stattdessen nach einem Ort.',true);return;}status('Standort wird einmalig bestimmt …');navigator.geolocation.getCurrentPosition(async position=>{const lat=position.coords.latitude,lon=position.coords.longitude,span=0.08,lonSpan=span/Math.max(.1,Math.cos(lat*Math.PI/180));closePlace(false);listLimit=8;nearBounds=boundedBounds({south:lat-span,north:lat+span,west:lon-lonSpan,east:lon+lonSpan});page=0;search='';$('[data-search-form]').reset();await loadList();if(map)map.fitBounds([[nearBounds.south,nearBounds.west],[nearBounds.north,nearBounds.east]]);},()=>status('Der Standort ist nicht verfügbar. Du kannst weiter nach Ort oder Kiez suchen.',true),{enableHighAccuracy:false,maximumAge:300000,timeout:10000});});
   serviceSelect.addEventListener('change',async()=>{service=serviceSelect.value||null;if(service!==RUBY){offLeashOnly=false;$('[data-off-leash]').checked=false;}presentService();detail=null;updateUrl();url.searchParams.delete('ort');await identity();});
-  $('[data-more]').addEventListener('click',()=>{page++;loadList();});$('[data-previous]').addEventListener('click',()=>{page=Math.max(0,page-1);loadList();});
+  $('[data-more]').addEventListener('click',()=>{listLimit+=8;if(listLimit<=list.length||!hasMore)renderList();else{page++;loadList(true,true);}});$('[data-previous]').addEventListener('click',()=>{page=Math.max(0,page-1);loadList();});
+  $('[data-order-toggle]').addEventListener('click',()=>{ordering=!ordering;renderList();});
+  $('[data-open-suggestion]').addEventListener('click',()=>{$('#ort-vorschlagen').open=true;});
   $('[data-preferences]').addEventListener('submit',event=>{event.preventDefault();perform(async g=>{const f=event.currentTarget,raw=f.elements.dog_names.value.trim();if(await savePrefs({dog_names:raw?dogNames(raw):[],public_walks:f.elements.public_walks.checked,blob_shortcuts:f.elements.blob_shortcuts.checked},g)){status('Deine Angaben wurden gespeichert.');if(detail)await openPlace(detail.place.id,activeSlot,false);}});});
   $('[data-new-place]').addEventListener('click',()=>editPlace());$('[data-cancel-place]').addEventListener('click',()=>{$('[data-place-form]').hidden=true;$('[data-place-form]').reset();});
   $('[data-clear-favorites]').addEventListener('click',()=>perform(async g=>{if(await savePrefs({favorites:[]},g)){await loadList(false);status('Deine Favoritenauswahl wurde geleert.');}}));

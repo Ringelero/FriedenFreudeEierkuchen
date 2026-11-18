@@ -573,3 +573,8 @@ body.account-home :is(.account-view-nav,.account-route,.account-section-links,.a
 .account-care .care-section-head h2{font-size:1.5rem}.account-care .help-pager{display:flex;gap:10px;margin-top:12px}
 .account-care .care-contacts,.account-care .care-conversations{grid-template-columns:repeat(2,minmax(0,1fr))}.account-care .care-plan-facts div{grid-template-columns:110px minmax(0,1fr)}
 @media(max-width:700px){.account-care .care-contacts,.account-care .care-conversations{grid-template-columns:1fr}.account-care .care-section-head{flex-wrap:wrap}.account-care .care-detail{padding:17px 13px}.account-care .care-plan-facts div{grid-template-columns:1fr}}
+#gassi-angaben form[hidden] { display:none!important; }
+#gassi-angaben .form-grid > label { display:block; font-size:1rem; }
+#gassi-angaben .form-grid > label:has(input[type="checkbox"]) { display:grid; grid-template-columns:20px minmax(0,1fr); gap:10px; align-items:start; }
+#gassi-angaben input[type="checkbox"] { width:18px; height:18px; margin:4px 0 0; }
+#gassi-angaben input[name="dog_names"] { display:block; width:100%; min-height:46px; margin-top:6px; padding:11px 12px; border:1px solid var(--line); border-radius:12px; background:#fff; color:inherit; font:inherit; }
