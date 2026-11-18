@@ -11,6 +11,7 @@
 .herz-trail-page .herz-tabs { padding: 0 var(--trail-gutter); width: min(100%, 980px); }
 .herz-tabs a span { background: var(--trail-paper); padding: 4px 9px 6px; border-radius: 45%; }
 .herz-panels { width: 100%; margin: 0; }
+.herz-mobile-entrance-join { display: none; }
 
 .herz-painted-entrance {
   position: relative;
@@ -144,40 +145,69 @@
   }
 
   .herz-painted-entrance {
-    padding-top: 23px;
-    padding-bottom: 50px;
+    display: grid;
+    align-items: center;
+    aspect-ratio: 2;
+    padding: 0;
     margin-top: -15px;
     background-image: url("./herz-schnauze/verbunden/eingang.webp");
-    background-size: 100% 100%;
+    background-size: 100% auto;
   }
   .herz-trail-page .herz-tabs { width: min(100%, 700px); padding-inline: 4%; gap: 8px; }
   .herz-tabs a { font-size: clamp(.76rem, 3.35vw, 1.25rem); }
   .herz-tabs a span { padding-inline: 4px; }
 
-  #treffen { --clearing: url("./herz-schnauze/verbunden/gassi-lichtung.webp"); }
-  #lernen { --clearing: url("./herz-schnauze/verbunden/lernen-lichtung.webp"); }
-  #unterstuetzen { --clearing: url("./herz-schnauze/verbunden/freunde-lichtung.webp"); }
-  .herz-event-landscape { --clearing: url("./herz-schnauze/verbunden/termine-lichtung.webp"); }
-  .herz-host-landscape { --clearing: url("./herz-schnauze/verbunden/gastgeber-lichtung.webp"); }
-  .herz-outro-landscape { --clearing: url("./herz-schnauze/verbunden/ausklang-lichtung.webp"); }
+  #treffen { --clearing: url("./herz-schnauze/verbunden/gassi-lichtung.webp"); --shore: url("./herz-schnauze/verbunden/gassi-ufer.svg"); }
+  #lernen { --clearing: url("./herz-schnauze/verbunden/lernen-lichtung.webp"); --shore: url("./herz-schnauze/verbunden/lernen-ufer.svg"); }
+  #unterstuetzen { --clearing: url("./herz-schnauze/verbunden/freunde-lichtung.webp"); --shore: url("./herz-schnauze/verbunden/freunde-ufer.svg"); }
+  .herz-event-landscape { --clearing: url("./herz-schnauze/verbunden/termine-lichtung.webp"); --shore: url("./herz-schnauze/verbunden/termine-ufer.svg"); }
+  .herz-host-landscape { --clearing: url("./herz-schnauze/verbunden/gastgeber-lichtung.webp"); --shore: url("./herz-schnauze/verbunden/gastgeber-ufer.svg"); }
+  .herz-outro-landscape { --clearing: url("./herz-schnauze/verbunden/ausklang-lichtung.webp"); --shore: url("./herz-schnauze/verbunden/ausklang-ufer.svg"); }
 
   .herz-scene, .herz-landscape { display: flex; flex-direction: column; min-height: 0; padding: 0; }
+  /* Art stays at one scale; only complete shore tiles are added for more text. */
   .herz-scene > .herz-panel-copy, .herz-landscape-copy {
     position: relative;
-    min-height: calc(100vw * 843 / 793);
+    isolation: isolate;
+    min-height: var(--shore-height, calc(100vw * 808 / 760));
     width: 100%;
     max-width: none;
     margin: 0;
-    padding: 0 0 clamp(32px, 9vw, 85px);
-    border: solid transparent;
-    border-width: calc(100vw * 280 / 760) 22vw 0;
-    border-image-source: var(--clearing);
-    border-image-slice: 280 167 0 167 fill;
-    border-image-repeat: stretch;
+    padding: 0;
+    border: 0;
     background: transparent;
   }
-
-  .herz-scene > .herz-panel-copy { padding-bottom: 7vw; }
+  .herz-panel-copy::before, .herz-landscape-copy::before {
+    content: "";
+    position: absolute;
+    z-index: -3;
+    inset: 0 0 auto;
+    aspect-ratio: 760 / 560;
+    background: var(--clearing) center top / 100% auto no-repeat;
+    pointer-events: none;
+  }
+  .herz-panel-copy::after, .herz-landscape-copy::after {
+    content: "";
+    position: absolute;
+    z-index: -3;
+    inset: calc(100vw * 560 / 760) 0 0;
+    background: var(--shore) center top / 100% auto repeat-y;
+    pointer-events: none;
+  }
+  .herz-copy-inner {
+    min-width: 0;
+    padding: calc(100vw * 320 / 760) 22% 22px;
+  }
+  .herz-copy-inner::after {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    inset: auto 0 0;
+    aspect-ratio: 760 / 248;
+    background: var(--clearing) center bottom / 100% auto no-repeat;
+    pointer-events: none;
+  }
+  .herz-copy-body { display: flow-root; }
   .herz-scene h2, .herz-landscape .meeting-heading h2,
   .herz-landscape #pfotenpatron h2, .herz-trail-page .herz-outro-landscape #mitmachen h2 {
     max-width: none;
@@ -210,11 +240,38 @@
     order: 1;
     width: 100%;
     height: auto;
-    aspect-ratio: 793 / 1140;
+    aspect-ratio: 760 / 1093;
     margin: -1px 0 0;
   }
-  .herz-scene-art img { width: 100%; height: 100%; object-fit: fill; }
-  .herz-painted-junction { height: 0; aspect-ratio: auto; margin: 0; background: none; }
+  .herz-scene-art img { width: 100%; height: auto; object-fit: contain; }
+  .herz-trail-page {
+    --entrance-seam: url("./herz-schnauze/verbunden/eingang-gassi.svg");
+    --event-seam: url("./herz-schnauze/verbunden/gassi-termine.svg");
+  }
+  .herz-trail-page[data-herz-active="lernen"] {
+    --entrance-seam: url("./herz-schnauze/verbunden/eingang-lernen.svg");
+    --event-seam: url("./herz-schnauze/verbunden/lernen-termine.svg");
+  }
+  .herz-trail-page[data-herz-active="unterstuetzen"] {
+    --entrance-seam: url("./herz-schnauze/verbunden/eingang-freunde.svg");
+    --event-seam: url("./herz-schnauze/verbunden/freunde-termine.svg");
+  }
+  .herz-mobile-entrance-join, .herz-painted-junction {
+    display: block;
+    position: relative;
+    z-index: 5;
+    height: calc(100vw * 60 / 760);
+    aspect-ratio: auto;
+    margin: calc(-100vw * 40 / 760) 0;
+    background-position: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    pointer-events: none;
+  }
+  .herz-mobile-entrance-join { background-image: var(--entrance-seam); }
+  .herz-trails + .herz-painted-junction { background-image: var(--event-seam); }
+  .herz-event-landscape + .herz-painted-junction { background-image: url("./herz-schnauze/verbunden/termine-gastgeber.svg"); }
+  .herz-host-landscape + .herz-painted-junction { background-image: url("./herz-schnauze/verbunden/gastgeber-ausklang.svg"); }
 
   .herz-trail-page .herz-landscape :is(.service-meetings, #pfotenpatron, .herz-background) {
     width: 100%;

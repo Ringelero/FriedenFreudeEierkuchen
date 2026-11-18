@@ -7,6 +7,7 @@
   const hasTabs = tabs.length > 0 && panels.every(Boolean);
 
   function selectTab(index) {
+    document.body.dataset.herzActive = panels[index].id;
     tabs.forEach((tab, current) => {
       const active = current === index;
       tab.setAttribute('aria-selected', String(active));
@@ -71,4 +72,49 @@
   });
   window.addEventListener('hashchange', () => reveal(window.location.hash));
   reveal(window.location.hash);
+
+  const shores = Array.from(document.querySelectorAll('.herz-copy-inner'));
+  const mobileArt = window.matchMedia('(max-width:980px)');
+  let shoreFrame = 0;
+
+  function layoutShores() {
+    shoreFrame = 0;
+    shores.forEach(shore => {
+      if (!mobileArt.matches) {
+        shore.parentElement.style.removeProperty('--shore-height');
+        return;
+      }
+      if (!shore.getClientRects().length) return;
+      const body = shore.querySelector('.herz-copy-body');
+      if (!body) return;
+      const clearing = shore.parentElement;
+      const width = clearing.getBoundingClientRect().width;
+      const capHeight = width * 560 / 760;
+      const tileHeight = width * 248 / 760;
+      if (!tileHeight) return;
+      const style = getComputedStyle(shore);
+      const contentHeight = body.getBoundingClientRect().height +
+        parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+      // Complete, uniformly scaled tiles join the original top and bottom cuts.
+      const rows = Math.max(1, Math.ceil((contentHeight - capHeight - 0.1) / tileHeight));
+      clearing.style.setProperty('--shore-height', `${capHeight + rows * tileHeight}px`);
+    });
+  }
+
+  function scheduleShores() {
+    if (!shoreFrame) shoreFrame = requestAnimationFrame(layoutShores);
+  }
+
+  if (shores.length) {
+    if ('ResizeObserver' in window) {
+      const observer = new ResizeObserver(scheduleShores);
+      shores.forEach(shore => observer.observe(shore.querySelector('.herz-copy-body')));
+    }
+    tabList?.addEventListener('click', scheduleShores);
+    tabList?.addEventListener('keydown', scheduleShores);
+    document.addEventListener('toggle', scheduleShores, true);
+    window.addEventListener('resize', scheduleShores, { passive: true });
+    document.fonts?.ready.then(scheduleShores);
+    scheduleShores();
+  }
 })();
