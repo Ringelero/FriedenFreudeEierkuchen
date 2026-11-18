@@ -3,6 +3,21 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const api=require('../assets/places.js');
 
+test('district grouping combines both former district names and preserves each place once',()=>{
+ assert.equal(api.boroughOf('Berlin-Friedrichshain'),'Friedrichshain-Kreuzberg');
+ assert.equal(api.boroughOf('Berlin-Kreuzberg'),'Friedrichshain-Kreuzberg');
+ assert.equal(api.boroughOf('Berlin-Prenzlauer Berg · Pankow'),'Pankow');
+ assert.equal(api.boroughOf('Berlin-Baumschulenweg · Treptow-Köpenick'),'Treptow-Köpenick');
+ assert.equal(api.boroughOf('Berlin-Schöneberg · Tempelhof-Schöneberg'),'Tempelhof-Schöneberg');
+ assert.equal(api.boroughOf(null),'Weitere Orte');
+ const places=[{id:1,locality:'Berlin-Kreuzberg'},{id:2,locality:'Berlin-Mitte'},{id:3,locality:'Berlin-Friedrichshain'},{id:4,locality:'Potsdam'}];
+ const before=JSON.stringify(places),groups=api.groupByBorough(places);
+ assert.deepEqual(groups.map(([name])=>name),['Friedrichshain-Kreuzberg','Mitte','Weitere Orte']);
+ assert.deepEqual(groups[0][1].map(p=>p.id),[1,3]);
+ assert.equal(new Set(groups.flatMap(([,rows])=>rows.map(p=>p.id))).size,places.length);
+ assert.equal(JSON.stringify(places),before);
+});
+
 test('Berlin overview uses a bounded named region and rejects arbitrary URL region values',()=>{
  const b=api.regionBounds('berlin');
  for(const [lat,lon] of [[52.42,13.14],[52.64,13.24],[52.40,13.65],[52.55,13.40]]){

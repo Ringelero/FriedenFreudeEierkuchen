@@ -135,3 +135,70 @@
 }
 @keyframes place-rise { from { transform:translateY(28px); opacity:.7; } to { transform:translateY(0); opacity:1; } }
 @media(prefers-reduced-motion:reduce) { .places-page .place-detail { animation:none; } }
+
+/* A continuous, naturally scaled painted bank surrounds every state of the atlas. */
+.places-page.gassi-kiez { --line:#c1a56d; --muted:#4e5e42; background:#ffe7af; }
+.gassi-kiez .site-shell { --bank:clamp(36px,8vw,160px); background-image:url('/assets/places-garden/ufer-links-v2.webp'),url('/assets/places-garden/ufer-rechts-v2.webp'),url('/assets/places-garden/papier-v2.webp'); background-position:left top,right top,center top; background-size:var(--bank) auto,var(--bank) auto,288px 288px; background-repeat:repeat-y,repeat-y,repeat; }
+.gassi-kiez .site-nav { width:min(calc(100% - 48px),1440px); padding-block:14px; }
+.gassi-kiez main > :not(.places-hero):not(.places-garden-rest):not(dialog) { width:min(calc(100% - var(--bank)*2 - 24px),1360px); }
+.gassi-kiez .places-hero { max-width:none; height:clamp(280px,33.333vw,540px); margin:0; }
+.gassi-kiez .places-kiez-art { inset:0; width:100%; mask-image:linear-gradient(#000 94%,transparent); mix-blend-mode:multiply; }
+.gassi-kiez .places-kiez-art img { object-position:center; object-fit:cover; }
+.gassi-kiez .places-hero > div:not(.places-illustration) { left:max(calc(var(--bank) + 16px),calc((100% - 1360px)/2)); top:24%; width:38%; }
+.gassi-kiez .places-tabs { margin-top:-10px; position:relative; }
+.gassi-kiez .places-garden-rest { width:100%; max-width:none; margin:0; aspect-ratio:3.05; mix-blend-mode:multiply; mask-image:linear-gradient(transparent,#000 27%); }
+.gassi-kiez .footer { width:min(calc(100% - var(--bank)*2 - 24px),1360px); }
+.gassi-kiez :is(input,select,textarea,button,.place-link) { background-color:#fff0c9; }
+.places-page.gassi-kiez .place-card :is(.place-open,.place-star) { background:transparent; }
+.gassi-kiez .footer { padding-bottom:10px; }
+.gassi-kiez .places-suggest-link { border:0; background:transparent; padding:6px 0; font-weight:600; text-align:left; }
+.gassi-kiez .places-pick-cancel { margin-bottom:12px; }
+.places-page .places-borough { min-width:0; border:0; border-bottom:1px solid var(--line); }
+.places-page .places-borough > summary { display:flex; align-items:center; gap:12px; padding:18px 0; list-style:none; font:500 clamp(1.1rem,2vw,1.5rem)/1.25 Georgia,serif; color:var(--ink); }
+.places-page .places-borough > summary::-webkit-details-marker { display:none; }
+.places-page .places-borough > summary::before { content:'+'; display:grid; place-items:center; flex:0 0 34px; width:34px; height:34px; border:1px solid #a7794d; border-radius:48% 42% 50% 35%; color:var(--ruby); font:400 1.45rem/1 Georgia,serif; background:#f8d9a2; }
+.places-page .places-borough[open] > summary::before { content:'−'; background:#e6cd95; }
+.places-page .places-borough > summary > span:first-child { flex:1; min-width:0; overflow-wrap:anywhere; }
+.places-page .places-borough-count { flex:0 0 auto; font:500 .875rem/1.4 system-ui,sans-serif; color:var(--muted); }
+.places-page .places-borough-list { padding:0 0 16px 14px; }
+.gassi-kiez .places-borough[open] { background:linear-gradient(100deg,#ffeab166,transparent 85%); }
+.gassi-kiez .places-borough-list .place-card:last-child { border-bottom:0; }
+.places-page .places-suggestion-dialog { width:min(calc(100% - 32px),700px); max-width:700px; max-height:88dvh; margin:auto; padding:24px; border:1px solid #b49a61; border-radius:24px 10px 24px 10px; color:var(--ink); background:#fff0ce; overflow-y:auto; overscroll-behavior:contain; }
+.places-suggestion-dialog::backdrop { background:#193d35b3; }
+.places-suggestion-heading { display:flex; justify-content:space-between; align-items:start; gap:16px; }
+.places-suggestion-heading h2 { margin:4px 0 16px; font:500 clamp(1.6rem,4vw,2rem)/1.13 Georgia,serif; }
+.places-page .places-suggestion-dialog .places-hint { font-size:1rem; }
+.places-page .places-suggestion-dialog .places-form { max-width:none; }
+body.places-suggestion-open { overflow:hidden; }
+body.places-suggestion-open :is(#blob-character,#blob-panel) { visibility:hidden; }
+@media(min-width:980px) {
+ .places-page .places-borough-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 28px; }
+ .places-page .places-workspace:has(.place-detail:not([hidden])) .places-borough-list { grid-template-columns:1fr; }
+}
+@media(max-width:979px) {
+ .gassi-kiez .places-search.places-discovery-controls { gap:8px; }
+ .gassi-kiez .places-tabs { margin-top:0; }
+}
+@media(max-width:620px) {
+ .gassi-kiez .site-shell { --bank:clamp(24px,7vw,44px); }
+ .gassi-kiez .site-nav { width:calc(100% - 32px); }
+ .gassi-kiez .places-hero { height:auto; aspect-ratio:1182/1330; }
+ .gassi-kiez .places-kiez-art { inset:0; height:100%; aspect-ratio:auto; width:100%; mask-image:linear-gradient(#000 94%,transparent); }
+ .gassi-kiez .places-kiez-art img { object-fit:cover; }
+ .gassi-kiez .places-hero > div:not(.places-illustration) { top:10%; left:16%; width:67%; }
+ .gassi-kiez .places-hero h1 { font-size:clamp(2rem,8.5vw,3.2rem); }
+ .gassi-kiez .places-lead { max-width:25ch; font-size:.875rem; }
+ .gassi-kiez main > :not(.places-hero):not(.places-garden-rest):not(dialog) { width:calc(100% - var(--bank)*2 - 12px); }
+ .gassi-kiez .places-tabs { gap:16px; }
+ .places-page .places-borough > summary { display:grid; grid-template-columns:28px minmax(0,1fr); padding:14px 0; gap:4px 10px; }
+ .places-page .places-borough > summary::before { grid-row:1/3; width:28px; height:32px; }
+ .places-page .places-borough > summary > span { grid-column:2; }
+ .places-page .places-borough-list { padding-left:0; }
+ .places-page .places-borough-count { font-size:.875rem; }
+ .gassi-kiez .places-map-wrap { width:calc(100% + 24px); margin-left:-12px; }
+ .gassi-kiez .places-garden-rest { aspect-ratio:2.25; background-size:135% auto; background-position:center bottom; }
+ .places-page .places-suggestion-dialog { max-height:92dvh; padding:20px 16px; }
+ .places-suggestion-heading { gap:10px; }
+ .places-suggestion-heading h2 { font-size:1.6rem; }
+ .places-suggestion-dialog .places-fields { grid-template-columns:1fr; }
+}

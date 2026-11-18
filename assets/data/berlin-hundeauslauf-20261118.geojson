@@ -1,0 +1,376 @@
+{
+  "type": "FeatureCollection",
+  "name": "Drei ergänzte Berliner Hundeausläufe",
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap-Mitwirkende",
+  "attribution_url": "https://www.openstreetmap.org/copyright",
+  "checked_on": "2026-11-18",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.4046967,
+              52.5416731
+            ],
+            [
+              13.404452,
+              52.5416015
+            ],
+            [
+              13.4046307,
+              52.5414977
+            ],
+            [
+              13.4046622,
+              52.5415058
+            ],
+            [
+              13.4046926,
+              52.5414743
+            ],
+            [
+              13.4044744,
+              52.5413897
+            ],
+            [
+              13.4048895,
+              52.5412323
+            ],
+            [
+              13.4044533,
+              52.5409278
+            ],
+            [
+              13.4044701,
+              52.5408006
+            ],
+            [
+              13.4045415,
+              52.5408144
+            ],
+            [
+              13.4048449,
+              52.5408706
+            ],
+            [
+              13.4050329,
+              52.5408967
+            ],
+            [
+              13.4049588,
+              52.5409712
+            ],
+            [
+              13.4049441,
+              52.5410094
+            ],
+            [
+              13.4049372,
+              52.5410599
+            ],
+            [
+              13.4049398,
+              52.5411055
+            ],
+            [
+              13.4049443,
+              52.5411395
+            ],
+            [
+              13.4049588,
+              52.5411749
+            ],
+            [
+              13.4050064,
+              52.5412471
+            ],
+            [
+              13.4050487,
+              52.5412808
+            ],
+            [
+              13.4050997,
+              52.5413108
+            ],
+            [
+              13.4052482,
+              52.5413645
+            ],
+            [
+              13.4052205,
+              52.5416805
+            ],
+            [
+              13.4051041,
+              52.541742
+            ],
+            [
+              13.4045141,
+              52.5420252
+            ],
+            [
+              13.4044744,
+              52.5420016
+            ],
+            [
+              13.4045561,
+              52.5419077
+            ],
+            [
+              13.404584,
+              52.5418756
+            ],
+            [
+              13.4046429,
+              52.541867
+            ],
+            [
+              13.4046378,
+              52.5418188
+            ],
+            [
+              13.4044652,
+              52.5418207
+            ],
+            [
+              13.4046439,
+              52.5417021
+            ],
+            [
+              13.4046652,
+              52.5417083
+            ],
+            [
+              13.4046967,
+              52.5416731
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Hundeauslauf · Mauerpark",
+        "borough": "Pankow",
+        "source_url": "https://www.berlin.de/ba-pankow/politik-und-verwaltung/aemter/strassen-und-gruenflaechenamt/gruenflaechen/parkanlagen/artikel.1116799.php",
+        "latitude": 52.541556,
+        "longitude": 13.404945,
+        "coordinate_authority": "OpenStreetMap contributors, not an official survey or official dog-area geometry",
+        "coordinate_precision_note": "Rounded to six decimals for reproducibility; actual positional accuracy is limited by the community-mapped enclosure. Not a confirmed gate.",
+        "osm_url": "https://www.openstreetmap.org/way/49206047",
+        "osm_timestamp": "2023-03-25T12:37:56Z",
+        "official_park_feature_id": "gruenanlagen.00008100_0016d183"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.4460627,
+              52.5360658
+            ],
+            [
+              13.4467989,
+              52.5359361
+            ],
+            [
+              13.4468135,
+              52.5359622
+            ],
+            [
+              13.446819,
+              52.535977
+            ],
+            [
+              13.4468459,
+              52.5360495
+            ],
+            [
+              13.4463161,
+              52.5361376
+            ],
+            [
+              13.4463617,
+              52.5362445
+            ],
+            [
+              13.4462035,
+              52.5362779
+            ],
+            [
+              13.4462585,
+              52.5363766
+            ],
+            [
+              13.4457783,
+              52.5365308
+            ],
+            [
+              13.4458128,
+              52.5365794
+            ],
+            [
+              13.4457615,
+              52.5366006
+            ],
+            [
+              13.4457153,
+              52.5366197
+            ],
+            [
+              13.445659,
+              52.53653
+            ],
+            [
+              13.4456304,
+              52.5363792
+            ],
+            [
+              13.4459621,
+              52.5362371
+            ],
+            [
+              13.4459044,
+              52.5361597
+            ],
+            [
+              13.4460828,
+              52.5361034
+            ],
+            [
+              13.4460627,
+              52.5360658
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Hundeauslauf · Anton-Saefkow-Park",
+        "borough": "Pankow",
+        "source_url": "https://www.berlin.de/ba-pankow/aktuelles/pressemitteilungen/2020/pressemitteilung.979663.php",
+        "latitude": 52.536326,
+        "longitude": 13.44605,
+        "coordinate_authority": "OpenStreetMap contributors, not an official survey or official dog-area geometry",
+        "coordinate_precision_note": "Rounded to six decimals for reproducibility; actual positional accuracy is limited by the community-mapped enclosure. Not a confirmed gate.",
+        "osm_url": "https://www.openstreetmap.org/way/898574134",
+        "osm_timestamp": "2023-02-04T12:45:52Z",
+        "official_park_feature_id": "gruenanlagen.00008100_0016d371"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              13.4762923,
+              52.5130386
+            ],
+            [
+              13.4762594,
+              52.5130495
+            ],
+            [
+              13.4763253,
+              52.5131314
+            ],
+            [
+              13.4758414,
+              52.5132549
+            ],
+            [
+              13.4758297,
+              52.5132563
+            ],
+            [
+              13.4757713,
+              52.5132737
+            ],
+            [
+              13.4757581,
+              52.5132626
+            ],
+            [
+              13.4757024,
+              52.513284
+            ],
+            [
+              13.4756568,
+              52.5133113
+            ],
+            [
+              13.4756461,
+              52.5133234
+            ],
+            [
+              13.4756632,
+              52.5133301
+            ],
+            [
+              13.4756327,
+              52.5133701
+            ],
+            [
+              13.4756253,
+              52.5133897
+            ],
+            [
+              13.4756182,
+              52.5134153
+            ],
+            [
+              13.4754388,
+              52.5134353
+            ],
+            [
+              13.4754434,
+              52.5134174
+            ],
+            [
+              13.4756782,
+              52.5124801
+            ],
+            [
+              13.4757284,
+              52.5124395
+            ],
+            [
+              13.4759739,
+              52.5126959
+            ],
+            [
+              13.4759964,
+              52.5127192
+            ],
+            [
+              13.4760208,
+              52.5127443
+            ],
+            [
+              13.4762923,
+              52.5130386
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "name": "Hundefreilauf · Gürtelstraße",
+        "borough": "Lichtenberg",
+        "source_url": "https://www.berlin.de/ba-lichtenberg/aktuelles/geschaeftsbereich-03-ordumver/nachrichten/artikel.1539600.php",
+        "latitude": 52.51302,
+        "longitude": 13.475886,
+        "coordinate_authority": "OpenStreetMap contributors, not an official survey or official dog-area geometry",
+        "coordinate_precision_note": "Rounded to six decimals for reproducibility; actual positional accuracy is limited by the community-mapped enclosure. Not a confirmed gate.",
+        "osm_url": "https://www.openstreetmap.org/way/1459800989",
+        "osm_timestamp": "2026-03-26T07:15:10Z",
+        "official_park_feature_id": "gruenanlagen.00008100_001c96af"
+      }
+    }
+  ]
+}
