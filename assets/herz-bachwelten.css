@@ -328,3 +328,28 @@
   .herz-outro-landscape > .herz-scene-art { clip-path: none; }
   .herz-events-link { z-index: 6; }
 }
+
+@media (max-width: 680px) {
+  .herz-trail-page .tree-hero-art { clip-path: inset(0 0 calc(100vw * 120 / 760 - 1px)); }
+  .herz-painted-entrance {
+    isolation: isolate;
+    margin-top: 0;
+    background: none;
+    clip-path: none;
+  }
+  .herz-painted-entrance::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: calc(-100vw * 120 / 760) 0 auto;
+    aspect-ratio: 760 / 500;
+    background:
+      url("./herz-schnauze/verbunden/einstieg-anschluss.svg") center top / 100% auto no-repeat,
+      url("./herz-schnauze/verbunden/einstieg-verbunden.webp") center top / 100% auto no-repeat;
+    clip-path: inset(0 0 calc(100% * 40 / 500));
+    pointer-events: none;
+  }
+  .herz-trail-page[data-herz-active] {
+    --entrance-seam: url("./herz-schnauze/verbunden/eingang-verbunden.svg");
+  }
+}
