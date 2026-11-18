@@ -5,6 +5,9 @@
   const tabs = tabList ? Array.from(tabList.querySelectorAll('a[href^="#"]')) : [];
   const panels = tabs.map(tab => document.getElementById(tab.hash.slice(1)));
   const hasTabs = tabs.length > 0 && panels.every(Boolean);
+  const shores = Array.from(document.querySelectorAll('.herz-copy-inner'));
+  const mobileArt = window.matchMedia('(max-width:980px)');
+  let shoreFrame = 0;
 
   function selectTab(index) {
     document.body.dataset.herzActive = panels[index].id;
@@ -14,6 +17,7 @@
       tab.tabIndex = active ? 0 : -1;
       panels[current].hidden = !active;
     });
+    layoutShores();
   }
 
   function reveal(hash) {
@@ -73,11 +77,8 @@
   window.addEventListener('hashchange', () => reveal(window.location.hash));
   reveal(window.location.hash);
 
-  const shores = Array.from(document.querySelectorAll('.herz-copy-inner'));
-  const mobileArt = window.matchMedia('(max-width:980px)');
-  let shoreFrame = 0;
-
   function layoutShores() {
+    if (shoreFrame) cancelAnimationFrame(shoreFrame);
     shoreFrame = 0;
     shores.forEach(shore => {
       if (!mobileArt.matches) {
@@ -107,12 +108,16 @@
 
   if (shores.length) {
     if ('ResizeObserver' in window) {
-      const observer = new ResizeObserver(scheduleShores);
+      const observer = new ResizeObserver(layoutShores);
       shores.forEach(shore => observer.observe(shore.querySelector('.herz-copy-body')));
     }
-    tabList?.addEventListener('click', scheduleShores);
-    tabList?.addEventListener('keydown', scheduleShores);
-    document.addEventListener('toggle', scheduleShores, true);
+    if ('MutationObserver' in window) {
+      const chapters = new MutationObserver(layoutShores);
+      document.querySelectorAll('details[data-service-chapter]').forEach(chapter => {
+        chapters.observe(chapter, { attributes: true, attributeFilter: ['open'] });
+      });
+    }
+    document.addEventListener('toggle', layoutShores, true);
     window.addEventListener('resize', scheduleShores, { passive: true });
     document.fonts?.ready.then(scheduleShores);
     scheduleShores();

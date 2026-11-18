@@ -131,10 +131,38 @@
 .herz-outro-landscape .site-availability { padding: 0; border: 0; background: transparent; }
 .herz-outro-landscape .service-provider-link { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: 3px; }
 
+@media (min-width: 981px) {
+  .herz-painted-entrance { margin-top: 0; }
+  .herz-painted-junction { margin: -4vw 0; }
+  .herz-scene > .herz-scene-art { clip-path: inset(0 0 4vw); }
+  .herz-landscape {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-height: 0;
+    padding: 0;
+  }
+  .herz-landscape > .herz-scene-art {
+    position: relative;
+    grid-area: 1 / 2;
+    align-self: end;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 760 / 1093;
+    clip-path: inset(0 round 18% 14% 12% 16%);
+  }
+  .herz-landscape-copy { grid-area: 1 / 1; padding: clamp(75px, 9vw, 155px) 5vw 8vw 6.5vw; }
+  .herz-trail-page .herz-landscape :is(.service-meetings, #pfotenpatron, .herz-background) {
+    width: 100%; max-width: none; margin-inline: 0;
+  }
+  .herz-outro-landscape > .herz-scene-art { clip-path: inset(0 round 18% 14% 0 0); }
+}
+
 @media (min-width: 981px) and (max-width: 1250px) {
   .herz-scene > .herz-panel-copy { width: 42%; margin-top: 70px; }
   .herz-scene .button-row { flex-direction: column; align-items: flex-start; }
-  .herz-landscape { padding-top: 70px; }
+  .herz-landscape { padding-top: 0; }
+  .herz-landscape-copy { padding-top: 70px; }
   .herz-landscape .meeting-heading { flex-direction: column; }
 }
 
@@ -165,11 +193,13 @@
   .herz-outro-landscape { --clearing: url("/assets/herz-schnauze/verbunden/ausklang-lichtung.webp"); --shore: url("/en/assets/herz-schnauze/verbunden/ausklang-ufer.svg"); }
 
   .herz-scene, .herz-landscape { display: flex; flex-direction: column; min-height: 0; padding: 0; }
+  /* Grid tracks cannot carry the junction's negative outer height. */
+  .herz-landscape { margin-top: calc(-100vw * 20 / 760); }
   /* Art stays at one scale; only complete shore tiles are added for more text. */
   .herz-scene > .herz-panel-copy, .herz-landscape-copy {
     position: relative;
     isolation: isolate;
-    min-height: var(--shore-height, calc(100vw * 808 / 760));
+    min-height: max(var(--shore-height, 0px), calc(100vw * 808 / 760));
     width: 100%;
     max-width: none;
     margin: 0;
@@ -182,15 +212,16 @@
     position: absolute;
     z-index: -3;
     inset: 0 0 auto;
-    aspect-ratio: 760 / 560;
+    height: calc(100vw * 560 / 760 + 1px);
     background: var(--clearing) center top / 100% auto no-repeat;
+    clip-path: inset(calc(100% * 40 / 560 - 1px) 0 0);
     pointer-events: none;
   }
   .herz-panel-copy::after, .herz-landscape-copy::after {
     content: "";
     position: absolute;
     z-index: -3;
-    inset: calc(100vw * 560 / 760) 0 0;
+    inset: calc(100vw * 560 / 760) 0 calc(100vw * 248 / 760 - 1px);
     background: var(--shore) center top / 100% auto repeat-y;
     pointer-events: none;
   }
@@ -243,19 +274,20 @@
     height: auto;
     aspect-ratio: 760 / 1093;
     margin: -1px 0 0;
+    clip-path: inset(0 0 calc(100% * 40 / 1093 - 1px));
   }
   .herz-scene-art img { width: 100%; height: auto; object-fit: contain; }
   .herz-trail-page {
-    --entrance-seam: url("/en/assets/herz-schnauze/verbunden/eingang-gassi.svg");
-    --event-seam: url("/en/assets/herz-schnauze/verbunden/gassi-termine.svg");
+    --entrance-seam: url("/en/assets/herz-schnauze/verbunden/eingang-gassi.svg?v=20261118-2");
+    --event-seam: url("/en/assets/herz-schnauze/verbunden/gassi-termine.svg?v=20261118-2");
   }
   .herz-trail-page[data-herz-active="lernen"] {
-    --entrance-seam: url("/en/assets/herz-schnauze/verbunden/eingang-lernen.svg");
-    --event-seam: url("/en/assets/herz-schnauze/verbunden/lernen-termine.svg");
+    --entrance-seam: url("/en/assets/herz-schnauze/verbunden/eingang-lernen.svg?v=20261118-2");
+    --event-seam: url("/en/assets/herz-schnauze/verbunden/lernen-termine.svg?v=20261118-2");
   }
   .herz-trail-page[data-herz-active="unterstuetzen"] {
-    --entrance-seam: url("/en/assets/herz-schnauze/verbunden/eingang-freunde.svg");
-    --event-seam: url("/en/assets/herz-schnauze/verbunden/freunde-termine.svg");
+    --entrance-seam: url("/en/assets/herz-schnauze/verbunden/eingang-freunde.svg?v=20261118-2");
+    --event-seam: url("/en/assets/herz-schnauze/verbunden/freunde-termine.svg?v=20261118-2");
   }
   .herz-mobile-entrance-join, .herz-painted-junction {
     display: block;
@@ -271,8 +303,8 @@
   }
   .herz-mobile-entrance-join { background-image: var(--entrance-seam); }
   .herz-trails + .herz-painted-junction { background-image: var(--event-seam); }
-  .herz-event-landscape + .herz-painted-junction { background-image: url("/en/assets/herz-schnauze/verbunden/termine-gastgeber.svg"); }
-  .herz-host-landscape + .herz-painted-junction { background-image: url("/en/assets/herz-schnauze/verbunden/gastgeber-ausklang.svg"); }
+  .herz-event-landscape + .herz-painted-junction { background-image: url("/en/assets/herz-schnauze/verbunden/termine-gastgeber.svg?v=20261118-2"); }
+  .herz-host-landscape + .herz-painted-junction { background-image: url("/en/assets/herz-schnauze/verbunden/gastgeber-ausklang.svg?v=20261118-2"); }
 
   .herz-trail-page .herz-landscape :is(.service-meetings, #pfotenpatron, .herz-background) {
     width: 100%;
@@ -290,4 +322,8 @@
   .herz-trail-page .herz-host-landscape #orte { margin-top: 22px; }
   .herz-panel p.herz-panel-link { font-size: clamp(.8rem, 3.5vw, .98rem); }
   .herz-outro-landscape .service-provider-link { font-size: .87rem; }
+  .herz-painted-entrance { clip-path: inset(0 0 calc(100% * 40 / 380)); }
+  .herz-trail-page .tree-hero-art { clip-path: inset(0 0 15px); }
+  .herz-outro-landscape > .herz-scene-art { clip-path: none; }
+  .herz-events-link { z-index: 6; }
 }
