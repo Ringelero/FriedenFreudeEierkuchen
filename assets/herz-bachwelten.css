@@ -198,6 +198,7 @@
     min-width: 0;
     padding: calc(100vw * 320 / 760) 30% 22px 22%;
   }
+  .herz-event-landscape .herz-copy-inner { padding-left: 27%; }
   .herz-copy-inner::after {
     content: "";
     position: absolute;
@@ -207,7 +208,7 @@
     background: var(--clearing) center bottom / 100% auto no-repeat;
     pointer-events: none;
   }
-  .herz-copy-body { display: flow-root; }
+  .herz-copy-body { display: flow-root; overflow-wrap: anywhere; hyphens: auto; }
   .herz-scene h2, .herz-landscape .meeting-heading h2,
   .herz-landscape #pfotenpatron h2, .herz-trail-page .herz-outro-landscape #mitmachen h2 {
     max-width: none;
@@ -282,7 +283,10 @@
   .herz-landscape .meeting-empty { padding-top: 0; }
   .herz-landscape .meeting-refresh { font-size: .8rem; min-height: 40px; }
   .herz-landscape .herz-background h2 { font-size: clamp(1.1rem, 4.6vw, 1.5rem); }
+  .herz-landscape .herz-background > summary { margin-left: 6vw; }
+  .herz-landscape .chapter-label { overflow-wrap: anywhere; hyphens: auto; }
   .herz-landscape .chapter-content { padding-top: 10px; }
+  .herz-landscape .herz-background .chapter-content { padding-left: 6vw; }
   .herz-trail-page .herz-host-landscape #orte { margin-top: 22px; }
   .herz-panel p.herz-panel-link { font-size: clamp(.8rem, 3.5vw, .98rem); }
   .herz-outro-landscape .service-provider-link { font-size: .87rem; }
