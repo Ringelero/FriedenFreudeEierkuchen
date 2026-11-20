@@ -15,5 +15,8 @@ test('hour ranges retain actual instants over DST and show Berlin clock times',(
  const merged=normalizeWindows([{start:'2026-10-25T02:00:00+02:00',end:'2026-10-25T02:00:00+01:00'},{start:'2026-10-25T02:00:00+01:00',end:'2026-10-25T03:00:00+01:00'}]);
  assert.equal(new Date(merged[0].end)-new Date(merged[0].start),7200000);
  assert.equal(rangeLabel('2026-11-21T10:00Z','2026-11-21T13:00Z','Europe/Berlin'),'11:00–14:00');
+ assert.equal(rangeLabel('2026-11-21T22:00Z','2026-11-22T00:00Z','Europe/Berlin'),'23:00–01:00 · nächster Tag');
+ assert.equal(rangeLabel('2026-10-25T00:00Z','2026-10-25T02:00Z','Europe/Berlin'),'02:00–03:00');
+ assert.match(rangeLabel('2026-03-28T22:00Z','2026-03-29T22:00Z','Europe/Berlin'),/^23:00–00:00 · bis /);
  assert.equal(dogAccessLabel('on_leash'),'Leinenpflicht');
 });

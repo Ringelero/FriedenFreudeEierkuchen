@@ -9,8 +9,13 @@
  function participationNames(role,value){if(role==='companion')return [];if(role!=='dogs')throw new Error('Bitte wähle deine Teilnahme.');return dogNames(value);}
  function attendanceLabel(dogs,companions){return `${dogs||0} ${dogs===1?'Hund':'Hunde'} · ${companions||0} ${companions===1?'Begleitperson':'Begleitpersonen'}`;}
  function slotStart(t=Date.now()){return new Date(Math.floor(new Date(t).getTime()/HOURS)*HOURS).toISOString();}
- function slotLabel(start,zone){const fmt=new Intl.DateTimeFormat('de-DE',{timeZone:zone,hour:'2-digit',minute:'2-digit'});return `${fmt.format(new Date(start))}–${fmt.format(new Date(new Date(start).getTime()+HOURS))}`;}
- function rangeLabel(start,end,zone){const fmt=new Intl.DateTimeFormat('de-DE',{timeZone:zone,hour:'2-digit',minute:'2-digit'});return `${fmt.format(new Date(start))}–${fmt.format(new Date(end))}`;}
+ function slotLabel(start,zone){return rangeLabel(start,new Date(new Date(start).getTime()+HOURS),zone);}
+ function rangeLabel(start,end,zone){
+  const fmt=new Intl.DateTimeFormat('de-DE',{timeZone:zone,hour:'2-digit',minute:'2-digit'}),label=`${fmt.format(new Date(start))}–${fmt.format(new Date(end))}`,first=dateKey(start,zone),last=dateKey(end,zone);
+  if(first===last)return label;
+  const days=(Date.parse(last+'T00:00:00Z')-Date.parse(first+'T00:00:00Z'))/86400000;
+  return label+(days===1?' · nächster Tag':' · bis '+new Intl.DateTimeFormat('de-DE',{timeZone:zone,weekday:'short',day:'numeric',month:'short'}).format(new Date(end)));
+ }
  function normalizeWindows(windows){
   if(!Array.isArray(windows)||windows.length>8)throw new Error('Du kannst bis zu acht Zeiträume auswählen.');
   const sorted=windows.map(w=>({start:new Date(w.start).getTime(),end:new Date(w.end).getTime()})).sort((a,b)=>a.start-b.start);
@@ -279,7 +284,7 @@
    const join=button(own?'Zeiten bearbeiten':role.value==='companion'?'Ich gehe mit':'Ich bin dabei',async()=>{if(own&&!eventChoice.value){if(!mineDay.some(e=>e.id===own.id)){await openPlace(p.id,own.slot_start,false,false,false,dateKey(own.starts_at,p.time_zone));const editor=root.querySelector('.place-time-editor');if(editor){editor.open=true;editor.scrollIntoView({block:'nearest'});}}else{custom.open=true;custom.scrollIntoView({block:'nearest'});}}else change('coming');},'place-primary');actions.append(join);role.addEventListener('change',()=>{if(!own)join.textContent=role.value==='companion'?'Ich gehe mit':'Ich bin dabei';});
    if(own?.starts_at)root.append(node('p','Deine Zeit: '+rangeLabel(own.starts_at,own.ends_at,p.time_zone),'place-own-time'));
    if(new Date(t).getTime()<=Date.now())actions.append(button(own?.state==='here'?'Bin weiterhin da':'Ich bin jetzt da',()=>change('here')));
-   if(own)actions.append(button('Eintrag entfernen',()=>change('leave')));root.append(actions,custom,fields);
+   if(own)actions.append(button(own.state==='here'?'Bin wieder weg':'Eintrag entfernen',()=>change('leave')));root.append(actions,custom,fields);
    const feedback=node('p','','places-feedback');feedback.dataset.detailStatus='';feedback.setAttribute('role','status');feedback.hidden=true;root.append(feedback,about);
    if(access?.can_manage){const management=document.createElement('details');management.append(node('summary','Besonderes Treffen in diesem Fenster'));const eventForm=node('form',undefined,'places-form');for(const [key,label,max] of [['title','Titel, z. B. Welpenrunde',120],['description','Absprachen, Teilnahme- und Kostenrahmen',1500],['contact','Öffentliche Ansprechperson / Kontakt',500]]){const l=node('label',label),input=document.createElement(key==='description'?'textarea':'input');input.name=key;input.maxLength=max;input.required=true;l.append(input);eventForm.append(l);}const submit=node('button','Treffen für dieses Zeitfenster veröffentlichen');submit.type='submit';eventForm.append(submit);eventForm.addEventListener('submit',event=>{event.preventDefault();perform(async g=>{const details=Object.fromEntries(new FormData(eventForm));await rpc(client,'save_place_slot_event',{place:p.id,service,t,event:null,expected:null,details});if(g!==generation)return;await openPlace(p.id,t,false);status('Das besondere Treffen ist veröffentlicht.');});});management.append(eventForm);root.append(management);}
   }

@@ -9,8 +9,13 @@
  function participationNames(role,value){if(role==='companion')return [];if(role!=='dogs')throw new Error("Please choose how you are participating.");return dogNames(value);}
  function attendanceLabel(dogs,companions){return `${dogs||0} ${dogs===1?"Dog":"Dogs"} · ${companions||0} ${companions===1?"Companion":"Companions"}`;}
  function slotStart(t=Date.now()){return new Date(Math.floor(new Date(t).getTime()/HOURS)*HOURS).toISOString();}
- function slotLabel(start,zone){const fmt=new Intl.DateTimeFormat("en-GB",{timeZone:zone,hour:'2-digit',minute:'2-digit'});return `${fmt.format(new Date(start))}–${fmt.format(new Date(new Date(start).getTime()+HOURS))}`;}
- function rangeLabel(start,end,zone){const fmt=new Intl.DateTimeFormat("en-GB",{timeZone:zone,hour:'2-digit',minute:'2-digit'});return `${fmt.format(new Date(start))}–${fmt.format(new Date(end))}`;}
+ function slotLabel(start,zone){return rangeLabel(start,new Date(new Date(start).getTime()+HOURS),zone);}
+ function rangeLabel(start,end,zone){
+  const fmt=new Intl.DateTimeFormat("en-GB",{timeZone:zone,hour:'2-digit',minute:'2-digit'}),label=`${fmt.format(new Date(start))}–${fmt.format(new Date(end))}`,first=dateKey(start,zone),last=dateKey(end,zone);
+  if(first===last)return label;
+  const days=(Date.parse(last+'T00:00:00Z')-Date.parse(first+'T00:00:00Z'))/86400000;
+  return label+(days===1?" · next day":" · until "+new Intl.DateTimeFormat("en-GB",{timeZone:zone,weekday:'short',day:'numeric',month:'short'}).format(new Date(end)));
+ }
  function normalizeWindows(windows){
   if(!Array.isArray(windows)||windows.length>8)throw new Error("You can select up to eight time ranges.");
   const sorted=windows.map(w=>({start:new Date(w.start).getTime(),end:new Date(w.end).getTime()})).sort((a,b)=>a.start-b.start);
@@ -279,7 +284,7 @@
    const join=button(own?"Edit times":role.value==='companion'?"I'm joining":"I'm joining",async()=>{if(own&&!eventChoice.value){if(!mineDay.some(e=>e.id===own.id)){await openPlace(p.id,own.slot_start,false,false,false,dateKey(own.starts_at,p.time_zone));const editor=root.querySelector('.place-time-editor');if(editor){editor.open=true;editor.scrollIntoView({block:'nearest'});}}else{custom.open=true;custom.scrollIntoView({block:'nearest'});}}else change('coming');},'place-primary');actions.append(join);role.addEventListener('change',()=>{if(!own)join.textContent=role.value==='companion'?"I'm joining":"I'm joining";});
    if(own?.starts_at)root.append(node('p',"Your time: "+rangeLabel(own.starts_at,own.ends_at,p.time_zone),'place-own-time'));
    if(new Date(t).getTime()<=Date.now())actions.append(button(own?.state==='here'?"Still here":"I am here now",()=>change('here')));
-   if(own)actions.append(button("Remove entry",()=>change('leave')));root.append(actions,custom,fields);
+   if(own)actions.append(button(own.state==='here'?"I have left":"Remove entry",()=>change('leave')));root.append(actions,custom,fields);
    const feedback=node('p','','places-feedback');feedback.dataset.detailStatus='';feedback.setAttribute('role','status');feedback.hidden=true;root.append(feedback,about);
    if(access?.can_manage){const management=document.createElement('details');management.append(node('summary',"Special meetup in this window"));const eventForm=node('form',undefined,'places-form');for(const [key,label,max] of [['title',"Title, e.g. Puppy walk",120],['description',"Arrangements, participation and costs",1500],['contact',"Public contact person / contact details",500]]){const l=node('label',label),input=document.createElement(key==='description'?'textarea':'input');input.name=key;input.maxLength=max;input.required=true;l.append(input);eventForm.append(l);}const submit=node('button',"Publish a meetup for this time window");submit.type='submit';eventForm.append(submit);eventForm.addEventListener('submit',event=>{event.preventDefault();perform(async g=>{const details=Object.fromEntries(new FormData(eventForm));await rpc(client,'save_place_slot_event',{place:p.id,service,t,event:null,expected:null,details});if(g!==generation)return;await openPlace(p.id,t,false);status("The special meetup has been published.");});});management.append(eventForm);root.append(management);}
   }
